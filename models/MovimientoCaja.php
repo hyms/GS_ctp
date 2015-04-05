@@ -1,0 +1,111 @@
+<?php
+
+namespace app\models;
+
+use Yii;
+
+/**
+ * This is the model class for table "movimientoCaja".
+ *
+ * @property integer $idMovimientoCaja
+ * @property integer $fk_idCajaOrigen
+ * @property integer $fk_idCajaDestino
+ * @property string $time
+ * @property integer $fk_idUser
+ * @property double $monto
+ * @property integer $tipoMovimiento
+ * @property string $obseraciones
+ * @property string $fechaCierre
+ * @property double $saldoCierre
+ * @property integer $correlativoCierre
+ *
+ * @property OrdenCTP[] $ordenCTPs
+ * @property Caja $fkIdCajaDestino
+ * @property Caja $fkIdCajaOrigen
+ * @property User $fkIdUser
+ * @property Recibo[] $recibos
+ */
+class MovimientoCaja extends \yii\db\ActiveRecord
+{
+    /**
+     * @inheritdoc
+     */
+    public static function tableName()
+    {
+        return 'movimientoCaja';
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function rules()
+    {
+        return [
+            [['fk_idCajaOrigen', 'fk_idCajaDestino', 'fk_idUser', 'tipoMovimiento', 'correlativoCierre'], 'integer'],
+            [['time', 'fk_idUser', 'monto', 'tipoMovimiento'], 'required'],
+            [['time', 'fechaCierre'], 'safe'],
+            [['monto', 'saldoCierre'], 'number'],
+            [['obseraciones'], 'string', 'max' => 100]
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function attributeLabels()
+    {
+        return [
+            'idMovimientoCaja' => 'Id Movimiento Caja',
+            'fk_idCajaOrigen' => 'Fk Id Caja Origen',
+            'fk_idCajaDestino' => 'Fk Id Caja Destino',
+            'time' => 'Time',
+            'fk_idUser' => 'Fk Id User',
+            'monto' => 'Monto',
+            'tipoMovimiento' => 'Tipo Movimiento',
+            'obseraciones' => 'Obseraciones',
+            'fechaCierre' => 'Fecha Cierre',
+            'saldoCierre' => 'Saldo Cierre',
+            'correlativoCierre' => 'Correlativo Cierre',
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenCTPs()
+    {
+        return $this->hasMany(OrdenCTP::className(), ['fk_idMovimientoCaja' => 'idMovimientoCaja']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdCajaDestino()
+    {
+        return $this->hasOne(Caja::className(), ['idCaja' => 'fk_idCajaDestino']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdCajaOrigen()
+    {
+        return $this->hasOne(Caja::className(), ['idCaja' => 'fk_idCajaOrigen']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdUser()
+    {
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUser']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getRecibos()
+    {
+        return $this->hasMany(Recibo::className(), ['fk_idMovimientoCaja' => 'idMovimientoCaja']);
+    }
+}
