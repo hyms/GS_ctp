@@ -14,8 +14,8 @@ $this->title = 'Diseño-Ordenes';
             case 'nuevo':
                 echo $this->render('forms/ordenCliente',[
                     'orden'=>$orden,
+                    'detalle'=>$detalle,
                     'producto'=>$producto,
-                    'search'=>$search,
                 ]);
                 break;
             case 'buscar':

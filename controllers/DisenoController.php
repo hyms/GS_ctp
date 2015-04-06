@@ -3,8 +3,10 @@
 namespace app\controllers;
 
 use app\components\SGOrdenes;
+use app\components\SGProducto;
 use app\models\OrdenCTP;
-use app\models\ProductoSearch;
+use app\models\OrdenDetalle;
+use app\models\ProductoStock;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -65,8 +67,8 @@ class DisenoController extends Controller
             switch($get['op']){
                 case "cliente":
                     $ordenes= new OrdenCTP();
-                    $search = new ProductoSearch();
-                    $producto = $search->search(Yii::$app->request->queryParams,false);
+                    $detalle= [];
+                    $producto =SGProducto::getProductos();
                     if($ordenes->load(Yii::$app->request->post()))
                     {
                         $ordenes->validate();
@@ -74,8 +76,8 @@ class DisenoController extends Controller
                     return $this->render('orden', [
                         'r' => 'nuevo',
                         'orden'=>$ordenes,
+                        'detalle'=>$detalle,
                         'producto'=>$producto,
-                        'search'=>$search,
                     ]);
                 case 'buscar':
                     $render="buscar";
@@ -96,4 +98,31 @@ class DisenoController extends Controller
 
     }
 
+    public function actionAdd_detalle()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get)) {
+        //if (Yii::$app->request->isAjax && isset($get)) {
+            $costo   = "";
+            $detalle = new OrdenDetalle();
+            $almacen = null;
+            if (isset($_GET['al'])) {
+                $almacen = ProductoStock::findOne(['idProductoStock'=>$get['al']]);
+            }
+            if(empty($almacen))
+                $almacen = new ProductoStock();
+            if (isset($get['costo']))
+                $costo = $get['costo'];
+
+            $detalle->fk_idProductoStock = $almacen->idProductoStock;
+
+            echo $this->renderAjax('forms/_newRowDetalleVenta', array(
+                'model'   => $detalle,
+                'index'   => $get['index'],
+                'costo'   => $costo,
+                'almacen' => $almacen,
+            ));
+        } else
+            throw new CHttpException(400);
+    }
 }

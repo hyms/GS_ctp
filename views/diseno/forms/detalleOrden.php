@@ -1,17 +1,22 @@
+<?php
+    use yii\helpers\Html;
+
+?>
+
 <table id="ywventa" class="items table table-condensed table-hover">
     <thead class="tabular-header"><tr>
-        <td><?php echo CHtml::label('Nº','number')?></td>
-        <td><?php echo CHtml::label('Formato','formato')?></td>
-        <td><?php echo CHtml::label('Nº de placas','nro placas')?></td>
-        <td><?php echo CHtml::label('Full','f')?></td>
-        <td><?php echo CHtml::label('C','c')?></td>
-        <td><?php echo CHtml::label('M','m')?></td>
-        <td><?php echo CHtml::label('Y','y')?></td>
-        <td><?php echo CHtml::label('B','k')?></td>
-        <td><?php echo CHtml::label('Trabajo','trabajo')?></td>
-        <td><?php echo CHtml::label('Pinza','pinza')?></td>
-        <td><?php echo CHtml::label('Resolucion','resolucion')?></td>
-        <td><?php echo CHtml::label('Adicional','adicional')?></td>
+        <td><?php echo Html::label('Nº','number')?></td>
+        <td><?php echo Html::label('Formato','formato')?></td>
+        <td><?php echo Html::label('Nº de placas','nro placas')?></td>
+        <td><?php echo Html::label('Full','f')?></td>
+        <td><?php echo Html::label('C','c')?></td>
+        <td><?php echo Html::label('M','m')?></td>
+        <td><?php echo Html::label('Y','y')?></td>
+        <td><?php echo Html::label('B','k')?></td>
+        <td><?php echo Html::label('Trabajo','trabajo')?></td>
+        <td><?php echo Html::label('Pinza','pinza')?></td>
+        <td><?php echo Html::label('Resolucion','resolucion')?></td>
+        <td><?php echo Html::label('Adicional','adicional')?></td>
         <td></td>
     </tr></thead>
     <tbody class="tabular-input-container">
@@ -35,7 +40,7 @@
     ?>
     </tbody>
 </table>
-<?php echo $form->textAreaGroup($venta, 'obseraciones'); ?>
+<?= $form->field($orden, 'observaciones')->textArea(); ?>
 <?php
-$this->renderPartial('/scripts/operaciones');
-$this->renderPartial('/scripts/removeList');
+//$this->renderPartial('/scripts/operaciones');
+echo $this->render('../scripts/removeList');

@@ -41,7 +41,7 @@ class Producto extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'importKey', 'cantidadPaquete', 'material', 'familia'], 'required'],
+            [['codigo', 'cantidadPaquete', 'material', 'familia'], 'required'],
             [['toBuy', 'toSell', 'cantidadPaquete'], 'integer'],
             [['codigo', 'codigoPersonalizado', 'material', 'color', 'marca'], 'string', 'max' => 50],
             [['descripcion'], 'string', 'max' => 200],
