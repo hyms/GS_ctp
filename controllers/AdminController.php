@@ -2,17 +2,16 @@
 
 namespace app\controllers;
 
-use app\components\SGOrdenes;
-use app\models\OrdenCTP;
+use app\models\Producto;
 use app\models\ProductoSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
 
-class DisenoController extends Controller
+class AdminController extends Controller
 {
-    public $layout = "diseno";
+    public $layout = "admin";
 
     public function behaviors()
     {
@@ -55,45 +54,31 @@ class DisenoController extends Controller
         return $this->render('index');
     }
 
-    public function actionOrden()
+    public function actionProducto()
     {
         $get = Yii::$app->request->get();
-        //$post=Yii::$app->request->post();
         $render = "";
-        $ordenes = "";
-        if (isset($get['op'])) {
+        if(isset($get['op']))
+        {
             switch($get['op']){
-                case "cliente":
-                    $ordenes= new OrdenCTP();
-                    $search = new ProductoSearch();
-                    $producto = $search->search(Yii::$app->request->queryParams,false);
-                    if($ordenes->load(Yii::$app->request->post()))
+                case "new":
+                    $render="new";
+                    $producto=new Producto();
+                    if($producto->load(Yii::$app->request->post()))
                     {
-                        $ordenes->validate();
+                        if($producto->save())
+                            $this->redirect(['admin/producto','op'=>'list']);
                     }
-                    return $this->render('orden', [
-                        'r' => 'nuevo',
-                        'orden'=>$ordenes,
-                        'producto'=>$producto,
-                        'search'=>$search,
-                    ]);
-                case 'buscar':
-                    $render="buscar";
-                    $ordenes = SGOrdenes::getOrdenes();
+                    return $this->render('producto', ['r' => $render,'producto'=>$producto]);
                     break;
+                case "list":
+                    $render="list";
+                    $search = new ProductoSearch();
+                    $producto = $search->search(Yii::$app->request->queryParams);
+
+                    return $this->render('producto', ['r' => $render,'producto'=>$producto,'search'=>$search]);
             }
         }
-        return $this->render('orden', ['r' => $render,'orden'=>$ordenes]);
+        return $this->render('producto', ['r' => $render]);
     }
-
-    public function actionOrdenInterna()
-    {
-
-    }
-
-    public function actionOrdenReposicion()
-    {
-
-    }
-
 }

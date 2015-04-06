@@ -3,16 +3,20 @@
 $this->title = 'Diseño-Ordenes';
 ?>
 
-<div class="col-xs-2">
-<? echo $this->render('menus/ordenMenu'); ?>
+<div class="col-sm-2">
+<?php echo $this->render('menus/ordenMenu'); ?>
 </div>
 
-<div class="col-xs-10">
+<div class="col-sm-10">
     <?php
     if(isset($r)) {
         switch ($r) {
             case 'nuevo':
-                echo $this->render('forms/ordenCliente',['orden'=>$orden]);
+                echo $this->render('forms/ordenCliente',[
+                    'orden'=>$orden,
+                    'producto'=>$producto,
+                    'search'=>$search,
+                ]);
                 break;
             case 'buscar':
                 echo $this->render('tables/buscar',['orden'=>$orden]);

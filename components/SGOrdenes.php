@@ -2,11 +2,10 @@
 namespace app\components;
 
 
+use app\models\OrdenCTP;
 use Yii;
 use yii\base\Component;
 use yii\data\ActiveDataProvider;
-use app\models\OrdenCTP;
-use yii\base\InvalidConfigException;
 
 class SGOrdenes extends Component
 {

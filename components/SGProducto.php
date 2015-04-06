@@ -2,11 +2,11 @@
 namespace app\components;
 
 
+use app\models\Producto;
 use app\models\ProductoStock;
 use Yii;
 use yii\base\Component;
-use yii\base\models;
-use yii\base\InvalidConfigException;
+use yii\data\ActiveDataProvider;
 
 class SGProducto extends Component
 {
@@ -27,7 +27,7 @@ class SGProducto extends Component
 
     public function movimientoStock($data, $dependiente = false)
     {
-        if(empty($data['detalle'])|| empty($data['']))
+        if(empty($data['detalle']) || empty($data['venta']))
             throw new CHttpException(400, SGOperation::getError(400));
         $productoStocks = [];
         $movimientoStock = [];
@@ -48,5 +48,23 @@ class SGProducto extends Component
                 $movimientoStock[$key]->cantidad = $item->cantidad;
             }
         }
+    }
+
+    static public function getProductos($dataProvider=true)
+    {
+        if($dataProvider) {
+            return new ActiveDataProvider([
+                'query' => Producto::find(),
+                'pagination' => [
+                    'pageSize' => 5,
+                ],
+            ]);
+        }
+        return Producto::find();
+    }
+
+    static public function getOrden($data)
+    {
+        return Producto::findOne($data);
     }
 }

@@ -1,38 +1,35 @@
 <?php
-if(isset($clientes))
-{
-    ?>
-    <div class="row">
-    <div class="col-xs-6">
-    <h3><span class="label label-default">Placas</span></h3>
-<?php
-}
-$columns = array(
-    array(
+use kartik\grid\GridView;
+
+$columns = [
+    ['class' => 'yii\grid\SerialColumn'],
+    [
         'header'=>'Formato',
-        'value'=>'$data->fkIdProducto->color',
-    ),
-    array(
+        'value'=>'color',
+        'attribute'=>'color',
+        //'filter'=>CHtml::activeTextField($producto, 'codigo',array("class"=>"form-control")),
+    ],
+    [
         'header'=>'Tamaño',
-        'value'=>'$data->fkIdProducto->descripcion',
-    ),
-    array(
+        'value'=>'descripcion',
+        'attribute'=>'descripcion',
+        //'filter'=>CHtml::activeTextField($producto, 'codigoPersonalizado',array("class"=>"form-control")),
+    ],
+    /*[
         'header'=>'Stock',
-        'value'=>'$data->cantidad',
-    ),
-    array(
-        'header'=>'',
-        'type'=>'raw',
-        'value'=>'CHtml::link("<span class=\"glyphicon glyphicon-ok\"></span> Añadir","#",array("onclick"=>\'newRow("\'.$data->idProductoStock.\'","\'.CHtml::normalizeUrl(array("orden/addDetalle")).\'","cliente");return false;\',"class"=>"btn btn-success btn-sm"))',
-    ),
-);
-$this->renderPartial('/baseTable',array('columns'=>$columns,'data'=>$productos->searchProducto()));
+        'value'=>'cantidad',
+        'attribute'=>'cantidad',
+        //'filter'=>CHtml::activeDropDownList($producto,'material',CHtml::listData(Producto::model()->findAll(array('group'=>'material','select'=>'material')),'material','material'),array("class"=>"form-control",'empty'=>'')),
+    ],*/
+    //['class' => 'yii\grid\ActionColumn'],
+];
+
+echo GridView::widget([
+    'dataProvider'=> $producto,
+    'filterModel' => $search,
+    'columns' => $columns,
+    'condensed' => true,
+    'hover'=>true,
+]);
 ?>
-<?php
-if(isset($clientes)) {
-    echo "</div>";
-    $this->renderPartial('tables/clientes', array('clientes' => $clientes));
-    echo "</div>";
-}
-?>
-<?php Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/addListCTP.js',CClientScript::POS_HEAD); ?>
+<?php ///Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/addListCTP.js',CClientScript::POS_HEAD); ?>

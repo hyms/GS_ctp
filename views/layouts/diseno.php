@@ -1,14 +1,14 @@
 <?php
-use yii\helpers\Html;
+use app\assets\AppAsset2;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
+use yii\helpers\Html;
 use yii\widgets\Breadcrumbs;
-use app\assets\AppAsset;
 
 /* @var $this \yii\web\View */
 /* @var $content string */
 
-AppAsset::register($this);
+AppAsset2::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -29,7 +29,7 @@ AppAsset::register($this);
                 'brandLabel' => 'Grafica Singular',
                 'brandUrl' => Yii::$app->homeUrl,
                 'options' => [
-                    'class' => 'navbar-inverse navbar-fixed-top',
+                    'class' => 'navbar navbar-default',
                 ],
             ]);
             echo Nav::widget([

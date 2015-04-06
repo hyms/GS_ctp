@@ -5,6 +5,7 @@ $params = require(__DIR__ . '/params.php');
 $config = [
     'id' => 'singular',
     'basePath' => dirname(__DIR__),
+    'language'=>'es',
     'bootstrap' => ['log'],
     'components' => [
         'request' => [
@@ -46,7 +47,7 @@ $config = [
     ],*/
     'modules' => [
         'gridview' =>  [
-            'class' => '\kartik\grid\Module'
+            'class' => '\kartik\grid\Module',
             // enter optional module parameters below - only if you need to
             // use your own export download action or custom translation
             // message source
