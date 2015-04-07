@@ -69,8 +69,12 @@ class DisenoController extends Controller
                     $ordenes= new OrdenCTP();
                     $detalle= [];
                     $producto =SGProducto::getProductos(true,10);
-                    if($ordenes->load(Yii::$app->request->post()))
+                    $post = Yii::$app->request->post();
+                    if(!empty($post))
                     {
+                        $operacion = new SGOrdenes();
+                        $datos = ['orden'=>$post['OrdenCTP'],'detalle'=>$post['OrdenDetalle']];
+                        $datos=$operacion->grabar($datos);
                         $ordenes->validate();
                     }
                     return $this->render('orden', [

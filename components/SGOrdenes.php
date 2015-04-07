@@ -3,6 +3,7 @@ namespace app\components;
 
 
 use app\models\OrdenCTP;
+use app\models\OrdenDetalle;
 use Yii;
 use yii\base\Component;
 use yii\data\ActiveDataProvider;
@@ -15,13 +16,19 @@ class SGOrdenes extends Component
     {
         if (empty($data['orden']) || empty($data['detalle']))
             throw new CHttpException(400, SGOperation::getError(400));
-
+        $orden=new OrdenCTP();
+        $data['orden']=$orden->load($data['orden']);
         if (!$data['orden']->validate()) {
             return $data;
         }
 
         $swv = false;
         $count = count($data['detalle']);
+        $detalles = [];
+        for($key=0;$key<$count;$key++) {
+            $detalles[$key]=new OrdenDetalle();
+        }
+        $data['detalle']=OrdenDetalle::loadMultiple($detalles,$data['detalle']);
         for($key=0;$key<$count;$key++) {
             if(!$data['detalle'][$key]->validate())
                 $swv=true;
