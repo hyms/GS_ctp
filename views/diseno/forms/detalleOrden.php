@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
 ?>
 
@@ -24,14 +24,12 @@ use yii\helpers\Html;
     if(count($detalle)>=1){
         if(!isset($detalle->isNewRecord)){
             foreach ($detalle as $key=>$item){
-                if($item->fk_idProductoStock!=null){
-                    $this->render('_newRowDetalleVenta', array(
+                if(!empty($item['fk_idProductoStock'])){
+                    echo $this->render('_newRowDetalleVenta', array(
                         'model'=>$item,
                         'index'=>$key,
                         'costo'=>"cliente",
-                        'almacen'=>ProductoStock::model()
-                            ->with("fkIdProducto")
-                            ->findByPk($item->fk_idProductoStock),
+                        'almacen'=>\app\models\ProductoStock::findOne(['idProductoStock'=>$item['fk_idProductoStock']]),
                     ));
                 }
             }

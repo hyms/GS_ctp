@@ -1,6 +1,6 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
 <div class="row">
@@ -20,8 +20,8 @@ use yii\helpers\Html;
         <div class="well well-sm">
             <div class = "row">
                 <h4 class="col-xs-4"><strong>Orden de Trabajo</strong></h4>
-                <h4 class="col-xs-4 text-center"><strong><?php echo "#"//$venta->correlativo;?></strong></h4>
-                <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y");//date("d/m/Y",strtotime($venta->fechaGenerada));?></strong></h4>
+                <h4 class="col-xs-4 text-center"><strong><?php echo $orden->correlativo;?></strong></h4>
+                <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y",strtotime($orden->fechaGenerada));?></strong></h4>
             </div>
 
             <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>

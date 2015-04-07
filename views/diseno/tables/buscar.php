@@ -1,5 +1,5 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
 ?>
 <div class="panel panel-default">
@@ -11,11 +11,13 @@ use kartik\grid\GridView;
         $columns = [
             [
                 'header'=>'Correlativo',
-                'value'=>'$model->correlativo',
+                'value'=>'correlativo',
             ],
             [
                 'header'=>'Codigo',
-                'value'=>'$model->correlativo',
+                'value'=>function($model){
+                    return (isset($model->codigo))?$model->codigo:'';
+                },
             ],
             /*[
                 'header'=>'Cliente',
@@ -23,11 +25,11 @@ use kartik\grid\GridView;
             ],*/
             [
                 'header'=>'Responsable',
-                'value'=>'$model->responsable',
+                'value'=>'responsable',
             ],
             [
                 'header'=>'Fecha',
-                'value'=>'$model->fechaGenerada',
+                'value'=>'fechaGenerada',
             ],
             [
                 'header'=>'',

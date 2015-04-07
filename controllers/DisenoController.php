@@ -8,6 +8,7 @@ use app\models\OrdenCTP;
 use app\models\OrdenDetalle;
 use app\models\ProductoStock;
 use Yii;
+use yii\base\Model;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
 use yii\web\Controller;
@@ -64,27 +65,37 @@ class DisenoController extends Controller
         $render = "";
         $ordenes = "";
         if (isset($get['op'])) {
-            switch($get['op']){
+            switch($get['op']) {
                 case "cliente":
-                    $ordenes= new OrdenCTP();
-                    $detalle= [];
-                    $producto =SGProducto::getProductos(true,10);
-                    $post = Yii::$app->request->post();
-                    if(!empty($post))
-                    {
+                    $ordenes                = new OrdenCTP();
+                    $ordenes->fk_idSucursal = 1;
+                    $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal);
+                    $ordenes->fechaGenerada = date('Y-m-d H:i:s');
+                    //$ordenes->fk_idUserD    = Yii::app()->user->id;
+                    $detalle                = [];
+                    $producto               = SGProducto::getProductos(true, 10, 1);
+                    $post                   = Yii::$app->request->post();
+                    if (!empty($post)) {
                         $operacion = new SGOrdenes();
-                        $datos = ['orden'=>$post['OrdenCTP'],'detalle'=>$post['OrdenDetalle']];
-                        $datos=$operacion->grabar($datos);
-                        $ordenes->validate();
+                        for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
+                            $detalle[$i] = new OrdenDetalle();
+                        $ordenes->load($post);
+                        Model::loadMultiple($detalle, $post);
+                        //$datos = ;
+                        $datos   = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
+                        if($datos->success)
+                            $this->redirect(['orden','op'=>'buscar']);
+                        $ordenes = $datos['orden'];
+                        $detalle = $datos['detalle'];
                     }
                     return $this->render('orden', [
-                        'r' => 'nuevo',
-                        'orden'=>$ordenes,
-                        'detalle'=>$detalle,
-                        'producto'=>$producto,
+                        'r'        => 'nuevo',
+                        'orden'    => $ordenes,
+                        'detalle'  => $detalle,
+                        'producto' => $producto,
                     ]);
                 case 'buscar':
-                    $render="buscar";
+                    $render  = "buscar";
                     $ordenes = SGOrdenes::getOrdenes();
                     break;
             }
@@ -110,7 +121,7 @@ class DisenoController extends Controller
             $costo   = "";
             $detalle = new OrdenDetalle();
             $almacen = null;
-            if (isset($_GET['al'])) {
+            if (isset($get['al'])) {
                 $almacen = ProductoStock::findOne(['idProductoStock'=>$get['al']]);
             }
             if(empty($almacen))

@@ -1,5 +1,5 @@
 <?php
-$this->title = 'Diseño-Ordenes';
+$this->title = 'Administracion-Productos';
 ?>
 <div class="col-xs-2">
     <?php echo $this->render('menus/productoMenu'); ?>

@@ -50,17 +50,29 @@ class SGProducto extends Component
         }
     }
 
-    static public function getProductos($dataProvider=true,$pager=5)
+    static public function getProductos($dataProvider=true,$pager=5,$sucursal=false)
     {
-        if($dataProvider) {
-            return new ActiveDataProvider([
-                'query' => Producto::find(),
-                'pagination' => [
-                    'pageSize' => $pager,
-                ],
-            ]);
+        if (!$sucursal) {
+            if ($dataProvider) {
+                return new ActiveDataProvider([
+                                                  'query'      => Producto::find(),
+                                                  'pagination' => [
+                                                      'pageSize' => $pager,
+                                                  ],
+                                              ]);
+            }
+            return Producto::find();
         }
-        return Producto::find();
+        if ($dataProvider) {
+            return new ActiveDataProvider([
+                                              'query'      => ProductoStock::find(['fk_sucursal' => $sucursal]),
+                                              'pagination' => [
+                                                  'pageSize' => $pager
+                                              ]
+                                          ]);
+
+        }
+        ProductoStock::find(['fk_sucursal' => $sucursal]);
     }
 
     static public function getOrden($data)

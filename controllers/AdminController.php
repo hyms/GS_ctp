@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Producto;
 use app\models\ProductoSearch;
+use app\models\Sucursal;
 use Yii;
 use yii\filters\AccessControl;
 use yii\filters\VerbFilter;
@@ -80,5 +81,25 @@ class AdminController extends Controller
             }
         }
         return $this->render('producto', ['r' => $render]);
+    }
+
+    public function actionConfig()
+    {
+        $get = Yii::$app->request->get();
+
+        if (isset($get['op'])) {
+            switch ($get['op']) {
+                case 'sucursal':
+                    $sucursal = New Sucursal();
+                    if ($sucursal->load(Yii::$app->request->post())) {
+                        if ($sucursal->save()) {
+                            $this->redirect(['config']);
+                        }
+                    }
+                    return $this->render('config',['r'=>'suc','sucursal'=>$sucursal]);
+                    break;
+            }
+        }
+        return $this->render('config');
     }
 }

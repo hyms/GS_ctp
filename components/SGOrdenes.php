@@ -3,9 +3,9 @@ namespace app\components;
 
 
 use app\models\OrdenCTP;
-use app\models\OrdenDetalle;
 use Yii;
 use yii\base\Component;
+use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 class SGOrdenes extends Component
@@ -14,35 +14,21 @@ class SGOrdenes extends Component
     var $success = false;
     public function grabar($data,$venta=false)
     {
-        if (empty($data['orden']) || empty($data['detalle']))
-            throw new CHttpException(400, SGOperation::getError(400));
-        $orden=new OrdenCTP();
-        $data['orden']=$orden->load($data['orden']);
-        if (!$data['orden']->validate()) {
-            return $data;
-        }
+        if(!$venta) {
+            if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
+                return $data;
 
-        $swv = false;
-        $count = count($data['detalle']);
-        $detalles = [];
-        for($key=0;$key<$count;$key++) {
-            $detalles[$key]=new OrdenDetalle();
-        }
-        $data['detalle']=OrdenDetalle::loadMultiple($detalles,$data['detalle']);
-        for($key=0;$key<$count;$key++) {
-            if(!$data['detalle'][$key]->validate())
-                $swv=true;
-        }
-        if ($swv)
-            return $data;
+            if (Model::validateMultiple($data['detalle']))
+                return $data;
 
-        if($data['orden']->save())
-        {
-            foreach($data['detalle'] as $item) {
-                $item->fk_idOrden=$data['orden']->idOrdenCTP;
-                $item->save();
+            if ($data['orden']->save(false)) {
+                foreach ($data['detalle'] as $item) {
+                    $item->fk_idOrden = $data['orden']->idOrdenCTP;
+                    $item->save(false);
+                }
+                $this->success = true;
             }
-            $this->success=true;
+            return $data;
         }
         /*$productoStocks  = array();
         $movimientoStock = array();
@@ -167,5 +153,11 @@ class SGOrdenes extends Component
     static public function getOrden($data)
     {
         return $model = OrdenCTP::findOne($data);
+    }
+
+    static public function correlativo($idSucursal)
+    {
+        $row = OrdenCTP::find()->where(['fk_idSucursal'=>$idSucursal])->select('max(correlativo) as correlativo')->one();
+        return ($row->correlativo + 1);
     }
 }

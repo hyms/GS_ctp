@@ -1,6 +1,6 @@
 <?php
     $script= <<< JS
-function newRow(almacen,url,type) {
+function newRow(almacen,url,type,form) {
     var input = $("#ywventa tbody");
     var index = 0;
     if (input.find(".tabular-input-index").length > 0) {
@@ -11,7 +11,7 @@ function newRow(almacen,url,type) {
     $.ajax({
         type: 'GET',
         url: url,
-        data: 'index=' + index + '&al=' + almacen + '&costo=' + type,
+        data: 'index=' + index + '&al=' + almacen + '&costo=' + type+'&form='+form,
         dataType: 'html',
         success: function (html) {
             input.append(html);
