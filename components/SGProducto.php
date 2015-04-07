@@ -50,13 +50,13 @@ class SGProducto extends Component
         }
     }
 
-    static public function getProductos($dataProvider=true)
+    static public function getProductos($dataProvider=true,$pager=5)
     {
         if($dataProvider) {
             return new ActiveDataProvider([
                 'query' => Producto::find(),
                 'pagination' => [
-                    'pageSize' => 5,
+                    'pageSize' => $pager,
                 ],
             ]);
         }

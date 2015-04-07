@@ -12,7 +12,7 @@ $this->title = 'Diseño-Ordenes';
     if(isset($r)) {
         switch ($r) {
             case 'nuevo':
-                echo $this->render('forms/cliente',[
+                echo $this->render('forms/interna',[
                     'orden'=>$orden,
                     'detalle'=>$detalle,
                     'producto'=>$producto,

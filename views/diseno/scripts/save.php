@@ -1,2 +1,5 @@
 <?php
-    Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl.'/js/save.js',CClientScript::POS_END);
+$script = <<<JS
+$("#save").click(function(){ $("form").submit();});
+JS;
+$this->registerJs($script, \yii\web\View::POS_END);

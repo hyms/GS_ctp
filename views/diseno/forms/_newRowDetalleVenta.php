@@ -1,5 +1,5 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
 ?>
     <tr class="tabular-input">
@@ -55,9 +55,19 @@
             }
         ?>
         <td class="col-xs-1">
-            <?php echo Html::a('<span class="glyphicon glyphicon-remove"></span> Quitar', '#', array("class"=>"btn btn-danger btn-sm tabular-input-remove")).'<input type="hidden" class="tabular-input-index" value="'.$index.'" />'; ?>
+            <?php
+            echo Html::a('<i class="glyphicon glyphicon-remove"></i>','#',
+                [
+                    'class'=>'btn btn-danger tabular-input-remove',
+                    'data-original-title'=>'Quitar',
+                    'data-toggle'=>'tooltip',
+                    'title'=>''
+                ]
+            ).'<input type="hidden" class="tabular-input-index" value="'.$index.'" />';
+            ?>
         </td>
     </tr>
 <?php
-    echo $this->render('../scripts/checkbox',['index'=>$index])
+    echo $this->render('../scripts/checkbox',['index'=>$index]);
+    //echo $this->render('../scripts/tooltip');
 ?>

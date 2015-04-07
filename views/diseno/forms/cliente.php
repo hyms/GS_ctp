@@ -1,25 +1,27 @@
 <?php
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
-    <div class="caja-form">
-
+<div class="row">
+    <div class="col-xs-4">
         <div class="panel panel-default">
-            <div class="panel-body" >
-                <?php
-                    echo $this->render('../tables/producto',[
-                        'producto'=>$producto,
-                    ]);
-                ?>
+            <div class="panel-heading">
+                <strong class="panel-title">Productos</strong>
             </div>
+            <?= $this->render('../tables/producto',[
+                'producto'=>$producto,
+            ]);
+            ?>
         </div>
+    </div>
 
+    <div class="col-xs-8">
         <div class="well well-sm">
             <div class = "row">
-                <h3 class="col-xs-4">Orden de Trabajo</h3>
-                <h3 class="col-xs-4 text-center"><?php echo "#"//$venta->correlativo;?></h3>
-                <h3 class="col-xs-4 text-right"><?php echo date("d/m/Y");//date("d/m/Y",strtotime($venta->fechaGenerada));?></h3>
+                <h4 class="col-xs-4"><strong>Orden de Trabajo</strong></h4>
+                <h4 class="col-xs-4 text-center"><strong><?php echo "#"//$venta->correlativo;?></strong></h4>
+                <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y");//date("d/m/Y",strtotime($venta->fechaGenerada));?></strong></h4>
             </div>
 
             <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
@@ -36,12 +38,9 @@
                 <div class="panel-heading">
                     <strong class="panel-title">Datos de Orden</strong>
                 </div>
-                <div class="panel-body" style="overflow: auto;">
-                    <?php echo $this->render('detalleOrden',['detalle'=>$detalle,'orden'=>$orden,'form'=>$form]);?>
-                    <?php //$this->renderPartial('forms/detalleOrden',array('detalle'=>$detalle,'venta'=>$venta,'form'=>$form));?>
-                </div>
+                <?= $this->render('detalleOrden',['detalle'=>$detalle,'orden'=>$orden]);?>
             </div>
-
+            <?= $form->field($orden, 'observaciones')->textArea(); ?>
             <div class="form-group">
                 <div class="text-center">
                     <?php //echo CHtml::link('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
@@ -50,7 +49,5 @@
             </div>
             <?php ActiveForm::end(); ?>
         </div>
-
     </div>
-<?php
-//$this->renderPartial('/scripts/cliente');
+</div>

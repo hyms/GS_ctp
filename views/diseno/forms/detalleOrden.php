@@ -1,5 +1,5 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
 ?>
 
@@ -25,7 +25,7 @@
         if(!isset($detalle->isNewRecord)){
             foreach ($detalle as $key=>$item){
                 if($item->fk_idProductoStock!=null){
-                    $this->renderPartial('forms/_newRowDetalleVenta', array(
+                    $this->render('_newRowDetalleVenta', array(
                         'model'=>$item,
                         'index'=>$key,
                         'costo'=>"cliente",
@@ -40,7 +40,5 @@
     ?>
     </tbody>
 </table>
-<?= $form->field($orden, 'observaciones')->textArea(); ?>
 <?php
-//$this->renderPartial('/scripts/operaciones');
 echo $this->render('../scripts/removeList');

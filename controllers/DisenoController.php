@@ -68,7 +68,7 @@ class DisenoController extends Controller
                 case "cliente":
                     $ordenes= new OrdenCTP();
                     $detalle= [];
-                    $producto =SGProducto::getProductos();
+                    $producto =SGProducto::getProductos(true,10);
                     if($ordenes->load(Yii::$app->request->post()))
                     {
                         $ordenes->validate();

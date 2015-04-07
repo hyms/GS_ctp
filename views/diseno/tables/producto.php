@@ -1,9 +1,9 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-    $columns = [
+$columns = [
         ['class' => 'yii\grid\SerialColumn'],
         [
             'header'=>'Formato',
@@ -28,7 +28,16 @@
             'header'=>'',
             'format' => 'raw',
             'value'=> function ($model) {
-                return Html::a('<span class="glyphicon glyphicon-ok"></span> Añadir','#',['onclick'=>'newRow('.$model->idProducto.',"'. Url::toRoute('add_detalle').'","cliente");return false;',"class"=>"btn btn-success btn-sm"]);
+                //return Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",["orden/modificar","id"=>$model->idOrdenCtp],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
+                return Html::a('<i class="glyphicon glyphicon-plus"></i>','#',
+                    [
+                        'onclick'=>'newRow('.$model->idProducto.',"'. Url::toRoute('add_detalle').'","cliente");return false;',
+                        'class'=>'btn btn-success',
+                        'data-original-title'=>'Añadir',
+                        'data-toggle'=>'tooltip',
+                        'title'=>''
+                    ]
+                );
             },
         ]
     ];
@@ -44,3 +53,4 @@
 ?>
 <?php
     echo $this->render('../scripts/addList');
+    echo $this->render('../scripts/tooltip');

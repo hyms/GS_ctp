@@ -1,5 +1,8 @@
 <?php
-$listaResp=array("CTP"=>"CTP","Falla de Fabrica"=>"Falla de Fabrica","Proceso"=>"Proceso","Otro"=>"Otro");
+$listaResp=["CTP"=>"CTP",
+    "Falla de Fabrica"=>"Falla de Fabrica",
+    "Proceso"=>"Proceso",
+    "Otro"=>"Otro"];
 $i=0;
 if($repos->responsable!="")
 {
