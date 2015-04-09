@@ -10,15 +10,15 @@ use yii\data\ActiveDataProvider;
 
 class SGOrdenes extends Component
 {
-    var $error = "";
-    var $success = false;
+    public $error = "";
+    public $success = false;
     public function grabar($data,$venta=false)
     {
         if(!$venta) {
             if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
                 return $data;
 
-            if (Model::validateMultiple($data['detalle']))
+            if (!Model::validateMultiple($data['detalle'],['cantidad', 'trabajo', 'pinza', 'resolucion']))
                 return $data;
 
             if ($data['orden']->save(false)) {
@@ -141,14 +141,18 @@ class SGOrdenes extends Component
 
     }
 
-    static public function getOrdenes()
+    static public function getOrdenes($sucursal,$dataProvider=true,$pager=10)
     {
-        return new ActiveDataProvider([
-            'query' => OrdenCTP::find()->orderBy('fechaCobro'),
-            'pagination' => [
-                'pageSize' => 10,
-            ],
-        ]);
+        $query = OrdenCTP::find(['fk_isSucursal'=>$sucursal])->orderBy('fechaGenerada');
+        if ($dataProvider) {
+            return new ActiveDataProvider([
+                'query'      => $query,
+                'pagination' => [
+                    'pageSize' => $pager,
+                ],
+            ]);
+        }
+        return $query;
     }
     static public function getOrden($data)
     {

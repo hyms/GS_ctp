@@ -2,13 +2,11 @@
 use yii\helpers\Html;
 
 ?>
-
 <table id="ywventa" class="table table-condensed table-hover">
     <thead class="tabular-header"><tr>
         <td><?php echo Html::label('Nº','number')?></td>
         <td><?php echo Html::label('Formato','formato')?></td>
         <td><?php echo Html::label('Nº de placas','nro placas')?></td>
-        <td><?php echo Html::label('Full','f')?></td>
         <td><?php echo Html::label('C','c')?></td>
         <td><?php echo Html::label('M','m')?></td>
         <td><?php echo Html::label('Y','y')?></td>
@@ -16,7 +14,9 @@ use yii\helpers\Html;
         <td><?php echo Html::label('Trabajo','trabajo')?></td>
         <td><?php echo Html::label('Pinza','pinza')?></td>
         <td><?php echo Html::label('Resolucion','resolucion')?></td>
+        <td><?php echo Html::label('Costo','costo')?></td>
         <td><?php echo Html::label('Adicional','adicional')?></td>
+        <td><?php echo Html::label('Total','total')?></td>
         <td></td>
     </tr></thead>
     <tbody class="tabular-input-container">
@@ -38,5 +38,3 @@ use yii\helpers\Html;
     ?>
     </tbody>
 </table>
-<?php
-echo $this->render('../scripts/removeList');

@@ -68,22 +68,43 @@ class DisenoController extends Controller
             switch($get['op']) {
                 case "cliente":
                     $ordenes                = new OrdenCTP();
-                    $ordenes->fk_idSucursal = 1;
-                    $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal);
-                    $ordenes->fechaGenerada = date('Y-m-d H:i:s');
-                    //$ordenes->fk_idUserD    = Yii::app()->user->id;
                     $detalle                = [];
+                    if(isset($get['id']))
+                    {
+                        $ordenes = OrdenCTP::find(['idOrdenCTP'=>$get['id']])->one();
+                        $detalle = $ordenes->ordenDetalles;
+                    }
+                    else {
+                        $ordenes->fk_idSucursal = 1;
+                        $ordenes->estado = 1;
+                        $ordenes->correlativo = SGOrdenes::correlativo($ordenes->fk_idSucursal);
+                        $ordenes->fechaGenerada = date('Y-m-d H:i:s');
+                    }
+                    //$ordenes->fk_idUserD    = yii::$app()->user->id;
                     $producto               = SGProducto::getProductos(true, 10, 1);
                     $post                   = Yii::$app->request->post();
                     if (!empty($post)) {
                         $operacion = new SGOrdenes();
-                        for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
-                            $detalle[$i] = new OrdenDetalle();
+                        if(isset($get['id']))
+                        {
+                            $ordenes = OrdenCTP::find(['idOrdenCTP'=>$get['id']])->one();
+                            $detalle = OrdenDetalle::find(['fk_idOrden'=>$ordenes->idOrdenCTP])->all();
+                            $cp=count($post['OrdenDetalle']);
+                            $cs=count($detalle);
+                            if($cp!=$cs)
+                                if($cs==OrdenDetalle::deleteAll(['fk_idOrden'=>$ordenes->idOrdenCTP]))
+                                    for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
+                                        $detalle[$i] = new OrdenDetalle();
+                        }
+                        else {
+                            for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
+                                $detalle[$i] = new OrdenDetalle();
+                        }
                         $ordenes->load($post);
                         Model::loadMultiple($detalle, $post);
                         //$datos = ;
                         $datos   = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
-                        if($datos->success)
+                        if($operacion->success)
                             $this->redirect(['orden','op'=>'buscar']);
                         $ordenes = $datos['orden'];
                         $detalle = $datos['detalle'];
@@ -96,7 +117,7 @@ class DisenoController extends Controller
                     ]);
                 case 'buscar':
                     $render  = "buscar";
-                    $ordenes = SGOrdenes::getOrdenes();
+                    $ordenes = SGOrdenes::getOrdenes(1);
                     break;
             }
         }

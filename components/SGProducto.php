@@ -65,7 +65,7 @@ class SGProducto extends Component
         }
         if ($dataProvider) {
             return new ActiveDataProvider([
-                                              'query'      => ProductoStock::find(['fk_sucursal' => $sucursal]),
+                                              'query'      => ProductoStock::find(['fk_sucursal' => $sucursal,'enable'=>1]),
                                               'pagination' => [
                                                   'pageSize' => $pager
                                               ]

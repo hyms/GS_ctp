@@ -6,7 +6,7 @@ use yii\bootstrap\Nav;
     echo Nav::widget([
         'items' => [
             [
-                'label' => 'Cliente',
+                'label' => 'Venta',
                 'url' => ['diseno/orden','op'=>'cliente'],
             ],
             [

@@ -1,5 +1,5 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
 ?>
 <div class="panel panel-default">
@@ -33,8 +33,9 @@
             ],
             [
                 'header'=>'',
+                'format'=>'raw',
                 'value'=>function($model){
-                    return \yii\helpers\Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",["orden/modificar","id"=>$model->idOrdenCtp],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
+                    return \yii\helpers\Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",['diseno/orden','op'=>'cliente','id'=>$model->idOrdenCTP],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
                 },
             ],
 
