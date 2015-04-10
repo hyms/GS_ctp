@@ -8,15 +8,15 @@ use Yii;
  * This is the model class for table "precioProductoOrden".
  *
  * @property integer $idPrecioProductoOrden
- * @property integer $fk_idProducto
+ * @property integer $fk_idProductoStock
  * @property integer $fk_idTipoCliente
  * @property string $hora
  * @property double $cantidad
  * @property double $precioSF
  * @property double $precioCF
  *
+ * @property ProductoStock $fkIdProductoStock
  * @property TipoCliente $fkIdTipoCliente
- * @property Producto $fkIdProducto
  */
 class PrecioProductoOrden extends \yii\db\ActiveRecord
 {
@@ -34,8 +34,8 @@ class PrecioProductoOrden extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_idProducto', 'fk_idTipoCliente', 'hora', 'cantidad', 'precioSF', 'precioCF'], 'required'],
-            [['fk_idProducto', 'fk_idTipoCliente'], 'integer'],
+            [['fk_idProductoStock', 'fk_idTipoCliente', 'hora', 'cantidad', 'precioSF', 'precioCF'], 'required'],
+            [['fk_idProductoStock', 'fk_idTipoCliente'], 'integer'],
             [['hora'], 'safe'],
             [['cantidad', 'precioSF', 'precioCF'], 'number']
         ];
@@ -48,7 +48,7 @@ class PrecioProductoOrden extends \yii\db\ActiveRecord
     {
         return [
             'idPrecioProductoOrden' => 'Id Precio Producto Orden',
-            'fk_idProducto' => 'Fk Id Producto',
+            'fk_idProductoStock' => 'Fk Id Producto Stock',
             'fk_idTipoCliente' => 'Fk Id Tipo Cliente',
             'hora' => 'Hora',
             'cantidad' => 'Cantidad',
@@ -60,16 +60,16 @@ class PrecioProductoOrden extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdTipoCliente()
+    public function getFkIdProductoStock()
     {
-        return $this->hasOne(TipoCliente::className(), ['idTipoCliente' => 'fk_idTipoCliente']);
+        return $this->hasOne(ProductoStock::className(), ['idProductoStock' => 'fk_idProductoStock']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdProducto()
+    public function getFkIdTipoCliente()
     {
-        return $this->hasOne(Producto::className(), ['idProducto' => 'fk_idProducto']);
+        return $this->hasOne(TipoCliente::className(), ['idTipoCliente' => 'fk_idTipoCliente']);
     }
 }

@@ -17,7 +17,7 @@ class PrecioProductoOrdenSearch extends PrecioProductoOrden
     public function rules()
     {
         return [
-            [['idPrecioProductoOrden', 'fk_idProducto', 'fk_idTipoCliente'], 'integer'],
+            [['idPrecioProductoOrden', 'fk_idProductoStock', 'fk_idTipoCliente'], 'integer'],
             [['hora'], 'safe'],
             [['cantidad', 'precioSF', 'precioCF'], 'number'],
         ];
@@ -57,7 +57,7 @@ class PrecioProductoOrdenSearch extends PrecioProductoOrden
 
         $query->andFilterWhere([
             'idPrecioProductoOrden' => $this->idPrecioProductoOrden,
-            'fk_idProducto' => $this->fk_idProducto,
+            'fk_idProductoStock' => $this->fk_idProductoStock,
             'fk_idTipoCliente' => $this->fk_idTipoCliente,
             'hora' => $this->hora,
             'cantidad' => $this->cantidad,

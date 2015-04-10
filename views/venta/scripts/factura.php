@@ -30,4 +30,4 @@ function factura(tipo,url,idVenta,tipoCliente) {
         });
 }
 JS;
-$this->registerJs($script, \yii\web\View::POS_READY);
+$this->registerJs($script, \yii\web\View::POS_HEAD);

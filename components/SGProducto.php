@@ -2,6 +2,7 @@
 namespace app\components;
 
 
+use app\models\MovimientoStock;
 use app\models\Producto;
 use app\models\ProductoStock;
 use Yii;
@@ -25,29 +26,19 @@ class SGProducto extends Component
 
     }
 
-    public function movimientoStock($data, $dependiente = false)
+    static public function movimientoStockVenta($item, $productoStock,$observaciones="", $dependiente = false)
     {
-        if(empty($data['detalle']) || empty($data['venta']))
-            throw new CHttpException(400, SGOperation::getError(400));
-        $productoStocks = [];
-        $movimientoStock = [];
-        foreach ($data['detalle'] as $key => $item) {
-            $productoStocks[$key]=ProductoStock::findOne(['fk_idProductoStock'=>$item->fk_idProductoStock]);
-            if (empty($item->fk_idMovimientoStock)) {
-                $movimientoStock[$key]                     = new MovimientoStock;
-                $movimientoStock[$key]->cantidad           = $item->cantidad;
-                $movimientoStock[$key]->fk_idAlmacenOrigen = $productoStocks[$key]->fk_idAlmacen;
-                $movimientoStock[$key]->fk_idProducto      = $productoStocks[$key]->fk_idProducto;
-                $movimientoStock[$key]->fk_idUser          = Yii::app()->user->id;
-                $movimientoStock[$key]->obseraciones       = $this->obseracionMovimiento;
-                $movimientoStock[$key]->precio             = $item->costo;
-                $movimientoStock[$key]->time               = date("Y-m-d H:i:s");
-            } else {
-                $movimientoStock[$key]           = MovimientoStock::model()->findByPk($item->fk_idMovimientoStock);
-                $productoStocks[$key]->cantidad  += $movimientoStock[$key]->cantidad;
-                $movimientoStock[$key]->cantidad = $item->cantidad;
-            }
+        if (empty($item->fk_idMovimientoStock)) {
+            $movimientoStock                   = new MovimientoStock;
+            $movimientoStock->fk_idProducto    = $productoStock->fk_idProducto;
+            $movimientoStock->fk_idStockOrigen = $productoStock->idProductoStock;
+            $movimientoStock->fk_idUser        = Yii::app()->user->id;
+            $movimientoStock->observaciones    = $observaciones;
+            $movimientoStock->precio           = $item->costo;
+            $movimientoStock->time             = date("Y-m-d H:i:s");
+            return $movimientoStock;
         }
+        return MovimientoStock::find(['fk_idMovimientoStock'=>$item->fk_idMovimientoStock])->one();
     }
 
     static public function getProductos($dataProvider=true,$pager=5,$sucursal=false)

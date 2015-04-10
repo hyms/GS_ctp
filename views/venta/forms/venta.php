@@ -1,8 +1,8 @@
 <?php
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 
@@ -10,7 +10,7 @@ use yii\helpers\Url;
     <div class="col-xs-5">
         <div class="panel panel-default">
             <div class="panel-heading"><strong class="panel-title">Clientes</strong></div>
-            <?= $this->render('cliente',['cliente'=>$clientes,'search'=>$search]) ?>
+            <?= $this->render('cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]) ?>
         </div>
 
     </div>
@@ -22,18 +22,24 @@ use yii\helpers\Url;
                 <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y",strtotime($orden->fechaCobro));?></strong></h4>
             </div>
 
-            <div class="row">
-                <div class="col-xs-12">
-                    <?= Html::label('Cliente','cliente')?>
-                    <?= Html::input('','cliente',null,['class'=>'form-control']) ?>
-                </div>
-            </div>
 
             <?php
-            $form = ActiveForm::begin();
+            $form = ActiveForm::begin(['id'=>'form']);
             ?>
             <div class="row">
-                <?= $form->field($orden,'fk_idCliente')->hiddenInput()->label(false); ?>
+                <div class="col-xs-8">
+                    <?= Html::label('Cliente','cliente')?>
+                    <?= Html::input('','cliente',null,['class'=>'form-control','id'=>'cliente']) ?>
+                    <?= Html::hiddenInput('tipoCliente',null,['class'=>'form-control','id'=>'tipoCliente']) ?>
+                </div>
+                <div class="col-xs-4">
+                    <?= $form->field($orden,'tipoPago')->radioList(['Con Factura','Sin Factura'],['onchange'=>'radio();']); ?>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <?= $form->field($orden,'fk_idCliente')->hiddenInput(['id'=>'idCliente'])->label(false); ?>
                 <div class="col-xs-6">
                     <?= $form->field($orden, 'responsable')->textInput(['maxlength' => 50]) ?>
                 </div>
@@ -57,10 +63,11 @@ use yii\helpers\Url;
                 </div>
 
                 <div class="col-xs-5">
-                    <?= $form->field($orden,'montoVenta')->textInput(['disabled'=>true]); ?>
-                    <?= $form->field($orden,'montoVenta'); ?>
-                    <?php //$form->field($movimiento,'monto'); ?>
-
+                    <?= $form->field($orden,'montoVenta')->textInput(['disabled'=>true,'id'=>'total']); ?>
+                    <div class="form-group">
+                        <?= Html::label("Monto Pagado","monto")?>
+                        <?= Html::textInput("monto","",array('class'=>'form-control',"id"=>"pagado")); ?>
+                    </div>
                     <div class="form-group">
                         <?= Html::label("Monto Cambio","montoCambio")?>
                         <?= Html::textInput("montoCambio","",array('class'=>'form-control','readonly'=>true,"id"=>"cambio")); ?>
@@ -68,22 +75,20 @@ use yii\helpers\Url;
                 </div>
             </div>
             <div class="row">
-                <div class="col-xs-4">
-                    <?= $form->field($orden,'tipoPago',['template'=>'{label}<div class="radio-inline">{input}</div>'])->radioList(['Con Factura','Sin Factura']); ?>
-                </div>
+
                 <div class="col-xs-4"><?= '<label class="control-label">Fecha Plazo</label>'; ?>
                     <?= DatePicker::widget([
                         'model' => $orden,
                         'attribute' => 'fechaPlazo',
                         'type' => DatePicker::TYPE_INPUT,
-                        'options' => ['placeholder' => 'Ingresa fecha plazo'],
+                        'options' => ['placeholder' => 'Ingresa fecha plazo','id'=>'fechaPlazo','disabled'=>true],
                         'pluginOptions' => [
                             'autoclose'=>true
                         ]
                     ]); ?>
                 </div>
                 <div class="col-xs-4">
-                    <?= $form->field($orden,'autorizado')?>
+                    <?= $form->field($orden,'montoDescuento')->textInput(['id'=>'descuento'])?>
                 </div>
             </div>
 
@@ -105,22 +110,16 @@ use yii\helpers\Url;
 <?= $this->render('../scripts/factura') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>
 <?php
-$script = "
-$('#ServicioVenta_tipoVenta_0').change(function() {
-        factura(0,'".Url::to(["ctp/ajaxFactura"])."',".$orden->idOrdenCTP.",$('#idTipoCliente').val());
-    });
-
-    $('#ServicioVenta_tipoVenta_1').change(function() {
-        factura(1,'".Url::to(["ctp/ajaxFactura"])."',".$orden->idOrdenCTP.",$('#idTipoCliente').val());
-    });
-
-    $('#ServicioVenta_tipoPago_0').change(function(){
-        formaPago(true);
-    });
-
-    $('#ServicioVenta_tipoPago_1').change(function(){
-        formaPago(false);
-    });
-";
-$this->registerJs($script, \yii\web\View::POS_READY);
+    $js  ="
+    function radio()
+    {
+    var val = $('input:radio[name=\"OrdenCTP[tipoPago]\"]:checked').val();
+    //alert(val);
+    cliente = $('#idCliente').val();
+    if($('#idCliente').val().length>0)
+        factura(val,'".Url::to(['venta/ajaxfactura'])."',".$orden->idOrdenCTP.",$('#tipoCliente').val());
+    else
+        alert(\"Debe selecciona un Cliente\");
+    }";
+    $this->registerJs($js, \yii\web\View::POS_HEAD);
 ?>
