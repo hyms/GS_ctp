@@ -1,5 +1,6 @@
 <?php
 use kartik\grid\GridView;
+use yii\bootstrap\Modal;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Html;
 use yii\helpers\Url;
@@ -72,6 +73,32 @@ use yii\helpers\Url;
                             ]);
                             $url = Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
                             return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                        },
+                        'factura'=>function($url,$model)
+                        {
+                            return Html::a(
+                                '<span class="glyphicon glyphicon-edit"></span>',
+                                '#',
+                                [
+                                    'onClick'=>"
+                                    $.ajax({
+                                        type     :'POST',
+                                        url  : '".Url::to(["venta/addfactura","id"=>$model->idOrdenCTP])."',
+                                        success  : function(data) {
+                                            if(data.length>0)
+                                            {
+                                                $('#viewModal .modal-body ').html(data);
+                                                $('#viewModal').modal();
+                                            }
+                                        }
+                                        });return false;
+                                    ",
+                                    'data-original-title'=>'Factura',
+                                    'data-toggle'=>'tooltip',
+                                    'title'=>'',
+                                    'visible'=>($model->cfSF == 0),
+                                ]
+                            );
                         }
                     ]
                 ],
@@ -89,12 +116,6 @@ use yii\helpers\Url;
                     'class'=>'booster.widgets.TbButtonColumn',
                     'template'=>'{update} {aviso} {print} {factura}',
                     'buttons'=>array(
-                        'update'=>
-                            array(
-                                'url'=>'array("ctp/modificar","id"=>$data->idServicioVenta)',
-                                'label'=>'Modificar',
-                                'visible'=>'$data->estado >= 0',
-                            ),
                         'aviso'=>
                             array(
                                 'url'=>'"#"',
@@ -102,12 +123,6 @@ use yii\helpers\Url;
                                 'icon'=>"pencil",
                                 'visible'=>'$data->estado < 0',
                                 'options'=>array('onclick'=>'alert("ANULADO")'),
-                            ),
-                        'print'=>
-                            array(
-                                'url'=>'array("ctp/preview","id"=>$data->idServicioVenta)',
-                                'label'=>'imprimir',
-                                'icon'=>'print',
                             ),
                         'factura'=>
                             array(
@@ -135,18 +150,16 @@ use yii\helpers\Url;
 
 <?php
 echo $this->render('../scripts/tooltip');
-/*$this->beginWidget(
-    'booster.widgets.TbModal',
-    array('id' => 'viewModal','size'=>'small')
 
-); ?>
-<div class="modal-header">
-<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-<h3 class="modal-title text-center" id="myModalLabel"><strong>Añadir Nº Factura</strong></h3>
-</div>
-<div class="modal-body" style="overflow:auto;">
-</div>
-<div class="modal-footer">
+Modal::begin([
+    'header' => '<h2>Añadir Nº Factura</h2>',
+    'id'=>'viewModal',
+    'size'=>Modal::SIZE_SMALL,
+    'footerOptions'=>''
+]);
+Modal::end();
+
+/*
 <?php $this->widget('booster.widgets.TbButton',
                     array(
                         'context' => 'primary',
@@ -183,4 +196,4 @@ function formSubmit()
     });
 }
 ',CClientScript::POS_HEAD);
-?>
+?>*/

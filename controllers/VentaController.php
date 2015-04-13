@@ -199,4 +199,38 @@ class VentaController extends Controller
             }
         }
     }
+
+    public function actionAddfactura()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['id'])) {
+            /*$orden = $this->verifyModel(ServicioVenta::model()->findByPk($_GET['id']));
+            if (!$orden->tipoVenta) {
+                $criteria = new CDbCriteria();
+                $criteria->compare('fk_idSucursal', $orden->fk_idSucursal);
+                $criteria->compare('fk_idMovimientoCaja', $orden->fk_idMovimientoCaja);
+                $factura = Factura::model()->find($criteria);
+
+                if (empty($factura)) {
+                    $factura = new Factura();
+                }
+                if (isset($_POST['Factura'])) {
+                    $factura->attributes = $_POST['Factura'];
+                    if ($factura->isNewRecord) {
+                        $factura->fk_idMovimientoCaja = $orden->fk_idMovimientoCaja;
+                        $factura->fk_idSucursal       = $orden->fk_idSucursal;
+                    }
+                    if ($factura->save()) {
+                        $orden->fk_idFactura = $factura->idFactura;
+                        $orden->save();
+                        echo "done";
+                        Yii::app()->end();
+                    }
+                }
+
+                $this->renderPartial('forms/factura', array('model' => $factura, 'orden' => $orden->correlativo . "(" . $orden->codigoServicio . ")"));
+            */
+            echo "funciona";
+        }
+    }
 }
