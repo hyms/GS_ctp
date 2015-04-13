@@ -1,9 +1,10 @@
 <?php
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
+    $this->title = 'Venta-Orden'
 ?>
 
     <div class="row">

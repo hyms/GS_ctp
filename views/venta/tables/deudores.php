@@ -1,83 +1,93 @@
 <?php
-    $columns = array(
-        array(
-            'header'=>'Correlativo',
-            'value'=>'$data->correlativo',
-            'filter'=>CHtml::activeTextField($ordenes,'correlativo',array('class'=>'form-control input-sm')),
-        ),
-        array(
-            'header'=>'Codigo',
-            'value'=>'$data->codigoServicio',
-            'filter'=>CHtml::activeTextField($ordenes,'codigoServicio',array('class'=>'form-control input-sm')),
-        ),
-        array(
-            'header'=>'Cliente',
-            'value'=>'(isset($data->fkIdCliente->nombreNegocio))?$data->fkIdCliente->nombreNegocio:""',
-            'filter'=>CHtml::activeTextField($ordenes,'negocio',array('class'=>'form-control input-sm')),
-        ),
-        array(
-            'header'=>'responsable',
-            'value'=>'$data->responsable',
-            'filter'=>CHtml::activeTextField($ordenes,'responsable',array('class'=>'form-control input-sm')),
-        ),
-        array(
-            'header'=>'Saldo',
-            'value'=>'$data->montoVenta-$data->montoPagado',
-        ),
-        array(
-            'header'=>'Fecha Venta',
-            'value'=>'$data->fechaVenta',
-            'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker', array(
-                'name'=>'fechaVenta',
-                'attribute'=>'fechaVenta',
-                'language'=>'es',
-                'model'=>$ordenes,
-                'options'=>array(
-                    'showAnim'=>'fold',
-                    'dateFormat'=>'yy-mm-dd',
-                ),
-                'htmlOptions'=>array(
-                    'class'=>'form-control input-sm',
-                ),
-            ),
-                                    true),
-        ),
-        array(
-            'header'=>'',
-            'class'=>'booster.widgets.TbButtonColumn',
-            'template'=>'{update} {cancel} {print}',
-            'buttons'=>array(
-                'update'=>
-                    array(
-                        'url'=>'array("ctp/modificar","id"=>$data->idServicioVenta)',
-                        'label'=>'Modificar',
-                    ),
-                'cancel'=>
-                    array(
-                        'url'=>'array("ctp/pagoDeuda","id"=>$data->idServicioVenta)',
-                        'label'=>'Cancelar Deuda',
-                        'icon'=>'usd',
-                    ),
-                'print'=>
-                    array(
-                        'url'=>'array("ctp/preview","id"=>$data->idServicioVenta)',
-                        'label'=>'imprimir',
-                        'icon'=>'print',
-                    ),
-            ),
-        ),
-    );
-?>
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
+?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <h4 class="panel-title">
-            <strong>Deudores</strong>
-        </h4>
+        <strong class="panel-title">Deudores</strong>
     </div>
-    <?php
-        $condicion = 'estado=2';
-        $this->renderPartial('/baseTable',array('columns'=>$columns,'data'=>$ordenes->searchCliente('fechaVenta Desc',$condicion),'filter'=>$ordenes))
-    ?>
+    <div>
+        <?php
+            $columns = [
+                [
+                    'header'=>'Correlativo',
+                    'attribute'=>'correlativo',
+                ],
+                [
+                    'header'=>'Codigo',
+                    'attribute'=>'codigoServicio',
+                ],
+                [
+                    'header'=>'Cliente',
+                    'attribute'=>function($model){
+                        if(empty($model->fkIdCliente))
+                            return "";
+                        return $model->fkIdCliente->nombreNegocio;
+                    },
+                ],
+                [
+                    'header'=>'Responsable',
+                    'attribute'=>'responsable',
+                ],
+                [
+                    'header'=>'Fecha Venta',
+                    'attribute'=>'fechaCobro',
+                ],
+                [
+                    'header'=>'Fecha Plazo',
+                    'attribute'=>'fechaPlazo',
+                ],
+                [
+                    'header'=>'Saldo',
+                    'attribute'=>function($model){
+                        $pagado = \app\models\MovimientoCaja::findOne(['idMovimientoCaja'=>$model->fk_idMovimientoCaja]);
+                        $montos = \app\models\MovimientoCaja::findAll(['idParent'=>$pagado->idMovimientoCaja]);
+                        $pagado = $pagado->monto;
+                        foreach($montos as $item)
+                        {
+                            $pagado += $item->monto;
+                        }
+                        return ($model->montoVenta-$pagado);
+                    },
+                ],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template'=>'{cancel}',
+                    'buttons'=>[
+                        'cancel'=>function($url,$model){
+                            $options = array_merge([
+                                                       //'class'=>'btn btn-success',
+                                                       'data-original-title'=>'Cancelar Deuda',
+                                                       'data-toggle'=>'tooltip',
+                                                       'title'=>''
+                                                   ]);
+                            $url = Url::to(['venta/pagodeuda','id'=>$model->idOrdenCTP]);
+                            return Html::a('<span class="glyphicon glyphicon-usd"></span>', $url, $options);
+                        },
+                        /*'print'=>function($url,$model){
+                            $options = array_merge([
+                                                       //'class'=>'btn btn-success',
+                                                       'data-original-title'=>'Imprimir',
+                                                       'data-toggle'=>'tooltip',
+                                                       'title'=>''
+                                                   ]);
+                            $url = Url::to(['venta/print','op'=>'deuda','id'=>$model->idOrdenCTP]);
+                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                        },*/
+                    ]
+                ],
+            ];
+            echo GridView::widget([
+                                      'dataProvider'=> $orden,
+                                      'filterModel' => $search,
+                                      'columns' => $columns,
+                                      'responsive'=>true,
+                                      'condensed'=>true,
+                                      'hover'=>true,
+                                      'bordered'=>false,
+                                  ]);
+        ?>
+    </div>
 </div>
-

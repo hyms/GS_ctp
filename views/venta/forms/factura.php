@@ -1,16 +1,9 @@
-<h2>Orden: <small><?php echo $orden; ?></small></h2>
-<?php $form = $this->beginWidget(
-    'booster.widgets.TbActiveForm',
-    array(
-        'id' => 'form',
-        'type' => 'horizontal',
-    )
-);
+<?php
+    use yii\bootstrap\ActiveForm;
+
 ?>
-<div class="col-xs-12">
-    <h3>Añadir Nro Factura</h3>
-    <div class="row">
-        <?php echo $form->textFieldGroup($model, 'codigo'); ?>
-    </div>
-</div>
-<?php $this->endWidget(); ?>
+<h2>Orden: <small><?= $orden->correlativo . "(" . $orden->codigoServicio . ")"; ?></small></h2>
+<?php  $form = ActiveForm::begin(['id'=>'form','layout' => 'horizontal']); ?>
+<h3>Añadir Nro Factura</h3>
+<?= $form->field($orden, 'factura'); ?>
+<?php ActiveForm::end(); ?>

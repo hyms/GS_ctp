@@ -17,7 +17,7 @@ class MovimientoCajaSearch extends MovimientoCaja
     public function rules()
     {
         return [
-            [['idMovimientoCaja', 'fk_idCajaOrigen', 'fk_idCajaDestino', 'fk_idUser', 'tipoMovimiento', 'correlativoCierre'], 'integer'],
+            [['idMovimientoCaja', 'fk_idCajaOrigen', 'fk_idCajaDestino', 'fk_idUser', 'tipoMovimiento', 'correlativoCierre', 'idParent'], 'integer'],
             [['time', 'observaciones', 'fechaCierre'], 'safe'],
             [['monto', 'saldoCierre'], 'number'],
         ];
@@ -66,6 +66,7 @@ class MovimientoCajaSearch extends MovimientoCaja
             'fechaCierre' => $this->fechaCierre,
             'saldoCierre' => $this->saldoCierre,
             'correlativoCierre' => $this->correlativoCierre,
+            'idParent' => $this->idParent,
         ]);
 
         $query->andFilterWhere(['like', 'observaciones', $this->observaciones]);

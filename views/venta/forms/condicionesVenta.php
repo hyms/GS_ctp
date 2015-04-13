@@ -1,8 +1,3 @@
-<?php /*
-<div class="col-xs-2">
-    <?php echo CHtml::activeRadioButtonList($venta,'tipoPago',array('Contado','Credito'))?>
-</div>
- */ ?>
 <div class="col-xs-2">
     <?php echo CHtml::activeRadioButtonList($venta,'tipoVenta',array('Con Factura','Sin Factura'))?>
 </div>

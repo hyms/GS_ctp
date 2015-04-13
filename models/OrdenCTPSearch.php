@@ -39,7 +39,7 @@ class OrdenCTPSearch extends OrdenCTP
      *
      * @return ActiveDataProvider
      */
-    public function search($params)
+    public function search($params,$where=false)
     {
         $query = OrdenCTP::find();
 

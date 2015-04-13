@@ -18,8 +18,11 @@ use Yii;
  * @property string $fechaCierre
  * @property double $saldoCierre
  * @property integer $correlativoCierre
+ * @property integer $idParent
  *
  * @property OrdenCTP[] $ordenCTPs
+ * @property MovimientoCaja $idParent0
+ * @property MovimientoCaja[] $movimientoCajas
  * @property Caja $fkIdCajaDestino
  * @property Caja $fkIdCajaOrigen
  * @property User $fkIdUser
@@ -41,7 +44,7 @@ class MovimientoCaja extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_idCajaOrigen', 'fk_idCajaDestino', 'fk_idUser', 'tipoMovimiento', 'correlativoCierre'], 'integer'],
+            [['fk_idCajaOrigen', 'fk_idCajaDestino', 'fk_idUser', 'tipoMovimiento', 'correlativoCierre', 'idParent'], 'integer'],
             [['time', 'fk_idUser', 'monto', 'tipoMovimiento'], 'required'],
             [['time', 'fechaCierre'], 'safe'],
             [['monto', 'saldoCierre'], 'number'],
@@ -66,6 +69,7 @@ class MovimientoCaja extends \yii\db\ActiveRecord
             'fechaCierre' => 'Fecha Cierre',
             'saldoCierre' => 'Saldo Cierre',
             'correlativoCierre' => 'Correlativo Cierre',
+            'idParent' => 'Id Parent',
         ];
     }
 
@@ -75,6 +79,22 @@ class MovimientoCaja extends \yii\db\ActiveRecord
     public function getOrdenCTPs()
     {
         return $this->hasMany(OrdenCTP::className(), ['fk_idMovimientoCaja' => 'idMovimientoCaja']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdParent0()
+    {
+        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'idParent']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMovimientoCajas()
+    {
+        return $this->hasMany(MovimientoCaja::className(), ['idParent' => 'idMovimientoCaja']);
     }
 
     /**

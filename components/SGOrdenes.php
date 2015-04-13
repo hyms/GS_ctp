@@ -110,7 +110,7 @@ class SGOrdenes extends Component
 
     static public function getOrdenes($sucursal,$dataProvider=true,$pager=10)
     {
-        $query = OrdenCTP::find()->where(['fk_isSucursal'=>$sucursal])->orderBy('fechaGenerada');
+        $query = OrdenCTP::find()->where(['fk_idSucursal'=>$sucursal])->andWhere(['estado'=>1])->orderBy('fechaGenerada');
         if ($dataProvider) {
             return new ActiveDataProvider([
                 'query'      => $query,

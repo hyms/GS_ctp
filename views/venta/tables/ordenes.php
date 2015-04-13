@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\data\ActiveDataProvider;
-use yii\helpers\Html;
+    use kartik\grid\GridView;
+    use yii\data\ActiveDataProvider;
+    use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -21,10 +21,6 @@ use yii\helpers\Html;
                 [
                     'header'=>'Correlativo',
                     'attribute'=>'correlativo',
-                ],
-                [
-                    'header'=>'Codigo',
-                    'attribute'=>'codigoServicio',
                 ],
                 [
                     'header'=>'Diseñador',

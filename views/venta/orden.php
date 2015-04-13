@@ -8,22 +8,30 @@ $this->title = 'Venta-Ordenes';
 <br>
 <div class="row">
     <?php
-    if(isset($r)){
-        switch($r){
+    if(isset($r)) {
+        switch ($r) {
             case "pendiente":
-                echo $this->render('tables/ordenes',['orden'=>$orden]);
+                echo $this->render('tables/ordenes', ['orden' => $orden]);
                 break;
             case "buscar":
-                echo $this->render('tables/buscar',['orden'=>$orden]);
+                echo $this->render('tables/buscar', ['orden' => $orden, 'search' => $search]);
+                echo $this->render('scripts/tooltip');
+                break;
+            case "deuda":
+                echo $this->render('tables/deudores', ['orden' => $orden, 'search' => $search]);
+                echo $this->render('scripts/tooltip');
                 break;
             case "venta":
-                echo $this->render('forms/venta',[
-                    'clientes'=>$clientes,
-                    'search'=>$search,
-                    'orden'=>$orden,
-                    'detalle'=>$detalle,
-                    'monto'=>$monto,
+                echo $this->render('forms/venta', [
+                    'clientes' => $clientes,
+                    'search'   => $search,
+                    'orden'    => $orden,
+                    'detalle'  => $detalle,
+                    'monto'    => $monto,
                 ]);
+                break;
+            case "pagoDeuda":
+                echo $this->render('forms/deuda', ['orden' => $orden, 'deuda' => $deuda, 'model' => $model]);
                 break;
         }
     }

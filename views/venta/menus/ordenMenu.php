@@ -1,7 +1,7 @@
 <?php
-use yii\bootstrap\Nav;
+    use yii\bootstrap\Nav;
 
-echo Nav::widget([
+    echo Nav::widget([
     'options' => ['class' => 'nav-tabs'],
     'items' => [
         [
@@ -11,6 +11,10 @@ echo Nav::widget([
         [
             'label'=>'Buscar',
             'url'=>['venta/orden','op'=>'buscar']
+        ],
+        [
+            'label'=>'Deudores',
+            'url'=>['venta/orden','op'=>'deuda']
         ],
 
     ],
