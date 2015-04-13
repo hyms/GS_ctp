@@ -5,13 +5,14 @@ function formaPago(value) {
     $('#autorizado').prop('disabled', value);
 }
 
-function descuentoP(total,descuento) {
+function descuentoP(descuento) {
     if (descuento.indexOf('%') > 0) {
         var tmp = parseInt(descuento.substring(0, descuento.length - 1));
         descuento = parseFloat((tmp / 100) * total);
         $('#descuento').val(redondeo(descuento));
     }
-    total = redondeo(resta(total, descuento));
+    calcular_total();
+    total = redondeo(resta($('#total').val(), descuento));
     return total;
 }
 
@@ -19,7 +20,7 @@ $('#Descuento_0').change(function() {
     var value;
     if ($('#Descuento_0').is(':checked')) {
         value = false;
-        $('#total').val(descuentoP($('#total').val(), $('#descuento').val()));
+        $('#total').val(descuentoP($('#descuento').val()));
         cambio();
     }
     else {
@@ -32,7 +33,7 @@ $('#Descuento_0').change(function() {
 
 $('#descuento').keydown(function(e) {
     if (e.keyCode == 13 || e.keyCode == 9) {
-        $('#total').val(descuentoP($('#total').val(), $('#descuento').val()));
+        $('#total').val(descuentoP($('#descuento').val()));
         cambio();
         $('#cambio').focus();
         return true;

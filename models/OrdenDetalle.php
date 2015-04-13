@@ -23,9 +23,9 @@ use Yii;
  * @property integer $fk_idOrden
  * @property integer $fk_idMovimientoStock
  *
- * @property OrdenCTP $fkIdOrden
  * @property MovimientoStock $fkIdMovimientoStock
  * @property ProductoStock $fkIdProductoStock
+ * @property OrdenCTP $fkIdOrden
  */
 class OrdenDetalle extends \yii\db\ActiveRecord
 {
@@ -77,14 +77,6 @@ class OrdenDetalle extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdOrden()
-    {
-        return $this->hasOne(OrdenCTP::className(), ['idOrdenCTP' => 'fk_idOrden']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFkIdMovimientoStock()
     {
         return $this->hasOne(MovimientoStock::className(), ['idMovimientoStock' => 'fk_idMovimientoStock']);
@@ -96,5 +88,13 @@ class OrdenDetalle extends \yii\db\ActiveRecord
     public function getFkIdProductoStock()
     {
         return $this->hasOne(ProductoStock::className(), ['idProductoStock' => 'fk_idProductoStock']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdOrden()
+    {
+        return $this->hasOne(OrdenCTP::className(), ['idOrdenCTP' => 'fk_idOrden']);
     }
 }

@@ -23,7 +23,7 @@ use Yii;
  * @property integer $fk_idServicio
  * @property integer $tipoRecibo
  * @property integer $fk_idMovimientoCaja
- * @property string $obseraciones
+ * @property string $observaciones
  *
  * @property MovimientoCaja $fkIdMovimientoCaja
  * @property Servicio $fkIdServicio
@@ -54,7 +54,7 @@ class Recibo extends \yii\db\ActiveRecord
             [['detalle'], 'string', 'max' => 500],
             [['nombre'], 'string', 'max' => 50],
             [['ciNit'], 'string', 'max' => 20],
-            [['obseraciones'], 'string', 'max' => 200]
+            [['observaciones'], 'string', 'max' => 200]
         ];
     }
 
@@ -80,7 +80,7 @@ class Recibo extends \yii\db\ActiveRecord
             'fk_idServicio' => 'Fk Id Servicio',
             'tipoRecibo' => 'Tipo Recibo',
             'fk_idMovimientoCaja' => 'Fk Id Movimiento Caja',
-            'obseraciones' => 'Obseraciones',
+            'observaciones' => 'Observaciones',
         ];
     }
 

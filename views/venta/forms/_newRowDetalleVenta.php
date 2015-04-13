@@ -9,7 +9,7 @@ use yii\helpers\Html;
         </td>
 
         <td>
-            <p class="form-control-static"><?= Html::encode($almacen->fkIdProducto->color) ?></p>
+            <p class="form-control-static"><?= Html::encode($almacen->fkIdProducto->formato) ?></p>
         </td>
 
         <td>

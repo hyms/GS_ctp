@@ -71,7 +71,7 @@ class DisenoController extends Controller
                     $detalle                = [];
                     if(isset($get['id']))
                     {
-                        $ordenes = OrdenCTP::find(['idOrdenCTP'=>$get['id']])->one();
+                        $ordenes = OrdenCTP::findOne(['idOrdenCTP'=>$get['id']]);
                         $detalle = $ordenes->ordenDetalles;
                     }
                     else {
@@ -87,8 +87,8 @@ class DisenoController extends Controller
                         $operacion = new SGOrdenes();
                         if(isset($get['id']))
                         {
-                            $ordenes = OrdenCTP::find(['idOrdenCTP'=>$get['id']])->one();
-                            $detalle = OrdenDetalle::find(['fk_idOrden'=>$ordenes->idOrdenCTP])->all();
+                            $ordenes = OrdenCTP::findOne(['idOrdenCTP'=>$get['id']]);
+                            $detalle = OrdenDetalle::findAll(['fk_idOrden'=>$ordenes->idOrdenCTP]);
                             $cp=count($post['OrdenDetalle']);
                             $cs=count($detalle);
                             if($cp!=$cs)
@@ -158,7 +158,6 @@ class DisenoController extends Controller
                 'costo'   => $costo,
                 'almacen' => $almacen,
             ));
-        } else
-            throw new CHttpException(400);
+        }
     }
 }

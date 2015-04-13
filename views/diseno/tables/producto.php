@@ -1,25 +1,23 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-    $columns = [
+$columns = [
         ['class' => 'yii\grid\SerialColumn'],
         [
             'header'=>'Formato',
             'value'=>function($model){
-                return $model->fkIdProducto->color;
+                return $model->fkIdProducto->formato;
             },
             //'attribute'=>'color',
-            //'filter'=>CHtml::activeTextField($producto, 'codigo',array("class"=>"form-control")),
         ],
         [
             'header'=>'Tamaño',
             'value'=>function($model){
-                return $model->fkIdProducto->descripcion;
+                return $model->fkIdProducto->dimension;
             },
             //'attribute'=>'descripcion',
-            //'filter'=>CHtml::activeTextField($producto, 'codigoPersonalizado',array("class"=>"form-control")),
         ],
         [
             'header'=>'Stock',

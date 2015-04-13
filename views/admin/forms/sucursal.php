@@ -1,9 +1,9 @@
 <?php
 
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
-    /* @var $this yii\web\View */
+/* @var $this yii\web\View */
 /* @var $model app\models\Sucursal */
 /* @var $form ActiveForm */
 ?>

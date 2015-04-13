@@ -1,9 +1,9 @@
 <?php
 
-    use yii\helpers\Html;
-    use yii\widgets\ActiveForm;
+use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 
-    /* @var $this yii\web\View */
+/* @var $this yii\web\View */
 /* @var $model app\models\ClienteSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>

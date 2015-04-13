@@ -23,14 +23,9 @@ $columns = [
     [
         'header'=>'Detalle Producto',
         'value'=>function ($model) {
-            return $model->color . ' ' . $model->descripcion.' '.$model->marca;
+            return $model->formato . ' ' . $model->dimension;
         },
         //'filter'=>CHtml::activeTextField($producto, 'descripcion',array("class"=>"form-control")),
-    ],
-    [
-        'header'=>'Industria',
-        'value'=>'nota',
-        //'filter'=>CHtml::activeDropDownList($producto,'nota',CHtml::listData(Producto::model()->with('productoStocks')->findAll(array('group'=>'nota','select'=>'nota','condition'=>'fk_idAlmacen=1')),'nota','nota'),array("class"=>"form-control",'empty'=>'')),
     ],
     //['class' => 'yii\grid\ActionColumn'],
 ];

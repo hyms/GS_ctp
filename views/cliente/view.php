@@ -1,9 +1,9 @@
 <?php
 
-    use yii\helpers\Html;
-    use yii\widgets\DetailView;
+use yii\helpers\Html;
+use yii\widgets\DetailView;
 
-    /* @var $this yii\web\View */
+/* @var $this yii\web\View */
 /* @var $model app\models\Cliente */
 
 $this->title = $model->idCliente;

@@ -13,12 +13,16 @@ $this->title = 'Venta-Ordenes';
             case "pendiente":
                 echo $this->render('tables/ordenes',['orden'=>$orden]);
                 break;
+            case "buscar":
+                echo $this->render('tables/buscar',['orden'=>$orden]);
+                break;
             case "venta":
                 echo $this->render('forms/venta',[
                     'clientes'=>$clientes,
                     'search'=>$search,
                     'orden'=>$orden,
                     'detalle'=>$detalle,
+                    'monto'=>$monto,
                 ]);
                 break;
         }

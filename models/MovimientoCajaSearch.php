@@ -18,7 +18,7 @@ class MovimientoCajaSearch extends MovimientoCaja
     {
         return [
             [['idMovimientoCaja', 'fk_idCajaOrigen', 'fk_idCajaDestino', 'fk_idUser', 'tipoMovimiento', 'correlativoCierre'], 'integer'],
-            [['time', 'obseraciones', 'fechaCierre'], 'safe'],
+            [['time', 'observaciones', 'fechaCierre'], 'safe'],
             [['monto', 'saldoCierre'], 'number'],
         ];
     }
@@ -68,7 +68,7 @@ class MovimientoCajaSearch extends MovimientoCaja
             'correlativoCierre' => $this->correlativoCierre,
         ]);
 
-        $query->andFilterWhere(['like', 'obseraciones', $this->obseraciones]);
+        $query->andFilterWhere(['like', 'observaciones', $this->observaciones]);
 
         return $dataProvider;
     }

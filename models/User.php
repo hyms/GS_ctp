@@ -29,8 +29,6 @@ use Yii;
  * @property MovimientoStock[] $movimientoStocks
  * @property Recibo[] $recibos
  * @property Sucursal $fkIdSucursal
- * @property User $fkIdUser
- * @property User[] $users
  */
 class User extends \yii\db\ActiveRecord
 {
@@ -91,7 +89,7 @@ class User extends \yii\db\ActiveRecord
      */
     public function getOrdenCTPs()
     {
-        return $this->hasMany(OrdenCTP::className(), ['fk_idUserV' => 'idUser']);
+        return $this->hasMany(OrdenCTP::className(), ['fk_idUserD2' => 'idUser']);
     }
 
     /**
@@ -124,21 +122,5 @@ class User extends \yii\db\ActiveRecord
     public function getFkIdSucursal()
     {
         return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdUser()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUser']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUsers()
-    {
-        return $this->hasMany(User::className(), ['fk_idUser' => 'idUser']);
     }
 }

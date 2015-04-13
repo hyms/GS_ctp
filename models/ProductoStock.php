@@ -16,6 +16,7 @@ use Yii;
  *
  * @property MovimientoStock[] $movimientoStocks
  * @property OrdenDetalle[] $ordenDetalles
+ * @property PrecioProductoOrden[] $precioProductoOrdens
  * @property Producto $fkIdProducto
  * @property Sucursal $fkIdSucursal
  */
@@ -69,6 +70,14 @@ class ProductoStock extends \yii\db\ActiveRecord
     public function getOrdenDetalles()
     {
         return $this->hasMany(OrdenDetalle::className(), ['fk_idProductoStock' => 'idProductoStock']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getPrecioProductoOrdens()
+    {
+        return $this->hasMany(PrecioProductoOrden::className(), ['fk_idProductoStock' => 'idProductoStock']);
     }
 
     /**

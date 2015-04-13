@@ -1,9 +1,9 @@
 <?php
 
-    use yii\grid\GridView;
-    use yii\helpers\Html;
+use yii\grid\GridView;
+use yii\helpers\Html;
 
-    /* @var $this yii\web\View */
+/* @var $this yii\web\View */
 /* @var $searchModel app\models\ClienteSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 

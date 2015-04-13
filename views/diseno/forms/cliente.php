@@ -1,6 +1,6 @@
 <?php
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
 <div class="row">
@@ -38,7 +38,9 @@
                 <div class="panel-heading">
                     <strong class="panel-title">Datos de Orden</strong>
                 </div>
+                <div style="overflow: auto">
                 <?= $this->render('detalleOrden',['detalle'=>$detalle,'orden'=>$orden]);?>
+                </div>
             </div>
             <?= $form->field($orden, 'observaciones')->textArea(); ?>
             <div class="form-group">

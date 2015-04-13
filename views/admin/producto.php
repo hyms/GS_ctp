@@ -13,7 +13,7 @@ $this->title = 'Administracion-Productos';
                 echo "<div class='panel panel-default'>";
                 echo "<div class='panel-heading'><strong>Producto Nuevo</strong></div>";
                 echo "<div class='panel-body'>";
-                echo $this->render('forms/producto',['producto'=>$producto]);
+                echo $this->render('forms/producto',['model'=>$producto]);
                 echo "</div>";
                 echo "</div>";
                 break;

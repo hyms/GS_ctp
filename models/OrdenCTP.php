@@ -31,18 +31,19 @@ use Yii;
  * @property integer $fk_idUserD2
  * @property string $responsable
  * @property string $telefono
- * @property string $obseracionesAdicional
+ * @property string $observacionAdicional
  * @property string $factura
  * @property integer $fk_idParent
  * @property integer $tipoOrden
  *
- * @property OrdenCTP $fkIdParent
- * @property OrdenCTP[] $ordenCTPs
- * @property Cliente $fkIdCliente
- * @property MovimientoCaja $fkIdMovimientoCaja
- * @property Sucursal $fkIdSucursal
  * @property User $fkIdUserD
  * @property User $fkIdUserV
+ * @property User $fkIdUserD2
+ * @property Cliente $fkIdCliente
+ * @property MovimientoCaja $fkIdMovimientoCaja
+ * @property OrdenCTP $fkIdParent
+ * @property OrdenCTP[] $ordenCTPs
+ * @property Sucursal $fkIdSucursal
  * @property OrdenDetalle[] $ordenDetalles
  */
 class OrdenCTP extends \yii\db\ActiveRecord
@@ -61,12 +62,12 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechaGenerada', 'cfSF', 'tipoPago', 'codigoServicio', 'secuencia', 'serie', 'correlativo', 'montoVenta', 'estado', 'fk_idSucursal','responsable'], 'required'],
+            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable'], 'required'],
             [['fechaGenerada', 'fechaCobro', 'fechaPlazo'], 'safe'],
             [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden'], 'integer'],
             [['montoVenta', 'montoDescuento'], 'number'],
             [['codigoServicio', 'autorizado'], 'string', 'max' => 100],
-            [['observaciones', 'obseracionesAdicional', 'factura'], 'string', 'max' => 200],
+            [['observaciones', 'observacionAdicional', 'factura'], 'string', 'max' => 200],
             [['observacionesCaja'], 'string', 'max' => 45],
             [['responsable'], 'string', 'max' => 50],
             [['telefono'], 'string', 'max' => 20]
@@ -103,7 +104,7 @@ class OrdenCTP extends \yii\db\ActiveRecord
             'fk_idUserD2' => 'Fk Id User D2',
             'responsable' => 'Responsable',
             'telefono' => 'Telefono',
-            'obseracionesAdicional' => 'Obseraciones Adicional',
+            'observacionAdicional' => 'Observacion Adicional',
             'factura' => 'Factura',
             'fk_idParent' => 'Fk Id Parent',
             'tipoOrden' => 'Tipo Orden',
@@ -113,17 +114,25 @@ class OrdenCTP extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdParent()
+    public function getFkIdUserD()
     {
-        return $this->hasOne(OrdenCTP::className(), ['idOrdenCTP' => 'fk_idParent']);
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrdenCTPs()
+    public function getFkIdUserV()
     {
-        return $this->hasMany(OrdenCTP::className(), ['fk_idParent' => 'idOrdenCTP']);
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserV']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdUserD2()
+    {
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD2']);
     }
 
     /**
@@ -145,25 +154,25 @@ class OrdenCTP extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getFkIdParent()
+    {
+        return $this->hasOne(OrdenCTP::className(), ['idOrdenCTP' => 'fk_idParent']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenCTPs()
+    {
+        return $this->hasMany(OrdenCTP::className(), ['fk_idParent' => 'idOrdenCTP']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getFkIdSucursal()
     {
         return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdUserD()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdUserV()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserV']);
     }
 
     /**

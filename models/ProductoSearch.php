@@ -18,7 +18,7 @@ class ProductoSearch extends Producto
     {
         return [
             [['idProducto', 'toBuy', 'toSell', 'cantidadPaquete'], 'integer'],
-            [['codigo', 'codigoPersonalizado', 'descripcion', 'nota', 'importKey', 'material', 'color', 'marca', 'familia'], 'safe'],
+            [['codigo', 'codigoPersonalizado', 'dimension', 'importKey', 'material', 'formato'], 'safe'],
         ];
     }
 
@@ -38,13 +38,12 @@ class ProductoSearch extends Producto
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$pagination=true)
+    public function search($params)
     {
         $query = Producto::find();
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
-            'pagination'=> ($pagination)?['pageSize' => 5]:false,
         ]);
 
         $this->load($params);
@@ -64,13 +63,10 @@ class ProductoSearch extends Producto
 
         $query->andFilterWhere(['like', 'codigo', $this->codigo])
             ->andFilterWhere(['like', 'codigoPersonalizado', $this->codigoPersonalizado])
-            ->andFilterWhere(['like', 'descripcion', $this->descripcion])
-            ->andFilterWhere(['like', 'nota', $this->nota])
+            ->andFilterWhere(['like', 'dimension', $this->dimension])
             ->andFilterWhere(['like', 'importKey', $this->importKey])
             ->andFilterWhere(['like', 'material', $this->material])
-            ->andFilterWhere(['like', 'color', $this->color])
-            ->andFilterWhere(['like', 'marca', $this->marca])
-            ->andFilterWhere(['like', 'familia', $this->familia]);
+            ->andFilterWhere(['like', 'formato', $this->formato]);
 
         return $dataProvider;
     }

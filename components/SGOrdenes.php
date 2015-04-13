@@ -15,7 +15,9 @@ class SGOrdenes extends Component
 {
     public $error = "";
     public $success = false;
-    public function grabar($data,$venta=false,$anular)
+    public $observacionMovimiento = "";
+
+    public function grabar($data,$venta=false,$anular=false)
     {
         if(!$venta) {
             if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
@@ -38,16 +40,19 @@ class SGOrdenes extends Component
             $productoStocks  = [];
             $movimientoStock = [];
             foreach ($data['detalle'] as $key => $item) {
-                $productoStocks[$key]  = ProductoStock::find(['idProductoStock'=>$item->fk_idProductoStock])->one();
-                $movimientoStock[$key]  = SGProducto::movimientoStockVenta($item,$productoStocks[$key]);
-                if(!$movimientoStock[$key]->isNewRecord)
-                {
-                    $movimientoStock[$key]->cantidad += $movimientoStock->cantidad;
+                $productoStocks[$key] = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
+                $movimientoStock[$key] = SGProducto::movimientoStockVenta($item->fk_idMovimientoStock, $productoStocks[$key]);
+                if (!$movimientoStock[$key]->isNewRecord) {
+                    $productoStocks[$key]->cantidad += $movimientoStock[$key]->cantidad;
                 }
                 $movimientoStock[$key]->cantidad = $item->cantidad;
             }
 
-            $movimientoCaja = SGCaja::movimientoCajaVenta($data['orden']->fk_idMovimientoCaja,$data['caja']->idCaja,$this->obseracionMovimiento . " a " . Cliente::findOne(['idCliente'=>$data['orden']->fk->idCliente])->nombreNegocio);
+            $cliente = Cliente::findOne(['idCliente'=>$data['orden']->fk_idCliente]);
+            if(!empty($cliente))
+                $cliente = $cliente->nombreNegocio;
+
+            $movimientoCaja = SGCaja::movimientoCajaVenta($data['orden']->fk_idMovimientoCaja,$data['caja']->idCaja,$this->observacionMovimiento . " a " . $cliente);
             if(!$movimientoCaja->isNewRecord)
                 $data['caja']->monto -= $movimientoCaja->monto;
 
@@ -70,17 +75,21 @@ class SGOrdenes extends Component
             foreach ($productoStocks as $key => $stock) {
                 $stock->cantidad -= $movimientoStock[$key]->cantidad;
                 if ($stock->cantidad < 0) {
-                    $data['orden']->addError('obseracionesCaja', 'Insuficientes insumos de un producto');
+                    $data['orden']->addError('observacionesCaja', 'Insuficientes insumos de un producto');
                     return $data;
                 }
             }
 
-            if(!$data['orden']->validate())
+
+            if(!empty($data['orden']->fechaPlazo))
+                $data['orden']->fechaPlazo = date("Y-m-d",strtotime($data['orden']->fechaPlazo));
+            if(!$data['orden']->validate()) {
                 return $data;
+            }
             if(!Model::validateMultiple($data['detalle']))
                 return $data;
 
-            /*if ($movimientoCaja->save()) {
+            if ($movimientoCaja->save()) {
                 $data['caja']->save();
                 $data['orden']->fk_idMovimientoCaja = $movimientoCaja->idMovimientoCaja;
                 if ($data['orden']->save()) {
@@ -94,14 +103,14 @@ class SGOrdenes extends Component
                         }
                     }
                 }
-            }*/
+            }
             return $data;
         }
     }
 
     static public function getOrdenes($sucursal,$dataProvider=true,$pager=10)
     {
-        $query = OrdenCTP::find(['fk_isSucursal'=>$sucursal])->orderBy('fechaGenerada');
+        $query = OrdenCTP::find()->where(['fk_isSucursal'=>$sucursal])->orderBy('fechaGenerada');
         if ($dataProvider) {
             return new ActiveDataProvider([
                 'query'      => $query,
@@ -126,13 +135,12 @@ class SGOrdenes extends Component
     static public function costos($idprodutoStock, $tipoCliente, $hora, $cantidad, $tipo)
     {
         $costo   = 0;
-        $precios = PrecioProductoOrden::find([
-                                                 'fk_idProductoStock' => $idprodutoStock,
-                                                 'fk_idTipoCliente'   => $tipoCliente
-                                             ])
-            ->where(['<=','hora',"CAST('" . $hora . "' AS time)"])
+        $precios = PrecioProductoOrden::find()
+            ->where(['fk_idProductoStock' => $idprodutoStock])
+            ->andWhere(['fk_idTipoCliente'   => $tipoCliente])
+            ->andWhere(['<=','hora',"CAST('" . $hora . "' AS time)"])
             ->andWhere(['<=','cantidad',$cantidad])
-            ->orderBy(['hora Desc', 'cantidad Desc'])->one();
+            ->orderBy(['hora'=>SORT_DESC, 'cantidad'=>SORT_DESC])->one();
 
         if (!empty($precios)) {
             if ($tipo == 0)

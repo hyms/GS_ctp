@@ -1,9 +1,9 @@
 <?php
 
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
 
-    /* @var $this yii\web\View */
+/* @var $this yii\web\View */
 /* @var $model app\models\Cliente */
 
 $this->title = 'Create Cliente';

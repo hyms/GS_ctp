@@ -14,13 +14,13 @@ use Yii;
  * @property string $time
  * @property integer $fk_idUser
  * @property integer $cantidad
- * @property string $obseraciones
+ * @property string $observaciones
  * @property integer $cierre
  *
- * @property User $fkIdUser
  * @property Producto $fkIdProducto
  * @property ProductoStock $fkIdStockOrigen
  * @property ProductoStock $fkIdStockDestino
+ * @property User $fkIdUser
  * @property OrdenDetalle[] $ordenDetalles
  */
 class MovimientoStock extends \yii\db\ActiveRecord
@@ -42,7 +42,7 @@ class MovimientoStock extends \yii\db\ActiveRecord
             [['fk_idProducto', 'time', 'fk_idUser', 'cantidad'], 'required'],
             [['fk_idProducto', 'fk_idStockOrigen', 'fk_idStockDestino', 'fk_idUser', 'cantidad', 'cierre'], 'integer'],
             [['time'], 'safe'],
-            [['obseraciones'], 'string', 'max' => 100]
+            [['observaciones'], 'string', 'max' => 100]
         ];
     }
 
@@ -59,17 +59,9 @@ class MovimientoStock extends \yii\db\ActiveRecord
             'time' => 'Time',
             'fk_idUser' => 'Fk Id User',
             'cantidad' => 'Cantidad',
-            'obseraciones' => 'Obseraciones',
+            'observaciones' => 'Observaciones',
             'cierre' => 'Cierre',
         ];
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdUser()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUser']);
     }
 
     /**
@@ -94,6 +86,14 @@ class MovimientoStock extends \yii\db\ActiveRecord
     public function getFkIdStockDestino()
     {
         return $this->hasOne(ProductoStock::className(), ['idProductoStock' => 'fk_idStockDestino']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdUser()
+    {
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUser']);
     }
 
     /**

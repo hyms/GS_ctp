@@ -32,7 +32,7 @@ class Servicio extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre', 'descripcion', 'enable', 'tableName'], 'required'],
+            [['nombre', 'descripcion', 'enable'], 'required'],
             [['enable'], 'integer'],
             [['nombre', 'tableName'], 'string', 'max' => 50],
             [['descripcion'], 'string', 'max' => 100]

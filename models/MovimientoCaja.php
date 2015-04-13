@@ -14,7 +14,7 @@ use Yii;
  * @property integer $fk_idUser
  * @property double $monto
  * @property integer $tipoMovimiento
- * @property string $obseraciones
+ * @property string $observaciones
  * @property string $fechaCierre
  * @property double $saldoCierre
  * @property integer $correlativoCierre
@@ -45,7 +45,7 @@ class MovimientoCaja extends \yii\db\ActiveRecord
             [['time', 'fk_idUser', 'monto', 'tipoMovimiento'], 'required'],
             [['time', 'fechaCierre'], 'safe'],
             [['monto', 'saldoCierre'], 'number'],
-            [['obseraciones'], 'string', 'max' => 100]
+            [['observaciones'], 'string', 'max' => 100]
         ];
     }
 
@@ -62,7 +62,7 @@ class MovimientoCaja extends \yii\db\ActiveRecord
             'fk_idUser' => 'Fk Id User',
             'monto' => 'Monto',
             'tipoMovimiento' => 'Tipo Movimiento',
-            'obseraciones' => 'Obseraciones',
+            'observaciones' => 'Observaciones',
             'fechaCierre' => 'Fecha Cierre',
             'saldoCierre' => 'Saldo Cierre',
             'correlativoCierre' => 'Correlativo Cierre',

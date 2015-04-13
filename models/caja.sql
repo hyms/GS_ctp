@@ -1,5 +1,9 @@
 USE singularERP;
 
+INSERT INTO `caja`
+(`nombre`, `descripcion`, `monto`, `fechaCreacion`, `fechaUltimoMovimiento`, `enable`, `fk_idServicio`, `fk_idSucursal`, `fk_idCaja`)
+VALUES
+('Administracion', NULL, 11925.5, '2014-12-22 15:15:17', NULL, 1, null, 1,null);
 
 INSERT INTO `caja`
 (`nombre`, `descripcion`, `monto`, `fechaCreacion`, `fechaUltimoMovimiento`, `enable`, `fk_idServicio`, `fk_idSucursal`, `fk_idCaja`)

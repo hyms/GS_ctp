@@ -18,7 +18,7 @@ class OrdenCTPSearch extends OrdenCTP
     {
         return [
             [['idOrdenCTP', 'cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden'], 'integer'],
-            [['fechaGenerada', 'fechaCobro', 'fechaPlazo', 'codigoServicio', 'autorizado', 'observaciones', 'observacionesCaja', 'responsable', 'telefono', 'obseracionesAdicional', 'factura'], 'safe'],
+            [['fechaGenerada', 'fechaCobro', 'fechaPlazo', 'codigoServicio', 'autorizado', 'observaciones', 'observacionesCaja', 'responsable', 'telefono', 'observacionAdicional', 'factura'], 'safe'],
             [['montoVenta', 'montoDescuento'], 'number'],
         ];
     }
@@ -84,7 +84,7 @@ class OrdenCTPSearch extends OrdenCTP
             ->andFilterWhere(['like', 'observacionesCaja', $this->observacionesCaja])
             ->andFilterWhere(['like', 'responsable', $this->responsable])
             ->andFilterWhere(['like', 'telefono', $this->telefono])
-            ->andFilterWhere(['like', 'obseracionesAdicional', $this->obseracionesAdicional])
+            ->andFilterWhere(['like', 'observacionAdicional', $this->observacionAdicional])
             ->andFilterWhere(['like', 'factura', $this->factura]);
 
         return $dataProvider;
