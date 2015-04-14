@@ -1,57 +1,108 @@
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <span class="panel-title"><strong>Listado de Ventas</strong></span><?php echo "  ".CHtml::link('<span class="glyphicon glyphicon-export"></span>Reporte', CHtml::normalizeUrl(array("ctp/movimientos",'pdf'=>true)), array("class"=>"btn btn-default hidden-print",'title'=>'reporte de Movimientos')); ?>
-    </div>
-    <?php
-        if(!empty($ventas->fechaVenta)) {
-           $data             = $ventas->searchCliente('fechaVenta Desc', 'estado!=1');
-           $data->pagination = false;
-           $data             = $data->getData();
-           $total            = 0;
-           $monto            = 0;
-           foreach ($data as $item) {
-               $total = $total + $item->montoVenta;
-               $monto = $monto + SGServicioVenta::montoPagado($item);
-           }
-       }
+<?php
+    use kartik\grid\GridView;
 
-        $columns = array(
+    $columns = [
+        [
+            'header'=>'Factura',
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter'=>ArrayHelper::map(["C/Factura","S/Factura",], 'id', 'name'),
+            'filterWidgetOptions'=>[
+                'pluginOptions'=>['allowClear'=>true],
+            ],
+            'filterInputOptions'=>['placeholder'=>'Any author'],
+            'format'=>'raw',
+            'value'=>function($model) {
+                return (($model->cfSF) ? "S/Factura" : "C/Factura");
+            },
+            'attribute'=>'cfSF',
+        ],
+    ];
+    echo GridView::widget([
+                              'dataProvider' => $ordenes,
+                              'filterModel' => $search,
+                              'columns' => $columns,
+                              // set your toolbar
+                              'toolbar' =>  [
+                                  '{export}',
+                                  '{toggleData}',
+                              ],
+                              // set export properties
+                              'export' => [
+                                  'fontAwesome' => true
+                              ],
+                              // parameters from the demo form
+                              'bordered' => true,
+                              'condensed' => true,
+                              'responsive' => true,
+                              'hover' => true,
+                              'showPageSummary' => true,
+                              'panel' => [
+                                  'type' => GridView::TYPE_PRIMARY,
+                                  'heading' => 'ordenes',
+                              ],
+                              'exportConfig' => [
+                                  GridView::EXCEL => [
+                                      'label' => 'Excel',
+                                      'filename' => 'Productos',
+                                      'alertMsg' => 'El EXCEL se generara para la descarga.',
+                                  ],
+                                  GridView::PDF => [
+                                      'label' => 'PDF',
+                                      'filename' => 'Productos',
+                                      'alertMsg' => 'El PDF se generara para la descarga.',
+                                  ],
+                              ],
+                          ]);
+    /*if(!empty($ordendes->fechaVenta)) {
+        $data             = $ordendes->searchCliente('fechaVenta Desc', 'estado!=1');
+        $data->pagination = false;
+        $data             = $data->getData();
+        $total            = 0;
+        $monto            = 0;
+        foreach ($data as $item) {
+            $total = $total + $item->montoVenta;
+            $monto = $monto + SGServicioVenta::montoPagado($item);
+        }
+    }
+
+
+        /*$columns = array(
             array(
                 'header'=>'Factura',
                 'value'=>'($data->tipoVenta)?"S/Factura":"C/Factura"',
-                'filter'=>CHtml::activeDropDownList($ventas, 'tipoVenta',array('Con Factura','Sin Factura'),array("class"=>"form-control input-sm",'empty'=>'')),
+                'filter'=>Html::activeDropDownList($ordendes, 'tipoVenta',array('Con Factura','Sin Factura'),array("class"=>"form-control input-sm",'empty'=>'')),
             ),
             array(
                 'header'=>'Estado',
                 'value'=>'($data->estado!=1)?(($data->estado==0)?"Cancelado":(($data->estado<0)?"Anulado":"Deuda")):""',
-                'filter'=>CHtml::activeDropDownList($ventas, 'estado',array('Cancelado','2'=>'Deuda','-1'=>'Anulado'),array("class"=>"form-control input-sm",'empty'=>'')),
+                'filter'=>Html::activeDropDownList($ordendes, 'estado',array('Cancelado','2'=>'Deuda','-1'=>'Anulado'),array("class"=>"form-control input-sm",'empty'=>'')),
             ),
             array(
                 'header'=>'Correlativo',
                 'value'=>'$data->correlativo',
-                'filter'=>CHtml::activeTextField($ventas, 'correlativo',array("class"=>"form-control input-sm")),
+                'filter'=>Html::activeTextField($ordendes, 'correlativo',array("class"=>"form-control input-sm")),
             ),
             array(
                 'header'=>'Codigo',
                 'value'=>'$data->codigoServicio',
-                'filter'=>CHtml::activeTextField($ventas, 'codigoServicio',array("class"=>"form-control input-sm")),
+                'filter'=>Html::activeTextField($ordendes, 'codigoServicio',array("class"=>"form-control input-sm")),
             ),
             array(
                 'header'=>'Cliente',
                 'value'=>'$data->fkIdCliente["nombreNegocio"]',
-                'filter'=>CHtml::activeTextField($ventas, 'cliente',array("class"=>"form-control input-sm")),
+                'filter'=>Html::activeTextField($ordendes, 'cliente',array("class"=>"form-control input-sm")),
             ),
             array(
                 'header'=>'Monto de la Venta',
                 //'name'=>'montoVenta',
                 'value'=>'$data->montoVenta',
-                //'filter'=>CHtml::activeTextField($ventas, 'montoVenta',array("class"=>"form-control input-sm")),
+                //'filter'=>Html::activeTextField($ordendes, 'montoVenta',array("class"=>"form-control input-sm")),
             ),
             array(
                 'header'=>'Monto Pagado',
                 //'name'=>'montoPagado',
                 'value'=>'SGServicioVenta::montoPagado($data)',
-                //'filter'=>CHtml::activeTextField($ventas, 'montoPagado',array("class"=>"form-control input-sm")),
+                //'filter'=>Html::activeTextField($ordendes, 'montoPagado',array("class"=>"form-control input-sm")),
             ),
             array(
                 'header'=>'fechaVenta',
@@ -60,7 +111,7 @@
                     'name'=>'fechaVenta',
                     'attribute'=>'fechaVenta',
                     'language'=>'es',
-                    'model'=>$ventas,
+                    'model'=>$ordendes,
                     'options'=>array(
                         'showAnim'=>'fold',
                         'dateFormat'=>'yy-mm-dd',
@@ -104,9 +155,9 @@
                 'montoVenta' => array('label'=>'Total de Venta', 'class'=>'TbSumOperation'),
                 'montoPagado' => array('label'=>'Total Cancelado', 'class'=>'TbSumOperation')
             )
-        );*/
-        $this->renderPartial('/baseTable',array('columns'=>$columns,'data'=>$ventas->searchCliente('fechaVenta Desc','estado!=1'),'filter'=>$ventas));
-        if(!empty($ventas->fechaVenta)) {
+        );
+        $this->renderPartial('/baseTable',array('columns'=>$columns,'data'=>$ordendes->searchCliente('fechaVenta Desc','estado!=1'),'filter'=>$ordendes));
+        if(!empty($ordendes->fechaVenta)) {
             echo '<div class="well col-xs-3 col-xs-offset-9"><strong>Total: </strong>' . $total . '</br><strong>Cancelado: </strong>' . $monto . '</div>';
         }
     ?>

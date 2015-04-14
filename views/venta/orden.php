@@ -33,6 +33,11 @@ $this->title = 'Venta-Ordenes';
             case "pagoDeuda":
                 echo $this->render('forms/deuda', ['orden' => $orden, 'deuda' => $deuda, 'model' => $model]);
                 break;
+            case "deudas":
+                echo $this->render('tables/deudas',['deudas'=>$deudas,'search'=>$search]);
+                break;
+            case "diario":
+                echo $this->render('tables/movimientos',['ordenes'=>$ordenes,'search'=>$search]);
         }
     }
     ?>

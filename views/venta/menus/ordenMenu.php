@@ -16,6 +16,14 @@
             'label'=>'Deudores',
             'url'=>['venta/orden','op'=>'deuda']
         ],
+        [
+            'label'=>'H. Pago de Deudas',
+            'url'=>['venta/orden','op'=>'deudas']
+        ],
+        [
+            'label'=>'Ventas Realizadas',
+            'url'=>['venta/orden','op'=>'diario']
+        ],
 
     ],
 ]);

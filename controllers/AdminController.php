@@ -7,7 +7,6 @@ use app\models\ProductoSearch;
 use app\models\Sucursal;
 use Yii;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 
 class AdminController extends Controller
@@ -19,21 +18,21 @@ class AdminController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only' => ['logout'],
+                //'only'  => ['*'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
-                        'allow' => true,
-                        'roles' => ['@'],
+                        //'actions' => ['*'],
+                        'allow'   => true,
+                        'roles'   => ['@'],
                     ],
                 ],
             ],
-            'verbs' => [
-                'class' => VerbFilter::className(),
+            /*'verbs'  => [
+                'class'   => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
-            ],
+            ],*/
         ];
     }
 

@@ -96,9 +96,9 @@
                         <div class="row col-xs-5" style="font-size: 10px"><strong>Venta a Credito</strong></div>
                         <div class="row col-xs-5" style="font-size: 10px"><strong>Plazo:</strong> <?= date("d-m-Y",strtotime($orden->fechaPlazo));?></div>
                     <?php } ?>
-                    <div class="row col-xs-12" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php //$orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
+                    <div class="row col-xs-12" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observaciones;?></div>
-                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <?php //$orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido;?></div>
+                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <?php $orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido;?></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observacionesCaja;?></div>
                 </div>
 
@@ -113,7 +113,7 @@
             <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->fkIdCliente->nombreNegocio;?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "RESP:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y",strtotime($orden->fechaCobro));?></span></span></div>
-            <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php //$orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
+            <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
             <div class="col-xs-12 row">
                 <?php foreach ($orden->ordenDetalles as $producto){ ?>
                     <div class="col-xs-12" style="border: 1.5px solid;">

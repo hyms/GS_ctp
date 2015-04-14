@@ -32,8 +32,7 @@ class SGProducto extends Component
             $movimientoStock                   = new MovimientoStock;
             $movimientoStock->fk_idProducto    = $productoStock->fk_idProducto;
             $movimientoStock->fk_idStockOrigen = $productoStock->idProductoStock;
-            //$movimientoStock->fk_idUser        = yii::$app->user->id;
-            $movimientoStock->fk_idUser        = 1;
+            $movimientoStock->fk_idUser        = yii::$app->user->id;
             $movimientoStock->observaciones    = $observaciones;
             $movimientoStock->time             = date("Y-m-d H:i:s");
             return $movimientoStock;

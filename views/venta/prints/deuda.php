@@ -3,7 +3,7 @@
         <div class="row">
             <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?php echo "Pago de Deuda";?></strong></h3>
             <div class="col-xs-5"><strong><?php echo "CODIGO:";?></strong> <?php echo $orden->codigoServicio;?></div>
-            <div class="col-xs-5"><strong><?php echo "FECHA:";?></strong> <?php echo date("d-m-Y",strtotime($deuda->fecha));?></div>
+            <div class="col-xs-5"><strong><?php echo "FECHA:";?></strong> <?php echo date("d-m-Y",strtotime($deuda->time));?></div>
         </div>
 
         <div class="row">
@@ -19,9 +19,9 @@
             <table class="table table-condensed">
                 <thead><tr>
                     <th><?php echo "Nº"; ?></th>
+                    <th><?php echo "Formato"; ?></th>
                     <th><?php echo "Nº Placas"; ?></th>
                     <th><?php echo "Colores"; ?></th>
-                    <th><?php echo "Formato"; ?></th>
                     <th><?php echo "Trabajo"; ?></th>
                     <th><?php echo "Pinza"; ?></th>
                     <th><?php echo "Resol."; ?></th>
@@ -31,10 +31,13 @@
                 </tr></thead>
 
                 <tbody>
-                <?php $i=0; foreach ($orden->detalleServicios as $producto){ $i++;?>
+                <?php $i=0; foreach ($orden->ordenDetalles as $producto){ $i++;?>
                     <tr>
                         <td>
                             <?php echo $i;?>
+                        </td>
+                        <td>
+                            <?php echo $producto->fkIdProductoStock->fkIdProducto->formato;?>
                         </td>
                         <td>
                             <?php echo $producto->cantidad; ?>
@@ -42,10 +45,7 @@
                         <td>
                             <?php echo (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                         </td>
-                        <td>
-                            <?php echo $producto->fkIdProductoStock->fkIdProducto->color;?>
-                        </td>
-                        <td>
+                         <td>
                             <?php echo $producto->trabajo;?>
                         </td>
                         <td>
@@ -69,15 +69,16 @@
             </table>
         </div>
         <div class="row">
-            <strong>Total:  </strong><?php $this->widget('ext.numerosALetras', array('valor'=>$orden->montoVenta,'despues'=>''))?> Bs.
+            <strong>Total:  </strong><?= $num
+            ?> Bs.
         </div>
         <div class="row">
             <div class="col-xs-5">
                 <div class="row">
                     <div class="col-xs-11 well well-sm" style="border-color: #000000;">
                         <h5><strong>Deuda</strong></h5>
-                        <div class="row col-xs-5"><strong>Cancel.:</strong> <?php echo $deuda->montoPagado." Bs";?></div>
-                        <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - $deuda->montoPagado)." Bs";?></div>
+                        <div class="row col-xs-5"><strong>Cancel.:</strong> <?php echo $oldDeuda." Bs";?></div>
+                        <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - $oldDeuda)." Bs";?></div>
                     </div>
                 </div>
             </div>
@@ -85,8 +86,8 @@
                 <div class="row">
                     <div class="col-xs-11 well well-sm" style="border-color: #000000;">
                         <h5><strong>Cancelado</strong></h5>
-                        <div class="row col-xs-5"><strong>A/C:</strong> <?php echo $deuda->acuenta." Bs";?></div>
-                        <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo $deuda->saldo." Bs";?></div>
+                        <div class="row col-xs-5"><strong>A/C:</strong> <?php echo $deuda->monto." Bs";?></div>
+                        <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - ($oldDeuda+$deuda->monto))." Bs";?></div>
                     </div>
                 </div>
             </div>

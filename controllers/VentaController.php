@@ -3,18 +3,17 @@
 namespace app\controllers;
 
 use app\components\numerosALetras;
-use app\components\SGCaja;
 use app\components\SGOrdenes;
 use app\models\Caja;
 use app\models\ClienteSearch;
 use app\models\MovimientoCaja;
+use app\models\MovimientoCajaSearch;
 use app\models\OrdenCTP;
 use app\models\OrdenCTPSearch;
 use app\models\OrdenDetalle;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\helpers\Json;
 use yii\helpers\Url;
 use yii\web\Controller;
@@ -23,32 +22,26 @@ class VentaController extends Controller
 {
     public $layout = "venta";
 
-    public function init()
-    {
-        Yii::$app->session->set('user.id', 1);
-        parent::init();
-    }
-
     public function behaviors()
     {
         return [
             'access' => [
                 'class' => AccessControl::className(),
-                'only'  => ['logout'],
+                //'only'  => ['*'],
                 'rules' => [
                     [
-                        'actions' => ['logout'],
-                        'allow'   => true,
-                        'roles'   => ['@'],
+                        //'actions' => ['*'],
+                        'allow' => true,
+                        'roles' => ['@'],
                     ],
                 ],
             ],
-            'verbs'  => [
+            /*'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
-            ],
+            ],*/
         ];
     }
 
@@ -82,22 +75,23 @@ class VentaController extends Controller
                     return $this->render('orden', ['r' => 'pendiente', 'orden' => $ordenes]);
                     break;
                 case "buscar":
-                    $searchModel = new OrdenCTPSearch();
-                    $searchModel->fk_idSucursal=1;
-                    $ordenes = $searchModel->search(Yii::$app->request->getQueryParams());
+                    $searchModel                = new OrdenCTPSearch();
+                    $searchModel->fk_idSucursal = 1;
+                    $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
-                        ->andFilterWhere(['estado' => 0])
-                        ->orFilterWhere(['estado' => 2]);;
+                        ->andWhere(['estado' => 0])
+                        ->orWhere(['estado' => 2])
+                        ->orderBy(['fechaCobro' => SORT_DESC]);
                     /*$ordenes = OrdenCTP::find()
                         ->where(['estado' => 0])
                         ->orWhere(['estado' => 2])
                       *  ->andWhere(['fk_idSucursal' => 1]);
                     */
                     if (Yii::$app->request->post('hasEditable')) {
-                        $idOrdenCTP = Yii::$app->request->post('editableKey');
-                        $model = OrdenCTP::findOne($idOrdenCTP);
-                        $out = Json::encode(['output'=>'', 'message'=>'']);
-                        $post = [];
+                        $idOrdenCTP       = Yii::$app->request->post('editableKey');
+                        $model            = OrdenCTP::findOne($idOrdenCTP);
+                        $out              = Json::encode(['output' => '', 'message' => '']);
+                        $post             = [];
                         $post['OrdenCTP'] = current($_POST['OrdenCTP']);
                         // load model like any single model validation
                         if ($model->load($post)) {
@@ -108,26 +102,43 @@ class VentaController extends Controller
                             // EditableColumn in the grid view. We evaluate here a
                             // check to see if buy_amount was posted for the Book model
                             if (isset($posted['factura'])) {
-                                $output =  $model->factura;
+                                $output = $model->factura;
                             }
                             // similarly you can check if the name attribute was posted as well
                             // if (isset($posted['name'])) {
                             //   $output =  ''; // process as you need
                             // }
-                            $out = Json::encode(['output'=>$output, 'message'=>'']);
+                            $out = Json::encode(['output' => $output, 'message' => '']);
                         }
                         echo $out;
                         return;
                     }
 
-                    return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes,'search'=>$searchModel]);
+                    return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes, 'search' => $searchModel]);
                     break;
                 case "deuda":
-                    $searchModel = new OrdenCTPSearch();
-                    $searchModel->fk_idSucursal=1;
-                    $searchModel->estado=2;
-                    $ordenes = $searchModel->search(Yii::$app->request->getQueryParams());
-                    return $this->render('orden', ['r' => 'deuda', 'orden' => $ordenes,'search'=>$searchModel]);
+                    $searchModel                = new OrdenCTPSearch();
+                    $searchModel->fk_idSucursal = 1;
+                    $searchModel->estado        = 2;
+                    $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
+                    $ordenes->query->orderBy(['fechaCobro' => SORT_DESC]);
+                    return $this->render('orden', ['r' => 'deuda', 'orden' => $ordenes, 'search' => $searchModel]);
+                    break;
+                case "deudas":
+                    //$deudas = MovimientoCaja::findAll('idParent NOT NULL');
+                    $searchModel                   = new MovimientoCajaSearch();
+                    $searchModel->fk_idCajaDestino = 1;
+                    $deudas                        = $searchModel->search(Yii::$app->request->getQueryParams());
+                    //$deudas->query->andFilterWhere(['is not', 'idParent', NULL]);
+                    $deudas->query->andWhere(['is not', 'idParent', null]);
+                    $deudas->query->orderBy(['time' => SORT_DESC]);
+                    return $this->render('orden', ['r' => 'deudas', 'deudas' => $deudas, 'search' => $searchModel]);
+                    break;
+                case "diario":
+                    $search = new OrdenCTPSearch();
+                    $search->fk_idSucursal=1;
+                    $ordenes = $search->search(yii::$app->request->getQueryParams());
+                    return $this->render('orden',['r'=>'diario','ordenes'=>$ordenes,'search'=>$search]);
                     break;
                 default:
                     break;
@@ -144,6 +155,7 @@ class VentaController extends Controller
             $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
             //$orden->tipoPago = 1;
             $orden->fechaCobro = date("Y-m-d H:i:s");
+            $orden->fk_idUserV = yii::$app->user->id;
             $detalle           = OrdenDetalle::findAll(['fk_idOrden' => $orden->idOrdenCTP]);
             $monto             = "";
             if (!empty($orden->fk_idMovimientoCaja))
@@ -185,48 +197,40 @@ class VentaController extends Controller
         if (isset($get['id'])) {
             $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
 
-            $model = "";
             if (isset($_GET['deuda']))
                 $model = MovimientoCaja::findOne(['idMovimientoCaja' => $get['deuda']]);
-
-            if (empty($model)) {
+            else
                 $model = new MovimientoCaja();
-            } else
-                $condicion = ' and fecha<"' . $model->fecha . '"';
 
-            $deudaOld = MovimientoCaja::findOne(['idMovimientoCaja' => $orden->fk_idMovimientoCaja])->monto;
-            if (!empty($model->movimientoCajas)) {
-                $c = count($model->movimientoCajas);
+            $deudaOld = MovimientoCaja::findOne(['idMovimientoCaja' => $orden->fk_idMovimientoCaja]);
+            if (!empty($deudaOld->movimientoCajas)) {
+                $c = count($deudaOld->movimientoCajas);
                 for ($i = 0; $i < $c; ++$i) {
                     if ($model->isNewRecord) {
-                        $deudaOld += $model->movimientoCajas[$i]->monto;
+                        $deudaOld->monto += $deudaOld->movimientoCajas[$i]->monto;
                     } else {
                         if (($i + 1) != $c) {
-                            $deudaOld += $model->movimientoCajas[$i]->monto;
+                            $deudaOld->monto += $deudaOld->movimientoCajas[$i]->monto;
                         }
                     }
                 }
             }
+
             $post = yii::$app->request->post();
             if (isset($post['MovimientoCaja'])) {
-                $caja                       = Caja::findOne(['idCaja' => 1]);
-                $model                      = SGCaja::movimientoCajaVenta(null, $caja->idCaja, "Pago de deuda");
-                $model->attributes          = $post['MovimientoCaja'];
-                //here
-                $datos                      = array('orden' => $orden, 'oldDeuda' => $deudaOld, 'deuda' => $model, 'caja' => $caja);
-                $pago                       = new SGServicioVenta();
-                $pago->obseracionMovimiento = "Pago de Dedua";
-                $datos                      = $pago->deuda($datos, true);
-                if ($pago->error == "") {
-                    $this->redirect(array('ctp/pagosDeudas'));
+                $caja = Caja::findOne(['idCaja' => 1]);
+
+                $datos = array('orden' => $orden, 'oldDeuda' => $deudaOld, 'deuda' => $model, 'caja' => $caja, 'post' => $post['MovimientoCaja']);
+                $pago  = new SGOrdenes();
+                $datos = $pago->deuda($datos, true);
+                if ($pago->success) {
+                    $this->redirect(array('venta/orden', 'op' => 'deudas'));
                 } else {
                     $model = $datos['deuda'];
                 }
             }
-            //  $deudaOld->montoPagado += $deudaOld->acuenta;
-            //  $deudaOld->saldo = $orden->montoVenta - $deudaOld->montoPagado;
-            //$this->render('base', array('render' => 'deuda', 'orden' => $orden, 'deuda' => $deudaOld, 'model' => $model));
-            return $this->render('orden', array('r' => 'pagoDeuda', 'orden' => $orden, 'deuda' => $deudaOld, 'model' => $model));
+
+            return $this->render('orden', array('r' => 'pagoDeuda', 'orden' => $orden, 'deuda' => $deudaOld->monto, 'model' => $model));
         }
     }
 
@@ -241,6 +245,23 @@ class VentaController extends Controller
                     $num->valor = $orden->montoVenta;
                     $content    = $this->renderPartial('prints/orden', ['orden' => $orden, 'monto' => $num->mostrar()]);
                     $title      = "Orden de Venta Nro " . $orden->correlativo;
+                    break;
+                case "deuda":
+                    $deuda = MovimientoCaja::findOne(['idMovimientoCaja'=>$get['id']]);
+                    $oldDeuda = $deuda->idParent0;
+                    $orden = $oldDeuda->ordenCTPs[0];
+                    if (!empty($oldDeuda->movimientoCajas)) {
+                        $c = count($oldDeuda->movimientoCajas);
+                        for ($i = 0; $i < $c; ++$i) {
+                                if (($i + 1) != $c) {
+                                    $oldDeuda->monto += $oldDeuda->movimientoCajas[$i]->monto;
+                                }
+                        }
+                    }
+                    $num        = new numerosALetras();
+                    $num->valor = $orden->montoVenta;
+                    $content = $this->renderPartial('prints/deuda',['orden'=>$orden,'deuda'=>$deuda,'oldDeuda'=>$oldDeuda->monto,'num'=>$num->mostrar()]);
+                    $title      = "Pago de Deuda - Orden Nro " . $orden->correlativo;
                     break;
             }
             $pdf = new Pdf([
