@@ -3,7 +3,7 @@
         <strong class="panel-title">Recibos</strong>
     </div>
     <div class="panel-body">
-        <?php echo CHtml::ajaxLink('Recibo Ingreso', CHtml::normalizeUrl(array("ctp/recibo",'tipo'=>"0")),array(
+        <?php /*echo CHtml::ajaxLink('Recibo Ingreso', CHtml::normalizeUrl(array("ctp/recibo",'tipo'=>"0")),array(
                 'type'=>'POST',
                 'url'=>"js:$(this).attr('href')",
                 'success'=>'function(data) {if(data.length>0){ $("#viewModal .modal-body ").html(data); $("#viewModal").modal(); }}'
@@ -12,43 +12,56 @@
             'type'=>'POST',
             'url'=>"js:$(this).attr('href')",
             'success'=>'function(data) {if(data.length>0){ $("#viewModal .modal-body ").html(data); $("#viewModal").modal(); }}'
-        ), array("class"=>"btn btn-default hidden-print",'title'=>'Nuevo Recibo')); ?>
+        ), array("class"=>"btn btn-default hidden-print",'title'=>'Nuevo Recibo'));*/ ?>
     </div>
-    <?php
+<?php
+    $columns = [
+        [
+            'header'=>'Codigo',
+            'attribute'=>'codigo',
+        ],
+        [
+            'header'=>'Nombre',
+            'attribute'=>'nombre',
+        ],
+        [
+            'header'=>'Monto',
+            'attribute'=>'monto',
+        ],
+        [
+            'header'=>'Fecha',
+            'attribute'=>'fechaRegistro',
+        ],
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template'=>'{update} {print}',
+            'buttons'=>[
+                'update'=>function($url,$model){
+                    $options = array_merge([
+                                               //'class'=>'btn btn-success',
+                                               'data-original-title'=>'Modificar',
+                                               'data-toggle'=>'tooltip',
+                                               'title'=>''
+                                           ]);
+                    $url = Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idOrdenCTP]);
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                },
+                'print'=>function($url,$model){
+                    $options = array_merge([
+                                               //'class'=>'btn btn-success',
+                                               'data-original-title'=>'Imprimir',
+                                               'data-toggle'=>'tooltip',
+                                               'title'=>''
+                                           ]);
+                    $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idOrdenCTP]);
+                    return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                },
+            ]
+        ],
+    ];
+
+    /*
         $columns = array(
-            array(
-                'header'=>'Codigo',
-                'value'=>'$data->codigo',
-                'filter'=>CHtml::activeTextField($recibos,'codigo',array('class'=>'form-control input-sm')),
-            ),
-            array(
-                'header'=>'Nombre',
-                'value'=>'$data->nombre',
-                'filter'=>CHtml::activeTextField($recibos,'nombre',array('class'=>'form-control input-sm')),
-            ),
-            array(
-                'header'=>'Monto',
-                'value'=>'$data->monto',
-                'filter'=>CHtml::activeTextField($recibos,'monto',array('class'=>'form-control input-sm')),
-            ),
-            array(
-                'header'=>'Fecha',
-                'value'=>'$data->fechaRegistro',
-                'filter'=>$this->widget('zii.widgets.jui.CJuiDatePicker', array(
-                    'name'=>'fechaRegistro',
-                    'attribute'=>'fechaRegistro',
-                    'language'=>'es',
-                    'model'=>$recibos,
-                    'options'=>array(
-                        'showAnim'=>'fold',
-                        'dateFormat'=>'yy-mm-dd',
-                    ),
-                    'htmlOptions'=>array(
-                        'class'=>'form-control input-sm',
-                    ),
-                ),
-                                        true),
-            ),
             array(
                 'header'=>'',
                 'class'=>'booster.widgets.TbButtonColumn',

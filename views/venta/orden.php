@@ -38,6 +38,11 @@ $this->title = 'Venta-Ordenes';
                 break;
             case "diario":
                 echo $this->render('tables/movimientos',['ordenes'=>$ordenes,'search'=>$search]);
+                break;
+            case "recibos":
+                echo $this->render('tables/recibos',['recibos'=>$recibos,'search'=>$search]);
+                break;
+
         }
     }
     ?>

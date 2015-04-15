@@ -24,6 +24,9 @@
             'label'=>'Ventas Realizadas',
             'url'=>['venta/orden','op'=>'diario']
         ],
-
+        [
+            'label'=>'Recibos',
+            'url'=>['venta/recibos']
+        ],
     ],
 ]);

@@ -18,7 +18,7 @@ class ReciboSearch extends Recibo
     {
         return [
             [['idRecibo', 'secuencia', 'fk_idSucursal', 'fk_idUser', 'fk_idServicio', 'tipoRecibo', 'fk_idMovimientoCaja'], 'integer'],
-            [['codigo', 'detalle', 'nombre', 'ciNit', 'fechaRegistro', 'codigoVenta', 'obseraciones'], 'safe'],
+            [['codigo', 'detalle', 'nombre', 'ciNit', 'fechaRegistro', 'codigoVenta', 'observaciones'], 'safe'],
             [['saldo', 'monto', 'acuenta'], 'number'],
         ];
     }
@@ -74,7 +74,7 @@ class ReciboSearch extends Recibo
             ->andFilterWhere(['like', 'nombre', $this->nombre])
             ->andFilterWhere(['like', 'ciNit', $this->ciNit])
             ->andFilterWhere(['like', 'codigoVenta', $this->codigoVenta])
-            ->andFilterWhere(['like', 'obseraciones', $this->obseraciones]);
+            ->andFilterWhere(['like', 'observaciones', $this->observaciones]);
 
         return $dataProvider;
     }

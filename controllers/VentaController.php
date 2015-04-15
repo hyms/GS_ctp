@@ -11,6 +11,8 @@ use app\models\MovimientoCajaSearch;
 use app\models\OrdenCTP;
 use app\models\OrdenCTPSearch;
 use app\models\OrdenDetalle;
+use app\models\Recibo;
+use app\models\ReciboSearch;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\filters\AccessControl;
@@ -138,6 +140,7 @@ class VentaController extends Controller
                     $search = new OrdenCTPSearch();
                     $search->fk_idSucursal=1;
                     $ordenes = $search->search(yii::$app->request->getQueryParams());
+                    $ordenes->query->andWhere(['!=','estado','1']);
                     return $this->render('orden',['r'=>'diario','ordenes'=>$ordenes,'search'=>$search]);
                     break;
                 default:
@@ -289,6 +292,23 @@ class VentaController extends Controller
         }
     }
 
+    public function actionRecibos()
+    {
+        $get = yii::$app->request->get();
+        if (empty($get['op'])) {
+            $search                = new ReciboSearch();
+            $search->fk_idSucursal = 1;
+            $recibos               = $search->search(yii::$app->request->queryParams);
+            return $this->render('orden', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
+        } else {
+            if (isset($get['id']))
+                $recibo = Recibo::findOne(['idRecibo' => $get['id']]);
+            else
+                $recibo = new Recibo();
+
+        }
+    }
+
     public function actionAjaxfactura()
     {
         if (yii::$app->request->isAjax) {
@@ -337,4 +357,6 @@ class VentaController extends Controller
             }
         }
     }
+
+
 }
