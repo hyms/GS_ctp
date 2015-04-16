@@ -1,8 +1,37 @@
+<?php
+    use kartik\popover\PopoverX;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+
+?>
+
 <div class="panel panel-default">
     <div class="panel-heading">
         <strong class="panel-title">Recibos</strong>
     </div>
     <div class="panel-body">
+            <?php
+                PopoverX::begin([
+                                    'placement' => PopoverX::ALIGN_RIGHT,
+                                    'size' => PopoverX::SIZE_LARGE,
+                                    'toggleButton' => ['label'=>'Recibo Ingreso', 'class'=>'btn btn-default','onclick'=>"
+                                            $.ajax({
+                                            type     :'POST',
+                                            cache    : false,
+                                            url  : '".Url::to(['venta/recibos','op'=>'i'])."',
+                                            success  : function(data) {
+                                                if(data.length>0){
+                                                $('#poper').html(data);
+                                                }
+                                            }
+                                            });return false;"],
+                                    'header' => '<i class="glyphicon glyphicon-lock"></i>',
+                                    'footer'=>Html::submitButton('Submit', ['class'=>'btn btn-sm btn-primary']) .
+                                        Html::resetButton('Reset', ['class'=>'btn btn-sm btn-default'])
+                                ]);
+                echo "<div id='poper'></div>";
+                PopoverX::end();
+            ?>
         <?php /*echo CHtml::ajaxLink('Recibo Ingreso', CHtml::normalizeUrl(array("ctp/recibo",'tipo'=>"0")),array(
                 'type'=>'POST',
                 'url'=>"js:$(this).attr('href')",
@@ -59,6 +88,7 @@
             ]
         ],
     ];
+
 
     /*
         $columns = array(
@@ -142,4 +172,5 @@
         });
 	}
 ',CClientScript::POS_HEAD);
-?>
+?>*/
+        ?>

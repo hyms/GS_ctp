@@ -305,7 +305,16 @@ class VentaController extends Controller
                 $recibo = Recibo::findOne(['idRecibo' => $get['id']]);
             else
                 $recibo = new Recibo();
+            if($get['op']=='i')
+            {
+                $post = yii::$app->request->post();
+                if(isset($post['Recibos']))
+                {
+                    echo "done";
+                }
+            }
 
+            return $this->renderAjax('forms/recibo',['recibo'=>$recibo]);
         }
     }
 
