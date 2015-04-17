@@ -1,24 +1,12 @@
-<div class="col-xs-12">
-    <?php $form = $this->beginWidget(
-        'booster.widgets.TbActiveForm',
-        array(
-            'id' => 'form',
-            'type' => 'horizontal',
-        )
-    );
-    ?>
-
-    <div class="col-xs-5">
-        <?php echo $form->textFieldGroup($model, 'saldo'); ?>
-
-        <?php echo $form->textFieldGroup($model, 'monto'); ?>
+<?php
+    $form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
+?>
+    <?= $form->field($recibo,'observaciones',['label'=>'Detalle'])->textarea(); ?>
+    <div class="row" >
+        <div class="col-xs-4" >
+            <?= $form->field($recibo,'monto'); ?>
+        </div>
     </div>
 
-    <div class="col-xs-7">
-        <?php echo $form->textAreaGroup($model, 'detalle'); ?>
-        <?php echo $form->textFieldGroup($model, 'obseraciones'); ?>
-    </div>
-
-    <?php $this->endWidget(); ?>
-
-</div>
+<?= \yii\helpers\Html::submitButton('Submit', ['class'=>'btn btn-sm btn-primary']) ?>
+<?php \yii\bootstrap\ActiveForm::end(); ?>

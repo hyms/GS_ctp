@@ -22,4 +22,6 @@
         <?= $form->field($recibo,'saldo'); ?>
     </div>
 </div>
+
+<?= Html::submitButton('Submit', ['class'=>'btn btn-sm btn-primary']) ?>
 <?php \yii\bootstrap\ActiveForm::end(); ?>

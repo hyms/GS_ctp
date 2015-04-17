@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\numerosALetras;
 use app\components\SGOrdenes;
+use app\components\SGRecibo;
 use app\models\Caja;
 use app\models\ClienteSearch;
 use app\models\MovimientoCaja;
@@ -266,6 +267,10 @@ class VentaController extends Controller
                     $content = $this->renderPartial('prints/deuda',['orden'=>$orden,'deuda'=>$deuda,'oldDeuda'=>$oldDeuda->monto,'num'=>$num->mostrar()]);
                     $title      = "Pago de Deuda - Orden Nro " . $orden->correlativo;
                     break;
+                case "recibo":
+                    $recibo = Recibo::findOne(['idRecibo'=>$get['id']]);
+
+
             }
             $pdf = new Pdf([
                                // set to use core fonts only
@@ -305,17 +310,48 @@ class VentaController extends Controller
                 $recibo = Recibo::findOne(['idRecibo' => $get['id']]);
             else
                 $recibo = new Recibo();
-            if($get['op']=='i')
-            {
-                $post = yii::$app->request->post();
-                if(isset($post['Recibos']))
-                {
-                    echo "done";
+            if ($get['op'] == 'i') {
+                $recibo->tipoRecibo = 0;
+            } else {
+                $recibo->tipoRecibo = 1;
+            }
+
+            $post = yii::$app->request->post();
+            if (isset($post['Recibo'])) {
+                if ($recibo->load($post)) {
+                    $op   = new SGRecibo();
+                    $data = $op->grabar(['recibo' => $recibo, 'caja' => Caja::findOne(['idCaja' => 1])], 1);
+                    if ($op->success)
+                        $this->redirect(['venta/recibos']);
                 }
             }
 
-            return $this->renderAjax('forms/recibo',['recibo'=>$recibo]);
+            return $this->renderAjax('forms/recibo', ['recibo' => $recibo]);
         }
+    }
+
+    public function actionChica()
+    {
+        $get = yii::$app->request->get();
+        if(empty($get['op'])) {
+            $search                  = new MovimientoCajaSearch();
+            $search->fk_idCajaOrigen = 1;
+            $cchica                  = $search->search(yii::$app->request->queryParams);
+            if (isset($get['CajaChica'])) {
+                $cchica->attributes = $get['CajaChica'];
+            }
+            return $this->render('orden', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
+        }
+        else
+        {
+            $cchica = new MovimientoCaja();
+            return $this->renderAjax('forms/cajaChica', ['cajaChica' => $cchica]);
+        }
+    }
+
+    public function actionArqueo()
+    {
+
     }
 
     public function actionAjaxfactura()

@@ -1,17 +1,92 @@
+<?php
+    use kartik\grid\GridView;
+    use kartik\popover\PopoverX;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+
+?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong class="panel-title">Recibos</strong>
+        <strong class="panel-title">Caja Chica</strong>
     </div>
     <div class="panel-body">
-        <?php echo CHtml::ajaxLink('Caja Chica', CHtml::normalizeUrl(array("ctp/cajaChica")),array(
-                'type'=>'POST',
-                'url'=>"js:$(this).attr('href')",
-                'success'=>'function(data) {if(data.length>0){ $("#viewModal .modal-body ").html(data); $("#viewModal").modal(); }}'
-        ), array("class"=>"btn btn-default hidden-print",'title'=>'Nuevo Caja Chica')); ?>
-        <?php echo CHtml::link('<span class="glyphicon glyphicon-export"></span>Reporte', CHtml::normalizeUrl(array("ctp/cajaChicas",'print'=>true)), array("class"=>"btn btn-default hidden-print",'title'=>'reporte de caja chica')); ?>
+        <?php
+            PopoverX::begin([
+                                'placement' => PopoverX::ALIGN_RIGHT,
+                                'size' => PopoverX::SIZE_LARGE,
+                                'toggleButton' => ['label'=>'Caja Chica', 'class'=>'btn btn-default','onclick'=>"
+                                            $.ajax({
+                                            type     :'POST',
+                                            cache    : false,
+                                            url  : '".Url::to(['venta/chica','op'=>'new'])."',
+                                            success  : function(data) {
+                                                if(data.length>0){
+                                                $('#poper').html(data);
+                                                }
+                                            }
+                                            });return false;"],
+                                'header' => '<i class="glyphicon glyphicon-lock"></i>',
+                                //'footer'=> Html::resetButton('Reset', ['class'=>'btn btn-sm btn-default'])
+                            ]);
+            echo "<div id='poper'></div>";
+            PopoverX::end();
+        ?>
     </div>
     <?php
-        $columns = array(
+        $columns = [
+            [
+                'header'=>'Usuario',
+                'attribute'=>function($model)
+                {
+                    return $model->fkIdUser->username;
+                }
+            ],
+            [
+                'header'=>'Nombre',
+                'attribute'=>function($model)
+                {
+                    return $model->fkIdUser->nombre." ".$model->fkIdUser->apellido;
+                }
+            ],
+            [
+                'header'=>'Monto',
+                'attribute'=>'monto',
+            ],
+            [
+                'header'=>'Detalle',
+                'attribute'=>'observaciones',
+            ],
+            [
+                'header'=>'Fecha',
+                'attribute'=>'time',
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>'{update}',
+                'buttons'=>[
+                    'update'=>function($url,$model){
+                        $options = array_merge([
+                                                   //'class'=>'btn btn-success',
+                                                   'data-original-title'=>'Modificar',
+                                                   'data-toggle'=>'tooltip',
+                                                   'title'=>''
+                                               ]);
+                        $url = Url::to(['venta/chica','id'=>$model->idMovimientoCaja]);
+                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                    },
+                ]
+            ],
+        ];
+        echo GridView::widget([
+                                  'dataProvider'=> $cajasChicas,
+                                  'filterModel' => $search,
+                                  'columns' => $columns,
+                                  'responsive'=>true,
+                                  'condensed'=>true,
+                                  'hover'=>true,
+                                  'bordered'=>false,
+                              ]);
+        /*$columns = array(
             array(
                 'header'=>'Usuario',
                 'value'=>'$data->fkIdUser->username',
@@ -76,56 +151,6 @@
         );
 
         $this->renderPartial('/baseTable',array('columns'=>$columns,'data'=>$cajasChicas->search("`t`.fechaRegistro Desc"),'filter'=>$cajasChicas))
+        */
     ?>
 </div>
-
-<?php
-    $this->beginWidget(
-        'booster.widgets.TbModal',
-        array('id' => 'viewModal','size'=>'large')
-
-    ); ?>
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-    <h3 class="modal-title text-center" id="myModalLabel"><strong>Caja Chica</strong></h3>
-</div>
-<div class="modal-body" style="overflow:auto;">
-</div>
-<div class="modal-footer">
-    <?php $this->widget('booster.widgets.TbButton',
-                        array(
-                            'context' => 'primary',
-                            'buttonType' => 'ajaxLink',
-                            'label'=>'Guardar',
-                            'url' => '#',
-                            'htmlOptions'=>array('onclick' => 'formSubmit();'),
-                        )
-    ); ?>
-    <?php $this->widget('booster.widgets.TbButton',
-                        array(
-                            'label'=>'Cancelar',
-                            'url' => '#',
-                            'htmlOptions' => array('data-dismiss' => 'modal'),
-                        )
-    ); ?>
-</div>
-<?php $this->endWidget(); ?>
-
-<?php Yii::app()->clientScript->registerScript("modalSubmit",'
-	function formSubmit()
-	{
-	    data=$("#form").serialize();
-        $.ajax({
-        type: "POST",
-        data:data,
-        url: $("#form").attr("action"),
-        success: function(data){
-            if(data=="done")
-                location.reload();
-            else
-                $("#viewModal .modal-body ").html(data);
-            }
-        });
-	}
-',CClientScript::POS_HEAD);
-?>

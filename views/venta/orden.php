@@ -42,7 +42,9 @@ $this->title = 'Venta-Ordenes';
             case "recibos":
                 echo $this->render('tables/recibos',['recibos'=>$recibos,'search'=>$search]);
                 break;
-
+            case "cajaChica":
+                echo $this->render('tables/cajaChicas',['cajasChicas'=>$cajasChicas,'search'=>$search]);
+                break;
         }
     }
     ?>

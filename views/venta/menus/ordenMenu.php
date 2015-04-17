@@ -28,5 +28,13 @@
             'label'=>'Recibos',
             'url'=>['venta/recibos']
         ],
+        [
+            'label'=>'Caja Chica',
+            'url'=>['venta/chica']
+        ],
+        [
+            'label'=>'Arqueo',
+            'url'=>['venta/arqueo']
+        ]
     ],
 ]);
