@@ -2,7 +2,9 @@
 namespace app\components;
 
 
+use app\models\Caja;
 use app\models\Cliente;
+use app\models\MovimientoCaja;
 use app\models\OrdenCTP;
 use app\models\PrecioProductoOrden;
 use app\models\ProductoStock;
@@ -150,18 +152,17 @@ class SGOrdenes extends Component
         return $costo;
     }
 
-    public function deuda($datos, $validate = false)
+    public function deuda($datos)
     {
         if (isset($datos['orden']) && isset($datos['deuda']) && isset($datos['caja']) && isset($datos['oldDeuda'])) {
 
             if (!$datos['deuda']->isNewRecord) {
                 $datos['caja']->monto -= $datos['deuda']->monto;
-            }
-            else {
-                $datos['deuda'] = SGCaja::movimientoCajaVenta(null, $datos['caja']->idCaja, "Pago de deuda",$datos['oldDeuda']->idMovimientoCaja);
+            } else {
+                $datos['deuda'] = SGCaja::movimientoCajaVenta(null, $datos['caja']->idCaja, "Pago de deuda", $datos['oldDeuda']->idMovimientoCaja, 0);
             }
             $datos['deuda']->attributes = $datos['post'];
-            $saldo = $datos['orden']->montoVenta - ($datos['oldDeuda']->monto + $datos['deuda']->monto);
+            $saldo                      = $datos['orden']->montoVenta - ($datos['oldDeuda']->monto + $datos['deuda']->monto);
             if ($saldo <= 0) {
                 $datos['orden']->estado = 0;
             } else {
@@ -172,9 +173,90 @@ class SGOrdenes extends Component
             if ($datos['deuda']->save()) {
                 $datos['orden']->save();
                 $datos['caja']->save();
-                $this->success=true;
+                $this->success = true;
             }
             return $datos;
+        }
+    }
+
+    public function arqueo($datos)
+    {
+        if (isset($datos['caja']) && isset($datos['arqueo'])) {
+
+            $tmp = MovimientoCaja::find()
+                ->where(['fk_idCaja'=>$datos['caja']->idCaja])
+                ->select('max(correlativoCierre) as correlativoCierre')
+                ->one();
+            $datos['arqueo']->correlativoCierre = $tmp->correlativoCierre + 1;
+            $cajaAdmin = Caja::findOne(['idCaja'=>$datos['caja']->fk_idCaja]);
+
+            if (!$datos['caja']->validate() || !$datos['arqueo']->validate()) {
+                $this->error = "error en arqueo o caja";
+                return $datos;
+            }
+            $movimientoCaja = SGCaja::movimientoCajaTraspaso(null,$datos['caja']->idCaja,$datos['caja']->fk_idCaja,"Arqueo de caja",date("Y-m-d", strtotime($datos['arqueo']->fechaMovimientos)) . " 23:59:00",3);
+            if(!$movimientoCaja->isNewRecord)
+            {
+                $datos['caja']->monto += $movimientoCaja->monto;
+                if (!empty($cajaAdmin)) {
+                    $cajaAdmin->monto -= $movimientoCaja->monto;
+                }
+            }
+
+            $datos['caja']->monto -= $movimientoCaja->monto;
+
+            $variables = SGServicioVenta::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, false, true);
+
+            $datos['arqueo']->saldo = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $movimientoCaja->monto, 1, PHP_ROUND_HALF_UP);
+
+            if ($datos['caja']->monto < 0) {
+                $this->error = "No Existen suficientes fondos";
+                $datos['arqueo']->addError('monto', $this->error);
+                $this->ventaError = true;
+                return $datos;
+            }
+
+            if ($movimientoCaja->monto == 0) {
+                $datos['arqueo']->correlativo = "";
+            }
+
+            if ($movimientoCaja->monto < 0) {
+                $this->error = "El monto de la transaccion debe ser mayor a 0";
+                $datos['arqueo']->addError('monto', $this->error);
+                $this->ventaError = true;
+                return $datos;
+            }
+
+            if (!$datos['arqueo']->validate() || !$datos['caja']->validate()) {
+                $this->error      = "error en arqueo o caja";
+                $this->ventaError = true;
+                return $datos;
+            }
+
+            $cajaAdmin = Caja::model()->findByPk($datos['caja']->fk_idCaja);
+
+            if ($movimientoCaja->save()) {
+                $datos['arqueo']->fk_idMovimientoCaja = $movimientoCaja->idMovimientoCaja;
+                $datos['caja']->save();
+                if ($datos['arqueo']->save()) {
+                    /*$criteria = new CDbCriteria();
+                    $criteria->addCondition('fk_idArqueo IS NULL');
+                    $criteria->addCondition("time <= '" . $datos['arqueo']->fechaMovimientos . "'");
+                    $criteria->addCondition('fk_idCajaOrigen=' . $datos['caja']->idCaja . ' or fk_idCajaDestino=' . $datos['caja']->idCaja);
+                    $movimientos = MovimientoCaja::model()->findAll($criteria);
+                    */
+                    foreach ($variables['movimientos'] as $item) {
+                        $item->fk_idArqueo = $datos['arqueo']->idArqueoCaja;
+                        $item->save();
+                    }
+                }
+                if (!empty($cajaAdmin)) {
+                    $cajaAdmin->monto += $movimientoCaja->monto;
+                    $cajaAdmin->save();
+                }
+                $datos['movimientos'] = $variables['movimientos'];
+                return $datos;
+            }
         }
     }
 }

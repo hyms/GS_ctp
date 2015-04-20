@@ -351,7 +351,67 @@ class VentaController extends Controller
 
     public function actionArqueo()
     {
+        $arqueo = new ArqueoCaja();
+        $caja   = Caja::model()->findByPk($this->caja);
+        if (isset($_POST['ArqueoCaja'])) {
+            $arqueo->attributes  = $_POST['ArqueoCaja'];
+            $arqueo->fechaArqueo = date("Y-m-d H:i:s");
+            $arqueo->fk_idCaja   = $this->caja;
+            $datos               = array('arqueo' => $arqueo, 'caja' => $caja);
 
+            $arqueoTransaccion = new SGServicioVenta();
+            $datos             = $arqueoTransaccion->arqueo($datos, true);
+            if (!$arqueoTransaccion->ventaError) {
+                $this->redirect(array('ctp/arqueo', 'list' => true));
+            }
+        }
+
+        if (isset($_GET['d'])) {
+            $d = $_GET['d'];
+            $dia = date("w",strtotime(date("Y-m-").$d));
+            if($dia==0)
+                $d-=1;
+            if (strlen($d) == 1)
+                $d = "0" . $d;
+            $m = date("m");
+            if ($d == 0) {
+                $m--;
+                $d = $this->getUltimoDiaMes(date("Y"), $m);
+            }
+            if (date("d") == $d)
+                $end = date("Y-m-d H:i:s");
+            else
+                $end = date("Y") . "-" . $m . "-" . $d . " 23:59:59";
+
+            $variables = SGServicioVenta::getSaldo($this->caja, $end, false, true, true);
+
+            //print_r($variables);
+            //return true;
+            $this->render("base",
+                          array(
+                              'render'  => 'arqueo',
+                              'saldo'   => $variables['saldo'],
+                              'arqueo'  => $arqueo,
+                              'caja'    => $caja,
+                              'fecha'   => date('Y-m-d H:i:s', strtotime($end)),
+                              'ventas'  => $variables['ventas'],
+                              'deudas'  => $variables['deudas'],
+                              'recibos' => $variables['recibos'],
+                              'cajas'   => $variables['cajas'],
+                              'dia'=>$d,
+                          ));
+        } elseif (isset($_GET['list'])) {
+            $arqueos = new CActiveDataProvider('ArqueoCaja',
+                                               array(
+                                                   'criteria' => array(
+                                                       'condition' => 'fk_idCaja=' . $this->caja,
+                                                       'order'     => 'fechaArqueo Desc',
+                                                       'with'      => array('fkIdMovimientoCaja', 'fkIdMovimientoCaja.fkIdUser'),
+                                                   ),
+                                               ));
+            $this->render('base', array('render' => 'arqueos', 'arqueos' => $arqueos,));
+        } else
+            $this->render('base', array('render' => 'arqueos', 'arqueos' => ''));
     }
 
     public function actionAjaxfactura()
