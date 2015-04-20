@@ -36,13 +36,13 @@ use Yii;
  * @property integer $fk_idParent
  * @property integer $tipoOrden
  *
- * @property User $fkIdUserD
- * @property User $fkIdUserV
- * @property User $fkIdUserD2
  * @property Cliente $fkIdCliente
  * @property MovimientoCaja $fkIdMovimientoCaja
  * @property OrdenCTP $fkIdParent
  * @property OrdenCTP[] $ordenCTPs
+ * @property User $fkIdUserD
+ * @property User $fkIdUserV
+ * @property User $fkIdUserD2
  * @property Sucursal $fkIdSucursal
  * @property OrdenDetalle[] $ordenDetalles
  */
@@ -114,30 +114,6 @@ class OrdenCTP extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdUserD()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdUserV()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserV']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdUserD2()
-    {
-        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD2']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFkIdCliente()
     {
         return $this->hasOne(Cliente::className(), ['idCliente' => 'fk_idCliente']);
@@ -165,6 +141,30 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function getOrdenCTPs()
     {
         return $this->hasMany(OrdenCTP::className(), ['fk_idParent' => 'idOrdenCTP']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdUserD()
+    {
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdUserV()
+    {
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserV']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdUserD2()
+    {
+        return $this->hasOne(User::className(), ['idUser' => 'fk_idUserD2']);
     }
 
     /**

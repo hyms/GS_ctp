@@ -19,6 +19,7 @@ use Yii;
  * @property double $saldoCierre
  * @property integer $correlativoCierre
  * @property integer $idParent
+ * @property string $nroDoc
  *
  * @property OrdenCTP[] $ordenCTPs
  * @property MovimientoCaja $idParent0
@@ -48,7 +49,8 @@ class MovimientoCaja extends \yii\db\ActiveRecord
             [['time', 'fk_idUser', 'monto', 'tipoMovimiento'], 'required'],
             [['time', 'fechaCierre'], 'safe'],
             [['monto', 'saldoCierre'], 'number'],
-            [['observaciones'], 'string', 'max' => 100]
+            [['observaciones'], 'string', 'max' => 100],
+            [['nroDoc'], 'string', 'max' => 40]
         ];
     }
 
@@ -70,6 +72,7 @@ class MovimientoCaja extends \yii\db\ActiveRecord
             'saldoCierre' => 'Saldo Cierre',
             'correlativoCierre' => 'Correlativo Cierre',
             'idParent' => 'Id Parent',
+            'nroDoc' => 'Nro Doc',
         ];
     }
 
