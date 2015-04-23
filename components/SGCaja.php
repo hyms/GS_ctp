@@ -87,9 +87,36 @@ class SGCaja extends Component
 
         foreach ($movimientos as $key => $movimiento) {
             $total +=$movimiento->monto;
-            if(!empty($movimiento->servicioVentas)) {
-                $ventas += $movimiento->monto;
+
+            switch($movimiento->tipoMovimiento){
+                case 0:
+
+                    break;
+                case 1:
+                    if(!empty($movimiento->ordenCTPs)) {
+                        if ($array) {
+                            $ventas += $movimiento->monto;
+                        } else {
+                            array_push($ventas, $movimientos->ordenCTPs[0]);
+                        }
+                    }
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
             }
+
+
+
+            if(!empty($movimientos->ordenCTPs)) {
+                if ($array) {
+                    $ventas += $movimiento->monto;
+                } else {
+                    array_push($ventas, $movimientos->ordenCTPs[0]);
+                }
+            }
+
             if(!empty($movimiento->deudasServicioVentas))
             {
                 $deudas += $movimiento->monto;

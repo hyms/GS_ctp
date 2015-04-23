@@ -138,11 +138,11 @@ class VentaController extends Controller
                     return $this->render('orden', ['r' => 'deudas', 'deudas' => $deudas, 'search' => $searchModel]);
                     break;
                 case "diario":
-                    $search = new OrdenCTPSearch();
-                    $search->fk_idSucursal=1;
-                    $ordenes = $search->search(yii::$app->request->getQueryParams());
-                    $ordenes->query->andWhere(['!=','estado','1']);
-                    return $this->render('orden',['r'=>'diario','ordenes'=>$ordenes,'search'=>$search]);
+                    $search                = new OrdenCTPSearch();
+                    $search->fk_idSucursal = 1;
+                    $ordenes               = $search->search(yii::$app->request->getQueryParams());
+                    $ordenes->query->andWhere(['!=', 'estado', '1']);
+                    return $this->render('orden', ['r' => 'diario', 'ordenes' => $ordenes, 'search' => $search]);
                     break;
                 default:
                     break;
@@ -251,24 +251,24 @@ class VentaController extends Controller
                     $title      = "Orden de Venta Nro " . $orden->correlativo;
                     break;
                 case "deuda":
-                    $deuda = MovimientoCaja::findOne(['idMovimientoCaja'=>$get['id']]);
+                    $deuda    = MovimientoCaja::findOne(['idMovimientoCaja' => $get['id']]);
                     $oldDeuda = $deuda->idParent0;
-                    $orden = $oldDeuda->ordenCTPs[0];
+                    $orden    = $oldDeuda->ordenCTPs[0];
                     if (!empty($oldDeuda->movimientoCajas)) {
                         $c = count($oldDeuda->movimientoCajas);
                         for ($i = 0; $i < $c; ++$i) {
-                                if (($i + 1) != $c) {
-                                    $oldDeuda->monto += $oldDeuda->movimientoCajas[$i]->monto;
-                                }
+                            if (($i + 1) != $c) {
+                                $oldDeuda->monto += $oldDeuda->movimientoCajas[$i]->monto;
+                            }
                         }
                     }
                     $num        = new numerosALetras();
                     $num->valor = $orden->montoVenta;
-                    $content = $this->renderPartial('prints/deuda',['orden'=>$orden,'deuda'=>$deuda,'oldDeuda'=>$oldDeuda->monto,'num'=>$num->mostrar()]);
+                    $content    = $this->renderPartial('prints/deuda', ['orden' => $orden, 'deuda' => $deuda, 'oldDeuda' => $oldDeuda->monto, 'num' => $num->mostrar()]);
                     $title      = "Pago de Deuda - Orden Nro " . $orden->correlativo;
                     break;
                 case "recibo":
-                    $recibo = Recibo::findOne(['idRecibo'=>$get['id']]);
+                    $recibo = Recibo::findOne(['idRecibo' => $get['id']]);
 
 
             }
@@ -333,7 +333,7 @@ class VentaController extends Controller
     public function actionChica()
     {
         $get = yii::$app->request->get();
-        if(empty($get['op'])) {
+        if (empty($get['op'])) {
             $search                  = new MovimientoCajaSearch();
             $search->fk_idCajaOrigen = 1;
             $cchica                  = $search->search(yii::$app->request->queryParams);
@@ -341,9 +341,7 @@ class VentaController extends Controller
                 $cchica->attributes = $get['CajaChica'];
             }
             return $this->render('orden', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
-        }
-        else
-        {
+        } else {
             $cchica = new MovimientoCaja();
             return $this->renderAjax('forms/cajaChica', ['cajaChica' => $cchica]);
         }
@@ -367,10 +365,10 @@ class VentaController extends Controller
         }
 
         if (isset($_GET['d'])) {
-            $d = $_GET['d'];
-            $dia = date("w",strtotime(date("Y-m-").$d));
-            if($dia==0)
-                $d-=1;
+            $d   = $_GET['d'];
+            $dia = date("w", strtotime(date("Y-m-") . $d));
+            if ($dia == 0)
+                $d -= 1;
             if (strlen($d) == 1)
                 $d = "0" . $d;
             $m = date("m");
@@ -398,7 +396,7 @@ class VentaController extends Controller
                               'deudas'  => $variables['deudas'],
                               'recibos' => $variables['recibos'],
                               'cajas'   => $variables['cajas'],
-                              'dia'=>$d,
+                              'dia'     => $d,
                           ));
         } elseif (isset($_GET['list'])) {
             $arqueos = new CActiveDataProvider('ArqueoCaja',
@@ -462,6 +460,5 @@ class VentaController extends Controller
             }
         }
     }
-
 
 }
