@@ -205,7 +205,8 @@ class SGOrdenes extends Component
 
             $datos['caja']->monto -= $movimientoCaja->monto;
 
-            $variables = SGServicioVenta::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, false, true);
+            $variables = SGCaja::getSaldo($datos['caja']->idCaja,$datos['arqueo']->fechaMovimientos,false,false);
+            //$variables = SGServicioVenta::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, false, true);
 
             $datos['arqueo']->saldo = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $movimientoCaja->monto, 1, PHP_ROUND_HALF_UP);
 

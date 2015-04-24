@@ -13,7 +13,7 @@ use Yii;
  * @property string $time
  * @property integer $fk_idUser
  * @property double $monto
- * @property integer $tipoMovimiento // 0=deudas,1=ventas,2=cajaChica,3=arqueo
+ * @property integer $tipoMovimiento // 0=deudas,1=ventas,2=cajaChica,3=arqueo,4=recibos
  * @property string $observaciones
  * @property string $fechaCierre
  * @property double $saldoCierre
