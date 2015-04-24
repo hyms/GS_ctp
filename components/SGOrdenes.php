@@ -211,32 +211,17 @@ class SGOrdenes extends Component
             $datos['arqueo']->saldo = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $movimientoCaja->monto, 1, PHP_ROUND_HALF_UP);
 
             if ($datos['caja']->monto < 0) {
-                $this->error = "No Existen suficientes fondos";
-                $datos['arqueo']->addError('monto', $this->error);
-                $this->ventaError = true;
+                $datos['arqueo']->addError('monto',"No Existen suficientes fondos");
                 return $datos;
             }
 
             if ($movimientoCaja->monto == 0) {
-                $datos['arqueo']->correlativo = "";
-            }
-
-            if ($movimientoCaja->monto < 0) {
-                $this->error = "El monto de la transaccion debe ser mayor a 0";
-                $datos['arqueo']->addError('monto', $this->error);
-                $this->ventaError = true;
-                return $datos;
-            }
-
-            if (!$datos['arqueo']->validate() || !$datos['caja']->validate()) {
-                $this->error      = "error en arqueo o caja";
-                $this->ventaError = true;
-                return $datos;
+                $datos['arqueo']->correlativoCierre = "";
             }
 
             $cajaAdmin = Caja::model()->findByPk($datos['caja']->fk_idCaja);
 
-            if ($movimientoCaja->save()) {
+            /*//if ($movimientoCaja->save()) {
                 $datos['arqueo']->fk_idMovimientoCaja = $movimientoCaja->idMovimientoCaja;
                 $datos['caja']->save();
                 if ($datos['arqueo']->save()) {
@@ -245,7 +230,7 @@ class SGOrdenes extends Component
                     $criteria->addCondition("time <= '" . $datos['arqueo']->fechaMovimientos . "'");
                     $criteria->addCondition('fk_idCajaOrigen=' . $datos['caja']->idCaja . ' or fk_idCajaDestino=' . $datos['caja']->idCaja);
                     $movimientos = MovimientoCaja::model()->findAll($criteria);
-                    */
+*//*
                     foreach ($variables['movimientos'] as $item) {
                         $item->fk_idArqueo = $datos['arqueo']->idArqueoCaja;
                         $item->save();
@@ -257,7 +242,7 @@ class SGOrdenes extends Component
                 }
                 $datos['movimientos'] = $variables['movimientos'];
                 return $datos;
-            }
+            }//*/
         }
     }
 }

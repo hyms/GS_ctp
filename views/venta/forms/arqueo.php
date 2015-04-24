@@ -1,35 +1,36 @@
 <?php
-    $form=$this->beginWidget('CActiveForm', array(
-        'id'=>'form',
-        //'action'=>CHtml::normalizeUrl(array('/distribuidora/index')),
-        'htmlOptions'=>array(
-            'class'=>'form-horizontal',
-            'role'=>'form'
-        ),
-    ));
+    use yii\bootstrap\ActiveForm;
+
+    $arqueo->time=$fecha;
 ?>
-<div class="form-group col-xs-6" >
-    <?php echo CHtml::label('Monto en Caja','monto',array('class'=>'control-label col-xs-6')); ?>
-    <div class="col-xs-6">
-        <?php echo CHtml::activeTextField($caja,'monto',array('class'=>'form-control ','readonly'=>true)); ?>
-    </div>
-    <?php echo CHtml::error($caja,'monto',array('class'=>'label label-danger')); ?>
-</div>
+<div class="panel panel-default hidden-print">
+    <div class="panel-heading">
+        <span class="panel-title"><strong>Arqueo</strong></span>
 
-<div class="form-group col-xs-6" >
-    <?php echo CHtml::label('Monto Entregado','monto',array('class'=>'control-label col-xs-6')); ?>
-    <div class="col-xs-6">
-        <?php echo CHtml::activeTextField($arqueo,'monto',array('class'=>'form-control','readonly'=>true)); ?>
     </div>
-    <?php echo CHtml::error($arqueo,'monto',array('class'=>'label label-danger')); ?>
-</div>
+    <div class="panel-body" style="overflow: auto;">
+        <?php
+            $form = ActiveForm::begin(['layout'=>'horizontal','id'=>'form']);
+        ?>
+            <div class = "col-xs-6">
+        <?= $form->field($caja,'monto')->textInput(['disabled'=>true]);?>
+            </div>
+        <?php
+        /*if($dia!=date("d")) {
+            ?>
+            <div class="form-group col-xs-5">
+                <?php echo CHtml::label('Monto a Entregar', 'monto', array('class' => 'control-label col-xs-6')); ?>
+                <div class="col-xs-5">
+                    <?php echo CHtml::activeTextField($arqueo, 'monto', array('class' => 'form-control')); ?>
+                    <?php echo CHtml::activeHiddenField($arqueo, 'fechaMovimientos', array('class' => 'form-control')); ?>
+                </div>
+                <?php echo CHtml::error($arqueo, 'monto', array('class' => 'label label-danger')); ?>
 
-<div class="form-group col-xs-6" >
-    <?php echo CHtml::label('Saldo','saldo',array('class'=>'control-label col-xs-6')); ?>
-    <div class="col-xs-6">
-        <?php echo CHtml::activeTextField($arqueo,'saldo',array('class'=>'form-control','readonly'=>true)); ?>
+            </div>
+            <?php echo CHtml::submitButton('Continuar', array('class' => 'btn btn-default col-xs-offset-1')); ?>
+        <?php
+        }*/
+        ?>
+        <?php ActiveForm::end(); ?>
     </div>
-    <?php echo CHtml::error($arqueo,'saldo',array('class'=>'label label-danger')); ?>
 </div>
-
-<?php $this->endWidget(); ?>

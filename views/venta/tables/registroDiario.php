@@ -1,11 +1,11 @@
 <?php
     $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
     $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-    $fecha=$dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de ".$meses[date('n',strtotime($fecha))-1]. " del ".date('Y',strtotime($fecha));
+    $fecha = $dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de ".$meses[date('n',strtotime($fecha))-1]. " del ".date('Y',strtotime($fecha));
 ?>
-<div >
+<div>
     <h3 class="text-center"><strong><?php echo "REGISTRO DIARIO"?></strong></h3>
-    <p class="text-right"><?php echo "La Paz, ".$fecha;?></p>
+    <p class="text-right"><?php echo $sucursal.", ".$fecha;?></p>
     <?php $total=0;?>
     <table class="table table-hover table-condensed">
         <thead>
@@ -78,7 +78,7 @@
             <div class="col-xs-offset-1 col-xs-4 well">
                 <br><br>
                 <p class="text-center"><?php echo "firma";?></p>
-                <?php $empleado=User::model()->findByPk(Yii::app()->user->id)?>
+                <?php $empleado=\app\models\User::findOne(Yii::$app->user->id)?>
                 <span><?php echo "Nombre: ".$empleado->nombre." ".$empleado->apellido?></span>
                 <p class="text-center"><?php echo "Entregue conforme";?></p>
             </div>

@@ -1,10 +1,10 @@
 <?php
     $form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
 ?>
-    <?= $form->field($recibo,'observaciones',['label'=>'Detalle'])->textarea(); ?>
+    <?= $form->field($cajaChica,'observaciones',['label'=>'Detalle'])->textarea(); ?>
     <div class="row" >
         <div class="col-xs-4" >
-            <?= $form->field($recibo,'monto'); ?>
+            <?= $form->field($cajaChica,'monto'); ?>
         </div>
     </div>
 

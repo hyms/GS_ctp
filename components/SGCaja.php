@@ -73,15 +73,15 @@ class SGCaja extends Component
 
         $arqueos = array();
         $movimientos = MovimientoCaja::find();
-        if (!$arqueo)
-            $movimientos->where(['between', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 00:00:00'", date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59'"]);
-        else
-            $movimientos->where(['fk_idArqueo', $arqueo]);
+        $movimientos->where(['fk_idCajaOrigen' => $idCaja])->orWhere(['fk_idCajaDestino' => $idCaja]);
+        if (!$arqueo) {
+            //$movimientos->where(['between', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 00:00:00'", date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59'"]);
+            $movimientos->andWhere(['<=', 'time',date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
+        }else {
+            $movimientos->andWhere(['fk_idArqueo', $arqueo]);
+        }
 
-        $movimientos->andWhere(['fk_idCajaOrigen' => $idCaja]);
-        $movimientos->orWhere(['fk_idCajaOrigen' => $idCaja]);
-
-        $movimientos->all();
+        $movimientos = $movimientos->all();
         $total = 0;
 
         foreach ($movimientos as $key => $movimiento) {
@@ -89,33 +89,38 @@ class SGCaja extends Component
 
             switch ($movimiento->tipoMovimiento) {
                 case 0:
-                    if ($array || $get['deudas'])
-                        $deudas += $movimiento->monto;
+                    if ($array || isset($get['deudas'])) {
+                        if (isset($movimiento->idParent0)) {
+                            if (isset($movimiento->idParent0->ordenCTPs[0]))
+                                $orden = $movimiento->idParent0->ordenCTPs[0];
+                            array_push($deudas, $orden);
+                        }
+                    }
                     else
-                        array_push($deudas, $movimiento->ordenCTPs[0]);
+                        $deudas += $movimiento->monto;
                     break;
                 case 1:
                     if (!empty($movimiento->ordenCTPs)) {
-                        if ($array || $get['ventas'])
-                            $ventas += $movimiento->monto;
-                        else
+                        if ($array || isset($get['ventas']))
                             array_push($ventas, $movimiento->ordenCTPs[0]);
+                        else
+                            $ventas += $movimiento->monto;
                     }
                     break;
                 case 2:
-                    if ($array || $get['cajas'])
-                        $cajas += $movimiento->monto;
-                    else
+                    if ($array || isset($get['cajas']))
                         array_push($cajas, $movimiento);
+                    else
+                        $cajas += $movimiento->monto;
                     break;
                 case 3:
                     array_push($arqueos, $movimiento);
                     break;
                 case 4:
-                    if ($array || $get['recibos'])
-                        $recibos += $movimiento->monto;
-                    else
+                    if ($array || isset($get['recibos']))
                         array_push($recibos, $movimiento);
+                    else
+                        $recibos += $movimiento->monto;
                     break;
             }
         }

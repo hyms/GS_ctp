@@ -15,14 +15,14 @@ class SGRecibo extends Component
         if (isset($data['recibo']) && isset($data['caja'])) {
 
             if ($data['recibo']->tipoRecibo) {
-                $movimientoCaja = SGCaja::movimientoCajaVenta($data['recibo']->fk_idMovimientoCaja, $idCaja, "Recibo de Ingreso");
+                $movimientoCaja = SGCaja::movimientoCajaVenta($data['recibo']->fk_idMovimientoCaja, $idCaja, "Recibo de Ingreso",null,4);
                 if (!$movimientoCaja->isNewRecord) {
                     $data['caja']->monto += $movimientoCaja->monto;
                 }
                 $movimientoCaja->monto = $data['recibo']->monto;
                 $data['caja']->monto -= $movimientoCaja->monto;
             } else {
-                $movimientoCaja = SGCaja::movimientoCajaCompra($data['recibo']->fk_idMovimientoCaja, $idCaja, "Recibo de Ingreso");
+                $movimientoCaja = SGCaja::movimientoCajaCompra($data['recibo']->fk_idMovimientoCaja, $idCaja, "Recibo de Ingreso",null,4);
                 if (!$movimientoCaja->isNewRecord) {
                     $data['caja']->monto -= $movimientoCaja->monto;
                 }
@@ -34,8 +34,6 @@ class SGRecibo extends Component
                 $this->error = "No existen suficientes fondos para realizar la transaccion";
                 return $data;
             }
-
-            $movimientoCaja->tipoMovimiento = $data['recibo']->tipoRecibo;
 
             if ($movimientoCaja->save()) {
                 $data['recibo']->fk_idMovimientoCaja = $movimientoCaja->idMovimientoCaja;
