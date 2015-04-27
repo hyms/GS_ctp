@@ -37,6 +37,10 @@ class User extends \yii\db\ActiveRecord  implements IdentityInterface
     /**
      * @inheritdoc
      */
+    //const ROLE_USER = 10;
+    //const ROLE_MODERATOR = 20;
+    const ROLE_ADMIN = 1;
+
     public static function tableName()
     {
         return 'user';
