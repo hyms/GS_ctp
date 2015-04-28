@@ -46,7 +46,7 @@ class Recibo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'secuencia', 'fk_idSucursal', 'detalle', 'nombre', 'ciNit', 'saldo', 'monto', 'acuenta', 'fechaRegistro', 'fk_idUser', 'fk_idServicio', 'tipoRecibo', 'fk_idMovimientoCaja'], 'required'],
+            [['fk_idSucursal', 'detalle', 'nombre', 'ciNit', 'saldo', 'monto', 'acuenta', 'fechaRegistro', 'fk_idUser', 'fk_idServicio', 'tipoRecibo', 'fk_idMovimientoCaja'], 'required'],
             [['secuencia', 'fk_idSucursal', 'fk_idUser', 'fk_idServicio', 'tipoRecibo', 'fk_idMovimientoCaja'], 'integer'],
             [['saldo', 'monto', 'acuenta'], 'number'],
             [['fechaRegistro'], 'safe'],

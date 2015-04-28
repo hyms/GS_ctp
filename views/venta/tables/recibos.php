@@ -82,7 +82,7 @@
                                                'data-toggle'=>'tooltip',
                                                'title'=>''
                                            ]);
-                    $url = Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idOrdenCTP]);
+                    $url = Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]);
                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
                 },
                 'print'=>function($url,$model){
@@ -92,7 +92,7 @@
                                                'data-toggle'=>'tooltip',
                                                'title'=>''
                                            ]);
-                    $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idOrdenCTP]);
+                    $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idRecibo]);
                     return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
                 },
             ]
@@ -108,4 +108,15 @@
                               'hover'=>true,
                               'bordered'=>false,
                           ]);
+
+    \yii\bootstrap\Modal::begin([
+      'header' => '<h2>Hello world</h2>',
+      'toggleButton' => ['label' => 'click me'],
+      'footer'=>"<button>click</button>"
+  ]);
+
+  echo 'Say hello...';
+
+  \yii\bootstrap\Modal::end();
+
 ?>

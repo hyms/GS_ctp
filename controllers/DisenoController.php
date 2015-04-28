@@ -7,14 +7,30 @@ use app\components\SGProducto;
 use app\models\OrdenCTP;
 use app\models\OrdenDetalle;
 use app\models\ProductoStock;
+use app\models\Sucursal;
 use Yii;
 use yii\base\Model;
 use yii\filters\AccessControl;
 use yii\web\Controller;
+use yii\web\HttpException;
 
 class DisenoController extends Controller
 {
     public $layout = "diseno";
+
+    private $idSucursal;
+
+    public function init()
+    {
+        if(!empty(yii::$app->user->identity)) {
+            $sucursal = Sucursal::findOne(['idSucursal' => yii::$app->user->identity->fk_idSucursal]);
+            if (empty($sucursal))
+                throw new HttpException(412, SGOperation::getError(412));
+            else
+                $this->idSucursal = $sucursal->idSucursal;
+        }
+        parent::init();
+    }
 
     public function behaviors()
     {
@@ -72,13 +88,13 @@ class DisenoController extends Controller
                         $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                         $detalle = $ordenes->ordenDetalles;
                     } else {
-                        $ordenes->fk_idSucursal = 1;
+                        $ordenes->fk_idSucursal = $this->idSucursal;
                         $ordenes->estado        = 1;
                         $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal);
                         $ordenes->fechaGenerada = date('Y-m-d H:i:s');
                     }
                     $ordenes->fk_idUserD = yii::$app->user->id;
-                    $producto            = SGProducto::getProductos(true, 10, 1);
+                    $producto            = SGProducto::getProductos(true, 10, $this->idSucursal);
                     $post                = Yii::$app->request->post();
                     if (!empty($post)) {
                         $operacion = new SGOrdenes();
@@ -112,7 +128,7 @@ class DisenoController extends Controller
                     ]);
                 case 'buscar':
                     $render  = "buscar";
-                    $ordenes = SGOrdenes::getOrdenes(1);
+                    $ordenes = SGOrdenes::getOrdenes($this->idSucursal);
                     break;
             }
         }

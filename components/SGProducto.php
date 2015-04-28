@@ -11,21 +11,6 @@ use yii\data\ActiveDataProvider;
 
 class SGProducto extends Component
 {
-    public function grabar()
-    {
-
-    }
-
-    public function eliminar()
-    {
-
-    }
-
-    public function getCodigo()
-    {
-
-    }
-
     static public function movimientoStockVenta($idMovimiento, $productoStock,$observaciones="", $dependiente = false)
     {
         if (empty($idMovimiento)) {
@@ -55,7 +40,7 @@ class SGProducto extends Component
         }
         if ($dataProvider) {
             return new ActiveDataProvider([
-                'query'      => ProductoStock::find(['fk_sucursal' => $sucursal,'enable'=>1]),
+                'query'      => ProductoStock::find()->where(['fk_idSucursal' => $sucursal])->andWhere(['enable'=>1]),
                 'pagination' => [
                     'pageSize' => $pager
                 ]
