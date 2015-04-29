@@ -41,9 +41,11 @@
                     break;
                 case "recibos":
                     echo $this->render('tables/recibos', ['recibos' => $recibos, 'search' => $search]);
+                    echo $this->render('scripts/modal');
                     break;
                 case "cajaChica":
                     echo $this->render('tables/cajaChicas', ['cajasChicas' => $cajasChicas, 'search' => $search]);
+                    echo $this->render('scripts/modal');
                     break;
                 case "arqueo":
                     echo $this->render('menus/arqueo');

@@ -19,7 +19,7 @@ class AppAsset2 extends AssetBundle
     public $baseUrl = '@web';
     public $css = [
         'css/site.css',
-        'css/bootstrap.min.slate.css',
+        'css/bootstrap.min.css',
     ];
     public $jsOptions = ['position' => \yii\web\View::POS_HEAD];
     public $js = [
