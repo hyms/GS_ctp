@@ -398,6 +398,7 @@ class VentaController extends Controller
         if (empty($get['op'])) {
             $search                  = new MovimientoCajaSearch();
             $search->fk_idCajaOrigen = $this->idCaja;
+            $search->tipoMovimiento  = 2;
             $cchica                  = $search->search(yii::$app->request->queryParams);
             if (isset($get['CajaChica'])) {
                 $cchica->attributes = $get['CajaChica'];
@@ -405,6 +406,24 @@ class VentaController extends Controller
             return $this->render('orden', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
         } else {
             $cchica = new MovimientoCaja();
+            if (isset($get['id'])) {
+                $cchica = MovimientoCaja::findOne(['idMovimientoCaja' => $get['id']]);
+            }
+
+            $post = Yii::$app->request->post();
+            if(isset($post['MovimientoCaja']))
+            {
+                $op = new SGCaja();
+                $datos = $op->cajaChica(['cajaChica'=>$cchica,'post'=>$post['MovimientoCaja'],'caja'=>Caja::findOne(['idCaja'=>$this->idCaja])]);
+                if($op->success)
+                {
+                    $this->redirect(['venta/chica']);
+                }
+                else
+                {
+                    $cchica = $datos['cajaChica'];
+                }
+            }
             return $this->renderAjax('forms/cajaChica', ['cajaChica' => $cchica]);
         }
     }

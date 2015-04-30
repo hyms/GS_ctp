@@ -189,20 +189,19 @@ class SGOrdenes extends Component
     {
         if (isset($datos['caja']) && isset($datos['arqueo'])) {
 
-            $tmp = MovimientoCaja::find()
-                ->where(['fk_idCaja'=>$datos['caja']->idCaja])
+            $tmp                                = MovimientoCaja::find()
+                ->where(['fk_idCaja' => $datos['caja']->idCaja])
                 ->select('max(correlativoCierre) as correlativoCierre')
                 ->one();
             $datos['arqueo']->correlativoCierre = $tmp->correlativoCierre + 1;
-            $cajaAdmin = Caja::findOne(['idCaja'=>$datos['caja']->fk_idCaja]);
+            $cajaAdmin                          = Caja::findOne(['idCaja' => $datos['caja']->fk_idCaja]);
 
             if (!$datos['caja']->validate() || !$datos['arqueo']->validate()) {
                 $this->error = "error en arqueo o caja";
                 return $datos;
             }
-            $movimientoCaja = SGCaja::movimientoCajaTraspaso(null,$datos['caja']->idCaja,$datos['caja']->fk_idCaja,"Arqueo de caja",date("Y-m-d", strtotime($datos['arqueo']->fechaMovimientos)) . " 23:59:00",3);
-            if(!$movimientoCaja->isNewRecord)
-            {
+            $movimientoCaja = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja", date("Y-m-d", strtotime($datos['arqueo']->fechaMovimientos)) . " 23:59:00", 3);
+            if (!$movimientoCaja->isNewRecord) {
                 $datos['caja']->monto += $movimientoCaja->monto;
                 if (!empty($cajaAdmin)) {
                     $cajaAdmin->monto -= $movimientoCaja->monto;
@@ -211,13 +210,15 @@ class SGOrdenes extends Component
 
             $datos['caja']->monto -= $movimientoCaja->monto;
 
-            $variables = SGCaja::getSaldo($datos['caja']->idCaja,$datos['arqueo']->fechaMovimientos,false,false);
+            $variables = SGCaja::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, true);
             //$variables = SGServicioVenta::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, false, true);
+
+            ///generar arqueo o cierre de caJA
 
             $datos['arqueo']->saldo = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $movimientoCaja->monto, 1, PHP_ROUND_HALF_UP);
 
             if ($datos['caja']->monto < 0) {
-                $datos['arqueo']->addError('monto',"No Existen suficientes fondos");
+                $datos['arqueo']->addError('monto', "No Existen suficientes fondos");
                 return $datos;
             }
 

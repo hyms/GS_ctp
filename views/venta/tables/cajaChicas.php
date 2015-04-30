@@ -70,10 +70,10 @@
                                                         $.ajax({
                                                             type     :'POST',
                                                             cache    : false,
-                                                            url  : '" . Url::to(['venta/chica','id'=>$model->idMovimientoCaja]) . "',
+                                                            url  : '" . Url::to(['venta/chica','id'=>$model->idMovimientoCaja,'op'=>'mod']) . "',
                                                             success  : function(data) {
                                                                 if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">".(($model->tipoRecibo)?'Egreso':'Ingreso')."</h3>');
+                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
                                                                     $('#viewModal .modal-body').html(data);
                                                                     $('#viewModal').modal();
                                                                 }
