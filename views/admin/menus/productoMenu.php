@@ -1,6 +1,6 @@
 
 <?php
-use yii\bootstrap\Nav;
+    use yii\bootstrap\Nav;
 
 ?>
 
@@ -19,7 +19,11 @@ use yii\bootstrap\Nav;
             [
                 'label' => 'Añadir a Almacen',
                 'url' => ['admin/producto','op'=>'add'],
-            ]
+            ],
+            [
+                'label' => 'Stocks',
+                'url' => ['admin/stock'],
+            ],
         ],
         'options' => ['class' =>'nav-pills nav-stacked'], // set this to nav-tab to get tab-styled navigation
     ]);
