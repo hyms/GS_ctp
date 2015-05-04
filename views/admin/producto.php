@@ -20,6 +20,20 @@ $this->title = 'Administracion-Productos';
             case "list":
                 echo $this->render('tables/productos',['producto'=>$producto,'search'=>$search]);
                 break;
+            case "addRemove":
+                echo $this->render('menus/almacenes', ['submenu' => $submenu]);
+
+                if(isset($idSucursal)) {
+                    $nombre = "";
+                    foreach ($submenu as $item) {
+                        if ($item->idSucursal == $idSucursal) {
+                            $nombre = $item->nombre;
+                            break;
+                        }
+                    }
+                    echo $this->render('tables/productosAdd', ['productos' => $productos, 'search' => $search, 'idSucursal' => $idSucursal, 'nombre' => $nombre]);
+                }
+                break;
             default:
                 break;
         }

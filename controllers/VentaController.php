@@ -176,24 +176,6 @@ class VentaController extends Controller
 
                     return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes, 'search' => $searchModel]);
                     break;
-                case "deuda":
-                    $searchModel                = new OrdenCTPSearch();
-                    $searchModel->fk_idSucursal = $this->idSucursal;
-                    $searchModel->estado        = 2;
-                    $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
-                    $ordenes->query->orderBy(['fechaCobro' => SORT_DESC]);
-                    return $this->render('orden', ['r' => 'deuda', 'orden' => $ordenes, 'search' => $searchModel]);
-                    break;
-                case "deudas":
-                    //$deudas = MovimientoCaja::findAll('idParent NOT NULL');
-                    $searchModel                   = new MovimientoCajaSearch();
-                    $searchModel->fk_idCajaDestino = $this->idCaja;
-                    $deudas                        = $searchModel->search(Yii::$app->request->getQueryParams());
-                    //$deudas->query->andFilterWhere(['is not', 'idParent', NULL]);
-                    $deudas->query->andWhere(['is not', 'idParent', null]);
-                    $deudas->query->orderBy(['time' => SORT_DESC]);
-                    return $this->render('orden', ['r' => 'deudas', 'deudas' => $deudas, 'search' => $searchModel]);
-                    break;
                 case "diario":
                     $search                = new OrdenCTPSearch();
                     $search->fk_idSucursal = $this->idSucursal;
@@ -206,6 +188,34 @@ class VentaController extends Controller
             }
         }
         return $this->render('orden');
+    }
+
+    public function actionDeuda()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['op'])) {
+            switch ($get['op']) {
+                case "deuda":
+                    $searchModel                = new OrdenCTPSearch();
+                    $searchModel->fk_idSucursal = $this->idSucursal;
+                    $searchModel->estado        = 2;
+                    $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
+                    $ordenes->query->orderBy(['fechaCobro' => SORT_DESC]);
+                    return $this->render('deuda', ['r' => 'deuda', 'orden' => $ordenes, 'search' => $searchModel]);
+                    break;
+                case "deudas":
+                    //$deudas = MovimientoCaja::findAll('idParent NOT NULL');
+                    $searchModel                   = new MovimientoCajaSearch();
+                    $searchModel->fk_idCajaDestino = $this->idCaja;
+                    $deudas                        = $searchModel->search(Yii::$app->request->getQueryParams());
+                    //$deudas->query->andFilterWhere(['is not', 'idParent', NULL]);
+                    $deudas->query->andWhere(['is not', 'idParent', null]);
+                    $deudas->query->orderBy(['time' => SORT_DESC]);
+                    return $this->render('deuda', ['r' => 'deudas', 'deudas' => $deudas, 'search' => $searchModel]);
+                    break;
+            }
+        }
+        return $this->render('deuda');
     }
 
     public function actionVenta()
@@ -285,13 +295,13 @@ class VentaController extends Controller
                 $pago  = new SGOrdenes();
                 $datos = $pago->deuda($datos, true);
                 if ($pago->success) {
-                    $this->redirect(array('venta/orden', 'op' => 'deudas'));
+                    $this->redirect(array('venta/deuda', 'op' => 'deudas'));
                 } else {
                     $model = $datos['deuda'];
                 }
             }
 
-            return $this->render('orden', array('r' => 'pagoDeuda', 'orden' => $orden, 'deuda' => $deudaOld->monto, 'model' => $model));
+            return $this->render('deuda', array('r' => 'pagoDeuda', 'orden' => $orden, 'deuda' => $deudaOld->monto, 'model' => $model));
         }
     }
 
@@ -361,7 +371,7 @@ class VentaController extends Controller
             $search                = new ReciboSearch();
             $search->fk_idSucursal = $this->idSucursal;
             $recibos               = $search->search(yii::$app->request->queryParams);
-            return $this->render('orden', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
+            return $this->render('recibo', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
         } else {
             if (isset($get['id']))
                 $recibo = Recibo::findOne(['idRecibo' => $get['id']]);
@@ -403,7 +413,7 @@ class VentaController extends Controller
             if (isset($get['CajaChica'])) {
                 $cchica->attributes = $get['CajaChica'];
             }
-            return $this->render('orden', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
+            return $this->render('chica', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
         } else {
             $cchica = new MovimientoCaja();
             if (isset($get['id'])) {
@@ -467,7 +477,7 @@ class VentaController extends Controller
 
             //print_r($variables);
             //return true;
-            return $this->render('orden',
+            return $this->render('arqueo',
                                  [
                                      'r'  => 'arqueo',
                                      'saldo'   => $variables['saldo'],
@@ -492,7 +502,7 @@ class VentaController extends Controller
                                                ));
             $this->render('base', array('render' => 'arqueos', 'arqueos' => $arqueos,));*/
         } else
-            return $this->render('orden',['r' => 'arqueos', 'arqueos' => '']);
+            return $this->render('arqueo',['r' => 'arqueos', 'arqueos' => '']);
     }
 
     public function actionAjaxfactura()

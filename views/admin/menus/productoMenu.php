@@ -18,7 +18,7 @@ use yii\bootstrap\Nav;
             ],
             [
                 'label' => 'Añadir a Almacen',
-                'url' => ['admin/producto','op'=>'addProduct'],
+                'url' => ['admin/producto','op'=>'add'],
             ]
         ],
         'options' => ['class' =>'nav-pills nav-stacked'], // set this to nav-tab to get tab-styled navigation

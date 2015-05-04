@@ -54,4 +54,23 @@ class SGProducto extends Component
     {
         return Producto::findOne($data);
     }
+
+    public function initStock($idProducto, $idSucursal = null)
+    {
+        $date = ProductoStock::find()
+            ->where(['fk_idProducto'=>$idProducto])
+            ->where(['fk_idSucursal'=>$idSucursal])
+            ->one();
+
+        if (empty($date)) {
+            $almacen = new ProductoStock;
+            $almacen->fk_idSucursal = $idSucursal;
+            $almacen->fk_idProducto = $idProducto;
+            $almacen->enable = 1;
+            $almacen->cantidad = 0;
+            $val = $almacen->save();
+            return $val;
+        }
+        return true;
+    }
 }

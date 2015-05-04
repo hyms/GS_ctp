@@ -1,18 +1,16 @@
 <?php
-$items = array();
+use yii\bootstrap\Nav;
+
+$items = [];
 foreach($submenu as $key => $item)
 {
-    if($item->idAlmacen > 1)
-    {
-        $items[$key]=array('label'=>$item->nombre, 'url'=>array('producto/almacenAdd','id'=>$item->idAlmacen));
-    }
+    array_push($items,[
+        'label' =>  $item->nombre,
+        'url'   =>  ['admin/producto','op'=>'add','id'=>$item->idSucursal]
+    ]);
 }
 
-$this->widget(
-    'booster.widgets.TbMenu',
-    array(
-        'type' => 'tabs',
-        'activeCssClass'	=> 'active',
-        'items'=>$items
-    )
-);
+echo Nav::widget([
+    'options'   =>  ['class' => 'nav-tabs'],
+    'items'     =>  $items
+]);

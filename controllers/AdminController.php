@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Producto;
 use app\models\ProductoSearch;
+use app\models\ProductoStockSearch;
 use app\models\Sucursal;
 use Yii;
 use yii\filters\AccessControl;
@@ -60,23 +61,36 @@ class AdminController extends Controller
         $render = "";
         if(isset($get['op']))
         {
-            switch($get['op']){
+            switch($get['op']) {
                 case "new":
-                    $render="new";
-                    $producto=new Producto();
-                    if($producto->load(Yii::$app->request->post()))
-                    {
-                        if($producto->save())
-                            $this->redirect(['admin/producto','op'=>'list']);
+                    $render = "new";
+                    $producto = new Producto();
+                    if ($producto->load(Yii::$app->request->post())) {
+                        if ($producto->save())
+                            $this->redirect(['admin/producto', 'op' => 'list']);
                     }
-                    return $this->render('producto', ['r' => $render,'producto'=>$producto]);
-                    break;
+                    return $this->render('producto', ['r' => $render, 'producto' => $producto]);
                 case "list":
-                    $render="list";
                     $search = new ProductoSearch();
                     $producto = $search->search(Yii::$app->request->queryParams);
-
-                    return $this->render('producto', ['r' => $render,'producto'=>$producto,'search'=>$search]);
+                    return $this->render('producto', ['r' => "list", 'producto' => $producto, 'search' => $search]);
+                case "edit":
+                    break;
+                case "del":
+                    break;
+                case "add":
+                    $submenu = Sucursal::find()->all();
+                    if (isset($get['id'])) {
+                        $search = new ProductoStockSearch();
+                        $productos = $search->search(yii::$app->request->queryParams);
+                        $productos->query->andWhere(['is','fk_idSucursal',null]);
+                        if (isset($get['producto'])) {
+                            $this->initStock($get['producto'], $get['id']);
+                        }
+                        return $this->render('producto', ['r' => 'addRemove', 'productos' => $productos,'search'=>$search, 'idSucursal' => $get['id'], 'submenu' => $submenu]);
+                    } else {
+                        return $this->render('producto', ['r' => 'addRemove', 'submenu' => $submenu]);
+                    }
             }
         }
         return $this->render('producto', ['r' => $render]);

@@ -1,11 +1,11 @@
 <?php
-    use app\assets\AppAsset2;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
-    use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset2;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
-    /* @var $this \yii\web\View */
+/* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset2::register($this,true);
@@ -37,8 +37,24 @@ AppAsset2::register($this,true);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             [
-                'label'=>'Caja',
+                'label'=>'Orden',
                 'url'=>['venta/orden']
+            ],
+            [
+                'label'=>'Deudas',
+                'url' =>['venta/deuda']
+            ],
+            [
+                'label'=>'Recibos',
+                'url'=>['venta/recibos']
+            ],
+            [
+                'label'=>'Caja Chica',
+                'url'=>['venta/chica']
+            ],
+            [
+                'label'=>'Arqueo',
+                'url'=>['venta/arqueo']
             ],
             [
                 'label'=>'Cliente',

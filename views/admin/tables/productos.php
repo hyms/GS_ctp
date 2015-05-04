@@ -1,7 +1,6 @@
 <?php
 use kartik\grid\GridView;
 
-
 $columns = [
     ['class' => 'yii\grid\SerialColumn'],
     [

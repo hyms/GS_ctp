@@ -1,4 +1,68 @@
 <?php
+use kartik\grid\GridView;
+use yii\helpers\Html;
+
+$columns = [
+    [
+        'header'=>'Codigo',
+        'value'=>function($model){
+            return $model->fkIdProducto->codigo;
+        },
+    ],
+    [
+        'header'=>'Material',
+        'value'=>function($model){
+            return $model->fkIdProducto->material;
+        },
+    ],
+    [
+        'header'=>'Detalle Producto',
+        'value'=>function($model){
+            return $model->fkIdProducto->formato." ".$model->fkIdProducto->dimension;
+        },
+    ],
+    [
+        'header'=>'Cant.xPaqt.',
+        'value'=>function($model){
+            return $model->fkIdProducto->cantidadPaquete;
+        },
+    ],
+    [
+        'header'=>'',
+        'format'=>'raw',
+        'value'=>function($model,$idSucursal) {
+            $producto = \app\models\ProductoStock::findOne([
+                'fk_idProducto' => $model->fk_idProducto,
+                'fk_idSucursal' => $idSucursal,
+            ]);
+            $detalle = $model->fkIdProducto->material . " " . $model->fkIdProducto->formato . " " . $model->fkIdProducto->dimension;
+            print_r($producto);
+            if (empty($producto))
+                return Html::a("<span class=\"glyphicon glyphicon-ok\"></span>Añadir", array('producto/AlmacenAdd', "producto" => $model->fk_idProducto, "id" => $model->fk_idSucursal), array('class' => 'btn btn-success btn-sm', 'title' => 'Añadir Producto', 'onclick' => "return confirm('Desea añadir el producto " . $detalle . "?')"));
+            else
+                return Html::a("<span class=\"glyphicon glyphicon-remove\"></span>Eliminar", array("producto/productoDel", "producto" => $model->fk_idProducto, "id" => $model->fk_idSucursal), array('class' => 'btn btn-danger btn-sm', 'title' => 'Eliminar Producto', 'onclick' => "return confirm('Desea eliminar el producto " . $detalle . "?')"));
+        },
+    ]
+];
+
+echo GridView::widget([
+
+    'dataProvider'=> $productos,
+    'filterModel' => $search,
+    'columns' => $columns,
+    'toolbar' =>  [
+        '{toggleData}',
+    ],
+    //'bordered' => true,
+    'condensed' => true,
+    'hover'=>true,
+    'panel' => [
+        'type' => GridView::TYPE_DEFAULT,
+        'heading' => 'Lista de Productos - '.$nombre,
+    ],
+    'persistResize' => true,
+]);
+/*
 if(!empty($productos)){
 ?>
 <div class="panel panel-default">
@@ -10,29 +74,6 @@ if(!empty($productos)){
     <?php
 
     $columns = array(
-        array(
-            'header'=>'Codigo',
-            'value'=>'$data->fkIdProducto->codigo',
-            'filter'=>CHtml::activeTextField($productos, 'codigo',array("class"=>"form-control")),
-        ),
-        array(
-            'header'=>'Material',
-            'value'=>'$data->fkIdProducto->material',
-            'filter'=>CHtml::activeDropDownList($productos,'material',CHtml::listData(Producto::model()->with('productoStocks')->findAll(array('group'=>'material','select'=>'material','condition'=>'fk_idAlmacen=1')),'material','material'),array("class"=>"form-control ",'empty'=>'')),
-        ),
-        array(
-            'header'=>'Detalle Producto',
-            'value'=>'$data->fkIdProducto->color." ".$data->fkIdProducto->descripcion." ".$data->fkIdProducto->marca',
-            'filter'=>CHtml::activeTextField($productos, 'detalle',array("class"=>"form-control")),
-        ),
-        array(
-            'header'=>'Industria',
-            'value'=>'$data->fkIdProducto->nota',
-        ),
-        array(
-            'header'=>'Cant.xPaqt.',
-            'value'=>'$data->fkIdProducto->cantidadPaquete'
-        ),
         array(
             'header'=>'',
             'type'=>'raw',
@@ -46,3 +87,4 @@ if(!empty($productos)){
 </div>
 <?php
 }
+*/
