@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\components\precios;
 use app\components\SGProducto;
 use app\models\Producto;
 use app\models\ProductoSearch;
 use app\models\ProductoStock;
 use app\models\ProductoStockSearch;
 use app\models\Sucursal;
+use app\models\TipoCliente;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -59,7 +61,7 @@ class AdminController extends Controller
 
     public function actionProducto()
     {
-        $get    = Yii::$app->request->get();
+        $get = Yii::$app->request->get();
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "new":
@@ -94,18 +96,17 @@ class AdminController extends Controller
                 case "rem":
                     $submenu = Sucursal::find()->all();
                     if (isset($get['producto']) && isset($get['id'])) {
-                        $almacen = ProductoStock::findOne(['idProductoStock'=>$get['producto']]);
+                        $almacen = ProductoStock::findOne(['idProductoStock' => $get['producto']]);
                         if ($almacen->cantidad > 0) {
-                            $almacen0           = ProductoStock::find()
+                            $almacen0 = ProductoStock::find()
                                 ->where(['is', 'fk_idSucursal', null])
                                 ->andWhere(['fk_idProducto' => $almacen->fk_idProducto])
                                 ->one();
                             $almacen0->cantidad += $almacen->cantidad;
                             $almacen0->save();
                         }
-                        if(!$almacen->delete())
-                        {
-                            $almacen->enable=false;
+                        if (!$almacen->delete()) {
+                            $almacen->enable = false;
                         }
                         $this->redirect(array('admin/producto', 'op' => 'add', 'id' => $get['id']));
                     } else {
@@ -138,13 +139,72 @@ class AdminController extends Controller
                             }
                         }
                     }
-                    return $this->render('producto', ['r' => 'stocks', 'submenu' => $submenu, 'productos' => $productos, 'search' => $search,'nombre'=>$nombre]);
+                    return $this->render('producto', ['r' => 'stocks', 'submenu' => $submenu, 'productos' => $productos, 'search' => $search, 'nombre' => $nombre]);
                     break;
                 case "add":
+                    if (isset($get['id'])) {
+                        $almacen  = ProductoStock::findOne(['idProductoStock' => $get['id']]);
+                        $deposito = null;
+                        if (!empty($almacen->fkIdSucursal)) {
+                            $deposito = ProductoStock::find()
+                                ->where(['fk_idProducto' => $almacen->fk_idProducto])
+                                ->andWhere(['fk_idSucursal' => $almacen->fkIdSucursal->fk_idParent])
+                                ->one();
+                        }
+                        $model = SGProducto::movimientoStockCompra(null, $almacen, "Añadir a Stock", $deposito);
+                        $post  = Yii::$app->request->post();
+                        if (isset($post['MovimientoStock'])) {
+                            $model->attributes = $post['MovimientoStock'];
+
+                            if ($model->save()) {
+                                echo "done";
+                                Yii::$app->end();
+                            }
+                        }
+
+                        return $this->renderAjax('forms/add_reduce', array('model' => $model, 'almacen' => $almacen, 'deposito' => $deposito));
+                    }
                     break;
             }
         }
         return $this->render('producto', ['r' => 'stocks', 'submenu' => $submenu]);
+    }
+
+    public function actionCosto()
+    {
+        $get     = Yii::$app->request->get();
+        $submenu = Sucursal::find()->all();
+        if (isset($get['op'])) {
+            switch ($get['op']) {
+                case 'list':
+                    if (isset($get['id'])) {
+                        $placas = ProductoStock::findAll(['fk_idSucursal' => $get['id']]);
+                        return $this->render('producto', ['r' => 'costo', 'submenu' => $submenu, 'placas' => $placas]);
+                    }
+                    break;
+                case 'precio':
+                    if(isset($get['id'])) {
+                        $placa        = ProductoStock::findOne(['idProductoStock' => $get['id']]);
+                        $clienteTipos = TipoCliente::find()->all();
+                        $cantidades   = precios::getDatoPrecioOrden('cantidad', $placa->idProductoStock);
+                        $horas        = precios::getDatoPrecioOrden('hora', $placa->idProductoStock);
+
+                        $precio = new precios;
+                        $post   = Yii::$app->request->post();
+                        if (isset($post['PrecioProductoOrden']) && isset($post['cantidad']) && isset($post['hora'])) {
+                            $precio->pullPrecios($post['PrecioProductoOrden']);
+                            $precio->update($post['cantidad'], $cantidades, $post['hora'], $horas);
+                            if ($precio->success) {
+                                echo "done";
+                                Yii::app()->end();
+                            }
+                        }
+                        return $this->renderAjax('forms/preciosCTP', array('clienteTipos' => $clienteTipos, 'placa' => $placa, 'cantidades' => $cantidades, 'horas' => $horas, 'model' => $precio->model));
+                    }
+                    break;
+            }
+        }
+        return $this->render('producto', ['r' => 'costo', 'submenu' => $submenu]);
     }
 
     public function actionConfig()

@@ -42,7 +42,7 @@
                 'update'=>function($url,$model) {
                     $options = array_merge([
                                                //'class'=>'btn btn-success',
-                                               'data-original-title' => 'Modificar',
+                                               'data-original-title' => 'Añadir a Stock',
                                                'data-toggle'         => 'tooltip',
                                                'title'               => '',
                                                'onclick'             => "
@@ -59,8 +59,7 @@
                                                             }
                                                         });return false;"
                                            ]);
-                    $url     = "#";
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                    return Html::a('<span class="glyphicon glyphicon-import"></span>', "#", $options);
                 },
             ]
         ],

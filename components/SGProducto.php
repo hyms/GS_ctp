@@ -11,6 +11,10 @@ use yii\data\ActiveDataProvider;
 
 class SGProducto extends Component
 {
+
+    public $success;
+    public $error;
+
     static public function movimientoStockVenta($idMovimiento, $productoStock, $observaciones = "", $dependiente = false)
     {
         if (empty($idMovimiento)) {
@@ -20,6 +24,22 @@ class SGProducto extends Component
             $movimientoStock->fk_idUser        = yii::$app->user->id;
             $movimientoStock->observaciones    = $observaciones;
             $movimientoStock->time             = date("Y-m-d H:i:s");
+            return $movimientoStock;
+        }
+        return MovimientoStock::findOne(['idMovimientoStock' => $idMovimiento]);
+    }
+
+    static public function movimientoStockCompra($idMovimiento, $productoStock, $observaciones = "", $productoStockOrigen = null)
+    {
+        if (empty($idMovimiento)) {
+            $movimientoStock                    = new MovimientoStock;
+            $movimientoStock->fk_idProducto     = $productoStock->fk_idProducto;
+            $movimientoStock->fk_idStockDestino = $productoStock->idProductoStock;
+            if (!empty($productoStockOrigen))
+                $movimientoStock->fk_idStockOrigen = $productoStockOrigen->idProductoStock;
+            $movimientoStock->fk_idUser     = yii::$app->user->id;
+            $movimientoStock->observaciones = $observaciones;
+            $movimientoStock->time          = date("Y-m-d H:i:s");
             return $movimientoStock;
         }
         return MovimientoStock::findOne(['idMovimientoStock' => $idMovimiento]);
@@ -58,7 +78,7 @@ class SGProducto extends Component
     static public function initStock($idProducto, $idSucursal = null)
     {
         $date = ProductoStock::find()->where(['fk_idProducto' => $idProducto]);
-        if(!empty($idSucursal))
+        if (!empty($idSucursal))
             $date->andWhere(['fk_idSucursal' => $idSucursal]);
         $date = $date->one();
         if (empty($date)) {
@@ -73,4 +93,7 @@ class SGProducto extends Component
         }
         return true;
     }
+
+
+
 }

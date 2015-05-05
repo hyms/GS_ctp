@@ -4,6 +4,7 @@ namespace app\models;
 
 use Yii;
 
+SELECT `idProductoStock`,`fk_idTipoCliente`,`hora`,`precioProductoServicio`.`cantidad`,`precioSF`,`precioCF` FROM `precioProductoServicio`, `productoStock` WHERE `precioProductoServicio`.`fk_idProducto`=`productoStock`.`fk_idProducto` and `precioProductoServicio`.`fk_idAlmacen` = `productoStock`.`fk_idAlmacen`
 /**
  * This is the model class for table "precioProductoOrden".
  *
