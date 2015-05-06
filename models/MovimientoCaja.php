@@ -13,7 +13,7 @@ use Yii;
  * @property string $time
  * @property integer $fk_idUser
  * @property double $monto
- * @property integer $tipoMovimiento // 0=deudas,1=ventas,2=cajaChica,3=arqueo,4=recibos
+ * @property integer $tipoMovimiento
  * @property string $observaciones
  * @property string $fechaCierre
  * @property double $saldoCierre
@@ -22,10 +22,10 @@ use Yii;
  * @property string $nroDoc
  *
  * @property OrdenCTP[] $ordenCTPs
- * @property MovimientoCaja $idParent0
- * @property MovimientoCaja[] $movimientoCajas
  * @property Caja $fkIdCajaDestino
  * @property Caja $fkIdCajaOrigen
+ * @property MovimientoCaja $idParent0
+ * @property MovimientoCaja[] $movimientoCajas
  * @property User $fkIdUser
  * @property Recibo[] $recibos
  */
@@ -87,22 +87,6 @@ class MovimientoCaja extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getIdParent0()
-    {
-        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'idParent']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMovimientoCajas()
-    {
-        return $this->hasMany(MovimientoCaja::className(), ['idParent' => 'idMovimientoCaja']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFkIdCajaDestino()
     {
         return $this->hasOne(Caja::className(), ['idCaja' => 'fk_idCajaDestino']);
@@ -114,6 +98,22 @@ class MovimientoCaja extends \yii\db\ActiveRecord
     public function getFkIdCajaOrigen()
     {
         return $this->hasOne(Caja::className(), ['idCaja' => 'fk_idCajaOrigen']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getIdParent0()
+    {
+        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'idParent']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMovimientoCajas()
+    {
+        return $this->hasMany(MovimientoCaja::className(), ['idParent' => 'idMovimientoCaja']);
     }
 
     /**

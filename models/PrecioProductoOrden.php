@@ -4,18 +4,19 @@ namespace app\models;
 
 use Yii;
 
-///SELECT `idProductoStock`,`fk_idTipoCliente`,`hora`,`precioProductoServicio`.`cantidad`,`precioSF`,`precioCF` FROM `precioProductoServicio`, `productoStock` WHERE `precioProductoServicio`.`fk_idProducto`=`productoStock`.`fk_idProducto` and `precioProductoServicio`.`fk_idAlmacen` = `productoStock`.`fk_idAlmacen`
 /**
  * This is the model class for table "precioProductoOrden".
  *
  * @property integer $idPrecioProductoOrden
  * @property integer $fk_idProductoStock
  * @property integer $fk_idTipoCliente
- * @property string $hora
- * @property double $cantidad
+ * @property integer $hora
+ * @property integer $cantidad
  * @property double $precioSF
  * @property double $precioCF
  *
+ * @property CantidadPlacas $cantidad0
+ * @property HoraPlacas $hora0
  * @property ProductoStock $fkIdProductoStock
  * @property TipoCliente $fkIdTipoCliente
  */
@@ -36,9 +37,8 @@ class PrecioProductoOrden extends \yii\db\ActiveRecord
     {
         return [
             [['fk_idProductoStock', 'fk_idTipoCliente', 'hora', 'cantidad', 'precioSF', 'precioCF'], 'required'],
-            [['fk_idProductoStock', 'fk_idTipoCliente'], 'integer'],
-            [['hora'], 'safe'],
-            [['cantidad', 'precioSF', 'precioCF'], 'number']
+            [['fk_idProductoStock', 'fk_idTipoCliente', 'hora', 'cantidad'], 'integer'],
+            [['precioSF', 'precioCF'], 'number']
         ];
     }
 
@@ -56,6 +56,22 @@ class PrecioProductoOrden extends \yii\db\ActiveRecord
             'precioSF' => 'Precio Sf',
             'precioCF' => 'Precio Cf',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCantidad0()
+    {
+        return $this->hasOne(CantidadPlacas::className(), ['idCantidadPlacas' => 'cantidad']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getHora0()
+    {
+        return $this->hasOne(HoraPlacas::className(), ['idHoraPlacas' => 'hora']);
     }
 
     /**
