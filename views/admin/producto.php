@@ -47,7 +47,7 @@ $this->title = 'Administracion-Productos';
                 if(isset($placas))
                 {
                     echo $this->render('tables/ctpList',['placas'=>$placas]);
-                    echo $this->render('scripts/modal');
+                    echo $this->render('scripts/modal',['size'=>'L']);
                 }
                 break;
 

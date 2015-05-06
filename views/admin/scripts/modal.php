@@ -2,8 +2,17 @@
     use yii\bootstrap\Modal;
     use yii\helpers\Html;
 
+    if(isset($size)) {
+        if ($size == "L")
+            $size = Modal::SIZE_LARGE;
+        if ($size == "S")
+            $size = Modal::SIZE_SMALL;
+    }
+    else
+        $size = Modal::SIZE_DEFAULT;
     Modal::begin([
                      'id'=>'viewModal',
+                     'size'=>$size,
                      'footer'=>Html::a(
                              'Guardar',
                              "#",

@@ -141,13 +141,22 @@ class SGOrdenes extends Component
 
     static public function costos($idprodutoStock, $tipoCliente, $hora, $cantidad, $tipo)
     {
-        $costo   = 0;
-        $precios = PrecioProductoOrden::find()
+        $costo      = 0;
+        $idCantidad = CantidadPlacas::find()
+            ->where(['<=', 'cantidad', $cantidad])
+            ->orderBy(['cantidad' => SORT_DESC])
+            ->one();
+        $idHora     = HoraPlacas::find()
+            ->where('<=', 'hora', "CAST('" . $hora . "' AS time)")
+            ->orderBy(['hora' => SORT_DESC])
+            ->one();
+        $precios    = PrecioProductoOrden::find()
             ->where(['fk_idProductoStock' => $idprodutoStock])
             ->andWhere(['fk_idTipoCliente' => $tipoCliente])
-            ->andWhere(['<=', 'hora', "CAST('" . $hora . "' AS time)"])
-            ->andWhere(['<=', 'cantidad', $cantidad])
-            ->orderBy(['hora' => SORT_DESC, 'cantidad' => SORT_DESC])->one();
+            ->andWhere(['hora' => "CAST('" . $idHora->idHoraPlacas . "' AS time)"])
+            ->andWhere(['cantidad' => $idCantidad->idCantidaPlacas])
+            ->orderBy(['hora' => SORT_DESC, 'cantidad' => SORT_DESC])
+            ->one();
 
         if (!empty($precios)) {
             if ($tipo == 0)

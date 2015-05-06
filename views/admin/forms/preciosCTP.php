@@ -1,4 +1,5 @@
 <?php
+    use app\components\precios;
     use yii\bootstrap\ActiveForm;
     use yii\helpers\Html;
 
@@ -29,11 +30,11 @@
             foreach($cantidades as $keyc => $cantidad ) {
                 foreach ($horas as $keyh => $hora) {
                     echo '<tr>';
-                    echo ($keyh == 0) ? ('<td>' . Html::textInput('cantidad[' . $keyc . ']', $cantidad->cantidad, ['class' => 'form-control']) . '</td>') : ('<td></td>');
-                    echo '<td>' . Html::textInput('hora[' . $keyh . ']', $hora->hora, ['class' => 'form-control', 'disabled' => ($keyc != 0)]) . '</td>';
+                    echo ($keyh == 0) ? ('<td>' . Html::label($cantidad->valor,null, ['class' => 'control-label']) . '</td>') : ('<td></td>');
+                    echo '<td>' . Html::label($hora->value,null, ['class' => 'control-label']) . '</td>';
                     foreach ($clienteTipos as $clienteTipo) {
                         echo '<td class="text-center">';
-                        $precios = precios::preciosServicio($placa->idProductoStock, $clienteTipo->idTipoCliente, $cantidad->cantidad, $hora->hora);
+                        $precios = precios::preciosServicio($placa->idProductoStock, $clienteTipo->idTipoCliente, $cantidad->idCantidadPlacas, $hora->idHoraPlacas);
                         if ($model != "") {
                             $precios[0]->attributes = $model[precios::getPrecio($model, $precios[0]->idPrecioProductoOrden)]->attributes;
                         }

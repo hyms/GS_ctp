@@ -186,10 +186,13 @@ class AdminController extends Controller
                     if(isset($get['id'])) {
                         $placa        = ProductoStock::findOne(['idProductoStock' => $get['id']]);
                         $clienteTipos = TipoCliente::find()->all();
-                        $cantidades   = precios::getDatoPrecioOrden('cantidad', $placa->idProductoStock);
-                        $horas        = precios::getDatoPrecioOrden('hora', $placa->idProductoStock);
+                        $cantidades   = precios::getCantidades();
+                        //$cantidades   = precios::getDatoPrecioOrden('cantidad', $placa->idProductoStock);
+                        $horas        = precios::getHoras();
+                        //$horas        = precios::getDatoPrecioOrden('hora', $placa->idProductoStock);
 
                         $precio = new precios;
+                        $precio->verify($placa->idProductoStock);
                         $post   = Yii::$app->request->post();
                         if (isset($post['PrecioProductoOrden']) && isset($post['cantidad']) && isset($post['hora'])) {
                             $precio->pullPrecios($post['PrecioProductoOrden']);
