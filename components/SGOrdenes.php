@@ -74,10 +74,10 @@ class SGOrdenes extends Component
             $data['caja']->monto += $movimientoCaja->monto;
             foreach ($productoStocks as $key => $stock) {
                 $stock->cantidad -= $movimientoStock[$key]->cantidad;
-                if ($stock->cantidad < 0) {
+                /*if ($stock->cantidad < 0) {
                     $data['orden']->addError('observacionesCaja', 'Insuficientes insumos de un producto');
                     return $data;
-                }
+                }*/
             }
 
 
