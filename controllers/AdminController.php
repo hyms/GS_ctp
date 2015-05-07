@@ -69,7 +69,10 @@ class AdminController extends Controller
                     $producto = new Producto();
                     if ($producto->load(Yii::$app->request->post())) {
                         if ($producto->save())
+                        {
+                            SGProducto::initStock($producto->idProducto);
                             $this->redirect(['admin/producto', 'op' => 'list']);
+                        }
                     }
                     return $this->render('producto', ['r' => $render, 'producto' => $producto]);
                 case "list":
@@ -120,12 +123,12 @@ class AdminController extends Controller
 
     public function actionStock()
     {
-        $get     = Yii::$app->request->get();
+        $get = Yii::$app->request->get();
         $submenu = Sucursal::find()->all();
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "list":
-                    $search    = new ProductoStockSearch;
+                    $search = new ProductoStockSearch;
                     $productos = $search->search(yii::$app->request->queryParams);
                     if ($get['id'] == 0) {
                         $productos->query->andWhere(['is', 'fk_idSucursal', null]);
@@ -143,7 +146,7 @@ class AdminController extends Controller
                     break;
                 case "add":
                     if (isset($get['id'])) {
-                        $almacen  = ProductoStock::findOne(['idProductoStock' => $get['id']]);
+                        $almacen = ProductoStock::findOne(['idProductoStock' => $get['id']]);
                         $deposito = null;
                         if (!empty($almacen->fkIdSucursal)) {
                             $deposito = ProductoStock::find()
@@ -152,11 +155,18 @@ class AdminController extends Controller
                                 ->one();
                         }
                         $model = SGProducto::movimientoStockCompra(null, $almacen, "Añadir a Stock", $deposito);
-                        $post  = Yii::$app->request->post();
+                        $post = Yii::$app->request->post();
                         if (isset($post['MovimientoStock'])) {
                             $model->attributes = $post['MovimientoStock'];
-
+                            $almacen->cantidad += $model->cantidad;
+                            if ($deposito != null) {
+                                $deposito->cantidad -= $model->cantidad;
+                            }
                             if ($model->save()) {
+                                $almacen->save();
+                                if ($deposito != null) {
+                                    $deposito->save();
+                                }
                                 echo "done";
                                 Yii::$app->end();
                             }
@@ -194,12 +204,13 @@ class AdminController extends Controller
                         $precio = new precios;
                         $precio->verify($placa->idProductoStock);
                         $post   = Yii::$app->request->post();
-                        if (isset($post['PrecioProductoOrden']) && isset($post['cantidad']) && isset($post['hora'])) {
+                        if (isset($post['PrecioProductoOrden'])) {
                             $precio->pullPrecios($post['PrecioProductoOrden']);
-                            $precio->update($post['cantidad'], $cantidades, $post['hora'], $horas);
+                            $precio->save();
+                            //$precio->update($post['cantidad'], $cantidades, $post['hora'], $horas);
                             if ($precio->success) {
                                 echo "done";
-                                Yii::app()->end();
+                                Yii::$app->end();
                             }
                         }
                         return $this->renderAjax('forms/preciosCTP', array('clienteTipos' => $clienteTipos, 'placa' => $placa, 'cantidades' => $cantidades, 'horas' => $horas, 'model' => $precio->model));

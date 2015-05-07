@@ -1,9 +1,9 @@
 <?php
-    use app\components\precios;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use app\components\precios;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
-    $form = ActiveForm::begin(['layout' => 'horizontal']);
+$form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']);
 ?>
     <table class="table table-condensed table-hover">
         <tr>

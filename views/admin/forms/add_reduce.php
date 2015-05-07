@@ -1,5 +1,5 @@
 <?php
-    use yii\bootstrap\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 ?>
 <div class="row">
@@ -24,7 +24,7 @@
                 <span class="form-control"><?= $almacen->cantidad ?></span>
             </div>
         </div>
-        <?php $form = ActiveForm::begin(); ?>
+        <?php $form = ActiveForm::begin(['id'=>'form']); ?>
 
         <div class="col-xs-4">
             <h3>Añadir a stock</h3>
