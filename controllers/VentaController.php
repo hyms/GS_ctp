@@ -136,7 +136,8 @@ class VentaController extends Controller
                 case "pendiente":
                     $ordenes = OrdenCTP::find()
                         ->where(['estado' => 1])
-                        ->andWhere(['fk_idSucursal' => $this->idSucursal]);
+                        ->andWhere(['fk_idSucursal' => $this->idSucursal])
+                        ->orderBy(['secuencia' => SORT_ASC]);
                     return $this->render('orden', ['r' => 'pendiente', 'orden' => $ordenes]);
                     break;
                 case "buscar":
@@ -245,7 +246,7 @@ class VentaController extends Controller
                 $op->observacionMovimiento = "Orden CTP";
                 $data                      = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true);
                 if ($op->success)
-                    $this->redirect(['venta/orden', 'op' => 'buscar']);
+                    return $this->redirect(['venta/orden', 'op' => 'buscar']);
 
                 $orden   = $data['orden'];
                 $detalle = $data['detalle'];
@@ -259,7 +260,7 @@ class VentaController extends Controller
                 'monto'    => $monto,
             ]);
         } else
-            $this->redirect(Url::previous());
+            return $this->redirect(Url::previous());
     }
 
     public function actionPagodeuda()
@@ -295,7 +296,7 @@ class VentaController extends Controller
                 $pago  = new SGOrdenes();
                 $datos = $pago->deuda($datos, true);
                 if ($pago->success) {
-                    $this->redirect(array('venta/deuda', 'op' => 'deudas'));
+                    return $this->redirect(array('venta/deuda', 'op' => 'deudas'));
                 } else {
                     $model = $datos['deuda'];
                 }
@@ -394,7 +395,7 @@ class VentaController extends Controller
                     $op   = new SGRecibo();
                     $data = $op->grabar(['recibo' => $recibo, 'caja' => Caja::findOne(['idCaja' => $this->idCaja])]);
                     if ($op->success)
-                        $this->redirect(['venta/recibos']);
+                        return $this->redirect(['venta/recibos']);
                 }
             }
 
@@ -427,7 +428,7 @@ class VentaController extends Controller
                 $datos = $op->cajaChica(['cajaChica'=>$cchica,'post'=>$post['MovimientoCaja'],'caja'=>Caja::findOne(['idCaja'=>$this->idCaja])]);
                 if($op->success)
                 {
-                    $this->redirect(['venta/chica']);
+                    return $this->redirect(['venta/chica']);
                 }
                 else
                 {
@@ -452,7 +453,7 @@ class VentaController extends Controller
             $arqueoTransaccion = new SGServicioVenta();
             $datos             = $arqueoTransaccion->arqueo($datos, true);
             if (!$arqueoTransaccion->ventaError) {
-                $this->redirect(array('ctp/arqueo', 'list' => true));
+                return $this->redirect(array('ctp/arqueo', 'list' => true));
             }
         }
 
@@ -505,6 +506,22 @@ class VentaController extends Controller
             return $this->render('arqueo',['r' => 'arqueos', 'arqueos' => '']);
     }
 
+    public function actionCliente()
+    {
+        $get = Yii::$app->request->get();
+        if(isset($get['id']))
+        {
+
+        }
+        if(isset($get['op']))
+        {
+
+        }
+        $search = new ClienteSearch();
+        $clientes = $search->search(Yii::$app->request->queryParams);
+        $clientes->query->andWhere(['gk_idSucursal'=>$this->idSucursal]);
+        return $this->render('cliente',['clientes'=>$clientes,'search'=>$search]);
+    }
     public function actionAjaxfactura()
     {
         if (yii::$app->request->isAjax) {

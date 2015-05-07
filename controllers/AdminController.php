@@ -71,7 +71,7 @@ class AdminController extends Controller
                         if ($producto->save())
                         {
                             SGProducto::initStock($producto->idProducto);
-                            $this->redirect(['admin/producto', 'op' => 'list']);
+                            return $this->redirect(['admin/producto', 'op' => 'list']);
                         }
                     }
                     return $this->render('producto', ['r' => $render, 'producto' => $producto]);
@@ -111,7 +111,7 @@ class AdminController extends Controller
                         if (!$almacen->delete()) {
                             $almacen->enable = false;
                         }
-                        $this->redirect(array('admin/producto', 'op' => 'add', 'id' => $get['id']));
+                        return $this->redirect(array('admin/producto', 'op' => 'add', 'id' => $get['id']));
                     } else {
                         return $this->render('producto', ['r' => 'addRemove', 'submenu' => $submenu]);
                     }
@@ -231,7 +231,7 @@ class AdminController extends Controller
                     $sucursal = New Sucursal();
                     if ($sucursal->load(Yii::$app->request->post())) {
                         if ($sucursal->save()) {
-                            $this->redirect(['config']);
+                            return $this->redirect(['config']);
                         }
                     }
                     return $this->render('config', ['r' => 'suc', 'sucursal' => $sucursal]);

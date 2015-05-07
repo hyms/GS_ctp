@@ -116,7 +116,7 @@ class DisenoController extends Controller
                         //$datos = ;
                         $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
                         if ($operacion->success)
-                            $this->redirect(['orden', 'op' => 'buscar']);
+                            return $this->redirect(['orden', 'op' => 'buscar']);
                         $ordenes = $datos['orden'];
                         $detalle = $datos['detalle'];
                     }

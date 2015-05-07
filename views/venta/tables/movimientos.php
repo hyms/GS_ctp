@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
         [
             'header'=>'Factura',
             'filterType'=>GridView::FILTER_SELECT2,
@@ -56,7 +56,7 @@
                 if(empty($model->fkIdMovimientoCaja))
                     return "";
                 $montos = \app\models\MovimientoCaja::find()
-                    ->where(['idMovimientoCaja'=>$model->fk_idMovimientoCaja])->all();
+                    ->where(['idParent'=>$model->fk_idMovimientoCaja])->all();
                 $monto = $tmp->monto;
                 foreach($montos as $item)
                 {

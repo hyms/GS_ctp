@@ -27,7 +27,7 @@ AppAsset2::register($this,true);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'Grafica Singular',
+        'brandLabel' => 'Grafica Singular '.((!empty(Yii::$app->user->identity->fk_idSucursal))?"(".Yii::$app->user->identity->fkIdSucursal->nombre.")":""),
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar navbar-default',

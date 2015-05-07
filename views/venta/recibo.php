@@ -1,6 +1,6 @@
 <?php
     /* @var $this yii\web\View */
-    $this->title = 'Venta-Ordenes';
+    $this->title = 'Venta-Recibo';
 ?>
 <div class="row">
     <?php

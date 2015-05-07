@@ -30,10 +30,6 @@ class SGRecibo extends Component
                 $data['caja']->monto += $movimientoCaja->monto;
             }
 
-            if ($data['caja']->monto < 0) {
-                $this->error = "No existen suficientes fondos para realizar la transaccion";
-                return $data;
-            }
             if ($movimientoCaja->save()) {
                 $data['recibo']->fk_idMovimientoCaja = $movimientoCaja->idMovimientoCaja;
                 if ($data['recibo']->save()) {
