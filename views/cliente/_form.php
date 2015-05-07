@@ -1,5 +1,6 @@
 <?php
 
+use yii\helpers\ArrayHelper;
 use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
@@ -12,7 +13,7 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'fk_idTipoCliente')->textInput() ?>
+    <?= $form->field($model, 'fk_idTipoCliente')->dropDownList(ArrayHelper::map(\app\models\TipoCliente::find()->all(), 'idTipoCliente', 'nombre')) ?>
 
     <?= $form->field($model, 'nombreCompleto')->textInput(['maxlength' => 100]) ?>
 
@@ -22,8 +23,6 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'correo')->textInput(['maxlength' => 150]) ?>
 
-    <?= $form->field($model, 'fechaRegistro')->textInput() ?>
-
     <?= $form->field($model, 'telefono')->textInput(['maxlength' => 30]) ?>
 
     <?= $form->field($model, 'direccion')->textInput(['maxlength' => 150]) ?>
@@ -32,9 +31,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'codigoCliente')->textInput(['maxlength' => 45]) ?>
 
-    <?= $form->field($model, 'enable')->textInput() ?>
-
-    <?= $form->field($model, 'fk_idSucursal')->textInput() ?>
+    <?= $form->field($model, 'fk_idSucursal')->dropDownList(ArrayHelper::map(\app\models\Sucursal::find()->all(), 'idSucursal', 'nombre')) ?>
 
     <div class="form-group">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => $model->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>

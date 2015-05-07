@@ -66,7 +66,8 @@ class ClienteController extends Controller
     public function actionCreate()
     {
         $model = new Cliente();
-
+        $model->fechaRegistro = date("Y-m-d H:i:s");
+        $model->enable = 1;
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->idCliente]);
         } else {
