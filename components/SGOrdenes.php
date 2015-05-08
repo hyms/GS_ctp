@@ -108,11 +108,12 @@ class SGOrdenes extends Component
         }
     }
 
-    static public function getOrdenes($sucursal, $dataProvider = true, $pager = 10)
+    static public function getOrdenes($sucursal,$tipo=0, $dataProvider = true, $pager = 10)
     {
         $query = OrdenCTP::find()
             ->where(['fk_idSucursal' => $sucursal])
             ->andWhere(['estado' => 1])
+            ->andWhere(['tipoOrden' => $tipo])
             ->orderBy('fechaGenerada');
         if ($dataProvider) {
             return new ActiveDataProvider([
@@ -130,11 +131,12 @@ class SGOrdenes extends Component
         return $model = OrdenCTP::findOne($data);
     }
 
-    static public function correlativo($idSucursal)
+    static public function correlativo($idSucursal,$tipo=0)
     {
         $row = OrdenCTP::find()
             ->where(['fk_idSucursal' => $idSucursal])
             ->select('max(correlativo) as correlativo')
+            ->andWhere(['tipoOrden' => $tipo])
             ->one();
         return ($row->correlativo + 1);
     }

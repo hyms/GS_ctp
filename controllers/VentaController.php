@@ -138,6 +138,7 @@ class VentaController extends Controller
                     $ordenes = OrdenCTP::find()
                         ->where(['estado' => 1])
                         ->andWhere(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['secuencia' => SORT_ASC]);
                     return $this->render('orden', ['r' => 'pendiente', 'orden' => $ordenes]);
                     break;
@@ -148,6 +149,7 @@ class VentaController extends Controller
                     $ordenes->query
                         ->andWhere(['estado' => 0])
                         ->orWhere(['estado' => 2])
+                        ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
                     if (Yii::$app->request->post('hasEditable')) {
                         $idOrdenCTP = Yii::$app->request->post('editableKey');
@@ -182,7 +184,7 @@ class VentaController extends Controller
                     $search = new OrdenCTPSearch();
                     $search->fk_idSucursal = $this->idSucursal;
                     $ordenes = $search->search(yii::$app->request->getQueryParams());
-                    $ordenes->query->andWhere(['!=', 'estado', '1']);
+                    $ordenes->query->andWhere(['!=', 'estado', '1'])->andWhere(['tipoOrden' => 0]);
                     return $this->render('orden', ['r' => 'diario', 'ordenes' => $ordenes, 'search' => $search]);
                     break;
                 default:
@@ -203,6 +205,7 @@ class VentaController extends Controller
                     $searchModel->estado = 2;
                     $ordenes = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query->orderBy(['fechaCobro' => SORT_DESC]);
+                    $ordenes->query->andWhere(['tipoOrden' => 0]);
                     return $this->render('deuda', ['r' => 'deuda', 'orden' => $ordenes, 'search' => $searchModel]);
                     break;
                 case "deudas":

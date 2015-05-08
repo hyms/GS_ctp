@@ -6,11 +6,11 @@
     echo Nav::widget([
         'items' => [
             [
-                'label' => 'Nueva Orden',
+                'label' => 'Nueva Reposicion',
                 'url' => ['diseno/orden','op'=>'cliente'],
             ],
             [
-                'label' => 'Buscar Orden',
+                'label' => 'Buscar Reposicion',
                 'url' => ['diseno/orden','op'=>'buscar'],
             ],
         ],

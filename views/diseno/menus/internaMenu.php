@@ -7,11 +7,11 @@
         'items' => [
             [
                 'label' => 'Nueva Orden',
-                'url' => ['diseno/orden','op'=>'cliente'],
+                'url' => ['diseno/interna','op'=>'nueva'],
             ],
             [
-                'label' => 'Buscar Orden',
-                'url' => ['diseno/orden','op'=>'buscar'],
+                'label' => 'Buscar Orden Interna',
+                'url' => ['diseno/interna','op'=>'list'],
             ],
         ],
         'options' => ['class' =>'nav-tabs'],

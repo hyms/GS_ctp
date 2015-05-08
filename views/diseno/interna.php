@@ -4,7 +4,7 @@ $this->title = 'Diseño-Ordenes';
 ?>
 
 <div class="row">
-<?php echo $this->render('menus/ordenMenu'); ?>
+<?= $this->render('menus/internaMenu'); ?>
 </div>
 <br>
 <div class="row">
@@ -12,7 +12,7 @@ $this->title = 'Diseño-Ordenes';
     if(isset($r)) {
         switch ($r) {
             case 'nuevo':
-                echo $this->render('forms/interna',[
+                echo $this->render('forms/cliente',[
                     'orden'=>$orden,
                     'detalle'=>$detalle,
                     'producto'=>$producto,

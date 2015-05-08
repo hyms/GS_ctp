@@ -11,7 +11,7 @@ function newRow(almacen,url,type,form) {
     $.ajax({
         type: 'GET',
         url: url,
-        data: 'index=' + index + '&al=' + almacen + '&costo=' + type+'&form='+form,
+        data: 'index=' + index + '&al=' + almacen + '&tipo=' + type+'&form='+form,
         dataType: 'html',
         success: function (html) {
             input.append(html);

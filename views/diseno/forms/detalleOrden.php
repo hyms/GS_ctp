@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
 ?>
 
@@ -16,7 +16,9 @@ use yii\helpers\Html;
         <td><?php echo Html::label('Trabajo','trabajo')?></td>
         <td><?php echo Html::label('Pinza','pinza')?></td>
         <td><?php echo Html::label('Resolucion','resolucion')?></td>
+        <?php if($orden->tipoOrden==0){?>
         <td><?php echo Html::label('Adicional','adicional')?></td>
+        <?php } ?>
         <td></td>
     </tr></thead>
     <tbody class="tabular-input-container">
@@ -28,7 +30,7 @@ use yii\helpers\Html;
                     echo $this->render('_newRowDetalleVenta', array(
                         'model'=>$item,
                         'index'=>$key,
-                        'costo'=>"cliente",
+                        'tipo'=>$orden->tipoOrden,
                         'almacen'=>\app\models\ProductoStock::findOne(['idProductoStock'=>$item['fk_idProductoStock']]),
                     ));
                 }

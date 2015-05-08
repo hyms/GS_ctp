@@ -34,7 +34,7 @@ use Yii;
  * @property string $observacionAdicional
  * @property string $factura
  * @property integer $fk_idParent
- * @property integer $tipoOrden
+ * @property integer $tipoOrden //venta=0, interna=1, reposicion=2;
  *
  * @property Cliente $fkIdCliente
  * @property MovimientoCaja $fkIdMovimientoCaja

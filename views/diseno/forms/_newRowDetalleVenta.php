@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
 ?>
     <tr class="tabular-input">
@@ -50,8 +50,8 @@ use yii\helpers\Html;
             </div>
         </td>
         <?php
-        if(isset($costo)){
-            if($costo=="cliente")
+        if(isset($tipo)){
+            if($tipo==0)
             {
                 ?>
                 <td class="col-xs-1">
