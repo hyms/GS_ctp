@@ -69,8 +69,7 @@
             </table>
         </div>
         <div class="row">
-            <strong>Total:  </strong><?= $num
-            ?> Bs.
+            <strong>Total:  </strong><?= $num ?> Bs.
         </div>
         <div class="row">
             <div class="col-xs-5">

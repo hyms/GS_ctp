@@ -15,7 +15,7 @@ class SGRecibo extends Component
         if (isset($data['recibo']) && isset($data['caja'])) {
 
             if ($data['recibo']->tipoRecibo) {
-                $movimientoCaja = SGCaja::movimientoCajaVenta($data['recibo']->fk_idMovimientoCaja, $data['caja']->idCaja, "Recibo de Ingreso",null,4);
+                $movimientoCaja = SGCaja::movimientoCajaVenta($data['recibo']->fk_idMovimientoCaja, $data['caja']->idCaja, "Recibo de Egreso",null,4);
                 if (!$movimientoCaja->isNewRecord) {
                     $data['caja']->monto += $movimientoCaja->monto;
                 }

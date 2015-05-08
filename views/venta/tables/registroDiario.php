@@ -43,10 +43,10 @@
                 <?php foreach($recibos as $recibo){?>
                     <tr>
                         <td><?php echo $recibo->codigo;?></td>
-                        <td><?php echo "RECIBO DE ".(($recibo->fkIdMovimientoCaja->tipoMovimiento)?"EGRESO":"INGRESO");?></td>
-                        <td><?php echo (!$recibo->fkIdMovimientoCaja->tipoMovimiento)?$recibo->fkIdMovimientoCaja->monto:"";?></td>
-                        <td><?php echo ($recibo->fkIdMovimientoCaja->tipoMovimiento)?$recibo->fkIdMovimientoCaja->monto:"";?></td>
-                        <td><?php $total=($recibo->fkIdMovimientoCaja->tipoMovimiento)?($total-$recibo->fkIdMovimientoCaja->monto):($total+$recibo->fkIdMovimientoCaja->monto);	echo $total;?></td>
+                        <td><?php echo $recibo->fkIdMovimientoCaja->observaciones;?></td>
+                        <td><?php echo (!$recibo->tipoRecibo)?$recibo->fkIdMovimientoCaja->monto:"";?></td>
+                        <td><?php echo ($recibo->tipoRecibo)?$recibo->fkIdMovimientoCaja->monto:"";?></td>
+                        <td><?php $total=($recibo->tipoRecibo)?($total-$recibo->fkIdMovimientoCaja->monto):($total+$recibo->fkIdMovimientoCaja->monto);	echo $total;?></td>
                     </tr>
                 <?php }?>
             <?php }else{?>
@@ -54,7 +54,7 @@
                     <td></td>
                     <td><?php echo "Recibos del día";?></td>
                     <td><?php echo ($recibos>0)?$recibos:"";?></td>
-                    <td><?php echo ($recibos<0)?$recibos:"";?></td>
+                    <td><?php echo ($recibos<0)?($recibos*(-1)):"";?></td>
                     <td><?php $total=$total+$recibos;	echo $total;?></td>
                 </tr>
             <?php }?>

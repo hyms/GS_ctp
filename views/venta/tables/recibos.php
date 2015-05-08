@@ -50,6 +50,12 @@ use yii\helpers\Url;
     <?php
         $columns = [
             [
+                'header'=>'Tipo',
+                'attribute'=>function($model){
+                    return (($model->tipoRecibo)?"Egreso":"Ingreso");
+                },
+            ],
+            [
                 'header'=>'Codigo',
                 'attribute'=>'codigo',
             ],

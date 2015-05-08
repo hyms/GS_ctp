@@ -45,10 +45,10 @@
         <?php }else{?>
             <tr>
                 <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"><?php echo "Recibos del día";?></td>
-                <td style="border: 1px solid black;"><?php echo $recibos;?></td>
-                <td style="border: 1px solid black;"></td>
-                <td style="border: 1px solid black;"><?php $total=$total+$recibos;	echo $total;?></td>
+                <td><?php echo "Recibos del día";?></td>
+                <td><?php echo ($recibos>0)?$recibos:"";?></td>
+                <td><?php echo ($recibos<0)?($recibos*(-1)):"";?></td>
+                <td><?php $total=$total+$recibos;	echo $total;?></td>
             </tr>
         <?php }?>
         <tr>
