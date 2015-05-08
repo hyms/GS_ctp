@@ -15,8 +15,8 @@ use yii\data\ActiveDataProvider;
 
 class SGOrdenes extends Component
 {
-    public $error                 = "";
-    public $success               = false;
+    public $error = "";
+    public $success = false;
     public $observacionMovimiento = "";
 
     public function grabar($data, $venta = false, $anular = false)
@@ -37,10 +37,10 @@ class SGOrdenes extends Component
             }
             return $data;
         } else {
-            $productoStocks  = [];
+            $productoStocks = [];
             $movimientoStock = [];
             foreach ($data['detalle'] as $key => $item) {
-                $productoStocks[$key]  = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
+                $productoStocks[$key] = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
                 $movimientoStock[$key] = SGProducto::movimientoStockVenta($item->fk_idMovimientoStock, $productoStocks[$key]);
                 if (!$movimientoStock[$key]->isNewRecord) {
                     $productoStocks[$key]->cantidad += $movimientoStock[$key]->cantidad;
@@ -60,11 +60,11 @@ class SGOrdenes extends Component
 
             if ($movimientoCaja->monto < $data['orden']->montoVenta) {
                 $data['orden']->tipoPago = 1;
-                $data['orden']->estado   = 2;
+                $data['orden']->estado = 2;
             } else {
                 if ($movimientoCaja->monto > $data['orden']->montoVenta)
                     $movimientoCaja->monto = $data['orden']->montoVenta;
-                $data['orden']->estado   = 0;
+                $data['orden']->estado = 0;
                 $data['orden']->tipoPago = 0;
             }
             if ($anular) {
@@ -116,11 +116,11 @@ class SGOrdenes extends Component
             ->orderBy('fechaGenerada');
         if ($dataProvider) {
             return new ActiveDataProvider([
-                                              'query'      => $query,
-                                              'pagination' => [
-                                                  'pageSize' => $pager,
-                                              ],
-                                          ]);
+                'query' => $query,
+                'pagination' => [
+                    'pageSize' => $pager,
+                ],
+            ]);
         }
         return $query;
     }
@@ -141,16 +141,16 @@ class SGOrdenes extends Component
 
     static public function costos($idprodutoStock, $tipoCliente, $hora, $cantidad, $tipo)
     {
-        $costo      = 0;
+        $costo = 0;
         $idCantidad = CantidadPlacas::find()
             ->where(['<=', 'cantidad', $cantidad])
             ->orderBy(['cantidad' => SORT_DESC])
             ->one();
-        $idHora     = HoraPlacas::find()
+        $idHora = HoraPlacas::find()
             ->where('<=', 'hora', "CAST('" . $hora . "' AS time)")
             ->orderBy(['hora' => SORT_DESC])
             ->one();
-        $precios    = PrecioProductoOrden::find()
+        $precios = PrecioProductoOrden::find()
             ->where(['fk_idProductoStock' => $idprodutoStock])
             ->andWhere(['fk_idTipoCliente' => $tipoCliente])
             ->andWhere(['hora' => "CAST('" . $idHora->idHoraPlacas . "' AS time)"])
@@ -177,7 +177,7 @@ class SGOrdenes extends Component
                 $datos['deuda'] = SGCaja::movimientoCajaVenta(null, $datos['caja']->idCaja, "Pago de deuda", $datos['oldDeuda']->idMovimientoCaja, 0);
             }
             $datos['deuda']->attributes = $datos['post'];
-            $saldo                      = $datos['orden']->montoVenta - ($datos['oldDeuda']->monto + $datos['deuda']->monto);
+            $saldo = $datos['orden']->montoVenta - ($datos['oldDeuda']->monto + $datos['deuda']->monto);
             if ($saldo <= 0) {
                 $datos['orden']->estado = 0;
             } else {
@@ -197,68 +197,57 @@ class SGOrdenes extends Component
     public function arqueo($datos)
     {
         if (isset($datos['caja']) && isset($datos['arqueo'])) {
+            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja",null, 3);
 
-            $tmp                                = MovimientoCaja::find()
-                ->where(['fk_idCaja' => $datos['caja']->idCaja])
+            $tmp = MovimientoCaja::find()
+                ->where(['fk_idCajaOrigen' => $datos['caja']->idCaja])
+                ->andWhere(['tipoMovimiento' => 4])
                 ->select('max(correlativoCierre) as correlativoCierre')
                 ->one();
-            $datos['arqueo']->correlativoCierre = $tmp->correlativoCierre + 1;
-            $cajaAdmin                          = Caja::findOne(['idCaja' => $datos['caja']->fk_idCaja]);
+            $arqueo->correlativoCierre = $tmp->correlativoCierre + 1;
+            $cajaAdmin = Caja::findOne(['idCaja' => $datos['caja']->fk_idCaja]);
 
-            if (!$datos['caja']->validate() || !$datos['arqueo']->validate()) {
-                $this->error = "error en arqueo o caja";
-                return $datos;
-            }
-            $movimientoCaja = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja", date("Y-m-d", strtotime($datos['arqueo']->fechaMovimientos)) . " 23:59:00", 3);
-            if (!$movimientoCaja->isNewRecord) {
-                $datos['caja']->monto += $movimientoCaja->monto;
+            $arqueo->fechaCierre = date("Y-m-d H:i:s");
+            $arqueo->attributes = $datos['arqueo'];
+            if (!$arqueo->isNewRecord) {
+                $datos['caja']->monto += $arqueo->monto;
                 if (!empty($cajaAdmin)) {
-                    $cajaAdmin->monto -= $movimientoCaja->monto;
+                    $cajaAdmin->monto -= $arqueo->monto;
                 }
             }
 
-            $datos['caja']->monto -= $movimientoCaja->monto;
+            $datos['caja']->monto -= $arqueo->monto;
 
-            $variables = SGCaja::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, true);
+            $variables = SGCaja::getSaldo($datos['caja']->idCaja, $arqueo->time, false, ['movimientos' => true]);
             //$variables = SGServicioVenta::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, false, true);
 
             ///generar arqueo o cierre de caJA
 
-            $datos['arqueo']->saldo = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $movimientoCaja->monto, 1, PHP_ROUND_HALF_UP);
+            $arqueo->saldoCierre = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $arqueo->monto, 1, PHP_ROUND_HALF_UP);
 
-            if ($datos['caja']->monto < 0) {
-                $datos['arqueo']->addError('monto', "No Existen suficientes fondos");
+            if ($arqueo->monto == 0) {
+                $arqueo->correlativoCierre = "";
+            }
+
+            if (!$datos['caja']->validate() || !$arqueo->validate()) {
+                $this->error = "error en arqueo o caja";
                 return $datos;
             }
 
-            if ($movimientoCaja->monto == 0) {
-                $datos['arqueo']->correlativoCierre = "";
-            }
-
-            $cajaAdmin = Caja::model()->findByPk($datos['caja']->fk_idCaja);
-
-            /*//if ($movimientoCaja->save()) {
-                $datos['arqueo']->fk_idMovimientoCaja = $movimientoCaja->idMovimientoCaja;
+            if ($arqueo->save()) {
                 $datos['caja']->save();
-                if ($datos['arqueo']->save()) {
-                    /*$criteria = new CDbCriteria();
-                    $criteria->addCondition('fk_idArqueo IS NULL');
-                    $criteria->addCondition("time <= '" . $datos['arqueo']->fechaMovimientos . "'");
-                    $criteria->addCondition('fk_idCajaOrigen=' . $datos['caja']->idCaja . ' or fk_idCajaDestino=' . $datos['caja']->idCaja);
-                    $movimientos = MovimientoCaja::model()->findAll($criteria);
-*//*
-                    foreach ($variables['movimientos'] as $item) {
-                        $item->fk_idArqueo = $datos['arqueo']->idArqueoCaja;
-                        $item->save();
-                    }
+                foreach ($variables['movimientos'] as $i => $item) {
+                    $item->fechaCierre = $arqueo->fechaCierre;
+                    $item->save();
                 }
-                if (!empty($cajaAdmin)) {
-                    $cajaAdmin->monto += $movimientoCaja->monto;
-                    $cajaAdmin->save();
-                }
-                $datos['movimientos'] = $variables['movimientos'];
-                return $datos;
-            }//*/
+            }
+            if (!empty($cajaAdmin)) {
+                $cajaAdmin->monto += $arqueo->monto;
+                $cajaAdmin->save();
+            }
+            $datos['movimientos'] = $variables['movimientos'];
+            $this->success = true;
+            return $datos;
         }
     }
 }

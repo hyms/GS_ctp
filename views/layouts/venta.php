@@ -58,7 +58,7 @@ AppAsset2::register($this,true);
             ],
             [
                 'label'=>'Cliente',
-                'url'=>['cliente/index','t'=>'v']
+                'url'=>['venta/cliente']
             ],
             Yii::$app->user->isGuest ?
                 ['label' => 'Login', 'url' => ['/site/login']] :

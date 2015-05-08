@@ -11,6 +11,7 @@
         if(isset($r)) {
             switch ($r) {
                 case "arqueo":
+                    echo "<div class='col-xs-3'>";
                     echo $this->render("forms/arqueo",
                         array(
                             'saldo'   => $saldo,
@@ -21,12 +22,13 @@
                             'recibos' => $recibos,
                             'dia'     => $dia,
                         ));
+                    echo "</div>";
+                    echo "<div class='col-xs-9'>";
                     $comprobante = '';
                     $detalle     = '';
                     $arqueo      = '';
                     echo $this->render('tables/registroDiario',
                         [
-                            'sucursal'    => "LA PAZ",
                             'fecha'       => $fecha,
                             'saldo'       => $saldo,
                             'ventas'      => $ventas,
@@ -37,9 +39,10 @@
                             'detalle'     => $detalle,
                             'arqueo'      => $arqueo,
                         ]);
+                    echo "</div>";
                     break;
                 case "arqueos":
-                    //$this->renderPartial('tables/arqueos', array('arqueos' => $arqueos,));
+                    echo $this->render('tables/arqueos', ['arqueos' => $arqueos,'search'=>$search]);
                     break;
             }
         }

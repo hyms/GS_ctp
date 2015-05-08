@@ -57,69 +57,106 @@ class SGCaja extends Component
         return MovimientoCaja::findOne(['idMovimientoCaja' => $idmovimiento]);
     }
 
-    static public function getSaldo($idCaja, $fechaMovimientos, $arqueo = false, $array = false, $get = null)
+    static public function getSaldo($idCaja, $fechaMovimientos, $array = false, $get = null)
     {
-        if ($array) {
-            $ventas  = array();
-            $recibos = array();
-            $cajas   = array();
+        if ($array || isset($get['deudas']))
             $deudas  = array();
-        } else {
-            $ventas  = 0;
-            $recibos = 0;
-            $cajas   = 0;
+        else
             $deudas  = 0;
-        }
+
+        if ($array || isset($get['ventas']))
+            $ventas  = array();
+        else
+            $ventas  = 0;
+
+        if ($array || isset($get['recibos']))
+            $recibos  = array();
+        else
+            $recibos  = 0;
+
+        if ($array || isset($get['cajas']))
+            $cajas  = array();
+        else
+            $cajas  = 0;
+
+        if(isset($get['movimientos']))
+            $movimientosAll=array();
+        else
+            $movimientosAll = null;
 
         $arqueos     = array();
         $movimientos = MovimientoCaja::find();
-        $movimientos->where(['fk_idCajaOrigen' => $idCaja])->orWhere(['fk_idCajaDestino' => $idCaja]);
-        if (!$arqueo) {
-            //$movimientos->where(['between', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 00:00:00'", date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59'"]);
-            $movimientos->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
-        } else {
-            $movimientos->andWhere(['fk_idArqueo', $arqueo]);
-        }
+        $movimientos->where(['fk_idCajaOrigen' => $idCaja])
+            ->orWhere(['fk_idCajaDestino' => $idCaja]);
+        if(isset($get['arqueo']))
+            $movimientos->andWhere(['fechaCierre' =>$get['arqueo']]);
+        else
+            $movimientos->andWhere(['is','fechaCierre' ,null]);
+        //$movimientos->where(['between', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 00:00:00'", date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59'"]);
+        $movimientos->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
 
         $movimientos = $movimientos->all();
         $total       = 0;
 
         foreach ($movimientos as $key => $movimiento) {
-            $total += $movimiento->monto;
-
             switch ($movimiento->tipoMovimiento) {
                 case 0:
+                    if (isset($get['movimientos'])) {
+                        array_push($movimientosAll, $movimiento);
+                    }
                     if ($array || isset($get['deudas'])) {
                         if (isset($movimiento->idParent0)) {
                             if (isset($movimiento->idParent0->ordenCTPs[0]))
                                 $orden = $movimiento->idParent0->ordenCTPs[0];
                             array_push($deudas, $orden);
                         }
-                    } else
+                    } else {
                         $deudas += $movimiento->monto;
+                    }
+                    $total += $movimiento->monto;
                     break;
                 case 1:
                     if (!empty($movimiento->ordenCTPs)) {
-                        if ($array || isset($get['ventas']))
+                        if (isset($get['movimientos'])) {
+                            array_push($movimientosAll, $movimiento);
+                        }
+                        if ($array || isset($get['ventas'])) {
                             array_push($ventas, $movimiento->ordenCTPs[0]);
-                        else
+                        } else {
                             $ventas += $movimiento->monto;
+                        }
                     }
+                    $total += $movimiento->monto;
                     break;
                 case 2:
-                    if ($array || isset($get['cajas']))
+                    if (isset($get['movimientos'])) {
+                        array_push($movimientosAll, $movimiento);
+                    }
+                    if ($array || isset($get['cajas'])) {
                         array_push($cajas, $movimiento);
-                    else
+                    } else {
                         $cajas += $movimiento->monto;
+                    }
+                    $total += $movimiento->monto;
                     break;
                 case 3:
                     array_push($arqueos, $movimiento);
+                    $total += $movimiento->monto;
                     break;
                 case 4:
-                    if ($array || isset($get['recibos']))
-                        array_push($recibos, $movimiento);
-                    else
-                        $recibos += $movimiento->monto;
+                    if (isset($get['movimientos'])) {
+                        array_push($movimientosAll, $movimiento);
+                    }
+                    if ($array || isset($get['recibos'])) {
+                        $tmp = $movimiento->recibos;
+                        array_push($recibos, $movimiento->recibos[0]);
+                    } else {
+                        if ($movimiento->recibos[0]->tipoRecibo)
+                            $recibos -= $movimiento->monto;
+                        else
+                            $recibos += $movimiento->monto;
+                    }
+                    $total += $movimiento->monto;
                     break;
             }
         }
@@ -130,7 +167,7 @@ class SGCaja extends Component
         else
             $saldo = 0;
 
-        $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo);
+        $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo,'movimientos'=>$movimientosAll);
         return $datos;
     }
 

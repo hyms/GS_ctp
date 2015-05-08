@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -10,7 +10,7 @@
     </div>
     <div class="panel-body">
         <?=
-            Html::a('Nuevo', "#", [
+            Html::a('Nueva Transaccion', "#", [
                 'class'=>'btn btn-default',
                 'onclick'  => "
                     $.ajax({
