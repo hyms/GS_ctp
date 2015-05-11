@@ -587,6 +587,64 @@ class VentaController extends Controller
         return $this->render('cliente', ['r' => 'list', 'clientes' => $clientes, 'search' => $search]);
     }
 
+    public function actionReport()
+    {
+        if (isset($_POST['tipo']) && isset($_POST['fechaStart']) && isset($_POST['fechaEnd'])) {
+            if (empty($_POST['fechaStart']) || empty($_POST['fechaEnd'])) {
+                throw new CHttpException(400, 'Las fechas no pueden estar vacias.');
+            } else {
+                $ventas                = new ServicioVenta('searchCliente');
+                $ventas->fk_idSucursal = $this->sucursal;
+                $swdeuda               = false;
+                if (isset($_POST['clienteNegocio'])) {
+                    $ventas->cliente = $_POST['clienteNegocio'];
+                }
+                if (isset($_POST['clienteResponsable'])) {
+                    $ventas->responsable = $_POST['clienteResponsable'];
+                }
+
+                if ($_POST['tipo'] == "v") {
+                    $data = $ventas->searchCliente('correlativo Asc', 'estado!=1 and (fechaVenta between "' . $_POST['fechaStart'] . ' 00:00:00" and "' . $_POST['fechaEnd'] . ' 23:59:59")');
+                    $data->setPagination(false);
+                    $data = $data->getData();
+                }
+
+                if ($_POST['tipo'] == "d") {
+                    $data = $ventas->searchCliente('correlativo Asc', 'estado=2 and (fechaVenta between "' . $_POST['fechaStart'] . ' 00:00:00" and "' . $_POST['fechaEnd'] . ' 23:59:59")');
+                    $data->setPagination(false);
+                    $data = $data->getData();
+                }
+
+                if ($_POST['tipo'] == "pd") {
+                    $criteria       = new CDbCriteria();
+                    $criteria->with = array('fkIdServicioVenta');
+                    $criteria->addCondition('fkIdServicioVenta.fk_idSucursal=' . $this->sucursal);
+                    $criteria->addCondition('fkIdServicioVenta.estado!=1');
+                    $criteria->addCondition('DATE(fkIdServicioVenta.fechaVenta) < DATE(fecha)');
+                    $criteria->addCondition('fecha between "' . $_POST['fechaStart'] . ' 00:00:00" and "' . $_POST['fechaEnd'] . ' 23:59:59"');
+                    $criteria->order = 'fkIdServicioVenta.correlativo Asc';
+                    $deudas          = DeudasServicioVenta::model()->findAll($criteria);
+                    $data            = array();
+                    foreach ($deudas as $deuda) {
+                        $deuda->fkIdServicioVenta->fechaVenta  = $deuda->fecha;
+                        $deuda->fkIdServicioVenta->montoPagado = $deuda->acuenta;
+                        $deuda->fkIdServicioVenta->montoVenta  = $deuda->fkIdServicioVenta->montoVenta - $deuda->montoPagado;
+                        array_push($data, $deuda->fkIdServicioVenta);
+                    }
+                    $swdeuda = true;
+                }
+
+                $mPDF1      = Yii::app()->ePdf->mpdf('utf-8', 'letter-L', '', '', 10, 7, 5, 5, 9, 9, 'L');
+                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/bootstrap.min.css');
+                $mPDF1->WriteHTML($stylesheet, 1);
+                $mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
+                $mPDF1->Output('Reporte de Ventas ' . date('YmdHis') . ".pdf", 'D');
+                Yii::app()->end();
+            }
+        } else
+            return $this->render('reporte',['clienteNegocio'=>'','clienteResponsable'=>'','fechaStart'=>'','fechaEnd'=>'']);
+    }
+
     public function actionAjaxfactura()
     {
         if (yii::$app->request->isAjax) {

@@ -12,16 +12,18 @@ $this->title = 'Diseño-Ordenes';
     if(isset($r)) {
         switch ($r) {
             case 'nuevo':
-                echo $this->render('forms/cliente',[
-                    'orden'=>$orden,
-                    'detalle'=>$detalle,
-                    'producto'=>$producto,
+                echo $this->render('forms/cliente', [
+                    'orden'    => $orden,
+                    'detalle'  => $detalle,
+                    'producto' => $producto,
                 ]);
                 break;
             case 'buscar':
-                echo $this->render('tables/buscar',['orden'=>$orden]);
+                echo $this->render('tables/buscar', ['orden' => $orden]);
                 break;
-            default:
+            case 'list':
+                echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
+                echo $this->render('scripts/tooltip');
                 break;
         }
     }

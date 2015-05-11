@@ -47,10 +47,6 @@ AppAsset2::register($this);
                         'label'=>'Reposiciones',
                         'url'=>['/diseno/reposicion']
                     ],
-                    [
-                        'label'=>'Reportes',
-                        'url'=>['/diseno/report']
-                    ],
                     Yii::$app->user->isGuest ?
                         ['label' => 'Login', 'url' => ['/site/login']] :
                         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',

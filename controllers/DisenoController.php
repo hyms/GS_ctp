@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\SGOrdenes;
 use app\components\SGProducto;
 use app\models\OrdenCTP;
+use app\models\OrdenCTPSearch;
 use app\models\OrdenDetalle;
 use app\models\ProductoStock;
 use app\models\Sucursal;
@@ -96,6 +97,17 @@ class DisenoController extends Controller
                 case 'buscar':
                     $ordenes = SGOrdenes::getOrdenes($this->idSucursal);
                     return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes]);
+                    break;
+                case 'list':
+                    $searchModel                = new OrdenCTPSearch();
+                    $searchModel->fk_idSucursal = $this->idSucursal;
+                    $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
+                    $ordenes->query
+                        ->andWhere(['estado' => 0])
+                        ->orWhere(['estado' => 2])
+                        ->andWhere(['tipoOrden' => 0])
+                        ->orderBy(['fechaCobro' => SORT_DESC]);
+                    return $this->render('orden', ['r' => 'list', 'orden' => $ordenes,'search'=>$searchModel]);
                     break;
             }
         }
@@ -239,6 +251,13 @@ class DisenoController extends Controller
         $get = Yii::$app->request->get();
         if (isset($get['op']) && isset($get['id'])) {
             switch ($get['op']) {
+                case "orden":
+                    $orden      = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $num        = new numerosALetras();
+                    $num->valor = $orden->montoVenta;
+                    $content    = $this->renderPartial('prints/orden', ['orden' => $orden, 'monto' => $num->mostrar()]);
+                    $title      = "Orden de Venta Nro " . $orden->correlativo;
+                    break;
                 case "interna":
                     $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                     $content = $this->renderPartial('prints/interna', ['orden' => $orden]);

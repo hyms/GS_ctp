@@ -45,6 +45,10 @@ AppAsset2::register($this,true);
                 'url'=>['venta/caja']
             ],
             [
+                'label'=>'Reportes',
+                'url'=>['venta/report']
+            ],
+            [
                 'label'=>'Cliente',
                 'url'=>['venta/cliente']
             ],
