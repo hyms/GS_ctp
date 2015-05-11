@@ -4,16 +4,12 @@
                                         'items' => [
                                             [
                                                 'label'=>'Hoy',
-                                                'url'=>['venta/arqueo','d'=>date('d')]
+                                                'url'=>['venta/caja','op'=>'arqueo','d'=>date('d')]
                                             ],
                                             [
                                                 'label'=>'Ayer',
-                                                'url'=>['venta/arqueo','d'=>(date('d')-1)]
+                                                'url'=>['venta/caja','op'=>'arqueo','d'=>(date('d')-1)]
                                             ],
-                                            [
-                                                'label'=>'Reporte de Arqueos',
-                                                'url'=>['venta/arqueo','list'=>true]
-                                            ]
                                         ],
                                     ]);
 

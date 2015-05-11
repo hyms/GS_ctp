@@ -1,27 +1,22 @@
-
 <?php
-    use yii\bootstrap\Nav;
+    use kartik\widgets\SideNav;
 
-?>
-
-<div class="well well-sm hidden-print">
-    <?php
-    echo Nav::widget([
-        'items' => [
-            [
-                'label' => 'Sucursal',
-                'url' => ['admin/config','op'=>'sucursal'],
-            ],
-            /*[
-                'label' => 'Nuevo Productos',
-                'url' => ['admin/config','op'=>'new'],
-            ],
-            [
-                'label' => 'Añadir a Almacen',
-                'url' => ['admin/config','op'=>'addProduct'],
-            ]*/
-        ],
-        'options' => ['class' =>'nav-pills nav-stacked'], // set this to nav-tab to get tab-styled navigation
-    ]);
-    ?>
-</div>
+    echo SideNav::widget([
+                             'type' => SideNav::TYPE_PRIMARY,
+                             'encodeLabels' => false,
+                             'heading' => false,
+                             'items' => [
+                                 [
+                                     'label' => 'Sucursal',
+                                     'url' => ['admin/config','op'=>'sucursal'],
+                                 ],
+                                 /*[
+               'label' => 'Nuevo Productos',
+               'url' => ['admin/config','op'=>'new'],
+           ],
+           [
+               'label' => 'Añadir a Almacen',
+               'url' => ['admin/config','op'=>'addProduct'],
+           ]*/
+                             ],
+                         ]);

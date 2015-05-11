@@ -19,7 +19,7 @@ $this->title = 'Diseño-Ordenes';
                 ]);
                 break;
             case 'buscar':
-                echo $this->render('tables/buscar',['orden'=>$orden]);
+                echo $this->render('tables/buscarRI',['orden'=>$orden]);
                 break;
             default:
                 break;

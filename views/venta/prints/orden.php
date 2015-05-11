@@ -96,9 +96,9 @@
                         <div class="row col-xs-5" style="font-size: 10px"><strong>Venta a Credito</strong></div>
                         <div class="row col-xs-5" style="font-size: 10px"><strong>Plazo:</strong> <?= date("d-m-Y",strtotime($orden->fechaPlazo));?></div>
                     <?php } ?>
-                    <div class="row col-xs-12" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
+                    <div class="row col-xs-12" style="font-size: 10px"><strong>Diseñador/a:</strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observaciones;?></div>
-                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <?php $orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido;?></div>
+                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <?= $orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido;?></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observacionesCaja;?></div>
                 </div>
 

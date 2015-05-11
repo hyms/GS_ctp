@@ -5,14 +5,9 @@
 <div class="row">
     <?php
         if(isset($r)) {
-            switch ($render) {
-                case "interna":
-                    $this->renderPartial('interna', array('productos' => $productos, 'orden' => $orden, 'detalle' => $detalle));
-                    $this->renderPartial('/scripts/save');
-                    $this->renderPartial('/scripts/reset');
-                    break;
-                case "internas":
-                    $this->renderPartial('tables/buscarI', array('ordenes' => $ordenes, 'criterio' => $criterio));
+            switch ($r) {
+                case "nueva":
+
                     break;
                 case "reposiciones":
                     $this->renderPartial('tables/buscarR', array('ordenes' => $ordenes, 'criterio' => $criterio));
@@ -36,15 +31,6 @@
                     $this->renderPartial('/scripts/operaciones');
                     Yii::app()->clientScript->registerScriptFile(Yii::app()->baseUrl . '/js/addList.js', CClientScript::POS_HEAD);
                     break;
-                /*case "buscar":
-                    $this->renderPartial('tables/buscar',array('ordenes'=>$ordenes));
-                    break;
-                case "modificarR":
-                    $this->renderPartial('cliente',array('cliente'=>$cliente,'detalle'=>$detalle,'ctp'=>$ctp,'productos'=>$productos));
-                    $this->renderPartial('scripts/save');
-                    $this->renderPartial('scripts/reset');
-                    break;
-                */
                 default:
                     echo "";
                     break;

@@ -7,11 +7,11 @@
         'items' => [
             [
                 'label' => 'Nueva Reposicion',
-                'url' => ['diseno/orden','op'=>'cliente'],
+                'url' => ['diseno/reposicion','op'=>'nueva'],
             ],
             [
                 'label' => 'Buscar Reposicion',
-                'url' => ['diseno/orden','op'=>'buscar'],
+                'url' => ['diseno/reposicion','op'=>'list'],
             ],
         ],
         'options' => ['class' =>'nav-tabs'],

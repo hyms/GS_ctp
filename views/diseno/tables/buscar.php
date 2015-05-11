@@ -1,5 +1,5 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
 ?>
 <div class="panel panel-default">
@@ -16,7 +16,7 @@ use kartik\grid\GridView;
             [
                 'header'=>'Codigo',
                 'value'=>function($model){
-                    return (isset($model->codigo))?$model->codigo:'';
+                    return (isset($model->codigoServicio))?$model->codigoServicio:'';
                 },
             ],
             /*[

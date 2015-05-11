@@ -1,11 +1,10 @@
 <?php
-    use yii\bootstrap\Nav;
+    use kartik\widgets\SideNav;
 
-?>
-
-<div class="well well-sm hidden-print">
-    <?php
-        echo Nav::widget([
+    echo SideNav::widget([
+                             'type' => SideNav::TYPE_PRIMARY,
+                             'encodeLabels' => false,
+                             'heading' => false,
                              'items' => [
                                  [
                                      'label' => 'Listar Productos',
@@ -28,7 +27,4 @@
                                      'url' => ['admin/costo'],
                                  ],
                              ],
-                             'options' => ['class' =>'nav-pills nav-stacked'], // set this to nav-tab to get tab-styled navigation
                          ]);
-    ?>
-</div>

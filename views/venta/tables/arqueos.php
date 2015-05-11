@@ -1,11 +1,14 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 
 <div class="panel panel-default">
+    <div class="panel-heading">
+        <strong class="panel-title">Arqueos Realizados</strong>
+    </div>
     <div class="panel-body" style="overflow: auto;">
         <?php
         $columns = [

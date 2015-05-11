@@ -8,6 +8,7 @@ use app\models\OrdenCTP;
 use app\models\OrdenDetalle;
 use app\models\ProductoStock;
 use app\models\Sucursal;
+use kartik\mpdf\Pdf;
 use Yii;
 use yii\base\Model;
 use yii\filters\AccessControl;
@@ -22,7 +23,7 @@ class DisenoController extends Controller
 
     public function init()
     {
-        if(!empty(yii::$app->user->identity)) {
+        if (!empty(yii::$app->user->identity)) {
             $sucursal = Sucursal::findOne(['idSucursal' => yii::$app->user->identity->fk_idSucursal]);
             if (empty($sucursal))
                 throw new HttpException(412, SGOperation::getError(412));
@@ -104,7 +105,6 @@ class DisenoController extends Controller
     public function actionInterna()
     {
         $get = Yii::$app->request->get();
-        //$post=Yii::$app->request->post();
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "nueva":
@@ -121,7 +121,7 @@ class DisenoController extends Controller
                         'producto' => $producto,
                     ]);
                 case 'list':
-                    $ordenes = SGOrdenes::getOrdenes($this->idSucursal,1);
+                    $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 1);
                     return $this->render('interna', ['r' => 'buscar', 'orden' => $ordenes]);
                     break;
             }
@@ -132,71 +132,65 @@ class DisenoController extends Controller
     public function actionReposicion()
     {
         $get = Yii::$app->request->get();
-        //$post=Yii::$app->request->post();
         if (isset($get['op'])) {
-            if (isset($_GET['id']) && isset($_GET['o'])) {
-
-                $repos = new ServicioVentaRI();
-                if ($_GET['o']) {
-                    $orden                     = $this->verifyModel(ServicioVenta::model()->with('detalleServicios')->findByPk($_GET['id']));
-                    $detalle                   = $orden->detalleServicios;
-                    $repos->fk_idServicioVenta = $orden->idServicioVenta;
-                } else {
-                    $orden                       = $this->verifyModel(ServicioVentaRI::model()->with('detalleVentaRIs')->findByPk($_GET['id']));
-                    $detalle                     = $orden->detalleVentaRIs;
-                    $repos->fk_idServicioVentaRI = $orden->idServicioVentaRI;
-                }
-
-                $repos->fk_idSucursal = $this->sucursal;
-                $repos->fk_idUser     = Yii::app()->user->id;
-                $repos->secuencia     = SGServicioVenta::codigoInterRepos($repos->fk_idSucursal, true);
-                $repos->codigo        = "OR-" . $repos->secuencia;
-
-                $repos->fechaRegistro = date("Y-m-d H:i:s");
-                $detalleRep           = array();
-                if (isset($_POST['ServicioVentaRI']) && isset($_POST['DetalleVentaRI'])) {
-                    $repos->attributes = $_POST['ServicioVentaRI'];
-                    $det               = count($_POST['DetalleVentaRI']);
-                    foreach ($_POST['DetalleVentaRI'] as $key => $item) {
-                        $detalleRep[$key]             = new DetalleVentaRI;
-                        $detalleRep[$key]->attributes = $item;
-                        if ($detalle[$key]->validate())
-                            $det--;
+            switch ($get['op']) {
+                case "nueva":
+                    $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
+                    $ordenes  = new OrdenCTP();
+                    $detalle  = [];
+                    if (isset($get['id'])) {
+                        $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                        $detalle = $ordenes->ordenDetalles;
+                    } else {
+                        $ordenes->fk_idSucursal  = $this->idSucursal;
+                        $ordenes->estado         = 1;
+                        $ordenes->tipoOrden      = 2;
+                        $ordenes->correlativo    = SGOrdenes::correlativo($ordenes->fk_idSucursal, 2);
+                        $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, 2);
+                        $ordenes->fechaGenerada  = date('Y-m-d H:i:s');
                     }
-                    if (!empty($repos->fk_idCliente)) {
-                        $costo = 0;
-                        foreach ($detalleRep as $item) {
-                            $prod  = ProductoStock::model()->findByPk($item->fk_idProductoStock);
-                            $costo = $costo + SGServicioVenta::costosServicio($prod->fk_idAlmacen, $prod->fk_idProducto, 1, date('H:m:s'), $item->cantidad, 1);
-                        }
-                        $repos->totalCosto = $costo;
-                        //print_r($repos);
-                    }
-                    if ($repos->validate() && $det == 0) {
-                        $realizarVenta                       = new SGServicioVenta;
-                        $datos                               = array('venta' => $repos, 'detalle' => $detalleRep,);
-                        $realizarVenta->obseracionMovimiento = "Reposicion de Ordenes";
-
-                        $datos = $realizarVenta->movimientoMaterial($datos);
-
-                        if (!$realizarVenta->ventaError) {
-                            $this->redirect(array("repos/buscar", "i" => false));
+                    $ordenes->fk_idUserD = yii::$app->user->id;
+                    $post                = Yii::$app->request->post();
+                    if (!empty($post)) {
+                        $operacion = new SGOrdenes();
+                        if (isset($get['id'])) {
+                            $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                            $detalle = OrdenDetalle::findAll(['fk_idOrden' => $ordenes->idOrdenCTP]);
+                            $cp      = count($post['OrdenDetalle']);
+                            $cs      = count($detalle);
+                            if ($cp != $cs)
+                                if ($cs == OrdenDetalle::deleteAll(['fk_idOrden' => $ordenes->idOrdenCTP]))
+                                    for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
+                                        $detalle[$i] = new OrdenDetalle();
                         } else {
-                            $detalle = $datos['detalle'];
+                            for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
+                                $detalle[$i] = new OrdenDetalle();
                         }
+                        $ordenes->load($post);
+                        Model::loadMultiple($detalle, $post);
+                        $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
+                        if ($operacion->success)
+                            return $this->redirect(['repos', 'op' => 'list']);
                     }
 
-                }
-
-                $this->render('index', array('render' => 'repos', 'orden' => $orden, 'detalle' => $detalle, 'repos' => $repos, 'detalleRep' => $detalleRep));
-            } else
-                throw new CHttpException(400, 'Petición no válida.');
+                    $ordenes = $datos['orden'];
+                    $detalle = $datos['detalle'];
+                    return $this->render('repos', [
+                        'r'        => 'nuevo',
+                        'orden'    => $ordenes,
+                        'detalle'  => $detalle,
+                        'producto' => $producto,
+                    ]);
+                case 'list':
+                    $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 2);
+                    return $this->render('repos', ['r' => 'buscar', 'orden' => $ordenes]);
+                    break;
+            }
         }
         return $this->render('repos');
     }
 
-
-    private function ordenes($get,$tipo)
+    private function ordenes($get, $tipo)
     {
         $ordenes = new OrdenCTP();
         $detalle = [];
@@ -208,6 +202,8 @@ class DisenoController extends Controller
             $ordenes->estado        = 1;
             $ordenes->tipoOrden     = $tipo;
             $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal, $tipo);
+            if ($tipo != 0)
+                $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, $tipo);
             $ordenes->fechaGenerada = date('Y-m-d H:i:s');
         }
         $ordenes->fk_idUserD = yii::$app->user->id;
@@ -235,7 +231,48 @@ class DisenoController extends Controller
                 return true;
             return $datos;
         }
-        return ['orden'=>$ordenes,'detalle'=>$detalle];
+        return ['orden' => $ordenes, 'detalle' => $detalle];
+    }
+
+    public function actionPrint()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['op']) && isset($get['id'])) {
+            switch ($get['op']) {
+                case "interna":
+                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $content = $this->renderPartial('prints/interna', ['orden' => $orden]);
+                    $title = "Orden Interna " . $orden->codigoServicio;
+                    break;
+                case "reposicion":
+                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $content = $this->renderPartial('prints/repos', ['orden' => $orden]);
+                    $title = "Reposicion " . $orden->codigoServicio;
+                    break;
+            }
+            $pdf = new Pdf([
+                               // set to use core fonts only
+                               'mode' => Pdf::MODE_CORE,
+                               'format' => Pdf::FORMAT_LETTER,
+                               'orientation' => Pdf::ORIENT_PORTRAIT,
+                               'destination' => Pdf::DEST_BROWSER,
+                               'content' => $content,
+                               // format content from your own css file if needed or use the
+                               // enhanced bootstrap css built by Krajee for mPDF formatting
+                               'cssFile' => '@webroot/css/bootstrap.min.readable.css',
+                               // set mPDF properties on the fly
+                               'marginLeft' => 10, // margin_left. Sets the page margins for the new document.
+                               'marginRight' => 10, // margin_right
+                               'marginTop' => 5, // margin_top
+                               'marginBottom' => 5, // margin_bottom
+                               'marginHeader' => 9, // margin_header
+                               'marginFooter' => 9, // margin_footer
+                               'options' => ['title' => $title],
+                           ]);
+
+            // return the pdf output as per the destination setting
+            return $pdf->render();
+        }
     }
 
     public function actionAdd_detalle()
@@ -243,7 +280,7 @@ class DisenoController extends Controller
         $get = Yii::$app->request->get();
         if (isset($get)) {
             //if (Yii::$app->request->isAjax && isset($get)) {
-            $tipo   = 0;
+            $tipo    = 0;
             $detalle = new OrdenDetalle();
             $almacen = null;
             if (isset($get['al'])) {
@@ -259,7 +296,7 @@ class DisenoController extends Controller
             echo $this->renderAjax('forms/_newRowDetalleVenta', array(
                 'model'   => $detalle,
                 'index'   => $get['index'],
-                'tipo'   => $tipo,
+                'tipo'    => $tipo,
                 'almacen' => $almacen,
             ));
         }

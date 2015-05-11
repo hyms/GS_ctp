@@ -8,24 +8,20 @@
                              'heading' => false,
                              'items' => [
                                  [
-                                     'label'=>'Pendientes',
-                                     'url'=>['venta/orden','op'=>'pendiente']
+                                     'label'=>'Recibos',
+                                     'url'=>['venta/caja','op'=>'recibo']
                                  ],
                                  [
-                                     'label'=>'Buscar',
-                                     'url'=>['venta/orden','op'=>'buscar']
+                                     'label'=>'Caja Chica',
+                                     'url'=>['venta/caja','op'=>'chica']
                                  ],
                                  [
-                                     'label'=>'Ventas Realizadas',
-                                     'url'=>['venta/orden','op'=>'diario']
+                                     'label'=>'Arqueo',
+                                     'url'=>['venta/caja','op'=>'arqueo']
                                  ],
                                  [
-                                     'label'=>'Deudores',
-                                     'url'=>['venta/orden','op'=>'deuda']
-                                 ],
-                                 [
-                                     'label'=>'H. Pago de Deudas',
-                                     'url'=>['venta/orden','op'=>'deudas']
+                                     'label'=>'Arqueos',
+                                     'url'=>['venta/caja','op'=>'arqueos']
                                  ],
                              ],
                          ]);

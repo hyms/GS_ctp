@@ -141,6 +141,28 @@ class SGOrdenes extends Component
         return ($row->correlativo + 1);
     }
 
+    static public function codigo($idSucursal,$tipo=0)
+    {
+        $row = OrdenCTP::find()
+            ->where(['fk_idSucursal' => $idSucursal])
+            ->select('max(correlativo) as correlativo')
+            ->andWhere(['tipoOrden' => $tipo])
+            ->one();
+        $sigla = "";
+        switch($tipo){
+            case 0:
+                $sigla="OT";
+                break;
+            case 1:
+                $sigla="I";
+                break;
+            case 2:
+                $sigla="R";
+                break;
+        }
+        return $sigla."-".($row->correlativo + 1);
+    }
+
     static public function costos($idprodutoStock, $tipoCliente, $hora, $cantidad, $tipo)
     {
         $costo = 0;
