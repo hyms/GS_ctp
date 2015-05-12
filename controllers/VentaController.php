@@ -20,6 +20,7 @@ use app\models\ReciboSearch;
 use app\models\Sucursal;
 use kartik\mpdf\Pdf;
 use Yii;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -156,7 +157,7 @@ class VentaController extends Controller
                         $model            = OrdenCTP::findOne($idOrdenCTP);
                         $out              = Json::encode(['output' => '', 'message' => '']);
                         $post             = [];
-                        $post['OrdenCTP'] = current($_POST['OrdenCTP']);
+                        $post['OrdenCTP'] = current($post['OrdenCTP']);
                         // load model like any single model validation
                         if ($model->load($post)) {
                             $model->save();
@@ -589,60 +590,60 @@ class VentaController extends Controller
 
     public function actionReport()
     {
-        if (isset($_POST['tipo']) && isset($_POST['fechaStart']) && isset($_POST['fechaEnd'])) {
-            if (empty($_POST['fechaStart']) || empty($_POST['fechaEnd'])) {
-                throw new CHttpException(400, 'Las fechas no pueden estar vacias.');
-            } else {
-                $ventas                = new ServicioVenta('searchCliente');
-                $ventas->fk_idSucursal = $this->sucursal;
-                $swdeuda               = false;
-                if (isset($_POST['clienteNegocio'])) {
-                    $ventas->cliente = $_POST['clienteNegocio'];
-                }
-                if (isset($_POST['clienteResponsable'])) {
-                    $ventas->responsable = $_POST['clienteResponsable'];
-                }
-
-                if ($_POST['tipo'] == "v") {
-                    $data = $ventas->searchCliente('correlativo Asc', 'estado!=1 and (fechaVenta between "' . $_POST['fechaStart'] . ' 00:00:00" and "' . $_POST['fechaEnd'] . ' 23:59:59")');
-                    $data->setPagination(false);
-                    $data = $data->getData();
-                }
-
-                if ($_POST['tipo'] == "d") {
-                    $data = $ventas->searchCliente('correlativo Asc', 'estado=2 and (fechaVenta between "' . $_POST['fechaStart'] . ' 00:00:00" and "' . $_POST['fechaEnd'] . ' 23:59:59")');
-                    $data->setPagination(false);
-                    $data = $data->getData();
-                }
-
-                if ($_POST['tipo'] == "pd") {
-                    $criteria       = new CDbCriteria();
-                    $criteria->with = array('fkIdServicioVenta');
-                    $criteria->addCondition('fkIdServicioVenta.fk_idSucursal=' . $this->sucursal);
-                    $criteria->addCondition('fkIdServicioVenta.estado!=1');
-                    $criteria->addCondition('DATE(fkIdServicioVenta.fechaVenta) < DATE(fecha)');
-                    $criteria->addCondition('fecha between "' . $_POST['fechaStart'] . ' 00:00:00" and "' . $_POST['fechaEnd'] . ' 23:59:59"');
-                    $criteria->order = 'fkIdServicioVenta.correlativo Asc';
-                    $deudas          = DeudasServicioVenta::model()->findAll($criteria);
-                    $data            = array();
-                    foreach ($deudas as $deuda) {
-                        $deuda->fkIdServicioVenta->fechaVenta  = $deuda->fecha;
-                        $deuda->fkIdServicioVenta->montoPagado = $deuda->acuenta;
-                        $deuda->fkIdServicioVenta->montoVenta  = $deuda->fkIdServicioVenta->montoVenta - $deuda->montoPagado;
-                        array_push($data, $deuda->fkIdServicioVenta);
-                    }
-                    $swdeuda = true;
-                }
-
-                $mPDF1      = Yii::app()->ePdf->mpdf('utf-8', 'letter-L', '', '', 10, 7, 5, 5, 9, 9, 'L');
-                $stylesheet = file_get_contents(Yii::getPathOfAlias('webroot.css') . '/bootstrap.min.css');
-                $mPDF1->WriteHTML($stylesheet, 1);
-                $mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
-                $mPDF1->Output('Reporte de Ventas ' . date('YmdHis') . ".pdf", 'D');
-                Yii::app()->end();
+        $post = Yii::$app->request->post();
+        if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd'])) {
+            $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
+            $post['fechaEnd']   = date('Y-m-d', strtotime($post['fechaEnd']));
+            $venta              = OrdenCTP::find();
+            $venta->where(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
+            $venta->joinWith('fkIdCliente');
+            $swdeuda = false;
+            if (isset($post['clienteNegocio'])) {
+                $venta->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
             }
+            if (isset($post['clienteResponsable'])) {
+                $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+            }
+
+            if ($post['tipo'] == "v")
+                $venta->andWhere(['!=', 'estado', '1']);
+
+            if ($post['tipo'] == "d")
+                $venta->andWhere(['!=', 'estado', '2']);
+
+            $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
+            $venta->orderBy(['correlativo' => SORT_ASC]);
+
+            $data = new ActiveDataProvider([
+                                                       'query' => $venta,
+                                                   ]);
+            //$data = $venta->all();
+
+            if ($post['tipo'] == "pd") {
+                $deudas = MovimientoCaja::find();
+                $deudas->where(['tipoMovimiento' => 0]);
+                $deudas->joinWith(['OrdenCTP']);
+                $deudas->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
+                $deudas->andWhere(['!=', 'OrdenCTP.estado', '1']);
+                $deudas->andWhere('DATE(OrdenCTP.fechaCobro) < DATE(time)');
+                $deudas->andWhere('time between "' . $post['fechaStart'] . ' 00:00:00" and "' . $post['fechaEnd'] . ' 23:59:59")');
+                $deudas->orderBy(['OrdenCTP.correlativo' => SORT_ASC]);
+                $deudas = $deudas->all();
+            }
+
+            return $this->render('reporte', [
+                'r'                  => 'table',
+                'clienteNegocio'     => $post['clienteNegocio'],
+                'clienteResponsable' => $post['clienteResponsable'],
+                'fechaStart'         => $post['fechaStart'],
+                'fechaEnd'           => $post['fechaEnd'],
+                'data'               => $data,
+            ]);
+
+            $mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
+            Yii::app()->end();
         } else
-            return $this->render('reporte',['clienteNegocio'=>'','clienteResponsable'=>'','fechaStart'=>'','fechaEnd'=>'']);
+            return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
     }
 
     public function actionAjaxfactura()

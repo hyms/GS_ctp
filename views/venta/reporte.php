@@ -7,19 +7,17 @@
         <?= $this->render('forms/report',['clienteNegocio'=>$clienteNegocio,'clienteResponsable'=>$clienteResponsable,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]); ?>
     </div>
     <div class="col-xs-9">
-    <?php
-        if(isset($r)) {
-            switch ($r) {
-                case "form":
-                    echo $this->render('tables/cajaChicas', ['cajasChicas' => $cajasChicas, 'search' => $search]);
-                    echo $this->render('scripts/modal');
-                    break;
-                case "table":
-                    echo $this->render('tables/recibos', ['recibos' => $recibos, 'search' => $search]);
-                    echo $this->render('scripts/modal');
-                    break;
-            }
-        }
-    ?>
+        <div id="table">
+            <?php
+                if(isset($r)) {
+                    switch ($r) {
+                        case "table":
+                            //echo $this->render('prints/report', ['data' => $data]);
+                            echo $this->render('tables/reporte', ['data' => $data]);
+                            break;
+                    }
+                }
+            ?>
+        </div>
     </div>
 </div>

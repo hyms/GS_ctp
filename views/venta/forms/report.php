@@ -9,8 +9,8 @@
             <h3 class="panel-title"><strong>Reportes</strong></h3>
         </div>
         <div class="panel-body">
-
             <?php $form = ActiveForm::begin(['id'=>'form'])?>
+            <?= Html::hiddenInput('tipo'); ?>
             <div class="form-group">
                 <?= Html::label('Cliente:','clienteNegocio',array('class'=>'control-label')); ?>
                 <?= Html::textInput('clienteNegocio',$clienteNegocio,array('class'=>'form-control')); ?>
@@ -31,7 +31,6 @@
                                                'format' => 'dd-M-yyyy'
                                            ]
                                        ]); ?>
-
             </div>
             <div class="form-group">
                 <?= Html::label('A:','fechaEnd',array('class'=>'control-label')); ?>
@@ -47,16 +46,13 @@
                                        ]); ?>
             </div>
             <?php ActiveForm::end(); ?>
-
             <h3>Generadores</h3>
-            <?php
-
-                echo Html::a('Reporte de Ventas','#',array('class'=>'list-group-item','onclick'=>'report("v")'));
-                echo Html::a('Reporte de Deudores','#',array('class'=>'list-group-item','onclick'=>'report("d")'));
-                echo Html::a('Reporte de Pagos de Deudores','#',array('class'=>'list-group-item','onclick'=>'report("pd")'));
-            ?>
+            <?= Html::a('Reporte de Ventas','#',array('class'=>'list-group-item','onclick'=>'report("v")')); ?>
+            <?= Html::a('Reporte de Deudores','#',array('class'=>'list-group-item','onclick'=>'report("d")')); ?>
+            <?= Html::a('Reporte de Pagos de Deudores','#',array('class'=>'list-group-item','onclick'=>'report("pd")')); ?>
         </div>
     </div>
+
 <?php
     $script = <<<JS
 function report(tipo)

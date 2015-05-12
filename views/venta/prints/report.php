@@ -7,9 +7,8 @@
             $fecha = date("d-m-Y", strtotime($item->fechaVenta));
         if ((count($data) - 1) == $key)
             $fechaend = date("d-m-Y", strtotime($data[$key]->fechaVenta));
-        if ($item->tipoVenta==1) {
-                $sf = 1;
-        }
+        if ($item->tipoVenta == 1)
+            $sf = 1;
     }
     $totalsaldo = 0;
     $totalCobrado = 0;
