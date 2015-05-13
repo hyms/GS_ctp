@@ -28,7 +28,7 @@
                                            'value' => $fechaStart,
                                            'pluginOptions' => [
                                                'autoclose'=>true,
-                                               'format' => 'dd-M-yyyy'
+                                               'format' => 'yyyy-mm-dd'
                                            ]
                                        ]); ?>
             </div>
@@ -41,7 +41,7 @@
                                            'value' => $fechaEnd,
                                            'pluginOptions' => [
                                                'autoclose'=>true,
-                                               'format' => 'dd-M-yyyy'
+                                               'format' => 'yyyy-mm-dd'
                                            ]
                                        ]); ?>
             </div>

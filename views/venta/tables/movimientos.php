@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'header'=>'Factura',
             'filterType'=>GridView::FILTER_SELECT2,
@@ -117,9 +117,10 @@ $columns = [
                               'condensed' => true,
                               'responsive' => true,
                               'hover' => true,
+                              'pjax'=>true,
                               'showPageSummary' => true,
                               'panel' => [
-                                  'type' => GridView::TYPE_PRIMARY,
+                                  'type' => GridView::TYPE_DEFAULT,
                                   'heading' => 'ordenes',
                               ],
                               'exportConfig' => [

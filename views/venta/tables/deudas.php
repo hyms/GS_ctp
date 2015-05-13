@@ -109,6 +109,7 @@
                                   'condensed'=>true,
                                   'hover'=>true,
                                   'bordered'=>false,
+                                  'pjax'=>true,
                               ]);
         /*
         $columns = array(

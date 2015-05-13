@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
     ['class' => 'yii\grid\SerialColumn'],
     [
         //'header'=>'Codigo',
@@ -34,8 +34,9 @@ echo GridView::widget([
     'dataProvider'=> $producto,
     'filterModel' => $search,
     'columns' => $columns,
-    'headerRowOptions'=>['class'=>'kartik-sheet-style'],
-    'filterRowOptions'=>['class'=>'kartik-sheet-style'],
+    'pjax'=>true,
+    //'headerRowOptions'=>['class'=>'kartik-sheet-style'],
+    //'filterRowOptions'=>['class'=>'kartik-sheet-style'],
     'toolbar' =>  [
         '{export}',
         '{toggleData}',

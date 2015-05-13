@@ -144,6 +144,21 @@ class DisenoController extends Controller
     public function actionReposicion()
     {
         $get = Yii::$app->request->get();
+        if(isset($get['tipo']))
+        {
+            switch($get['tipo']){
+                case 0:
+                    $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
+                    return $this->renderAjax('tables/producto',['producto'=>$producto,'tipo'=>2]);
+                    break;
+                case 1:
+                    return "";
+                    break;
+                case 2:
+                    return "";
+                    break;
+            }
+        }
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "nueva":
@@ -183,16 +198,18 @@ class DisenoController extends Controller
                         $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
                         if ($operacion->success)
                             return $this->redirect(['repos', 'op' => 'list']);
+                        $ordenes = $datos['orden'];
+                        $detalle = $datos['detalle'];
                     }
 
-                    $ordenes = $datos['orden'];
-                    $detalle = $datos['detalle'];
                     return $this->render('repos', [
                         'r'        => 'nuevo',
+                        'tipo'=>'',
                         'orden'    => $ordenes,
                         'detalle'  => $detalle,
                         'producto' => $producto,
                     ]);
+
                 case 'list':
                     $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 2);
                     return $this->render('repos', ['r' => 'buscar', 'orden' => $ordenes]);

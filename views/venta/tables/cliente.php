@@ -1,8 +1,8 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
 
-$columns = [
+    $columns = [
         [
             'header'=>'Nit/Ci',
             'attribute'=>'nitCi',
@@ -42,7 +42,8 @@ $columns = [
                               'filterModel' => $search,
                               'columns' => $columns,
                               'responsive'=>true,
-                              'hover'=>true
+                              'hover'=>true,
+                              'pjax'=>true,
                           ]);
     echo $this->render('../scripts/tooltip');
     $script = "

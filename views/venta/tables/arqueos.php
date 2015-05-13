@@ -24,11 +24,11 @@
             ],
             [
                 'header'=>'Fecha de Arqueo',
-                'value'=>'time',
+                'attribute'=>'time',
             ],
             [
                 'header'=>'Correlativo',
-                'value'=>'correlativoCierre',
+                'attribute'=>'correlativoCierre',
             ],
             [
                 'class' => 'yii\grid\ActionColumn',
@@ -93,6 +93,7 @@
             'condensed'=>true,
             'hover'=>true,
             'bordered'=>false,
+            'pjax'=>true,
         ]);
         ?>
     </div>

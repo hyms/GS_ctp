@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 
@@ -120,6 +120,7 @@ use yii\helpers\Url;
                                   'condensed'=>true,
                                   'hover'=>true,
                                   'bordered'=>false,
+                                  'pjax'=>true,
                               ]);
     ?>
 </div>
