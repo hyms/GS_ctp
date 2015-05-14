@@ -149,7 +149,7 @@ class DisenoController extends Controller
             switch($get['tipo']){
                 case 0:
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    return $this->renderAjax('tables/producto',['producto'=>$producto,'tipo'=>2]);
+                    return $this->render('forms/reposN',['producto'=>$producto,'tipo'=>$get['tipo']]);
                     break;
                 case 1:
                     return "";

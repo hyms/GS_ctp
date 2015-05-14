@@ -20,23 +20,17 @@
                                    [
                                        'prompt'=>'Seleccione una opcion',
                                        'class'=>'form-control',
-                                       'onchange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
+                                       'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'");return false;',
                                    ])
             ?>
             </div>
         </div>
     </div>
+
+    <div id="select"></div>
 </div>
 
-
-<?php
-    $script = <<<JS
-function select(val,url)
-{
-    if(val!="")
-        document.location.href = url+'?'+'tipo='+val;
-}
-JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
-?>
+<div class="col-xs-8">
+<div id="table"></div>
+</div>
 <?php Pjax::end(); ?>

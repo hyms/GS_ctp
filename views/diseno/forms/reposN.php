@@ -20,15 +20,24 @@
                                    [
                                        'prompt'=>'Seleccione una opcion',
                                        'class'=>'form-control',
-                                       'onchange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
+                                       'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
                                    ])
             ?>
             </div>
         </div>
     </div>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong class="panel-title">Productos</strong>
+        </div>
+        <?= $this->render('../tables/producto',['producto'=>$producto,'tipo'=>2])?>
+    </div>
 </div>
 
-
+<div class="col-xs-8">
+<div id="table"></div>
+</div>
 <?php
     $script = <<<JS
 function select(val,url)
