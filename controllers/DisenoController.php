@@ -149,7 +149,16 @@ class DisenoController extends Controller
             switch($get['tipo']){
                 case 0:
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    return $this->render('forms/reposN',['producto'=>$producto,'tipo'=>$get['tipo']]);
+                    $detalle = [];
+                    $orden = new OrdenCTP();
+                    $orden->tipoOrden=2;
+                    $orden->fechaGenerada=date("Y-m-d H:i:s");
+                    $post = Yii::$app->request->post();
+                    if(isset($post['OrdenCTP']))
+                    {
+                        is_array($post);
+                    }
+                    return $this->render('forms/reposN',['producto'=>$producto,'tipo'=>$get['tipo'],'detalle'=>$detalle,'orden'=>$orden]);
                     break;
                 case 1:
                     return "";

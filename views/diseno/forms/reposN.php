@@ -1,43 +1,65 @@
 <?php
+    use yii\bootstrap\ActiveForm;
     use yii\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\Pjax;
 
 ?>
 <?php Pjax::begin(); ?>
-<div class="col-xs-4">
-    <div class="panel panel-default">
-        <div class="panel-body">
-            <div class="form-group">
-            <?= Html::label('Seleccione Tipo de Repocicion',null,['class'=>'form-label'])?>
-            <?= Html::dropDownList('tipo',
-                                   $tipo,
-                                   [
-                                       'Nueva Reposicion',
-                                       'Reposicion de Cliente',
-                                       'Reposicion de una Interna'
-                                   ],
-                                   [
-                                       'prompt'=>'Seleccione una opcion',
-                                       'class'=>'form-control',
-                                       'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
-                                   ])
-            ?>
+    <div class="col-xs-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <?= Html::label('Seleccione Tipo de Repocicion',null,['class'=>'form-label'])?>
+                    <?= Html::dropDownList('tipo',
+                                           $tipo,
+                                           [
+                                               'Nueva Reposicion',
+                                               'Reposicion de Cliente',
+                                               'Reposicion de una Interna'
+                                           ],
+                                           [
+                                               'prompt'=>'Seleccione una opcion',
+                                               'class'=>'form-control',
+                                               'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
+                                           ])
+                    ?>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <strong class="panel-title">Productos</strong>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong class="panel-title">Productos</strong>
+            </div>
+            <?= $this->render('../tables/producto',['producto'=>$producto,'tipo'=>2])?>
         </div>
-        <?= $this->render('../tables/producto',['producto'=>$producto,'tipo'=>2])?>
     </div>
-</div>
 
-<div class="col-xs-8">
-<div id="table"></div>
-</div>
+    <div class="col-xs-8">
+        <div class="well well-sm">
+            <h4 class="text-center"><strong>Nueva Reposicion</strong></h4>
+            <?php $form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']); ?>
+            <div class="row">
+                <div class="col-xs-6">
+                    <?= $form->field($orden, 'responsable',['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])->textInput(['maxlength' => 50]) ?>
+                </div>
+            </div>
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <strong class="panel-title">Detalle de Orden</strong>
+                </div>
+                <?= $this->render('detalleOrden',array('detalle'=>$detalle,'orden'=>$orden));?>
+            </div>
+            <div class="form-group">
+                <div class="text-center">
+                    <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-default hidden-print','id'=>'save')); ?>
+                </div>
+            </div>
+            <?php ActiveForm::end(); ?>
+        </div>
+    </div>
 <?php
     $script = <<<JS
 function select(val,url)
@@ -48,4 +70,6 @@ function select(val,url)
 JS;
     $this->registerJs($script, \yii\web\View::POS_HEAD);
 ?>
+    <?= $this->render('../scripts/save') ?>
+    <?= $this->render('../scripts/reset') ?>
 <?php Pjax::end(); ?>

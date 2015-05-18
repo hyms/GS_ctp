@@ -1,6 +1,6 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
 <div class="row">
@@ -24,7 +24,7 @@ use yii\helpers\Html;
                 <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y");//date("d/m/Y",strtotime($venta->fechaRegistro));?></strong></h4>
             </div>
 
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+            <?php $form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']); ?>
             <div class="row">
                 <div class="col-xs-6">
                     <?= $form->field($orden, 'responsable',['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])->textInput(['maxlength' => 50]) ?>

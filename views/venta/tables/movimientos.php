@@ -117,7 +117,6 @@
                               'condensed' => true,
                               'responsive' => true,
                               'hover' => true,
-                              'pjax'=>true,
                               'showPageSummary' => true,
                               'panel' => [
                                   'type' => GridView::TYPE_DEFAULT,

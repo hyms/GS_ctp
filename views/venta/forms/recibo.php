@@ -14,11 +14,5 @@
     <div class="col-xs-4" >
         <?= $form->field($recibo,'monto'); ?>
     </div>
-    <div class="col-xs-4" >
-        <?= $form->field($recibo,'acuenta'); ?>
-    </div>
-    <div class="col-xs-4" >
-        <?= $form->field($recibo,'saldo'); ?>
-    </div>
 </div>
 <?php \yii\bootstrap\ActiveForm::end(); ?>

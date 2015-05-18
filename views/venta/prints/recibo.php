@@ -30,9 +30,7 @@
             <strong>Por concepto de:  </strong><?= $recibo->detalle; ?>
         </p>
         <div class="row">
-            <div class="col-xs-3"><div class="well well-sm" style="border-color: #000000;"><strong>A/C:</strong><?= $recibo->acuenta?></div></div>
-            <div class="col-xs-3"><div class="well well-sm" style="border-color: #000000;"><strong>Saldo:</strong><?= $recibo->saldo?></div></div>
-            <h5 class="col-xs-4"><?= "La Paz, ";?><?= date("d",strtotime($recibo->fechaRegistro))." de ".$mes[date("m",strtotime($recibo->fechaRegistro))]." de ". date("Y",strtotime($recibo->fechaRegistro));?></h5>
+            <h5 class="text-right"><?= "La Paz, ";?><?= date("d",strtotime($recibo->fechaRegistro))." de ".$mes[date("m",strtotime($recibo->fechaRegistro))]." de ". date("Y",strtotime($recibo->fechaRegistro));?></h5>
         </div>
         <div class="row">
             <div class="col-xs-5">
