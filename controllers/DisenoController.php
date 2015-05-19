@@ -107,7 +107,7 @@ class DisenoController extends Controller
                         ->orWhere(['estado' => 2])
                         ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
-                    return $this->render('orden', ['r' => 'list', 'orden' => $ordenes,'search'=>$searchModel]);
+                    return $this->render('orden', ['r' => 'list', 'orden' => $ordenes, 'search' => $searchModel]);
                     break;
             }
         }
@@ -144,79 +144,55 @@ class DisenoController extends Controller
     public function actionReposicion()
     {
         $get = Yii::$app->request->get();
-        if(isset($get['tipo']))
-        {
-            switch($get['tipo']){
+        if (isset($get['tipo'])) {
+            switch ($get['tipo']) {
                 case 0:
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $detalle = [];
-                    $orden = new OrdenCTP();
-                    $orden->tipoOrden=2;
-                    $orden->fechaGenerada=date("Y-m-d H:i:s");
-                    $post = Yii::$app->request->post();
-                    if(isset($post['OrdenCTP']))
-                    {
-                        is_array($post);
-                    }
-                    return $this->render('forms/reposN',['producto'=>$producto,'tipo'=>$get['tipo'],'detalle'=>$detalle,'orden'=>$orden]);
+                    $datos    = $this->ordenes($get, 2);
+                    if (!is_array($datos))
+                        return $this->redirect(['reposicion', 'op' => 'list']);
+                    $orden   = $datos['orden'];
+                    $detalle = $datos['detalle'];
+                    return $this->render('repos', ['r' => '0', 'producto' => $producto, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
                     break;
                 case 1:
-                    return "";
+                    $search  = new OrdenCTPSearch();
+                    $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $ordenes->query->andWhere(['tipoOrden' => 0, 'fk_idSucursal' => $this->idSucursal]);
+                    $ordenes->query->andWhere(['estado' => 0]);
+                    $ordenes->query->orWhere(['estado' => 2]);
+                    $idParent = '';
+                    if ($post = Yii::$app->request->post('idParent'))
+                        $idParent = $post['idParent'];
+                    $datos = $this->ordenes($get, 2, $idParent);
+                    if (!is_array($datos))
+                        return $this->redirect(['reposicion', 'op' => 'list']);
+                    $orden   = $datos['orden'];
+                    $detalle = $datos['detalle'];
+                    return $this->render('repos', ['r' => '1', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
                     break;
                 case 2:
-                    return "";
+                    $search  = new OrdenCTPSearch();
+                    $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $ordenes->query->andWhere(['tipoOrden' => 1, 'fk_idSucursal' => $this->idSucursal]);
+                    $idParent = '';
+                    if ($post = Yii::$app->request->post('idParent'))
+                        $idParent = $post['idParent'];
+                    $datos = $this->ordenes($get, 2, $idParent);
+                    if (!is_array($datos))
+                        return $this->redirect(['reposicion', 'op' => 'list']);
+                    $orden   = $datos['orden'];
+                    $detalle = $datos['detalle'];
+                    return $this->render('repos', ['r' => '2', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
                     break;
             }
         }
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "nueva":
-                    $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $ordenes  = new OrdenCTP();
-                    $detalle  = [];
-                    if (isset($get['id'])) {
-                        $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
-                        $detalle = $ordenes->ordenDetalles;
-                    } else {
-                        $ordenes->fk_idSucursal  = $this->idSucursal;
-                        $ordenes->estado         = 1;
-                        $ordenes->tipoOrden      = 2;
-                        $ordenes->correlativo    = SGOrdenes::correlativo($ordenes->fk_idSucursal, 2);
-                        $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, 2);
-                        $ordenes->fechaGenerada  = date('Y-m-d H:i:s');
-                    }
-                    $ordenes->fk_idUserD = yii::$app->user->id;
-                    $post                = Yii::$app->request->post();
-                    if (!empty($post)) {
-                        $operacion = new SGOrdenes();
-                        if (isset($get['id'])) {
-                            $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
-                            $detalle = OrdenDetalle::findAll(['fk_idOrden' => $ordenes->idOrdenCTP]);
-                            $cp      = count($post['OrdenDetalle']);
-                            $cs      = count($detalle);
-                            if ($cp != $cs)
-                                if ($cs == OrdenDetalle::deleteAll(['fk_idOrden' => $ordenes->idOrdenCTP]))
-                                    for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
-                                        $detalle[$i] = new OrdenDetalle();
-                        } else {
-                            for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
-                                $detalle[$i] = new OrdenDetalle();
-                        }
-                        $ordenes->load($post);
-                        Model::loadMultiple($detalle, $post);
-                        $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
-                        if ($operacion->success)
-                            return $this->redirect(['repos', 'op' => 'list']);
-                        $ordenes = $datos['orden'];
-                        $detalle = $datos['detalle'];
-                    }
-
                     return $this->render('repos', [
-                        'r'        => 'nuevo',
-                        'tipo'=>'',
-                        'orden'    => $ordenes,
-                        'detalle'  => $detalle,
-                        'producto' => $producto,
+                        'r'    => 'nuevo',
+                        'tipo' => '',
                     ]);
 
                 case 'list':
@@ -228,7 +204,7 @@ class DisenoController extends Controller
         return $this->render('repos');
     }
 
-    private function ordenes($get, $tipo)
+    private function ordenes($get, $tipo, $idParent = null)
     {
         $ordenes = new OrdenCTP();
         $detalle = [];
@@ -244,6 +220,9 @@ class DisenoController extends Controller
                 $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, $tipo);
             $ordenes->fechaGenerada = date('Y-m-d H:i:s');
         }
+        if ($idParent != null)
+            $ordenes->fk_idParent = $idParent;
+
         $ordenes->fk_idUserD = yii::$app->user->id;
         $post                = Yii::$app->request->post();
         if (!empty($post)) {
@@ -285,34 +264,34 @@ class DisenoController extends Controller
                     $title      = "Orden de Venta Nro " . $orden->correlativo;
                     break;
                 case "interna":
-                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $orden   = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                     $content = $this->renderPartial('prints/interna', ['orden' => $orden]);
-                    $title = "Orden Interna " . $orden->codigoServicio;
+                    $title   = "Orden Interna " . $orden->codigoServicio;
                     break;
                 case "reposicion":
-                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $orden   = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                     $content = $this->renderPartial('prints/repos', ['orden' => $orden]);
-                    $title = "Reposicion " . $orden->codigoServicio;
+                    $title   = "Reposicion " . $orden->codigoServicio;
                     break;
             }
             $pdf = new Pdf([
                                // set to use core fonts only
-                               'mode' => Pdf::MODE_CORE,
-                               'format' => Pdf::FORMAT_LETTER,
-                               'orientation' => Pdf::ORIENT_PORTRAIT,
-                               'destination' => Pdf::DEST_BROWSER,
-                               'content' => $content,
+                               'mode'         => Pdf::MODE_CORE,
+                               'format'       => Pdf::FORMAT_LETTER,
+                               'orientation'  => Pdf::ORIENT_PORTRAIT,
+                               'destination'  => Pdf::DEST_BROWSER,
+                               'content'      => $content,
                                // format content from your own css file if needed or use the
                                // enhanced bootstrap css built by Krajee for mPDF formatting
-                               'cssFile' => '@webroot/css/bootstrap.min.readable.css',
+                               'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
                                // set mPDF properties on the fly
-                               'marginLeft' => 10, // margin_left. Sets the page margins for the new document.
-                               'marginRight' => 10, // margin_right
-                               'marginTop' => 5, // margin_top
+                               'marginLeft'   => 10, // margin_left. Sets the page margins for the new document.
+                               'marginRight'  => 10, // margin_right
+                               'marginTop'    => 5, // margin_top
                                'marginBottom' => 5, // margin_bottom
                                'marginHeader' => 9, // margin_header
                                'marginFooter' => 9, // margin_footer
-                               'options' => ['title' => $title],
+                               'options'      => ['title' => $title],
                            ]);
 
             // return the pdf output as per the destination setting
@@ -344,6 +323,17 @@ class DisenoController extends Controller
                 'tipo'    => $tipo,
                 'almacen' => $almacen,
             ));
+        }
+    }
+
+    public function actionAddreposicion()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['id'])) {
+            //if (Yii::$app->request->isAjax && isset($get)) {
+            $orden   = OrdenCTP::findOne($get['id']);
+            $detalle = $orden->ordenDetalles;
+            echo $this->renderAjax('forms/oRepos', ['idParent'=>$orden->idOrdenCTP,'orden' => $orden, 'detalle' => $detalle]);
         }
     }
 }
