@@ -29,8 +29,20 @@
         <div class="panel-heading">
             <strong class="panel-title">Ordenes</strong>
         </div>
-        <?= $this->render('../tables/oRepos',['ordenes'=>$ordenes,'search'=>$search,'tipo'=>2])?>
+        <?= $this->render('../tables/oRepos',['ordenes'=>$ordenes,'search'=>$search,'tipo'=>$tipo])?>
     </div>
+    <?php
+    if($tipo==2) {
+        ?>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <strong class="panel-title">Productos</strong>
+            </div>
+            <?= $this->render('../tables/producto',['producto'=>$producto,'tipo'=>2])?>
+        </div>
+    <?php
+    }
+    ?>
 </div>
 
 <div class="col-xs-8">
@@ -39,7 +51,7 @@
         <div id="orden">
             <?php
                 if(!empty($orden)) {
-                    echo $this->render('oRepos', ['idParent' => $idParent, 'orden' => $orden, 'detalle' => $detalle]);
+                    echo $this->render('oRepos', ['idParent' => $idParent, 'orden' => $orden, 'detalle' => $detalle,'tipo'=>$tipo]);
                 }
             ?>
         </div>

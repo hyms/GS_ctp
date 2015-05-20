@@ -172,8 +172,9 @@ class DisenoController extends Controller
                     return $this->render('repos', ['r' => '1', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
                     break;
                 case 2:
-                    $search  = new OrdenCTPSearch();
-                    $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
+                    $search   = new OrdenCTPSearch();
+                    $ordenes  = $search->search(Yii::$app->request->queryParams);
                     $ordenes->query->andWhere(['tipoOrden' => 1, 'fk_idSucursal' => $this->idSucursal]);
                     $idParent = '';
                     if ($post = Yii::$app->request->post('idParent'))
@@ -183,7 +184,7 @@ class DisenoController extends Controller
                         return $this->redirect(['reposicion', 'op' => 'list']);
                     $orden   = $datos['orden'];
                     $detalle = $datos['detalle'];
-                    return $this->render('repos', ['r' => '2', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
+                    return $this->render('repos', ['r' => '2', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden, 'producto' => $producto]);
                     break;
             }
         }
@@ -333,7 +334,7 @@ class DisenoController extends Controller
             //if (Yii::$app->request->isAjax && isset($get)) {
             $orden   = OrdenCTP::findOne($get['id']);
             $detalle = $orden->ordenDetalles;
-            echo $this->renderAjax('forms/oRepos', ['idParent'=>$orden->idOrdenCTP,'orden' => $orden, 'detalle' => $detalle]);
+            echo $this->renderAjax('forms/oRepos', ['idParent'=>$orden->idOrdenCTP,'orden' => $orden, 'detalle' => $detalle,'tipo'=>$get['tipo']]);
         }
     }
 }

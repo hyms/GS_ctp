@@ -4,7 +4,7 @@
 
 ?>
 <?php $form = ActiveForm::begin(
-    ['layout' => 'horizontal','id'=>'form','action'=>\yii\helpers\Url::to(['diseno/repociciones','tipo'=>$orden->tipoOrden])]
+    ['layout' => 'horizontal','id'=>'form','action'=>\yii\helpers\Url::to(['diseno/repociciones','tipo'=>$tipo])]
 ); ?>
 <?= Html::hiddenInput('idParent',$idParent) ?>
 <div class="row">
