@@ -116,6 +116,7 @@ class DisenoController extends Controller
 
     public function actionInterna()
     {
+        $sucursales = Sucursal::find()->where(['fk_idParent'=>$this->idSucursal])->all();
         $get = Yii::$app->request->get();
         if (isset($get['op'])) {
             switch ($get['op']) {
@@ -138,7 +139,7 @@ class DisenoController extends Controller
                     break;
             }
         }
-        return $this->render('interna');
+        return $this->render('interna',['sucursales'=>$sucursales]);
     }
 
     public function actionReposicion()
@@ -169,7 +170,15 @@ class DisenoController extends Controller
                         return $this->redirect(['reposicion', 'op' => 'list']);
                     $orden   = $datos['orden'];
                     $detalle = $datos['detalle'];
-                    return $this->render('repos', ['r' => '1', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
+                    return $this->render('repos', [
+                        'r' => '1',
+                        'idParent' => $idParent,
+                        'ordenes' => $ordenes,
+                        'search' => $search,
+                        'tipo' => $get['tipo'],
+                        'detalle' => $detalle,
+                        'orden' => $orden,
+                    ]);
                     break;
                 case 2:
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);

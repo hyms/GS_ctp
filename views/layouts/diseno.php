@@ -3,12 +3,11 @@
     use yii\bootstrap\Nav;
     use yii\bootstrap\NavBar;
     use yii\helpers\Html;
-    use yii\widgets\Breadcrumbs;
 
     /* @var $this \yii\web\View */
-/* @var $content string */
+    /* @var $content string */
 
-AppAsset2::register($this);
+    AppAsset2::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -23,50 +22,62 @@ AppAsset2::register($this);
 <body>
 
 <?php $this->beginBody() ?>
-    <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => 'Grafica Singular '.((!empty(Yii::$app->user->identity->fk_idSucursal))?"(".Yii::$app->user->identity->fkIdSucursal->nombre.")":""),
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar navbar-default',
-                ],
-            ]);
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => [
-                    [
-                        'label'=>'Ordenes',
-                        'url'=>['/diseno/orden']
-                    ],
-                    [
-                        'label'=>'Internas',
-                        'url'=>['/diseno/interna']
-                    ],
-                    [
-                        'label'=>'Reposiciones',
-                        'url'=>['/diseno/reposicion']
-                    ],
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-                ],
-            ]);
-            NavBar::end();
-        ?>
+<div class="wrap">
+    <?php
+        NavBar::begin([
+                          'brandLabel' => 'Grafica Singular '.((!empty(Yii::$app->user->identity->fk_idSucursal))?"(".Yii::$app->user->identity->fkIdSucursal->nombre.")":""),
+                          'brandUrl' => Yii::$app->homeUrl,
+                          'options' => [
+                              'class' => 'navbar navbar-default',
+                          ],
+                      ]);
+        echo Nav::widget([
+                             'options' => ['class' => 'navbar-nav navbar-right'],
+                             'items' => [
+                                 [
+                                     'label'=>'Ordenes',
+                                     'url'=>['/diseno/orden']
+                                 ],
+                                 [
+                                     'label'=>'Internas',
+                                     'url'=>['/diseno/interna']
+                                 ],
+                                 [
+                                     'label'=>'Reposiciones',
+                                     'url'=>['/diseno/reposicion']
+                                 ],
+                                 Yii::$app->user->isGuest ?
+                                     ['label' => 'Login', 'url' => ['/site/login']] :
+                                     ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                                      'url' => ['/site/logout'],
+                                      'linkOptions' => ['data-method' => 'post']],
+                             ],
+                         ]);
+        NavBar::end();
+    ?>
 
-        <div class="container">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            <?= $content ?>
-        </div>
+    <div class="container">
+        <?= $content ?>
     </div>
+</div>
 
 <footer class="footer">
     <div class="container">
+        <div class="row">
+            <?php
+                $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
+                foreach($sucursales as $key => $item)
+                {
+                    echo Html::a($item->nombre,'#',[
+                        'data-original-title'=>$item->descripcion,
+                        'data-toggle'=>'tooltip',
+                        'title'=>''
+                    ]);
+                    if(($key + 1) < count($sucursales))
+                        echo " - ";
+                }
+            ?>
+        </div>
         <p class="text-center">&copy; Grafica Singular <?= date('Y') ?></p>
     </div>
 </footer>

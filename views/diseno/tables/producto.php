@@ -4,28 +4,13 @@
     use yii\helpers\Url;
 
     $columns = [
-        ['class' => 'yii\grid\SerialColumn'],
         [
-            'header'=>'Formato',
+            'header'=>'Placas',
+            'format'=>'raw',
             'value'=>function($model){
-                return $model->fkIdProducto->formato;
+                return $model->fkIdProducto->formato."<br>".$model->fkIdProducto->dimension;
             },
-            //'attribute'=>'color',
         ],
-        [
-            'header'=>'Tamaño',
-            'value'=>function($model){
-                return $model->fkIdProducto->dimension;
-            },
-            //'attribute'=>'descripcion',
-        ],
-        [
-            'header'=>'Stock',
-            'value'=>'cantidad',
-            'attribute'=>'cantidad',
-            //'filter'=>CHtml::activeDropDownList($producto,'material',CHtml::listData(Producto::model()->findAll(array('group'=>'material','select'=>'material')),'material','material'),array("class"=>"form-control",'empty'=>'')),
-        ],
-        //['class' => 'yii\grid\ActionColumn'],
         [
             'header'=>'',
             'format' => 'raw',

@@ -1,24 +1,22 @@
 <?php
-    use yii\bootstrap\Nav;
+    use kartik\widgets\SideNav;
 
-?>
-    <?php
-    echo Nav::widget([
-        'items' => [
-            [
-                'label' => 'Nueva Orden',
-                'url' => ['diseno/orden','op'=>'cliente'],
-            ],
-            [
-                'label' => 'Buscar Orden',
-                'url' => ['diseno/orden','op'=>'buscar'],
-            ],
-            [
-                'label' => 'Ordenes de trabajo',
-                'url' => ['diseno/orden','op'=>'list'],
-            ],
-        ],
-        'options' => ['class' =>'nav-tabs'],
-        //'options' => ['class' =>'nav-pills nav-stacked'], // set this to nav-tab to get tab-styled navigation
-    ]);
-    ?>
+    echo SideNav::widget([
+                             'type' => SideNav::TYPE_PRIMARY,
+                             'encodeLabels' => false,
+                             'heading' => false,
+                             'items' => [
+                                 [
+                                     'label' => 'Nueva Orden',
+                                     'url' => ['diseno/orden','op'=>'cliente'],
+                                 ],
+                                 [
+                                     'label' => 'En Proceso',
+                                     'url' => ['diseno/orden','op'=>'buscar'],
+                                 ],
+                                 [
+                                     'label' => 'Historial',
+                                     'url' => ['diseno/orden','op'=>'list'],
+                                 ],
+                             ],
+                         ]);

@@ -4,7 +4,7 @@
 
 ?>
 <div class="row">
-    <div class="col-xs-4">
+    <div class="col-xs-3">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <strong class="panel-title">Productos</strong>
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="col-xs-8">
+    <div class="col-xs-9">
         <div class="well well-sm">
             <div class = "row">
                 <h4 class="col-xs-4"><strong>Orden <?= ($orden->tipoOrden==0)?"de Trabajo":"Interna" ?></strong></h4>
