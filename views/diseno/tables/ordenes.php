@@ -7,7 +7,7 @@
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong class="panel-title">Ordenes de Trabajo - Transaccionadas</strong>
+        <strong class="panel-title">Historial de ordenes de trabajo</strong>
     </div>
     <div>
         <?php
@@ -24,28 +24,35 @@
                     'attribute'=>'correlativo',
                 ],
                 [
-                    'header'=>'Codigo',
-                    'attribute'=>'codigoServicio',
-                ],
-                [
-                    'header'=>'Cliente',
-                    'attribute'=>function($model){
-                        if(empty($model->fkIdCliente))
-                            return "";
-                        return $model->fkIdCliente->nombreNegocio;
-                    },
-                ],
-                [
                     'header'=>'Responsable',
                     'attribute'=>'responsable',
                 ],
                 [
-                    'header'=>'Fecha Generada',
-                    'attribute'=>'fechaGenerada',
+                    'header'=>'Telefono',
+                    'attribute'=>'telefono',
                 ],
                 [
-                    'header'=>'Fecha Venta',
-                    'attribute'=>'fechaCobro',
+                    'header'=>'Operador',
+                    'attribute'=>function($model)
+                    {
+                        echo $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
+                    }
+                ],
+                [
+                    'header'=>'Fecha',
+                    'attribute'=>'fechaGenerada',
+                    /*'filter' => DatePicker::widget(
+                        ['language' => 'es',
+                         'type' => DatePicker::TYPE_INPUT,
+                         'name' => 'fechaGenerada',
+                         'pluginOptions' =>
+                             [
+                                 'autoclose'=>true,
+                                 'format' => 'yyyy-mm-dd'
+                             ]
+                        ]
+                    ),
+                    'format' => 'html',*/
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
@@ -74,24 +81,6 @@
                                       'bordered'=>false,
                                       'pjax'=>true,
                                   ]);
-            /*
-                array(
-                    'header'=>'',
-                    'class'=>'booster.widgets.TbButtonColumn',
-                    'template'=>'{update} {aviso} {print} {factura}',
-                    'buttons'=>array(
-                        'aviso'=>
-                            array(
-                                'url'=>'"#"',
-                                'label'=>'Anulado',
-                                'icon'=>"pencil",
-                                'visible'=>'$data->estado < 0',
-                                'options'=>array('onclick'=>'alert("ANULADO")'),
-                            ),
-                    ),
-                ),
-            );
-            //*/
         ?>
     </div>
 </div>

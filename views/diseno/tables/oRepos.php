@@ -14,14 +14,10 @@
             'header'=>'Responsable',
             'attribute'=>'responsable',
         ],
-        ($tipo==2)?[
-            'header'=>'Fecha Venta',
-            'attribute'=>'fechaCobro',
-        ]:[
-            'header'=>'Fecha Generada',
+        [
+            'header'=>'Fecha',
             'attribute'=>'fechaGenerada',
-        ]
-        ,
+        ],
         [
             'header'=>'',
             'format' => 'raw',

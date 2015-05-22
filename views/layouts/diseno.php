@@ -31,27 +31,35 @@
                               'class' => 'navbar navbar-default',
                           ],
                       ]);
+        $sucursal = \app\models\Sucursal::findOne(Yii::$app->user->identity->fk_idSucursal);
+        $items = [[
+            'label'=>'Ordenes',
+            'url'=>['/diseno/orden']
+        ]];
+        array_push($items,[
+            'label'=>'Internas',
+            'url'=>['/diseno/interna']
+        ]);
+        if(!empty($sucursal->sucursals))
+        {
+            array_push($items,[
+                'label'=>'Suc. Dependientes',
+                'url'=>['/diseno/dependientes']
+            ]);
+        }
+        array_push($items,[
+            'label'=>'Reposiciones',
+            'url'=>['/diseno/reposicion']
+        ]);
+        array_push($items, Yii::$app->user->isGuest ?
+            ['label' => 'Login', 'url' => ['/site/login']] :
+            ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+             'url' => ['/site/logout'],
+             'linkOptions' => ['data-method' => 'post']]);
+
         echo Nav::widget([
                              'options' => ['class' => 'navbar-nav navbar-right'],
-                             'items' => [
-                                 [
-                                     'label'=>'Ordenes',
-                                     'url'=>['/diseno/orden']
-                                 ],
-                                 [
-                                     'label'=>'Internas',
-                                     'url'=>['/diseno/interna']
-                                 ],
-                                 [
-                                     'label'=>'Reposiciones',
-                                     'url'=>['/diseno/reposicion']
-                                 ],
-                                 Yii::$app->user->isGuest ?
-                                     ['label' => 'Login', 'url' => ['/site/login']] :
-                                     ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                                      'url' => ['/site/logout'],
-                                      'linkOptions' => ['data-method' => 'post']],
-                             ],
+                             'items' => $items,
                          ]);
         NavBar::end();
     ?>
@@ -63,7 +71,7 @@
 
 <footer class="footer">
     <div class="container">
-        <div class="row">
+        <div class="col-xs-5">
             <?php
                 $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
                 foreach($sucursales as $key => $item)
@@ -78,10 +86,23 @@
                 }
             ?>
         </div>
-        <p class="text-center">&copy; Grafica Singular <?= date('Y') ?></p>
+        <div class="col-xs-2 text-center">&copy; Grafica Singular <?= date('Y') ?></div>
     </div>
 </footer>
-
+<?php
+$js = <<< 'SCRIPT'
+/* To initialize BS3 tooltips set this below */
+$(function () {
+$("[data-toggle='tooltip']").tooltip();
+});;
+/* To initialize BS3 popovers set this below */
+$(function () {
+$("[data-toggle='popover']").popover();
+});
+SCRIPT;
+// Register tooltip/popover initialization javascript
+$this->registerJs($js);
+    ?>
 <?php $this->endBody() ?>
 </body>
 </html>

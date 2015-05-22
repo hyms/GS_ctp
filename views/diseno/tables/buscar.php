@@ -4,7 +4,7 @@
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong class="panel-title">Ordenes de trabajo</strong>
+        <strong class="panel-title">Ordenes de trabajo en processo</strong>
     </div>
     <div class="panel-body">
         <?php

@@ -35,15 +35,17 @@ use Yii;
  * @property string $factura
  * @property integer $fk_idParent
  * @property integer $tipoOrden //venta=0, interna=1, reposicion=2;
+ * @property string $codDependiente
+ * @property integer $anulado
  *
- * @property Cliente $fkIdCliente
- * @property MovimientoCaja $fkIdMovimientoCaja
+ * @property Sucursal $fkIdSucursal
  * @property OrdenCTP $fkIdParent
  * @property OrdenCTP[] $ordenCTPs
  * @property User $fkIdUserD
  * @property User $fkIdUserV
  * @property User $fkIdUserD2
- * @property Sucursal $fkIdSucursal
+ * @property Cliente $fkIdCliente
+ * @property MovimientoCaja $fkIdMovimientoCaja
  * @property OrdenDetalle[] $ordenDetalles
  */
 class OrdenCTP extends \yii\db\ActiveRecord
@@ -62,14 +64,14 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable'], 'required'],
+            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable', 'telefono'], 'required'],
             [['fechaGenerada', 'fechaCobro', 'fechaPlazo'], 'safe'],
-            [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden'], 'integer'],
+            [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado'], 'integer'],
             [['montoVenta', 'montoDescuento'], 'number'],
             [['codigoServicio', 'autorizado'], 'string', 'max' => 100],
             [['observaciones', 'observacionAdicional', 'factura'], 'string', 'max' => 200],
             [['observacionesCaja'], 'string', 'max' => 45],
-            [['responsable'], 'string', 'max' => 50],
+            [['responsable', 'codDependiente'], 'string', 'max' => 50],
             [['telefono'], 'string', 'max' => 20]
         ];
     }
@@ -108,23 +110,17 @@ class OrdenCTP extends \yii\db\ActiveRecord
             'factura' => 'Factura',
             'fk_idParent' => 'Fk Id Parent',
             'tipoOrden' => 'Tipo Orden',
+            'codDependiente' => 'Cod Dependiente',
+            'anulado' => 'Anulado',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdCliente()
+    public function getFkIdSucursal()
     {
-        return $this->hasOne(Cliente::className(), ['idCliente' => 'fk_idCliente']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdMovimientoCaja()
-    {
-        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'fk_idMovimientoCaja']);
+        return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
     }
 
     /**
@@ -170,9 +166,17 @@ class OrdenCTP extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdSucursal()
+    public function getFkIdCliente()
     {
-        return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
+        return $this->hasOne(Cliente::className(), ['idCliente' => 'fk_idCliente']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdMovimientoCaja()
+    {
+        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'fk_idMovimientoCaja']);
     }
 
     /**

@@ -14,5 +14,9 @@
                                      'label' => 'Buscar O. Interna',
                                      'url' => ['diseno/interna','op'=>'list'],
                                  ],
+                                 [
+                                     'label' => 'Notas',
+                                     'url' => ['diseno/interna','op'=>'nota'],
+                                 ],
                              ],
                          ]);

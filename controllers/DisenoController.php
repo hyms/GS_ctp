@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\components\SGOrdenes;
 use app\components\SGProducto;
+use app\models\Notas;
+use app\models\NotasSearch;
 use app\models\OrdenCTP;
 use app\models\OrdenCTPSearch;
 use app\models\OrdenDetalle;
@@ -109,6 +111,13 @@ class DisenoController extends Controller
                         ->orderBy(['fechaCobro' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'list', 'orden' => $ordenes, 'search' => $searchModel]);
                     break;
+                case 'nota':
+                    $search = new NotasSearch();
+                    $search->fk_idSucursal = $this->idSucursal;
+                    $search->tipoNota = 0;
+                    $notas = $search->search(Yii::$app->request->getQueryParams());
+                    return $this->render('orden',['r'=>'nota','notas'=>$notas,'search'=>$search]);
+                    break;
             }
         }
         return $this->render('orden');
@@ -116,7 +125,6 @@ class DisenoController extends Controller
 
     public function actionInterna()
     {
-        $sucursales = Sucursal::find()->where(['fk_idParent'=>$this->idSucursal])->all();
         $get = Yii::$app->request->get();
         if (isset($get['op'])) {
             switch ($get['op']) {
@@ -137,9 +145,16 @@ class DisenoController extends Controller
                     $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 1);
                     return $this->render('interna', ['r' => 'buscar', 'orden' => $ordenes]);
                     break;
+                case 'nota':
+                    $search = new NotasSearch();
+                    $search->fk_idSucursal = $this->idSucursal;
+                    $search->tipoNota = 1;
+                    $notas = $search->search(Yii::$app->request->getQueryParams());
+                    return $this->render('orden',['r'=>'nota','notas'=>$notas,'search'=>$search]);
+                    break;
             }
         }
-        return $this->render('interna',['sucursales'=>$sucursales]);
+        return $this->render('interna');
     }
 
     public function actionReposicion()
@@ -208,6 +223,13 @@ class DisenoController extends Controller
                 case 'list':
                     $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 2);
                     return $this->render('repos', ['r' => 'buscar', 'orden' => $ordenes]);
+                    break;
+                case 'nota':
+                    $search = new NotasSearch();
+                    $search->fk_idSucursal = $this->idSucursal;
+                    $search->tipoNota = 2;
+                    $notas = $search->search(Yii::$app->request->getQueryParams());
+                    return $this->render('orden',['r'=>'nota','notas'=>$notas,'search'=>$search]);
                     break;
             }
         }
@@ -345,5 +367,23 @@ class DisenoController extends Controller
             $detalle = $orden->ordenDetalles;
             echo $this->renderAjax('forms/oRepos', ['idParent'=>$orden->idOrdenCTP,'orden' => $orden, 'detalle' => $detalle,'tipo'=>$get['tipo']]);
         }
+    }
+
+    public function actionNota()
+    {
+        $get  = Yii::$app->request->get();
+        $nota = new Notas();
+        if (isset($get['id'])) {
+            $nota = Notas::findOne($get['id']);
+        } else {
+            $nota->fk_idSucursal    = $this->idSucursal;
+            $nota->fk_idUserCreador = $this->id;
+            //$nota->tipoNota = $get['tipo'];
+        }
+        $post = Yii::$app->request->post();
+        if (isset($post['Notas'])) {
+
+        }
+        echo $this->renderAjax('forms/nota', ['nota' => $nota]);
     }
 }

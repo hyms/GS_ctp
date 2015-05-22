@@ -23,8 +23,9 @@
                         break;
                     case 'list':
                         echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
-                        echo $this->render('scripts/tooltip');
                         break;
+                    case 'nota':
+                        echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
                 }
             }
         ?>

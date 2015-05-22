@@ -18,5 +18,9 @@
                                      'label' => 'Historial',
                                      'url' => ['diseno/orden','op'=>'list'],
                                  ],
+                                 [
+                                     'label'=>'Notas',
+                                     'url' => ['diseno/orden','op'=>'nota'],
+                                 ]
                              ],
                          ]);

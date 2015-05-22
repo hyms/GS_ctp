@@ -3,7 +3,7 @@
     use yii\helpers\Url;
 
 ?>
-<div class="col-xs-4">
+<div class="col-xs-3">
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="form-group">

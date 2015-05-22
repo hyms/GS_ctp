@@ -16,16 +16,6 @@
                     'value'=>'correlativo',
                 ],
                 [
-                    'header'=>'Codigo',
-                    'value'=>function($model){
-                        return (isset($model->codigoServicio))?$model->codigoServicio:'';
-                    },
-                ],
-                /*[
-                    'header'=>'Cliente',
-                    'value'=>'$model->correlativo',
-                ],*/
-                [
                     'header'=>'Responsable',
                     'value'=>'responsable',
                 ],

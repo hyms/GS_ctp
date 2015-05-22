@@ -3,7 +3,7 @@
     use yii\helpers\Url;
 
 ?>
-<div class="col-xs-4">
+<div class="col-xs-3">
     <div class="panel panel-default">
         <div class="panel-body">
             <div class="form-group">
@@ -45,7 +45,7 @@
     ?>
 </div>
 
-<div class="col-xs-8">
+<div class="col-xs-9">
     <div class="well well-sm">
         <h4 class="text-center"><strong>Nueva Reposicion</strong></h4>
         <div id="orden">

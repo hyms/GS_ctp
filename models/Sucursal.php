@@ -20,6 +20,7 @@ use Yii;
  * @property OrdenCTP[] $ordenCTPs
  * @property Caja[] $cajas
  * @property Cliente[] $clientes
+ * @property Notas[] $notas
  * @property ProductoStock[] $productoStocks
  * @property Recibo[] $recibos
  * @property Sucursal $fkIdParent
@@ -89,6 +90,14 @@ class Sucursal extends \yii\db\ActiveRecord
     public function getClientes()
     {
         return $this->hasMany(Cliente::className(), ['fk_idSucursal' => 'idSucursal']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotas()
+    {
+        return $this->hasMany(Notas::className(), ['fk_idSucursal' => 'idSucursal']);
     }
 
     /**

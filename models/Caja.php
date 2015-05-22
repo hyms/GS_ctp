@@ -23,6 +23,7 @@ use Yii;
  * @property Servicio $fkIdServicio
  * @property Sucursal $fkIdSucursal
  * @property MovimientoCaja[] $movimientoCajas
+ * @property MovimientoCaja[] $movimientoCajas0
  */
 class Caja extends \yii\db\ActiveRecord
 {
@@ -104,6 +105,14 @@ class Caja extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getMovimientoCajas()
+    {
+        return $this->hasMany(MovimientoCaja::className(), ['fk_idCajaDestino' => 'idCaja']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getMovimientoCajas0()
     {
         return $this->hasMany(MovimientoCaja::className(), ['fk_idCajaOrigen' => 'idCaja']);
     }

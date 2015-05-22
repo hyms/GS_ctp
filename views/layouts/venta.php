@@ -72,10 +72,38 @@ AppAsset2::register($this,true);
 
 <footer class="footer">
     <div class="container">
-        <p class="text-center">&copy; Grafica Singular <?= date('Y') ?></p>
+        <div class="col-xs-5">
+            <?php
+                $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
+                foreach($sucursales as $key => $item)
+                {
+                    echo Html::a($item->nombre,'#',[
+                        'data-original-title'=>$item->descripcion,
+                        'data-toggle'=>'tooltip',
+                        'title'=>''
+                    ]);
+                    if(($key + 1) < count($sucursales))
+                        echo " - ";
+                }
+            ?>
+        </div>
+        <div class="col-xs-2 text-center">&copy; Grafica Singular <?= date('Y') ?></div>
     </div>
 </footer>
-
+<?php
+    $js = <<< 'SCRIPT'
+/* To initialize BS3 tooltips set this below */
+$(function () {
+$("[data-toggle='tooltip']").tooltip();
+});;
+/* To initialize BS3 popovers set this below */
+$(function () {
+$("[data-toggle='popover']").popover();
+});
+SCRIPT;
+    // Register tooltip/popover initialization javascript
+    $this->registerJs($js);
+?>
 <?php $this->endBody() ?>
 </body>
 </html>

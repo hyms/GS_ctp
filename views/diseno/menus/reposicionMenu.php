@@ -1,20 +1,22 @@
 <?php
-    use yii\bootstrap\Nav;
+    use kartik\widgets\SideNav;
 
-?>
-    <?php
-    echo Nav::widget([
-        'items' => [
-            [
-                'label' => 'Nueva Reposicion',
-                'url' => ['diseno/reposicion','op'=>'nueva'],
-            ],
-            [
-                'label' => 'Buscar Reposicion',
-                'url' => ['diseno/reposicion','op'=>'list'],
-            ],
-        ],
-        'options' => ['class' =>'nav-tabs'],
-        //'options' => ['class' =>'nav-pills nav-stacked'], // set this to nav-tab to get tab-styled navigation
-    ]);
-    ?>
+    echo SideNav::widget([
+                             'type' => SideNav::TYPE_PRIMARY,
+                             'encodeLabels' => false,
+                             'heading' => false,
+                             'items' => [
+                                 [
+                                     'label' => 'Nueva Reposicion',
+                                     'url' => ['diseno/reposicion','op'=>'nueva'],
+                                 ],
+                                 [
+                                     'label' => 'Buscar Reposicion',
+                                     'url' => ['diseno/reposicion','op'=>'list'],
+                                 ],
+                                 [
+                                     'label' => 'Notas',
+                                     'url' => ['diseno/reposicion','op'=>'nota'],
+                                 ]
+                             ],
+                         ]);
