@@ -17,7 +17,7 @@ class CajaSearch extends Caja
     public function rules()
     {
         return [
-            [['idCaja', 'enable', 'fk_idServicio', 'fk_idSucursal', 'fk_idCaja'], 'integer'],
+            [['idCaja', 'enable', 'fk_idSucursal', 'fk_idCaja'], 'integer'],
             [['nombre', 'descripcion', 'fechaCreacion', 'fechaUltimoMovimiento'], 'safe'],
             [['monto'], 'number'],
         ];
@@ -61,7 +61,6 @@ class CajaSearch extends Caja
             'fechaCreacion' => $this->fechaCreacion,
             'fechaUltimoMovimiento' => $this->fechaUltimoMovimiento,
             'enable' => $this->enable,
-            'fk_idServicio' => $this->fk_idServicio,
             'fk_idSucursal' => $this->fk_idSucursal,
             'fk_idCaja' => $this->fk_idCaja,
         ]);

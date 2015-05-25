@@ -1,10 +1,10 @@
 <?php
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-    $this->title = 'Venta-Orden'
+$this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
@@ -120,7 +120,6 @@
 <?= $this->render('../scripts/detalleVenta') ?>
 <?= $this->render('../scripts/save') ?>
 <?= $this->render('../scripts/reset') ?>
-<?= $this->render('../scripts/factura') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>
 <?php
 $js  ="

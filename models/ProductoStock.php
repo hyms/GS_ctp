@@ -15,9 +15,7 @@ use Yii;
  * @property integer $fk_idSucursal
  *
  * @property MovimientoStock[] $movimientoStocks
- * @property MovimientoStock[] $movimientoStocks0
  * @property OrdenDetalle[] $ordenDetalles
- * @property PrecioProductoOrden[] $precioProductoOrdens
  * @property Producto $fkIdProducto
  * @property Sucursal $fkIdSucursal
  */
@@ -62,14 +60,6 @@ class ProductoStock extends \yii\db\ActiveRecord
      */
     public function getMovimientoStocks()
     {
-        return $this->hasMany(MovimientoStock::className(), ['fk_idStockOrigen' => 'idProductoStock']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMovimientoStocks0()
-    {
         return $this->hasMany(MovimientoStock::className(), ['fk_idStockDestino' => 'idProductoStock']);
     }
 
@@ -79,14 +69,6 @@ class ProductoStock extends \yii\db\ActiveRecord
     public function getOrdenDetalles()
     {
         return $this->hasMany(OrdenDetalle::className(), ['fk_idProductoStock' => 'idProductoStock']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getPrecioProductoOrdens()
-    {
-        return $this->hasMany(PrecioProductoOrden::className(), ['fk_idProductoStock' => 'idProductoStock']);
     }
 
     /**

@@ -1,7 +1,7 @@
 <?php
-    use kartik\widgets\SideNav;
+use kartik\widgets\SideNav;
 
-    echo SideNav::widget([
+echo SideNav::widget([
                              'type' => SideNav::TYPE_PRIMARY,
                              'encodeLabels' => false,
                              'heading' => false,
@@ -17,14 +17,6 @@
                                  [
                                      'label' => 'Añadir a Almacen',
                                      'url' => ['admin/producto','op'=>'add'],
-                                 ],
-                                 [
-                                     'label' => 'Stocks',
-                                     'url' => ['admin/stock'],
-                                 ],
-                                 [
-                                     'label' => 'Costos',
-                                     'url' => ['admin/costo'],
                                  ],
                              ],
                          ]);

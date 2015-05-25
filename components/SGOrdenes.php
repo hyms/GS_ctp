@@ -7,7 +7,6 @@ use app\models\Cliente;
 use app\models\MovimientoCaja;
 use app\models\OrdenCTP;
 use app\models\PrecioProductoOrden;
-use app\models\ProductoStock;
 use Yii;
 use yii\base\Component;
 use yii\base\Model;
@@ -39,14 +38,14 @@ class SGOrdenes extends Component
         } else {
             $productoStocks = [];
             $movimientoStock = [];
-            foreach ($data['detalle'] as $key => $item) {
+            /*foreach ($data['detalle'] as $key => $item) {
                 $productoStocks[$key] = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
                 $movimientoStock[$key] = SGProducto::movimientoStockVenta($item->fk_idMovimientoStock, $productoStocks[$key]);
                 if (!$movimientoStock[$key]->isNewRecord) {
                     $productoStocks[$key]->cantidad += $movimientoStock[$key]->cantidad;
                 }
                 $movimientoStock[$key]->cantidad = $item->cantidad;
-            }
+            }*/
 
             $cliente = Cliente::findOne(['idCliente' => $data['orden']->fk_idCliente]);
             if (!empty($cliente))
@@ -72,13 +71,13 @@ class SGOrdenes extends Component
             }
 
             $data['caja']->monto += $movimientoCaja->monto;
-            foreach ($productoStocks as $key => $stock) {
+            /*foreach ($productoStocks as $key => $stock) {
                 $stock->cantidad -= $movimientoStock[$key]->cantidad;
                 /*if ($stock->cantidad < 0) {
                     $data['orden']->addError('observacionesCaja', 'Insuficientes insumos de un producto');
                     return $data;
                 }*/
-            }
+            //}*/
 
 
             if (!empty($data['orden']->fechaPlazo))
@@ -98,7 +97,7 @@ class SGOrdenes extends Component
                         if ($movimientoStock[$key]->save()) {
                             $item->fk_idMovimientoStock = $movimientoStock[$key]->idMovimientoStock;
                             $item->save();
-                            $productoStocks[$key]->save();
+                            //$productoStocks[$key]->save();
                             $this->success = true;
                         }
                     }
@@ -163,7 +162,7 @@ class SGOrdenes extends Component
         return $sigla."-".($row->correlativo + 1);
     }
 
-    static public function costos($idprodutoStock, $tipoCliente, $hora, $cantidad, $tipo)
+    /*static public function costos($idprodutoStock, $tipoCliente, $hora, $cantidad, $tipo)
     {
         $costo = 0;
         $idCantidad = CantidadPlacas::find()
@@ -189,7 +188,7 @@ class SGOrdenes extends Component
                 $costo = $precios->precioSF;
         }
         return $costo;
-    }
+    }*/
 
     public function deuda($datos)
     {

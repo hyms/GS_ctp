@@ -29,10 +29,11 @@ use yii\web\IdentityInterface;
  * @property OrdenCTP[] $ordenCTPs
  * @property MovimientoCaja[] $movimientoCajas
  * @property MovimientoStock[] $movimientoStocks
+ * @property Notas[] $notas
  * @property Recibo[] $recibos
  * @property Sucursal $fkIdSucursal
  */
-class User extends \yii\db\ActiveRecord  implements IdentityInterface
+class User extends \yii\db\ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -71,22 +72,22 @@ class User extends \yii\db\ActiveRecord  implements IdentityInterface
     public function attributeLabels()
     {
         return [
-            'idUser'            => 'Id User',
-            'username'          => 'Username',
-            'password'          => 'Password',
-            'enable'            => 'Enable',
-            'role'              => 'Role',
-            'apellido'          => 'Apellido',
-            'nombre'            => 'Nombre',
-            'CI'                => 'Ci',
-            'telefono'          => 'Telefono',
-            'email'             => 'Email',
-            'salario'           => 'Salario',
-            'fechaRegistro'     => 'Fecha Registro',
+            'idUser' => 'Id User',
+            'username' => 'Username',
+            'password' => 'Password',
+            'enable' => 'Enable',
+            'role' => 'Role',
+            'apellido' => 'Apellido',
+            'nombre' => 'Nombre',
+            'CI' => 'Ci',
+            'telefono' => 'Telefono',
+            'email' => 'Email',
+            'salario' => 'Salario',
+            'fechaRegistro' => 'Fecha Registro',
             'fechaUltimoAcceso' => 'Fecha Ultimo Acceso',
-            'fechaAcceso'       => 'Fecha Acceso',
-            'fk_idUser'         => 'Fk Id User',
-            'fk_idSucursal'     => 'Fk Id Sucursal',
+            'fechaAcceso' => 'Fecha Acceso',
+            'fk_idUser' => 'Fk Id User',
+            'fk_idSucursal' => 'Fk Id Sucursal',
         ];
     }
 
@@ -117,6 +118,14 @@ class User extends \yii\db\ActiveRecord  implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getNotas()
+    {
+        return $this->hasMany(Notas::className(), ['fk_idUserVisto' => 'idUser']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getRecibos()
     {
         return $this->hasMany(Recibo::className(), ['fk_idUser' => 'idUser']);
@@ -129,8 +138,6 @@ class User extends \yii\db\ActiveRecord  implements IdentityInterface
     {
         return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
     }
-
-
 
     /** INCLUDE USER LOGIN VALIDATION FUNCTIONS**/
     /**
@@ -182,8 +189,8 @@ class User extends \yii\db\ActiveRecord  implements IdentityInterface
         }
 
         return static::findOne([
-                                   'password_reset_token' => $token
-                               ]);
+            'password_reset_token' => $token
+        ]);
     }
 
     /**

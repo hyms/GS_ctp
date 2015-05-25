@@ -17,7 +17,7 @@ class ClienteSearch extends Cliente
     public function rules()
     {
         return [
-            [['idCliente', 'fk_idTipoCliente', 'enable', 'fk_idSucursal'], 'integer'],
+            [['idCliente', 'enable', 'fk_idSucursal'], 'integer'],
             [['nombreCompleto', 'nombreNegocio', 'nombreResponsable', 'correo', 'fechaRegistro', 'telefono', 'direccion', 'nitCi', 'codigoCliente'], 'safe'],
         ];
     }
@@ -56,7 +56,6 @@ class ClienteSearch extends Cliente
 
         $query->andFilterWhere([
             'idCliente' => $this->idCliente,
-            'fk_idTipoCliente' => $this->fk_idTipoCliente,
             'fechaRegistro' => $this->fechaRegistro,
             'enable' => $this->enable,
             'fk_idSucursal' => $this->fk_idSucursal,

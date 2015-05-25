@@ -8,7 +8,6 @@ use Yii;
  * This is the model class for table "cliente".
  *
  * @property integer $idCliente
- * @property integer $fk_idTipoCliente
  * @property string $nombreCompleto
  * @property string $nombreNegocio
  * @property string $nombreResponsable
@@ -23,7 +22,6 @@ use Yii;
  *
  * @property OrdenCTP[] $ordenCTPs
  * @property Sucursal $fkIdSucursal
- * @property TipoCliente $fkIdTipoCliente
  */
 class Cliente extends \yii\db\ActiveRecord
 {
@@ -41,9 +39,9 @@ class Cliente extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_idTipoCliente', 'enable', 'fk_idSucursal'], 'integer'],
             [['nombreCompleto', 'nombreNegocio', 'fechaRegistro', 'telefono', 'codigoCliente', 'enable'], 'required'],
             [['fechaRegistro'], 'safe'],
+            [['enable', 'fk_idSucursal'], 'integer'],
             [['nombreCompleto', 'nombreNegocio', 'nombreResponsable'], 'string', 'max' => 100],
             [['correo', 'direccion'], 'string', 'max' => 150],
             [['telefono'], 'string', 'max' => 30],
@@ -59,7 +57,6 @@ class Cliente extends \yii\db\ActiveRecord
     {
         return [
             'idCliente' => 'Id Cliente',
-            'fk_idTipoCliente' => 'Fk Id Tipo Cliente',
             'nombreCompleto' => 'Nombre Completo',
             'nombreNegocio' => 'Nombre Negocio',
             'nombreResponsable' => 'Nombre Responsable',
@@ -88,13 +85,5 @@ class Cliente extends \yii\db\ActiveRecord
     public function getFkIdSucursal()
     {
         return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdTipoCliente()
-    {
-        return $this->hasOne(TipoCliente::className(), ['idTipoCliente' => 'fk_idTipoCliente']);
     }
 }

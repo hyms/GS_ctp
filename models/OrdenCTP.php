@@ -38,14 +38,14 @@ use Yii;
  * @property string $codDependiente
  * @property integer $anulado
  *
- * @property Sucursal $fkIdSucursal
+ * @property Cliente $fkIdCliente
+ * @property MovimientoCaja $fkIdMovimientoCaja
  * @property OrdenCTP $fkIdParent
  * @property OrdenCTP[] $ordenCTPs
  * @property User $fkIdUserD
  * @property User $fkIdUserV
  * @property User $fkIdUserD2
- * @property Cliente $fkIdCliente
- * @property MovimientoCaja $fkIdMovimientoCaja
+ * @property Sucursal $fkIdSucursal
  * @property OrdenDetalle[] $ordenDetalles
  */
 class OrdenCTP extends \yii\db\ActiveRecord
@@ -64,7 +64,7 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable', 'telefono'], 'required'],
+            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable','telefono'], 'required'],
             [['fechaGenerada', 'fechaCobro', 'fechaPlazo'], 'safe'],
             [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado'], 'integer'],
             [['montoVenta', 'montoDescuento'], 'number'],
@@ -118,9 +118,17 @@ class OrdenCTP extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdSucursal()
+    public function getFkIdCliente()
     {
-        return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
+        return $this->hasOne(Cliente::className(), ['idCliente' => 'fk_idCliente']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdMovimientoCaja()
+    {
+        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'fk_idMovimientoCaja']);
     }
 
     /**
@@ -166,17 +174,9 @@ class OrdenCTP extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdCliente()
+    public function getFkIdSucursal()
     {
-        return $this->hasOne(Cliente::className(), ['idCliente' => 'fk_idCliente']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdMovimientoCaja()
-    {
-        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'fk_idMovimientoCaja']);
+        return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
     }
 
     /**

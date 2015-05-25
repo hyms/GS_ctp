@@ -14,6 +14,7 @@ use app\models\Sucursal;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\base\Model;
+use yii\data\ActiveDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\HttpException;
@@ -26,8 +27,8 @@ class DisenoController extends Controller
 
     public function init()
     {
-        if (!empty(yii::$app->user->identity)) {
-            $sucursal = Sucursal::findOne(['idSucursal' => yii::$app->user->identity->fk_idSucursal]);
+        if (!empty(Yii::$app->user->identity)) {
+            $sucursal = Sucursal::findOne(['idSucursal' => Yii::$app->user->identity->fk_idSucursal]);
             if (empty($sucursal))
                 throw new HttpException(412, SGOperation::getError(412));
             else
@@ -62,11 +63,11 @@ class DisenoController extends Controller
     public function actions()
     {
         return [
-            'error'   => [
-                'class' => 'yii\web\ErrorAction',
+            'error' => [
+                'class' => 'Yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class'           => 'yii\captcha\CaptchaAction',
+                'class' => 'Yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
@@ -85,15 +86,15 @@ class DisenoController extends Controller
             switch ($get['op']) {
                 case "cliente":
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $datos    = $this->ordenes($get, 0);
+                    $datos = $this->ordenes($get, 0);
                     if (!is_array($datos))
                         return $this->redirect(['orden', 'op' => 'buscar']);
                     $ordenes = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('orden', [
-                        'r'        => 'nuevo',
-                        'orden'    => $ordenes,
-                        'detalle'  => $detalle,
+                        'r' => 'nuevo',
+                        'orden' => $ordenes,
+                        'detalle' => $detalle,
                         'producto' => $producto,
                     ]);
                 case 'buscar':
@@ -101,9 +102,9 @@ class DisenoController extends Controller
                     return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes]);
                     break;
                 case 'list':
-                    $searchModel                = new OrdenCTPSearch();
+                    $searchModel = new OrdenCTPSearch();
                     $searchModel->fk_idSucursal = $this->idSucursal;
-                    $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
+                    $ordenes = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
                         ->andWhere(['estado' => 0])
                         ->orWhere(['estado' => 2])
@@ -116,11 +117,15 @@ class DisenoController extends Controller
                     $search->fk_idSucursal = $this->idSucursal;
                     $search->tipoNota = 0;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
-                    return $this->render('orden',['r'=>'nota','notas'=>$notas,'search'=>$search]);
+                    return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }
-        return $this->render('orden');
+        $notas = Notas::find()->where(['is', 'fk_idUserVisto', Null]);
+        $data = new ActiveDataProvider([
+            'query' => $notas,
+        ]);
+        return $this->render('orden', ['notas' => $data]);
     }
 
     public function actionInterna()
@@ -130,15 +135,15 @@ class DisenoController extends Controller
             switch ($get['op']) {
                 case "nueva":
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $datos    = $this->ordenes($get, 1);
+                    $datos = $this->ordenes($get, 1);
                     if (!is_array($datos))
                         return $this->redirect(['interna', 'op' => 'list']);
                     $ordenes = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('interna', [
-                        'r'        => 'nuevo',
-                        'orden'    => $ordenes,
-                        'detalle'  => $detalle,
+                        'r' => 'nuevo',
+                        'orden' => $ordenes,
+                        'detalle' => $detalle,
                         'producto' => $producto,
                     ]);
                 case 'list':
@@ -150,11 +155,15 @@ class DisenoController extends Controller
                     $search->fk_idSucursal = $this->idSucursal;
                     $search->tipoNota = 1;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
-                    return $this->render('orden',['r'=>'nota','notas'=>$notas,'search'=>$search]);
+                    return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }
-        return $this->render('interna');
+        $notas = Notas::find()->where(['is', 'fk_idUserVisto', Null]);
+        $data = new ActiveDataProvider([
+            'query' => $notas,
+        ]);
+        return $this->render('interna', ['notas' => $data]);
     }
 
     public function actionReposicion()
@@ -164,15 +173,15 @@ class DisenoController extends Controller
             switch ($get['tipo']) {
                 case 0:
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $datos    = $this->ordenes($get, 2);
+                    $datos = $this->ordenes($get, 2);
                     if (!is_array($datos))
                         return $this->redirect(['reposicion', 'op' => 'list']);
-                    $orden   = $datos['orden'];
+                    $orden = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('repos', ['r' => '0', 'producto' => $producto, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden]);
                     break;
                 case 1:
-                    $search  = new OrdenCTPSearch();
+                    $search = new OrdenCTPSearch();
                     $ordenes = $search->search(Yii::$app->request->queryParams);
                     $ordenes->query->andWhere(['tipoOrden' => 0, 'fk_idSucursal' => $this->idSucursal]);
                     $ordenes->query->andWhere(['estado' => 0]);
@@ -183,7 +192,7 @@ class DisenoController extends Controller
                     $datos = $this->ordenes($get, 2, $idParent);
                     if (!is_array($datos))
                         return $this->redirect(['reposicion', 'op' => 'list']);
-                    $orden   = $datos['orden'];
+                    $orden = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('repos', [
                         'r' => '1',
@@ -197,8 +206,8 @@ class DisenoController extends Controller
                     break;
                 case 2:
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $search   = new OrdenCTPSearch();
-                    $ordenes  = $search->search(Yii::$app->request->queryParams);
+                    $search = new OrdenCTPSearch();
+                    $ordenes = $search->search(Yii::$app->request->queryParams);
                     $ordenes->query->andWhere(['tipoOrden' => 1, 'fk_idSucursal' => $this->idSucursal]);
                     $idParent = '';
                     if ($post = Yii::$app->request->post('idParent'))
@@ -206,7 +215,7 @@ class DisenoController extends Controller
                     $datos = $this->ordenes($get, 2, $idParent);
                     if (!is_array($datos))
                         return $this->redirect(['reposicion', 'op' => 'list']);
-                    $orden   = $datos['orden'];
+                    $orden = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('repos', ['r' => '2', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden, 'producto' => $producto]);
                     break;
@@ -216,7 +225,7 @@ class DisenoController extends Controller
             switch ($get['op']) {
                 case "nueva":
                     return $this->render('repos', [
-                        'r'    => 'nuevo',
+                        'r' => 'nuevo',
                         'tipo' => '',
                     ]);
 
@@ -229,11 +238,15 @@ class DisenoController extends Controller
                     $search->fk_idSucursal = $this->idSucursal;
                     $search->tipoNota = 2;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
-                    return $this->render('orden',['r'=>'nota','notas'=>$notas,'search'=>$search]);
+                    return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }
-        return $this->render('repos');
+        $notas = Notas::find()->where(['is', 'fk_idUserVisto', Null]);
+        $data = new ActiveDataProvider([
+            'query' => $notas,
+        ]);
+        return $this->render('repos', ['notas' => $data]);
     }
 
     private function ordenes($get, $tipo, $idParent = null)
@@ -245,9 +258,9 @@ class DisenoController extends Controller
             $detalle = $ordenes->ordenDetalles;
         } else {
             $ordenes->fk_idSucursal = $this->idSucursal;
-            $ordenes->estado        = 1;
-            $ordenes->tipoOrden     = $tipo;
-            $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal, $tipo);
+            $ordenes->estado = 1;
+            $ordenes->tipoOrden = $tipo;
+            $ordenes->correlativo = SGOrdenes::correlativo($ordenes->fk_idSucursal, $tipo);
             if ($tipo != 0)
                 $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, $tipo);
             $ordenes->fechaGenerada = date('Y-m-d H:i:s');
@@ -255,15 +268,15 @@ class DisenoController extends Controller
         if ($idParent != null)
             $ordenes->fk_idParent = $idParent;
 
-        $ordenes->fk_idUserD = yii::$app->user->id;
-        $post                = Yii::$app->request->post();
+        $ordenes->fk_idUserD = Yii::$app->user->id;
+        $post = Yii::$app->request->post();
         if (!empty($post)) {
             $operacion = new SGOrdenes();
             if (isset($get['id'])) {
                 $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                 $detalle = OrdenDetalle::findAll(['fk_idOrden' => $ordenes->idOrdenCTP]);
-                $cp      = count($post['OrdenDetalle']);
-                $cs      = count($detalle);
+                $cp = count($post['OrdenDetalle']);
+                $cs = count($detalle);
                 if ($cp != $cs)
                     if ($cs == OrdenDetalle::deleteAll(['fk_idOrden' => $ordenes->idOrdenCTP]))
                         for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
@@ -289,42 +302,42 @@ class DisenoController extends Controller
         if (isset($get['op']) && isset($get['id'])) {
             switch ($get['op']) {
                 case "orden":
-                    $orden      = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
-                    $num        = new numerosALetras();
+                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $num = new numerosALetras();
                     $num->valor = $orden->montoVenta;
-                    $content    = $this->renderPartial('prints/orden', ['orden' => $orden, 'monto' => $num->mostrar()]);
-                    $title      = "Orden de Venta Nro " . $orden->correlativo;
+                    $content = $this->renderPartial('prints/orden', ['orden' => $orden, 'monto' => $num->mostrar()]);
+                    $title = "Orden de Venta Nro " . $orden->correlativo;
                     break;
                 case "interna":
-                    $orden   = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                     $content = $this->renderPartial('prints/interna', ['orden' => $orden]);
-                    $title   = "Orden Interna " . $orden->codigoServicio;
+                    $title = "Orden Interna " . $orden->codigoServicio;
                     break;
                 case "reposicion":
-                    $orden   = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                     $content = $this->renderPartial('prints/repos', ['orden' => $orden]);
-                    $title   = "Reposicion " . $orden->codigoServicio;
+                    $title = "Reposicion " . $orden->codigoServicio;
                     break;
             }
             $pdf = new Pdf([
-                               // set to use core fonts only
-                               'mode'         => Pdf::MODE_CORE,
-                               'format'       => Pdf::FORMAT_LETTER,
-                               'orientation'  => Pdf::ORIENT_PORTRAIT,
-                               'destination'  => Pdf::DEST_BROWSER,
-                               'content'      => $content,
-                               // format content from your own css file if needed or use the
-                               // enhanced bootstrap css built by Krajee for mPDF formatting
-                               'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
-                               // set mPDF properties on the fly
-                               'marginLeft'   => 10, // margin_left. Sets the page margins for the new document.
-                               'marginRight'  => 10, // margin_right
-                               'marginTop'    => 5, // margin_top
-                               'marginBottom' => 5, // margin_bottom
-                               'marginHeader' => 9, // margin_header
-                               'marginFooter' => 9, // margin_footer
-                               'options'      => ['title' => $title],
-                           ]);
+                // set to use core fonts only
+                'mode' => Pdf::MODE_CORE,
+                'format' => Pdf::FORMAT_LETTER,
+                'orientation' => Pdf::ORIENT_PORTRAIT,
+                'destination' => Pdf::DEST_BROWSER,
+                'content' => $content,
+                // format content from your own css file if needed or use the
+                // enhanced bootstrap css built by Krajee for mPDF formatting
+                'cssFile' => '@webroot/css/bootstrap.min.readable.css',
+                // set mPDF properties on the fly
+                'marginLeft' => 10, // margin_left. Sets the page margins for the new document.
+                'marginRight' => 10, // margin_right
+                'marginTop' => 5, // margin_top
+                'marginBottom' => 5, // margin_bottom
+                'marginHeader' => 9, // margin_header
+                'marginFooter' => 9, // margin_footer
+                'options' => ['title' => $title],
+            ]);
 
             // return the pdf output as per the destination setting
             return $pdf->render();
@@ -336,7 +349,7 @@ class DisenoController extends Controller
         $get = Yii::$app->request->get();
         if (isset($get)) {
             //if (Yii::$app->request->isAjax && isset($get)) {
-            $tipo    = 0;
+            $tipo = 0;
             $detalle = new OrdenDetalle();
             $almacen = null;
             if (isset($get['al'])) {
@@ -349,10 +362,10 @@ class DisenoController extends Controller
 
             $detalle->fk_idProductoStock = $almacen->idProductoStock;
 
-            echo $this->renderAjax('forms/_newRowDetalleVenta', array(
-                'model'   => $detalle,
-                'index'   => $get['index'],
-                'tipo'    => $tipo,
+            return $this->renderAjax('forms/_newRowDetalleVenta', array(
+                'model' => $detalle,
+                'index' => $get['index'],
+                'tipo' => $tipo,
                 'almacen' => $almacen,
             ));
         }
@@ -363,27 +376,44 @@ class DisenoController extends Controller
         $get = Yii::$app->request->get();
         if (isset($get['id'])) {
             //if (Yii::$app->request->isAjax && isset($get)) {
-            $orden   = OrdenCTP::findOne($get['id']);
+            $orden = OrdenCTP::findOne($get['id']);
             $detalle = $orden->ordenDetalles;
-            echo $this->renderAjax('forms/oRepos', ['idParent'=>$orden->idOrdenCTP,'orden' => $orden, 'detalle' => $detalle,'tipo'=>$get['tipo']]);
+            return $this->renderAjax('forms/oRepos', ['idParent' => $orden->idOrdenCTP, 'orden' => $orden, 'detalle' => $detalle, 'tipo' => $get['tipo']]);
         }
     }
 
-    public function actionNota()
+    public function actionNotas()
     {
-        $get  = Yii::$app->request->get();
+        $get = Yii::$app->request->get();
         $nota = new Notas();
         if (isset($get['id'])) {
             $nota = Notas::findOne($get['id']);
         } else {
-            $nota->fk_idSucursal    = $this->idSucursal;
-            $nota->fk_idUserCreador = $this->id;
-            //$nota->tipoNota = $get['tipo'];
+            $nota->fk_idSucursal = $this->idSucursal;
+            $nota->fk_idUserCreador = Yii::$app->user->id;
+            $nota->tipoNota = $get['tipo'];
+            $nota->fechaCreacion = date('Y-m-d H:i:s');
         }
         $post = Yii::$app->request->post();
         if (isset($post['Notas'])) {
-
+            $nota->attributes = $post['Notas'];
+            if ($nota->save()) {
+                return "done";
+            }
         }
-        echo $this->renderAjax('forms/nota', ['nota' => $nota]);
+        return $this->renderAjax('forms/nota', ['nota' => $nota]);
+    }
+
+    public function actionVisto()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['id'])) {
+            $nota = Notas::findOne($get['id']);
+            $nota->fk_idUserVisto = Yii::$app->user->id;
+            $nota->fechaVisto = date('Y-m-d H:i:s');
+            if ($nota->save()) {
+                return "done";
+            }
+        }
     }
 }

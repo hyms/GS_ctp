@@ -15,7 +15,6 @@
                         break;
                     case "buscar":
                         echo $this->render('tables/buscar', ['orden' => $orden, 'search' => $search]);
-                        echo $this->render('scripts/tooltip');
                         break;
                     case "venta":
                         echo $this->render('forms/venta', [
@@ -32,7 +31,6 @@
 
                     case "deuda":
                         echo $this->render('tables/deudores', ['orden' => $orden, 'search' => $search]);
-                        echo $this->render('scripts/tooltip');
                         break;
                     case "pagoDeuda":
                         echo $this->render('forms/deuda', ['orden' => $orden, 'deuda' => $deuda, 'model' => $model]);

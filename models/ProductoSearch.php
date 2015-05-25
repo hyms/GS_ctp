@@ -17,8 +17,8 @@ class ProductoSearch extends Producto
     public function rules()
     {
         return [
-            [['idProducto', 'toBuy', 'toSell', 'cantidadPaquete'], 'integer'],
-            [['codigo', 'codigoPersonalizado', 'dimension', 'importKey', 'material', 'formato'], 'safe'],
+            [['idProducto', 'toSell', 'cantidadPaquete'], 'integer'],
+            [['codigo', 'codigoPersonalizado', 'dimension', 'material', 'formato'], 'safe'],
         ];
     }
 
@@ -56,7 +56,6 @@ class ProductoSearch extends Producto
 
         $query->andFilterWhere([
             'idProducto' => $this->idProducto,
-            'toBuy' => $this->toBuy,
             'toSell' => $this->toSell,
             'cantidadPaquete' => $this->cantidadPaquete,
         ]);
@@ -64,7 +63,6 @@ class ProductoSearch extends Producto
         $query->andFilterWhere(['like', 'codigo', $this->codigo])
             ->andFilterWhere(['like', 'codigoPersonalizado', $this->codigoPersonalizado])
             ->andFilterWhere(['like', 'dimension', $this->dimension])
-            ->andFilterWhere(['like', 'importKey', $this->importKey])
             ->andFilterWhere(['like', 'material', $this->material])
             ->andFilterWhere(['like', 'formato', $this->formato]);
 

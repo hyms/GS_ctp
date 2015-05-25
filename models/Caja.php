@@ -14,16 +14,13 @@ use Yii;
  * @property string $fechaCreacion
  * @property string $fechaUltimoMovimiento
  * @property integer $enable
- * @property integer $fk_idServicio
  * @property integer $fk_idSucursal
  * @property integer $fk_idCaja
  *
  * @property Caja $fkIdCaja
  * @property Caja[] $cajas
- * @property Servicio $fkIdServicio
  * @property Sucursal $fkIdSucursal
  * @property MovimientoCaja[] $movimientoCajas
- * @property MovimientoCaja[] $movimientoCajas0
  */
 class Caja extends \yii\db\ActiveRecord
 {
@@ -44,7 +41,7 @@ class Caja extends \yii\db\ActiveRecord
             [['nombre', 'monto', 'fechaCreacion', 'fk_idSucursal'], 'required'],
             [['monto'], 'number'],
             [['fechaCreacion', 'fechaUltimoMovimiento'], 'safe'],
-            [['enable', 'fk_idServicio', 'fk_idSucursal', 'fk_idCaja'], 'integer'],
+            [['enable', 'fk_idSucursal', 'fk_idCaja'], 'integer'],
             [['nombre'], 'string', 'max' => 50],
             [['descripcion'], 'string', 'max' => 100]
         ];
@@ -63,7 +60,6 @@ class Caja extends \yii\db\ActiveRecord
             'fechaCreacion' => 'Fecha Creacion',
             'fechaUltimoMovimiento' => 'Fecha Ultimo Movimiento',
             'enable' => 'Enable',
-            'fk_idServicio' => 'Fk Id Servicio',
             'fk_idSucursal' => 'Fk Id Sucursal',
             'fk_idCaja' => 'Fk Id Caja',
         ];
@@ -88,14 +84,6 @@ class Caja extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdServicio()
-    {
-        return $this->hasOne(Servicio::className(), ['idServicio' => 'fk_idServicio']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getFkIdSucursal()
     {
         return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
@@ -105,14 +93,6 @@ class Caja extends \yii\db\ActiveRecord
      * @return \yii\db\ActiveQuery
      */
     public function getMovimientoCajas()
-    {
-        return $this->hasMany(MovimientoCaja::className(), ['fk_idCajaDestino' => 'idCaja']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getMovimientoCajas0()
     {
         return $this->hasMany(MovimientoCaja::className(), ['fk_idCajaOrigen' => 'idCaja']);
     }

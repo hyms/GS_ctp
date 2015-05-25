@@ -37,7 +37,7 @@ class Notas extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['titulo', 'fk_idUserCreador', 'fechaCreacion', 'fk_idSucursal'], 'required'],
+            [[ 'fk_idUserCreador', 'fechaCreacion', 'fk_idSucursal'], 'required'],
             [['fk_idUserCreador', 'fk_idUserVisto', 'fk_idSucursal', 'tipoNota'], 'integer'],
             [['fechaCreacion', 'fechaVisto'], 'safe'],
             [['titulo'], 'string', 'max' => 50],

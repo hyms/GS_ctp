@@ -17,8 +17,8 @@ class OrdenCTPSearch extends OrdenCTP
     public function rules()
     {
         return [
-            [['idOrdenCTP', 'cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden'], 'integer'],
-            [['fechaGenerada', 'fechaCobro', 'fechaPlazo', 'codigoServicio', 'autorizado', 'observaciones', 'observacionesCaja', 'responsable', 'telefono', 'observacionAdicional', 'factura'], 'safe'],
+            [['idOrdenCTP', 'cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado'], 'integer'],
+            [['fechaGenerada', 'fechaCobro', 'fechaPlazo', 'codigoServicio', 'autorizado', 'observaciones', 'observacionesCaja', 'responsable', 'telefono', 'observacionAdicional', 'factura', 'codDependiente'], 'safe'],
             [['montoVenta', 'montoDescuento'], 'number'],
         ];
     }
@@ -39,7 +39,7 @@ class OrdenCTPSearch extends OrdenCTP
      *
      * @return ActiveDataProvider
      */
-    public function search($params,$where=false)
+    public function search($params)
     {
         $query = OrdenCTP::find();
 
@@ -76,6 +76,7 @@ class OrdenCTPSearch extends OrdenCTP
             'fk_idUserD2' => $this->fk_idUserD2,
             'fk_idParent' => $this->fk_idParent,
             'tipoOrden' => $this->tipoOrden,
+            'anulado' => $this->anulado,
         ]);
 
         $query->andFilterWhere(['like', 'codigoServicio', $this->codigoServicio])
@@ -85,7 +86,8 @@ class OrdenCTPSearch extends OrdenCTP
             ->andFilterWhere(['like', 'responsable', $this->responsable])
             ->andFilterWhere(['like', 'telefono', $this->telefono])
             ->andFilterWhere(['like', 'observacionAdicional', $this->observacionAdicional])
-            ->andFilterWhere(['like', 'factura', $this->factura]);
+            ->andFilterWhere(['like', 'factura', $this->factura])
+            ->andFilterWhere(['like', 'codDependiente', $this->codDependiente]);
 
         return $dataProvider;
     }

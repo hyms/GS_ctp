@@ -20,15 +20,13 @@ use Yii;
  * @property string $fechaRegistro
  * @property integer $fk_idUser
  * @property string $codigoVenta
- * @property integer $fk_idServicio
  * @property integer $tipoRecibo
  * @property integer $fk_idMovimientoCaja
  * @property string $observaciones
  *
- * @property Servicio $fkIdServicio
+ * @property MovimientoCaja $fkIdMovimientoCaja
  * @property Sucursal $fkIdSucursal
  * @property User $fkIdUser
- * @property MovimientoCaja $fkIdMovimientoCaja
  */
 class Recibo extends \yii\db\ActiveRecord
 {
@@ -46,8 +44,8 @@ class Recibo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'secuencia', 'fk_idSucursal', 'detalle', 'nombre', 'ciNit', 'saldo', 'monto', 'acuenta', 'fechaRegistro', 'fk_idUser', 'fk_idServicio', 'tipoRecibo', 'fk_idMovimientoCaja'], 'required'],
-            [['secuencia', 'fk_idSucursal', 'fk_idUser', 'fk_idServicio', 'tipoRecibo', 'fk_idMovimientoCaja'], 'integer'],
+            [['codigo', 'secuencia', 'fk_idSucursal', 'detalle', 'nombre', 'ciNit', 'saldo', 'monto', 'acuenta', 'fechaRegistro', 'fk_idUser', 'tipoRecibo', 'fk_idMovimientoCaja'], 'required'],
+            [['secuencia', 'fk_idSucursal', 'fk_idUser', 'tipoRecibo', 'fk_idMovimientoCaja'], 'integer'],
             [['saldo', 'monto', 'acuenta'], 'number'],
             [['fechaRegistro'], 'safe'],
             [['codigo', 'codigoVenta'], 'string', 'max' => 100],
@@ -77,7 +75,6 @@ class Recibo extends \yii\db\ActiveRecord
             'fechaRegistro' => 'Fecha Registro',
             'fk_idUser' => 'Fk Id User',
             'codigoVenta' => 'Codigo Venta',
-            'fk_idServicio' => 'Fk Id Servicio',
             'tipoRecibo' => 'Tipo Recibo',
             'fk_idMovimientoCaja' => 'Fk Id Movimiento Caja',
             'observaciones' => 'Observaciones',
@@ -87,9 +84,9 @@ class Recibo extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdServicio()
+    public function getFkIdMovimientoCaja()
     {
-        return $this->hasOne(Servicio::className(), ['idServicio' => 'fk_idServicio']);
+        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'fk_idMovimientoCaja']);
     }
 
     /**
@@ -106,13 +103,5 @@ class Recibo extends \yii\db\ActiveRecord
     public function getFkIdUser()
     {
         return $this->hasOne(User::className(), ['idUser' => 'fk_idUser']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getFkIdMovimientoCaja()
-    {
-        return $this->hasOne(MovimientoCaja::className(), ['idMovimientoCaja' => 'fk_idMovimientoCaja']);
     }
 }

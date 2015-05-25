@@ -14,7 +14,6 @@ use app\models\MovimientoCaja;
 use app\models\MovimientoCajaSearch;
 use app\models\OrdenCTP;
 use app\models\OrdenCTPSearch;
-use app\models\OrdenDetalle;
 use app\models\Recibo;
 use app\models\ReciboSearch;
 use app\models\Sucursal;
@@ -225,7 +224,7 @@ class VentaController extends Controller
             //$orden->tipoPago = 1;
             $orden->fechaCobro = date("Y-m-d H:i:s");
             $orden->fk_idUserV = yii::$app->user->id;
-            $detalle           = OrdenDetalle::findAll(['fk_idOrden' => $orden->idOrdenCTP]);
+            $detalle           = $orden->ordenDetalles;
             $monto             = "";
             if (!empty($orden->fk_idMovimientoCaja))
                 $monto = MovimientoCaja::findOne(['idMovimientoCaja' => $orden->fk_idMovimientoCaja])->monto;
@@ -256,7 +255,7 @@ class VentaController extends Controller
                 'search' => $search,
                 'monto' => $monto,
             ]);*/
-            echo $this->render('forms/venta', [
+            return $this->render('forms/venta', [
                 'clientes' => $cliente,
                 'search'   => $search,
                 'orden'    => $orden,
@@ -646,7 +645,7 @@ class VentaController extends Controller
             return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
     }
 
-    public function actionAjaxfactura()
+    /*public function actionAjaxfactura()
     {
         if (yii::$app->request->isAjax) {
             $tipo = 0;
@@ -661,17 +660,17 @@ class VentaController extends Controller
                 $total     = 0;
                 $detalle   = OrdenDetalle::findAll(['fk_idOrden' => $post['id']]);
                 foreach ($detalle as $key => $item) {
-                    $detalle[$key]->costo = SGOrdenes::costos($item->fk_idProductoStock, $post['tipoCliente'], date("H:m:s"), $item->cantidad, $tipo);
+                    //$detalle[$key]->costo = SGOrdenes::costos($item->fk_idProductoStock, $post['tipoCliente'], date("H:m:s"), $item->cantidad, $tipo);
                     $detalle[$key]->total = ($detalle[$key]->costo * $detalle[$key]->cantidad) + $detalle[$key]->adicional;
                     $resultado[$key]      = $detalle[$key];
                     $total += $detalle[$key]->total;
                 }
                 $resultado['total'] = $total;
 
-                echo Json::encode($resultado);
+                return Json::encode($resultado);
             }
         }
-    }
+    }*/
 
     public function actionAddfactura()
     {
@@ -684,12 +683,11 @@ class VentaController extends Controller
                     if (isset($post['OrdenCTP'])) {
                         $orden->attributes = $post['OrdenCTP'];
                         if ($orden->save()) {
-                            echo "done";
-                            Yii::app()->end();
+                            return "done";
                         }
                     }
 
-                    echo $this->renderAjax('forms/factura', ['orden' => $orden]);
+                    return $this->renderAjax('forms/factura', ['orden' => $orden]);
                 }
             }
         }

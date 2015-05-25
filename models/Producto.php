@@ -11,9 +11,7 @@ use Yii;
  * @property string $codigo
  * @property string $codigoPersonalizado
  * @property string $dimension
- * @property integer $toBuy
  * @property integer $toSell
- * @property string $importKey
  * @property integer $cantidadPaquete
  * @property string $material
  * @property string $formato
@@ -38,10 +36,9 @@ class Producto extends \yii\db\ActiveRecord
     {
         return [
             [['codigo', 'cantidadPaquete', 'material', 'formato'], 'required'],
-            [['toBuy', 'toSell', 'cantidadPaquete'], 'integer'],
+            [['toSell', 'cantidadPaquete'], 'integer'],
             [['codigo', 'codigoPersonalizado', 'material', 'formato'], 'string', 'max' => 50],
-            [['dimension'], 'string', 'max' => 200],
-            [['importKey'], 'string', 'max' => 15]
+            [['dimension'], 'string', 'max' => 200]
         ];
     }
 
@@ -55,9 +52,7 @@ class Producto extends \yii\db\ActiveRecord
             'codigo' => 'Codigo',
             'codigoPersonalizado' => 'Codigo Personalizado',
             'dimension' => 'Dimension',
-            'toBuy' => 'To Buy',
             'toSell' => 'To Sell',
-            'importKey' => 'Import Key',
             'cantidadPaquete' => 'Cantidad Paquete',
             'material' => 'Material',
             'formato' => 'Formato',

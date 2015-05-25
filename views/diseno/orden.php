@@ -1,6 +1,6 @@
 <?php
-    /* @var $this yii\web\View */
-    $this->title = 'Diseño-Ordenes';
+/* @var $this yii\web\View */
+$this->title = 'Diseño-Ordenes';
 ?>
 
 <div class="row">
@@ -9,25 +9,32 @@
     </div>
     <div class="col-xs-10">
         <?php
-            if(isset($r)) {
-                switch ($r) {
-                    case 'nuevo':
-                        echo $this->render('forms/cliente', [
-                            'orden'    => $orden,
-                            'detalle'  => $detalle,
-                            'producto' => $producto,
-                        ]);
-                        break;
-                    case 'buscar':
-                        echo $this->render('tables/buscar', ['orden' => $orden]);
-                        break;
-                    case 'list':
-                        echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
-                        break;
-                    case 'nota':
-                        echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
-                }
+        if(isset($r)) {
+            switch ($r) {
+                case 'nuevo':
+                    echo $this->render('forms/cliente', [
+                        'orden'    => $orden,
+                        'detalle'  => $detalle,
+                        'producto' => $producto,
+                    ]);
+                    break;
+                case 'buscar':
+                    echo $this->render('tables/buscar', ['orden' => $orden]);
+                    break;
+                case 'list':
+                    echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
+                    break;
+                case 'nota':
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
+                    break;
             }
+        }
+        else
+        {
+            echo '<div class="col-xs-offset-6 col-xs-4">';
+            echo $this->render('tables/notasPendientes',['notas'=>$notas]);
+            echo '</div>';
+        }
         ?>
     </div>
 </div>
