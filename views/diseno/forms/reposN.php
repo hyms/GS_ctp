@@ -40,7 +40,17 @@
         <?php $form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']); ?>
         <div class="row">
             <div class="col-xs-6">
-                <?= $form->field($orden, 'responsable',['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])->textInput(['maxlength' => 50]) ?>
+                <?=
+                    $form->field($orden, 'tipoRepos', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])
+                    ->dropDownList(\app\components\SGOperation::tiposReposicion(),['prompt'=>'Seleccione el Error'])
+                    ->label("Tipo_Error")
+                ?>
+            </div>
+            <div class="col-xs-6">
+                <?= $form->field($orden, 'responsable', ['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])->textInput(['maxlength' => 50]) ?>
+            </div>
+            <div class="col-xs-6">
+                <?= $form->field($orden, 'codDependiente', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])->label('Correlativo'); ?>
             </div>
         </div>
         <div class="panel panel-default">
@@ -49,6 +59,7 @@
             </div>
             <?= $this->render('detalleOrden',array('detalle'=>$detalle,'orden'=>$orden));?>
         </div>
+        <?= $form->field($orden, 'observaciones')->textArea(); ?>
         <div class="form-group">
             <div class="text-center">
                 <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>

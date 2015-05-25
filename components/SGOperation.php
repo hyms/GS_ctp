@@ -26,5 +26,19 @@ class SGOperation extends Component
         return date("d", (mktime(0, 0, 0, $elMes + 1, 1, $elAnio) - 1));
     }
 
+    static function tiposReposicion($id = null)
+    {
+        $tipos = [
+            0 => 'CTP',
+            1 => 'Falla de Fabrica',
+            2 => 'Proceso',
+            3 => 'Empleado',
+            4 => 'Otro'
+
+        ];
+        if (empty($id))
+            return $tipos;
+        return $tipos[$id];
+    }
 }
 

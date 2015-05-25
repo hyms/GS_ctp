@@ -21,13 +21,16 @@ $this->title = 'Diseño-Ordenes Internas';
                 case 'buscar':
                     echo $this->render('tables/buscarRI',['orden'=>$orden]);
                     break;
+                case 'nota':
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
+                    break;
                 default:
                     break;
             }
         }
         else
         {
-            echo '<div class="col-xs-offset-6 col-xs-4">';
+            echo '<div class="col-xs-offset-7 col-xs-5">';
             echo $this->render('tables/notasPendientes',['notas'=>$notas]);
             echo '</div>';
         }

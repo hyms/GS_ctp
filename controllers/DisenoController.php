@@ -155,7 +155,7 @@ class DisenoController extends Controller
                     $search->fk_idSucursal = $this->idSucursal;
                     $search->tipoNota = 1;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
-                    return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
+                    return $this->render('interna', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }

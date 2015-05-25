@@ -21,8 +21,13 @@ class SGOrdenes extends Component
     public function grabar($data, $venta = false, $anular = false)
     {
         if (!$venta) {
-            if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
-                return $data;
+            if($data['orden']->tipoOrden==0) {
+                if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
+                    return $data;
+            }
+            else
+                if (!$data['orden']->validate(['responsable', 'observaciones']))
+                    return $data;
 
             if (!Model::validateMultiple($data['detalle'], ['cantidad', 'trabajo', 'pinza', 'resolucion']))
                 return $data;

@@ -42,7 +42,7 @@ class VentaController extends Controller
                 throw new HttpException(412, SGOperation::getError(412));
             else
                 $this->idSucursal = $sucursal->idSucursal;
-            $caja = Caja::findOne(['fk_idSucursal' => $this->idSucursal, 'fk_idServicio' => $this->idServicio]);
+            $caja = Caja::findOne(['fk_idSucursal' => $this->idSucursal]);
             if (empty($caja))
                 throw new HttpException(411, SGOperation::getError(411));
             else
@@ -497,7 +497,7 @@ class VentaController extends Controller
             else {
                 $recibo                = new Recibo();
                 $recibo->fk_idSucursal = $this->idSucursal;
-                $recibo->fk_idServicio = $this->idServicio;
+                //$recibo->fk_idServicio = $this->idServicio;
                 $recibo->fechaRegistro = date("Y-m-d H:i:s");
                 $recibo->fk_idUser     = Yii::$app->user->id;
             }

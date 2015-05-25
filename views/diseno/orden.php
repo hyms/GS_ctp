@@ -31,7 +31,7 @@ $this->title = 'Diseño-Ordenes';
         }
         else
         {
-            echo '<div class="col-xs-offset-6 col-xs-4">';
+            echo '<div class="col-xs-offset-7 col-xs-5">';
             echo $this->render('tables/notasPendientes',['notas'=>$notas]);
             echo '</div>';
         }

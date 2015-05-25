@@ -37,6 +37,7 @@ use Yii;
  * @property integer $tipoOrden //venta=0, interna=1, reposicion=2;
  * @property string $codDependiente
  * @property integer $anulado
+ * @property integer $tipoRepos // CTP=0; falla de fabrica=1; proceso=2; empleado=3; otro=4;
  *
  * @property Cliente $fkIdCliente
  * @property MovimientoCaja $fkIdMovimientoCaja
@@ -64,9 +65,9 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable','telefono'], 'required'],
+            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable', 'telefono'], 'required'],
             [['fechaGenerada', 'fechaCobro', 'fechaPlazo'], 'safe'],
-            [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado'], 'integer'],
+            [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado', 'tipoRepos'], 'integer'],
             [['montoVenta', 'montoDescuento'], 'number'],
             [['codigoServicio', 'autorizado'], 'string', 'max' => 100],
             [['observaciones', 'observacionAdicional', 'factura'], 'string', 'max' => 200],
@@ -82,36 +83,37 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idOrdenCTP' => 'Id Orden Ctp',
-            'fechaGenerada' => 'Fecha Generada',
-            'fechaCobro' => 'Fecha Cobro',
-            'cfSF' => 'Cf Sf',
-            'tipoPago' => 'Tipo Pago',
-            'fechaPlazo' => 'Fecha Plazo',
-            'codigoServicio' => 'Codigo Servicio',
-            'secuencia' => 'Secuencia',
-            'serie' => 'Serie',
-            'correlativo' => 'Correlativo',
-            'montoVenta' => 'Monto Venta',
-            'montoDescuento' => 'Monto Descuento',
-            'estado' => 'Estado',
-            'autorizado' => 'Autorizado',
-            'observaciones' => 'Observaciones',
-            'observacionesCaja' => 'Observaciones Caja',
-            'fk_idCliente' => 'Fk Id Cliente',
-            'fk_idMovimientoCaja' => 'Fk Id Movimiento Caja',
-            'fk_idSucursal' => 'Fk Id Sucursal',
-            'fk_idUserD' => 'Fk Id User D',
-            'fk_idUserV' => 'Fk Id User V',
-            'fk_idUserD2' => 'Fk Id User D2',
-            'responsable' => 'Responsable',
-            'telefono' => 'Telefono',
+            'idOrdenCTP'           => 'Id Orden Ctp',
+            'fechaGenerada'        => 'Fecha Generada',
+            'fechaCobro'           => 'Fecha Cobro',
+            'cfSF'                 => 'Cf Sf',
+            'tipoPago'             => 'Tipo Pago',
+            'fechaPlazo'           => 'Fecha Plazo',
+            'codigoServicio'       => 'Codigo Servicio',
+            'secuencia'            => 'Secuencia',
+            'serie'                => 'Serie',
+            'correlativo'          => 'Correlativo',
+            'montoVenta'           => 'Monto Venta',
+            'montoDescuento'       => 'Monto Descuento',
+            'estado'               => 'Estado',
+            'autorizado'           => 'Autorizado',
+            'observaciones'        => 'Observaciones',
+            'observacionesCaja'    => 'Observaciones Caja',
+            'fk_idCliente'         => 'Fk Id Cliente',
+            'fk_idMovimientoCaja'  => 'Fk Id Movimiento Caja',
+            'fk_idSucursal'        => 'Fk Id Sucursal',
+            'fk_idUserD'           => 'Fk Id User D',
+            'fk_idUserV'           => 'Fk Id User V',
+            'fk_idUserD2'          => 'Fk Id User D2',
+            'responsable'          => 'Responsable',
+            'telefono'             => 'Telefono',
             'observacionAdicional' => 'Observacion Adicional',
-            'factura' => 'Factura',
-            'fk_idParent' => 'Fk Id Parent',
-            'tipoOrden' => 'Tipo Orden',
-            'codDependiente' => 'Cod Dependiente',
-            'anulado' => 'Anulado',
+            'factura'              => 'Factura',
+            'fk_idParent'          => 'Fk Id Parent',
+            'tipoOrden'            => 'Tipo Orden',
+            'codDependiente'       => 'Cod Dependiente',
+            'anulado'              => 'Anulado',
+            'tipoRepos'            => 'Tipo Repos',
         ];
     }
 
