@@ -2,7 +2,6 @@
 use kartik\widgets\DatePicker;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-use yii\helpers\Url;
 
 $this->title = 'Venta-Orden'
 ?>
@@ -40,10 +39,9 @@ $this->title = 'Venta-Orden'
                         ?>
                         <?= Html::label('Cliente','cliente')?>
                         <?= Html::input('','cliente',$datoCliente,['class'=>'form-control','id'=>'cliente']) ?>
-                        <?= Html::hiddenInput('tipoCliente',$tipoCliente,['class'=>'form-control','id'=>'tipoCliente']) ?>
                     </div>
                     <div class="col-xs-4">
-                        <?= $form->field($orden,'cfSF',['template'=>'{input}'])->radioList(['Con Factura','Sin Factura'],['onchange'=>'radio();']); ?>
+                        <?= $form->field($orden,'cfSF',['template'=>'{input}'])->radioList(['Con Factura','Sin Factura']); ?>
                     </div>
 
                 </div>
@@ -70,7 +68,7 @@ $this->title = 'Venta-Orden'
 
                 <div class="row">
                     <div class="col-xs-7">
-                        <?= $form->field($orden, 'observaciones')->textarea(); ?>
+                        <?= $form->field($orden, 'observaciones')->textarea(['readOnly'=>true]); ?>
                         <?= $form->field($orden, 'observacionesCaja')->textarea(); ?>
                     </div>
 
@@ -122,7 +120,7 @@ $this->title = 'Venta-Orden'
 <?= $this->render('../scripts/reset') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>
 <?php
-$js  ="
+/*$js  ="
     function radio()
     {
     var val = $('input:radio[name=\"OrdenCTP[tipoPago]\"]:checked').val();
@@ -132,5 +130,5 @@ $js  ="
     else
         alert(\"Debe seleccionar un Cliente\");
     }";
-$this->registerJs($js, \yii\web\View::POS_HEAD);
+$this->registerJs($js, \yii\web\View::POS_HEAD);*/
 ?>

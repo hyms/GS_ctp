@@ -1,7 +1,8 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 
@@ -11,13 +12,6 @@
     </div>
     <div>
         <?php
-            /*$data =  new ActiveDataProvider([
-                                                'query'      => $orden,
-                                                'pagination' => [
-                                                    'pageSize' => 10,
-                                                ],
-                                            ]);
-*/
             $columns = [
                 [
                     'header'=>'Correlativo',
@@ -41,32 +35,32 @@
                 [
                     'header'=>'Fecha',
                     'attribute'=>'fechaGenerada',
-                    /*'filter' => DatePicker::widget(
-                        ['language' => 'es',
-                         'type' => DatePicker::TYPE_INPUT,
-                         'name' => 'fechaGenerada',
-                         'pluginOptions' =>
-                             [
-                                 'autoclose'=>true,
-                                 'format' => 'yyyy-mm-dd'
-                             ]
-                        ]
-                    ),
-                    'format' => 'html',*/
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{print}',
+                    'template'=>'{view}',
                     'buttons'=>[
-                        'print'=>function($url,$model){
+                        'view'=>function($url,$model) {
                             $options = array_merge([
-                                                       //'class'=>'btn btn-success',
-                                                       'data-original-title'=>'Imprimir',
-                                                       'data-toggle'=>'tooltip',
-                                                       'title'=>''
-                                                   ]);
-                            $url = Url::to(['diseno/print','op'=>'orden','id'=>$model->idOrdenCTP]);
-                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                                'data-original-title' => 'Ver Orden de Trabajo',
+                                'data-toggle'         => 'tooltip',
+                                'title'               => '',
+                                'onclick'             => "
+                                                        $.ajax({
+                                                            type    :'get',
+                                                            cache   : false,
+                                                            url     : '" . Url::to(['diseno/review','op'=>'cliente','id'=>$model->idOrdenCTP]) . "',
+                                                            success : function(data) {
+                                                                if(data.length>0){
+                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Orden de Trabajo ".$model->correlativo."</h3>');
+                                                                    $('#viewModal .modal-body').html(data);
+                                                                    $('#viewModal').modal();
+                                                                }
+                                                            }
+                                                        });return false;"
+                            ]);
+                            $url     = "#";
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
                         },
                     ]
                 ],
@@ -79,8 +73,17 @@
                                       'condensed'=>true,
                                       'hover'=>true,
                                       'bordered'=>false,
-                                      'pjax'=>true,
+//                                    'pjax'=>true,
                                   ]);
         ?>
     </div>
 </div>
+<?php
+
+
+Modal::begin([
+    'id'=>'viewModal',
+    'size'=>Modal::SIZE_LARGE,
+]);
+Modal::end();
+?>

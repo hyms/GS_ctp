@@ -17,7 +17,13 @@ use yii\helpers\Url;
                 return '<p>'.
                 $model->texto.
                 '</p>'.
-                '<p>'.
+                '<p class="text-right">'.
+                'Creado por <b>'.$model->fkIdUserCreador->nombre.' '.$model->fkIdUserCreador->apellido.'</b>'.
+                '</p>'.
+                '<p class="text-right">'.
+                'En fecha <b>'.$model->fechaCreacion.'</b>'.
+                '</p>'.
+                '<p class="text-right">'.
                 Html::a('Visto', "#", [
                     //'class'=>'btn btn-default',
                     'onclick'  => "

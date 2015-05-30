@@ -65,7 +65,7 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'responsable', 'telefono'], 'required'],
+            [['fechaGenerada', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idSucursal', 'telefono'], 'required'],
             [['fechaGenerada', 'fechaCobro', 'fechaPlazo'], 'safe'],
             [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado', 'tipoRepos'], 'integer'],
             [['montoVenta', 'montoDescuento'], 'number'],

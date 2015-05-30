@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -16,8 +16,11 @@
                     'value'=>'correlativo',
                 ],
                 [
-                    'header'=>'Responsable',
-                    'value'=>'responsable',
+                    'header'=>'Tipo Reposicion',
+                    'value'=>function($model){
+                        $dato = \app\components\SGOperation::tiposReposicion($model->tipoRepos);
+                        return "";
+                    },
                 ],
                 [
                     'header'=>'Fecha',
@@ -25,17 +28,20 @@
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{update} {print}',
+                    'template'=>'{nulled} {print}',
                     'buttons'=>[
-                        'update'=>function($url,$model){
+                        'nulled'=>function($url,$model) {
                             $options = array_merge([
-                                                       //'class'=>'btn btn-success',
-                                                       'data-original-title'=>'Modificar',
-                                                       'data-toggle'=>'tooltip',
-                                                       'title'=>''
-                                                   ]);
-                            $url = Url::to(['diseno/'.($model->tipoOrden==1)?'interna':'reposicion','op'=>'nueva','id'=>$model->idOrdenCTP]);
-                            return Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",$url,['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
+                                //'class'=>'btn btn-success',
+                                'data-original-title' => 'Anular',
+                                'data-toggle' => 'tooltip',
+                                'title' => ''
+                            ]);
+                            $url = Url::to(['diseno/reposicion', 'tipo' => $model->tipoOrden, 'id' => $model->idOrdenCTP]);
+                            if (empty($model->fechaCierre))
+                                return Html::a("<i class=\"glyphicon glyphicon-remove-circle text-danger\"></i>", $url, $options);
+                            else
+                                return "";
                         },
                         'print'=>function($url,$model){
                             $options = array_merge([
@@ -44,8 +50,8 @@
                                                        'data-toggle'=>'tooltip',
                                                        'title'=>''
                                                    ]);
-                            $url = Url::to(['diseno/print','op'=>($model->tipoOrden==1)?'interna':"reposicion",'id'=>$model->idOrdenCTP]);
-                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                            $url = Url::to(['diseno/print','op'=>"reposicion",'id'=>$model->idOrdenCTP]);
+                            return Html::a('<span class="glyphicon glyphicon-print text-success"></span>', $url, $options);
                         },
                     ]
                 ],

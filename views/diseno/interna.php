@@ -19,10 +19,10 @@ $this->title = 'Diseño-Ordenes Internas';
                     ]);
                     break;
                 case 'buscar':
-                    echo $this->render('tables/buscarRI',['orden'=>$orden]);
+                    echo $this->render('tables/buscarI',['orden'=>$orden]);
                     break;
                 case 'nota':
-                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search,'tipo'=>1]);
                     break;
                 default:
                     break;

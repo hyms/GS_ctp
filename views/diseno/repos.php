@@ -42,9 +42,10 @@
                     ]);
                     break;
                 case "list":
+                    echo $this->render('tables/buscarR',['orden'=>$orden]);
                     break;
                 case 'nota':
-                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search,'tipo'=>2]);
                     break;
             }
         }

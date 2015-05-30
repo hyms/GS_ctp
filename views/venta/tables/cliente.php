@@ -1,8 +1,8 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
+use kartik\grid\GridView;
+use yii\helpers\Html;
 
-    $columns = [
+$columns = [
         [
             'header'=>'Nit/Ci',
             'attribute'=>'nitCi',
@@ -22,11 +22,10 @@
         [
             'header'=>'',
             'format' => 'raw',
-            'value'=> function ($model,$idOrdenCTP) {
-                //return Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",["orden/modificar","id"=>$model->idOrdenCtp],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
+            'value'=> function ($model) {
                 return Html::a('<i class="glyphicon glyphicon-plus"></i>','#',
                                [
-                                   'onclick'=>'clienteCosto("'.\yii\helpers\Url::to(array("venta/ajaxfactura")).'",'.$idOrdenCTP.','.$model->fk_idTipoCliente.',"'.$model->nombreNegocio.'","'.$model->nitCi.'","'.$model->idCliente.'");return false;',
+                                   'onclick'=>'cliente("'.$model->nombreNegocio.'","'.$model->nitCi.'","'.$model->idCliente.'");return false;',
                                    'class'=>'btn btn-success',
                                    'data-original-title'=>'Aceptar',
                                    'data-toggle'=>'tooltip',
@@ -46,7 +45,7 @@
                               'pjax'=>true,
                           ]);
     echo $this->render('../scripts/tooltip');
-    $script = "
+    /*$script = "
     function clienteCosto(url,idOrden,tipoCliente,nombre,nit,id)
     {
         //var tipo = $('input:radio[name=OrdenCTP[tipoPago]]:checked').val();
@@ -57,6 +56,12 @@
         var val = $('form input[type=\"radio\"]:checked').val();
         if(val!=undefined)
             factura(val,url,idOrden,$('#tipoCliente').val());
+    }";*/
+    $script = "
+    function cliente(nombre,nit,id)
+    {
+        $('#cliente').val(nombre+\" - \"+nit);
+        $('#idCliente').val(id);
     }
-";
+    ";
     $this->registerJs($script, \yii\web\View::POS_HEAD);

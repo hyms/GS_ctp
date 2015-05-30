@@ -118,7 +118,7 @@ class SGOrdenes extends Component
             ->where(['fk_idSucursal' => $sucursal])
             ->andWhere(['estado' => 1])
             ->andWhere(['tipoOrden' => $tipo])
-            ->orderBy('fechaGenerada');
+            ->orderBy(['fechaGenerada'=>SORT_DESC]);
         if ($dataProvider) {
             return new ActiveDataProvider([
                 'query' => $query,

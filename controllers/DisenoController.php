@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\components\SGOrdenes;
 use app\components\SGProducto;
+use app\models\Cliente;
 use app\models\Notas;
 use app\models\NotasSearch;
 use app\models\OrdenCTP;
@@ -117,11 +118,13 @@ class DisenoController extends Controller
                     $search->fk_idSucursal = $this->idSucursal;
                     $search->tipoNota = 0;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
+                    $notas->query->orderBy(['fechaCreacion'=>SORT_DESC]);
                     return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }
         $notas = Notas::find()->where(['is', 'fk_idUserVisto', Null]);
+        $notas->andWhere(['tipoNota' => 0]);
         $data = new ActiveDataProvider([
             'query' => $notas,
         ]);
@@ -160,6 +163,7 @@ class DisenoController extends Controller
             }
         }
         $notas = Notas::find()->where(['is', 'fk_idUserVisto', Null]);
+        $notas->andWhere(['tipoNota' => 1]);
         $data = new ActiveDataProvider([
             'query' => $notas,
         ]);
@@ -231,7 +235,7 @@ class DisenoController extends Controller
 
                 case 'list':
                     $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 2);
-                    return $this->render('repos', ['r' => 'buscar', 'orden' => $ordenes]);
+                    return $this->render('repos', ['r' => 'list', 'orden' => $ordenes]);
                     break;
                 case 'nota':
                     $search = new NotasSearch();
@@ -243,6 +247,7 @@ class DisenoController extends Controller
             }
         }
         $notas = Notas::find()->where(['is', 'fk_idUserVisto', Null]);
+        $notas->andWhere(['tipoNota' => 2]);
         $data = new ActiveDataProvider([
             'query' => $notas,
         ]);
@@ -413,6 +418,32 @@ class DisenoController extends Controller
             $nota->fechaVisto = date('Y-m-d H:i:s');
             if ($nota->save()) {
                 return "done";
+            }
+        }
+    }
+
+    public function actionCliente()
+    {
+        $post= Yii::$app->request->post();
+        if(isset($post['name']))
+        {
+            $cliente = Cliente::find();
+            $cliente->where(['fk_idSucursal'=>$this->idSucursal]);
+            $cliente->andWhere(['nombreNegocio'=>$post['name']]);
+            $cliente= $cliente->one();
+            return $cliente->telefono;
+        }
+    }
+
+    public function actionReview()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['op']) && isset($get['id'])) {
+            switch ($get['op']) {
+                case "cliente":
+                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                    return $this->renderAjax('prints/orden', ['orden' => $orden]);
+                    break;
             }
         }
     }

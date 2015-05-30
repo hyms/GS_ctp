@@ -1,10 +1,10 @@
 <?php
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
 <?php $form = ActiveForm::begin(
-    ['layout' => 'horizontal','id'=>'form','action'=>\yii\helpers\Url::to(['diseno/repociciones','tipo'=>$tipo])]
+    ['layout' => 'horizontal','id'=>'form','action'=>\yii\helpers\Url::to(['diseno/reposicion','tipo'=>$tipo])]
 ); ?>
 <?= Html::hiddenInput('idParent',$idParent) ?>
 <div class="row">

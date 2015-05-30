@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\data\ActiveDataProvider;
-    use yii\helpers\Html;
+use kartik\grid\GridView;
+use yii\data\ActiveDataProvider;
+use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -62,4 +62,3 @@
         </div>
     </div>
 <?php
-echo $this->render('../scripts/tooltip');

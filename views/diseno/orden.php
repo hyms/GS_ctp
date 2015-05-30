@@ -25,7 +25,7 @@ $this->title = 'Diseño-Ordenes';
                     echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
                     break;
                 case 'nota':
-                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search]);
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search,'tipo'=>0]);
                     break;
             }
         }
