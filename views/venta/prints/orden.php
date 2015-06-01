@@ -6,7 +6,7 @@
                 <h4 class="text-right"><strong><?= ($orden->cfSF==0)?$orden->codigoServicio:" "; ?></strong></h4>
                 <div class="row col-xs-12">
                     <div class="col-xs-offset-4 col-xs-3 text-center"><small><?= $orden->fkIdSucursal->nombre;?></small></div>
-                    <div class="text-right"><strong><?= "FECHA:";?></strong> <?= date("d-m-Y",strtotime($orden->fechaCobro));?></div>
+                    <div class="text-right"><strong><?= "FECHA:";?></strong> <?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></div>
                 </div>
             </div>
 
@@ -16,7 +16,7 @@
             </div>
 
             <div class="row well well-sm" style="height:170px; font-size: 11px; border-color: #000; background-color: #fff">
-                <table class="table table-hover table-condensed">
+                <table class="table table-hover table-condensed" style="font-size: 12px">
                     <thead><tr>
                         <th><?= "Nº"; ?></th>
                         <th><?= "Formato"; ?></th>
@@ -106,20 +106,20 @@
         </div>
     </div>
     <div style="width:123px; position: relative; float: right;">
-        <div class="row" style="font-size: 11px">
+        <div class="row" style="font-size: 10.5px">
             <div class="col-xs-12 row text-center"><h4><strong><?= $orden->correlativo;?></strong></h4></div>
             <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
             <div class="col-xs-12 row text-center"><h4><strong><?= $orden->codigoServicio;?></strong></h4></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->fkIdCliente->nombreNegocio;?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "RESP:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
-            <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y",strtotime($orden->fechaCobro));?></span></span></div>
+            <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></span></span></div>
             <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
             <div class="col-xs-12 row">
                 <?php foreach ($orden->ordenDetalles as $producto){ ?>
                     <div class="col-xs-12" style="border: 1.5px solid;">
                         <?= $producto->fkIdProductoStock->fkIdProducto->formato;?> /
                         <?= $producto->cantidad; ?> /
-                        <?= (($producto->C)?"C ":"").(($producto->M)?"M ":"").(($producto->Y)?"Y ":"").(($producto->K)?"K ":"");?>
+                        <?= (($producto->C)?"C":"").(($producto->M)?"M":"").(($producto->Y)?"Y":"").(($producto->K)?"K":"");?>
                         <br>
                         <?= $producto->trabajo;?> /
                         <?= $producto->pinza;?> /

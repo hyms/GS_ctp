@@ -1,9 +1,8 @@
 <?php
 
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
+    /* @var $this yii\web\View */
 /* @var $model app\models\Cliente */
 
 $this->title = 'Crear Cliente';
@@ -19,7 +18,6 @@ $this->title = 'Crear Cliente';
     <div class="col-xs-6"><?= $form->field($model, 'direccion')->textInput(['maxlength' => 150]) ?></div>
     <div class="col-xs-4"><?= $form->field($model, 'telefono')->textInput(['maxlength' => 30]) ?></div>
     <div class="col-xs-4"><?= $form->field($model, 'codigoCliente')->textInput(['maxlength' => 45]) ?></div>
-    <div class="col-xs-4"><?= $form->field($model, 'fk_idTipoCliente')->dropDownList(ArrayHelper::map(\app\models\TipoCliente::find()->all(), 'idTipoCliente', 'nombre')) ?></div>
     <?php ActiveForm::end(); ?>
 
 </div>

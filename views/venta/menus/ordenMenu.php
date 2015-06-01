@@ -16,7 +16,7 @@
                                      'url'=>['venta/orden','op'=>'buscar']
                                  ],
                                  [
-                                     'label'=>'Ventas Realizadas',
+                                     'label'=>'Historial Ventas',
                                      'url'=>['venta/orden','op'=>'diario']
                                  ],
                                  [

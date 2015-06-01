@@ -7,6 +7,7 @@ use app\models\Cliente;
 use app\models\MovimientoCaja;
 use app\models\OrdenCTP;
 use app\models\PrecioProductoOrden;
+use app\models\ProductoStock;
 use Yii;
 use yii\base\Component;
 use yii\base\Model;
@@ -43,14 +44,14 @@ class SGOrdenes extends Component
         } else {
             $productoStocks = [];
             $movimientoStock = [];
-            /*foreach ($data['detalle'] as $key => $item) {
+            foreach ($data['detalle'] as $key => $item) {
                 $productoStocks[$key] = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
                 $movimientoStock[$key] = SGProducto::movimientoStockVenta($item->fk_idMovimientoStock, $productoStocks[$key]);
-                if (!$movimientoStock[$key]->isNewRecord) {
+                /*if (!$movimientoStock[$key]->isNewRecord) {
                     $productoStocks[$key]->cantidad += $movimientoStock[$key]->cantidad;
-                }
+                }*/
                 $movimientoStock[$key]->cantidad = $item->cantidad;
-            }*/
+            }
 
             $cliente = Cliente::findOne(['idCliente' => $data['orden']->fk_idCliente]);
             if (!empty($cliente))

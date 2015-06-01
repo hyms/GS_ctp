@@ -471,8 +471,8 @@ class VentaController extends Controller
                                // set mPDF properties on the fly
                                'marginLeft'   => 10, // margin_left. Sets the page margins for the new document.
                                'marginRight'  => 10, // margin_right
-                               'marginTop'    => 5, // margin_top
-                               'marginBottom' => 5, // margin_bottom
+                               'marginTop'    => 8, // margin_top
+                               'marginBottom' => 8, // margin_bottom
                                'marginHeader' => 9, // margin_header
                                'marginFooter' => 9, // margin_footer
                                'options'      => ['title' => $title],
