@@ -58,7 +58,7 @@
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{update} {aviso} {print} {factura}',
+                    'template'=>'{update} {anular} {print}',
                     'buttons'=>[
                         'update'=>function($url,$model){
                             $options = array_merge([

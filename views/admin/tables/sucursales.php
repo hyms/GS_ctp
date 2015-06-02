@@ -1,8 +1,32 @@
+<?php
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
+
+?>
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong class="panel-title"Sucursales</strong>
+        <strong class="panel-title">Sucursales</strong>
     </div>
-    <div class="panel-body" style="overflow: auto;">
+    <div class="panel-body">
+        <?=
+            Html::a('Nueva Sucursal', "#", [
+                'class'=>'btn btn-default',
+                'onclick'  => "
+                    $.ajax({
+                        type    :'POST',
+                        cache   : false,
+                        url     : '".Url::to(['admin/config','op'=>'sucursal','frm'=>true])."',
+                        success : function(data) {
+                            if(data.length>0){
+                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Nueva Sucursal</h3>');
+                                $('#viewModal .modal-body').html(data);
+                                $('#viewModal').modal();
+                            }
+                        }
+                    });return false;"
+            ]);
+        ?>
     </div>
     <?php
     $columns = [
@@ -12,12 +36,8 @@
             'value'=>'nombre',
         ],
         [
-            'header'=>'Nombre',
-            'value'=>'nombre',
-        ],
-        [
             'header'=>'Descripcion',
-            'value'=>'$data->descripcion',
+            'value'=>'descripcion',
         ],
         [
             'class' => 'yii\grid\ActionColumn',
@@ -33,10 +53,10 @@
                                                         $.ajax({
                                                             type     :'POST',
                                                             cache    : false,
-                                                            url  : '" . Url::to(['admin/config','op'=>'add','id'=>$model->idProductoStock]) . "',
+                                                            url  : '" . Url::to(['admin/config','op'=>'sucursal','id'=>$model->idSucursal,'frm'=>true]) . "',
                                                             success  : function(data) {
                                                                 if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Stock ".((isset($model->fkIdSucursal))?$model->fkIdSucursal->nombre:'Deposito')."</h3>');
+                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Sucursal ".$model->nombre ."</h3>');
                                                                     $('#viewModal .modal-body').html(data);
                                                                     $('#viewModal').modal();
                                                                 }
@@ -47,40 +67,15 @@
                 },
             ]
         ],
-    ]
-    /*array(
-    array(
-        'header'=>'Nombre',
-        'value'=>'$data->nombre',
-    ),
-    /*array(
-            'header'=>'Superior',
-            'value'=>'$data->idProducto0->material',
-    ),
-    array(
-        'header'=>'Descripcion',
-        'value'=>'$data->descripcion',
-    ),
-    array(
-        'header'=>'',
-        'class'=>'booster.widgets.TbButtonColumn',
-        'template'=>'{update}',
-        'buttons'=>array(
-            'update'=>
-                array(
-                    'url'=>'array("configuration/sucursal","id"=>$data->idSucursal)',
-                    'label'=>'Modificar',
-                    'options'=>array(
-                        'ajax'=>array(
-                            'type'=>'POST',
-                            'url'=>"js:$(this).attr('href')",
-                            'success'=>'function(data) {if(data.length>0){ $("#viewModal .modal-body ").html(data); $("#viewModal").modal(); }}'
-                        ),
-                    ),
-                ),
-        ),
-    ),
-);
-$this->renderPartial('/baseTable',array('columns'=>$columns,'data'=>$sucursales->search()))*/
+    ];
+        echo GridView::widget([
+                                  'dataProvider'=> $sucursales,
+                                  //'filterModel' => $search,
+                                  'columns' => $columns,
+                                  'responsive'=>true,
+                                  'condensed'=>true,
+                                  'hover'=>true,
+                                  'bordered'=>false,
+                              ]);
     ?>
 </div>

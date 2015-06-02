@@ -39,7 +39,7 @@ class Cliente extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombreCompleto', 'nombreNegocio', 'fechaRegistro', 'telefono', 'codigoCliente', 'enable'], 'required'],
+            [['nombreCompleto', 'nombreNegocio', 'fechaRegistro', 'telefono', 'enable'], 'required'],
             [['fechaRegistro'], 'safe'],
             [['enable', 'fk_idSucursal'], 'integer'],
             [['nombreCompleto', 'nombreNegocio', 'nombreResponsable'], 'string', 'max' => 100],

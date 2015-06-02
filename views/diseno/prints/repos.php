@@ -10,8 +10,7 @@
                 <strong>Tipo de Error: </strong><?php $data = \app\components\SGOperation::tiposReposicion($orden->tipoRepos); if(!is_array($data))echo $data; ?>
             </div>
             <div class="text-right">
-                <strong>Fecha: </strong><?= date('Y-m-d',strtotime($orden->fechaGenerada)); ?>
-                <strong>Hora: </strong><?= date('H:i:s',strtotime($orden->fechaGenerada)); ?>
+                <strong>Fecha: </strong><?= date('d-m-Y / H:i',strtotime($orden->fechaGenerada)); ?>
             </div>
         </div>
         <div class="row">
@@ -22,19 +21,19 @@
                 <strong>Correlativo de Orden: </strong><?php if(empty($orden->fk_idParent)) echo $orden->codDependiente;else echo $orden->fkIdParent->correlativo; ?>
             </div>
         </div>
-        <div class="row well well-sm" style="height:200px; border-color: #000000">
-            <table class="table table-condensed" style="font-size:12px;">
+        <div class="row well well-sm" style="height:200px; border-color: #000000; background-color: #ffffff">
+            <table class="table table-condensed" style="background-color: #ffffff">
                 <thead><tr>
-                    <th><?= "Nº"; ?></th>
-                    <th><?= "Formato"; ?></th>
-                    <th><?= "Cant."; ?></th>
-                    <th><?= "Colores"; ?></th>
-                    <th><?= "Trabajo"; ?></th>
-                    <th><?= "Pinza"; ?></th>
-                    <th><?= "Resol."; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Nº"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Formato"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Cant."; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Colores"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Trabajo"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Pinza"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Resol."; ?></th>
                 </tr></thead>
 
-                <tbody>
+                <tbody style="font-size:12px; ">
                 <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
                     <tr>
                         <td>

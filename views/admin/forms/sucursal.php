@@ -1,28 +1,39 @@
 <?php
 
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\ArrayHelper;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Sucursal */
-/* @var $form ActiveForm */
+    /* @var $this yii\web\View */
+    /* @var $model app\models\Sucursal */
+    /* @var $form ActiveForm */
 ?>
-<div class="sucursal">
-<div class="well well-sm">
-    <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+<div class="row">
+    <?php $form = ActiveForm::begin(['id'=>'form']); ?>
 
+    <div class="col-xs-6">
         <?= $form->field($model, 'codigoSucursal') ?>
+    </div>
+    <div class="col-xs-6">
         <?= $form->field($model, 'nombre') ?>
-        <?= $form->field($model, 'descripcion') ?>
-        <?= $form->field($model, 'enable') ?>
-        <?= $form->field($model, 'central') ?>
-        <?= $form->field($model, 'fk_idParent') ?>
-        <?= $form->field($model, 'independiente') ?>
+    </div>
+    <div class="col-xs-12">
+        <?= $form->field($model, 'descripcion')->textarea() ?>
+    </div>
+    <div class="col-xs-4">
+        <?= $form->field($model, 'enable')->checkbox() ?>
+    </div>
+    <div class="col-xs-4">
+        <?= $form->field($model, 'central')->checkbox() ?>
+    </div>
+    <div class="col-xs-4">
+        <?= $form->field($model, 'independiente')->checkbox() ?>
+    </div>
+    <div class="col-xs-6">
+        <?= $form->field($model, 'fk_idParent')->dropDownList(ArrayHelper::map(($model->isNewRecord)?\app\models\Sucursal::find()->all():\app\models\Sucursal::find()->where(['!=','idSucursal',$model->idSucursal])->all(),'idSucursal','nombre'),['prompt'=>''])->label('Depende de'); ?>
+    </div>
+    <div class="col-xs-6">
         <?= $form->field($model, 'gmap') ?>
-    
-        <div class="form-group">
-            <?= Html::submitButton('Submit', ['class' => 'btn btn-primary']) ?>
-        </div>
+    </div>
+
     <?php ActiveForm::end(); ?>
-</div>
 </div><!-- sucursal -->

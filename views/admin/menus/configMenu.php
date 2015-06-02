@@ -10,6 +10,10 @@
                                      'label' => 'Sucursal',
                                      'url' => ['admin/config','op'=>'sucursal'],
                                  ],
+                                 [
+                                     'label' => 'Usuarios',
+                                     'url' => ['admin/config','op'=>'user'],
+                                 ],
                                  /*[
                'label' => 'Nuevo Productos',
                'url' => ['admin/config','op'=>'new'],

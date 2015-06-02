@@ -260,4 +260,19 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         $this->password_reset_token = null;
     }
     /** EXTENSION MOVIE **/
+
+    public function getRole($int=null)
+    {
+        $roles = array(
+            '1' => 'sadmin',
+            '2' => 'admin',
+            '3' => 'venta',
+            '4' => 'operario',
+            '5' => 'diseño'
+        );
+        if(is_null($int))
+            return $roles;
+        else
+            return $roles[$int];
+    }
 }

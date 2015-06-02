@@ -9,7 +9,10 @@ use app\models\ProductoSearch;
 use app\models\ProductoStock;
 use app\models\ProductoStockSearch;
 use app\models\Sucursal;
+use app\models\SucursalSearch;
 use app\models\TipoCliente;
+use app\models\User;
+use app\models\UserSearch;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -228,13 +231,38 @@ class AdminController extends Controller
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case 'sucursal':
-                    $sucursal = New Sucursal();
-                    if ($sucursal->load(Yii::$app->request->post())) {
-                        if ($sucursal->save()) {
-                            return $this->redirect(['config']);
+                    if(isset($get['frm']))
+                    {
+                        $sucursal = New Sucursal();
+                        if(isset($get['id']))
+                            $sucursal = Sucursal::findOne(['idSucursal'=>$get['id']]);
+                        if ($sucursal->load(Yii::$app->request->post())) {
+                            if ($sucursal->save()) {
+                                return $this->redirect(['config','op'=>'sucursal']);
+                            }
                         }
+                        return $this->renderAjax('forms/sucursal', ['model' => $sucursal]);
                     }
-                    return $this->render('config', ['r' => 'suc', 'sucursal' => $sucursal]);
+                    $search = new SucursalSearch();
+                    $sucursales = $search->search(Yii::$app->request->queryParams);
+                    return $this->render('config',['r'=>'sucursales','sucursales'=>$sucursales]);
+                    break;
+                case 'user':
+                    if(isset($get['frm']))
+                    {
+                        $user = new User();
+                        if(isset($get['id']))
+                            $user = User::findOne(['idUser'=>$get['id']]);
+                        if ($user->load(Yii::$app->request->post())) {
+                            if ($user->save()) {
+                                return $this->redirect(['config','op'=>'user']);
+                            }
+                        }
+                        return $this->renderAjax('forms/user', ['model' => $user]);
+                    }
+                    $search = new UserSearch();
+                    $usuarios = $search->search(Yii::$app->request->queryParams);
+                    return $this->render('config',['r'=>'usuarios','usuarios'=>$usuarios]);
                     break;
             }
         }

@@ -1,4 +1,4 @@
-<div style="background-color: #ffffff; color: #000000;">
+<div style="background-color: #ffffff; color: #000000; width:752px;height:306px;">
     <div class="col-xs-12">
         <div class="row">
             <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?= "Orden Interna";?></strong></h3>
@@ -15,46 +15,44 @@
                 <?= $orden->codDependiente;?></div>
             <div class="text-right">
                 <strong><?= "FECHA:";?></strong>
-                <?= date("d-m-Y",strtotime($orden->fechaGenerada));?>
-                <strong><?= " Hora:";?></strong>
-                <?= date("H:i:s",strtotime($orden->fechaGenerada));?>
+                <?= date("d-m-Y / H:i",strtotime($orden->fechaGenerada));?>
             </div>
         </div>
 
-        <div class="row well well-sm" style="height:200px; border-color: #000000;">
-            <table class="table table-condensed" style="font-size:12px;">
+        <div class="row well well-sm" style="height:200px; border-color: #000000; background-color: #ffffff">
+            <table class="table table-condensed" >
                 <thead><tr>
-                    <th><?= "Nº"; ?></th>
-                    <th><?= "Formato"; ?></th>
-                    <th><?= "Cant."; ?></th>
-                    <th><?= "Colores"; ?></th>
-                    <th><?= "Trabajo"; ?></th>
-                    <th><?= "Pinza"; ?></th>
-                    <th><?= "Resol."; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Nº"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Formato"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Cant."; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Colores"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Trabajo"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Pinza"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Resol."; ?></th>
                 </tr></thead>
 
                 <tbody>
                 <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
                     <tr>
-                        <td>
+                        <td style="font-size:12px;">
                             <?= ($key+1);?>
                         </td>
-                        <td>
+                        <td style="font-size:12px;">
                             <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
                         </td>
-                        <td class="col-xs-1">
+                        <td class="col-xs-1" style="font-size:12px;">
                             <?= $producto->cantidad; ?>
                         </td>
-                        <td>
+                        <td style="font-size:12px;">
                             <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                         </td>
-                        <td>
+                        <td style="font-size:12px;">
                             <?= $producto->trabajo;?>
                         </td>
-                        <td>
+                        <td style="font-size:12px;">
                             <?= $producto->pinza;?>
                         </td>
-                        <td>
+                        <td style="font-size:12px;">
                             <?= $producto->resolucion;?>
                         </td>
                     </tr>

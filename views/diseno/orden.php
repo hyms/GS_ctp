@@ -17,6 +17,7 @@ $this->title = 'Diseño-Ordenes';
                         'detalle'  => $detalle,
                         'producto' => $producto,
                     ]);
+                    echo $this->render('scripts/save');
                     break;
                 case 'buscar':
                     echo $this->render('tables/buscar', ['orden' => $orden]);
