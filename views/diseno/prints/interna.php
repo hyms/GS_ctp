@@ -34,25 +34,25 @@
                 <tbody>
                 <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
                     <tr>
-                        <td style="font-size:12px;">
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= ($key+1);?>
                         </td>
-                        <td style="font-size:12px;">
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
                         </td>
-                        <td class="col-xs-1" style="font-size:12px;">
+                        <td class="col-xs-1" style="font-size:12px; padding-top: 4px;">
                             <?= $producto->cantidad; ?>
                         </td>
-                        <td style="font-size:12px;">
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                         </td>
-                        <td style="font-size:12px;">
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->trabajo;?>
                         </td>
-                        <td style="font-size:12px;">
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->pinza;?>
                         </td>
-                        <td style="font-size:12px;">
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->resolucion;?>
                         </td>
                     </tr>

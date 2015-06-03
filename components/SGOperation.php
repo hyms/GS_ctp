@@ -36,7 +36,7 @@ class SGOperation extends Component
             4 => 'Otro'
 
         ];
-        if (empty($id))
+        if (is_null($id))
             return $tipos;
         return $tipos[$id];
     }

@@ -11,6 +11,12 @@
                         'tipo' => $tipo
                     ]);
                     break;
+                case "null":
+                    echo $this->render('forms/reposNull', [
+                        'detalle' => $detalle,
+                        'orden' => $orden
+                    ]);
+                    break;
 
                 case "0":
                     echo $this->render('forms/reposN', [

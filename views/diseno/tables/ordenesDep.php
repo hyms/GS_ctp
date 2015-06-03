@@ -1,8 +1,8 @@
 <?php
-use kartik\grid\GridView;
-use yii\bootstrap\Modal;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\bootstrap\Modal;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 
@@ -38,8 +38,18 @@ use yii\helpers\Url;
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{view}',
+                    'template'=>'{print} {view} {review}',
                     'buttons'=>[
+                        'print'=>function($url,$model){
+                            $options = array_merge([
+                                //'class'=>'btn btn-success',
+                                'data-original-title'=>'Imprimir',
+                                'data-toggle'=>'tooltip',
+                                'title'=>''
+                            ]);
+                            $url = Url::to(['diseno/print','op'=>'orden','id'=>$model->idOrdenCTP]);
+                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                        },
                         'view'=>function($url,$model) {
                             $options = array_merge([
                                 'data-original-title' => 'Ver Orden de Trabajo',

@@ -15,7 +15,7 @@ $this->title = 'Diseño-Dependientes';
                     echo $this->render('tables/buscar', ['orden' => $orden]);
                     break;
                 case 'list':
-                    echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
+                    echo $this->render('tables/ordenesDep', ['orden' => $orden, 'search' => $search]);
                     break;
             }
         }

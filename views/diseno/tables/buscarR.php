@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -37,7 +37,7 @@ use yii\helpers\Url;
                                 'data-toggle' => 'tooltip',
                                 'title' => ''
                             ]);
-                            $url = Url::to(['diseno/reposicion', 'tipo' => $model->tipoOrden, 'id' => $model->idOrdenCTP]);
+                            $url = Url::to(['diseno/reposicion', 'tipo' => 3, 'id' => $model->idOrdenCTP]);
                             if (empty($model->fechaCierre))
                                 return Html::a("<i class=\"glyphicon glyphicon-remove-circle text-danger\"></i>", $url, $options);
                             else
@@ -51,7 +51,7 @@ use yii\helpers\Url;
                                                        'title'=>''
                                                    ]);
                             $url = Url::to(['diseno/print','op'=>"reposicion",'id'=>$model->idOrdenCTP]);
-                            return Html::a('<span class="glyphicon glyphicon-print text-success"></span>', $url, $options);
+                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
                         },
                     ]
                 ],

@@ -8,7 +8,7 @@ function formaPago(value) {
 function descuentoP(descuento) {
     if (descuento.indexOf('%') > 0) {
         var tmp = parseInt(descuento.substring(0, descuento.length - 1));
-        descuento = parseFloat((tmp / 100) * total);
+        var descuento = parseFloat(tmp/100) * $('#total').val();
         $('#descuento').val(redondeo(descuento));
     }
     calcular_total();

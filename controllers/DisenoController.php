@@ -223,6 +223,16 @@ class DisenoController extends Controller
                     $detalle = $datos['detalle'];
                     return $this->render('repos', ['r' => '2', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden, 'producto' => $producto]);
                     break;
+                case 3:
+                    $idParent = '';
+                    if ($post = Yii::$app->request->post('idParent'))
+                        $idParent = $post['idParent'];
+                    $datos = $this->ordenes($get, 2, $idParent,true);
+                    if (!is_array($datos))
+                        return $this->redirect(['reposicion', 'op' => 'list']);
+                    $orden   = $datos['orden'];
+                    $detalle = $datos['detalle'];
+                    return $this->render('repos', ['r' => 'null', 'idParent' => $idParent, 'detalle' => $detalle, 'orden' => $orden]);
             }
         }
         if (isset($get['op'])) {
@@ -254,7 +264,7 @@ class DisenoController extends Controller
         return $this->render('repos', ['notas' => $data]);
     }
 
-    private function ordenes($get, $tipo, $idParent = null)
+    private function ordenes($get, $tipo, $idParent = null,$null=false)
     {
         $ordenes = new OrdenCTP();
         $detalle = [];
@@ -263,9 +273,9 @@ class DisenoController extends Controller
             $detalle = $ordenes->ordenDetalles;
         } else {
             $ordenes->fk_idSucursal = $this->idSucursal;
-            $ordenes->estado        = 1;
-            $ordenes->tipoOrden     = $tipo;
-            $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal, $tipo);
+            $ordenes->estado = 1;
+            $ordenes->tipoOrden = $tipo;
+            $ordenes->correlativo = SGOrdenes::correlativo($ordenes->fk_idSucursal, $tipo);
             if ($tipo != 0)
                 $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, $tipo);
             $ordenes->fechaGenerada = date('Y-m-d H:i:s');
@@ -274,14 +284,14 @@ class DisenoController extends Controller
             $ordenes->fk_idParent = $idParent;
 
         $ordenes->fk_idUserD = Yii::$app->user->id;
-        $post                = Yii::$app->request->post();
+        $post = Yii::$app->request->post();
         if (!empty($post)) {
             $operacion = new SGOrdenes();
             if (isset($get['id'])) {
                 $ordenes = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
                 $detalle = OrdenDetalle::findAll(['fk_idOrden' => $ordenes->idOrdenCTP]);
-                $cp      = count($post['OrdenDetalle']);
-                $cs      = count($detalle);
+                $cp = count($post['OrdenDetalle']);
+                $cs = count($detalle);
                 if ($cp != $cs)
                     if ($cs == OrdenDetalle::deleteAll(['fk_idOrden' => $ordenes->idOrdenCTP]))
                         for ($i = 0; $i < count($post['OrdenDetalle']); ++$i)
@@ -293,7 +303,10 @@ class DisenoController extends Controller
             $ordenes->load($post);
             Model::loadMultiple($detalle, $post);
             //$datos = ;
-            $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
+            if ($null)
+                $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle], false, true);
+            else
+                $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle]);
             if ($operacion->success)
                 return true;
             return $datos;
@@ -308,9 +321,7 @@ class DisenoController extends Controller
             switch ($get['op']) {
                 case "orden":
                     $orden      = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
-                    $num        = new numerosALetras();
-                    $num->valor = $orden->montoVenta;
-                    $content    = $this->renderPartial('prints/orden', ['orden' => $orden, 'monto' => $num->mostrar()]);
+                    $content    = $this->renderPartial('prints/ordenPrint', ['orden' => $orden]);
                     $title      = "Orden de Venta Nro " . $orden->correlativo;
                     break;
                 case "interna":

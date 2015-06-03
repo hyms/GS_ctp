@@ -7,7 +7,7 @@
         </div>
         <div class="row">
             <div class="col-xs-4">
-                <strong>Tipo de Error: </strong><?php $data = \app\components\SGOperation::tiposReposicion($orden->tipoRepos); if(!is_array($data))echo $data; ?>
+                <strong>Tipo de Falla: </strong><?php $data = \app\components\SGOperation::tiposReposicion($orden->tipoRepos); if(!is_array($data))echo $data; ?>
             </div>
             <div class="text-right">
                 <strong>Fecha: </strong><?= date('d-m-Y / H:i',strtotime($orden->fechaGenerada)); ?>
@@ -36,25 +36,25 @@
                 <tbody style="font-size:12px; ">
                 <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
                     <tr>
-                        <td>
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= ($key+1);?>
                         </td>
-                        <td>
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
                         </td>
-                        <td class="col-xs-1">
+                        <td class="col-xs-1" style="font-size:12px; padding-top: 4px;">
                             <?= $producto->cantidad; ?>
                         </td>
-                        <td>
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                         </td>
-                        <td>
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->trabajo;?>
                         </td>
-                        <td>
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->pinza;?>
                         </td>
-                        <td>
+                        <td style="font-size:12px; padding-top: 4px;">
                             <?= $producto->resolucion;?>
                         </td>
                     </tr>

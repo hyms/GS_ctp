@@ -32,6 +32,9 @@ class SGOrdenes extends Component
 
             if (!Model::validateMultiple($data['detalle'], ['cantidad', 'trabajo', 'pinza', 'resolucion']))
                 return $data;
+            if ($anular) {
+                $data['orden']->estado = (-1);
+            }
 
             if ($data['orden']->save(false)) {
                 foreach ($data['detalle'] as $item) {
