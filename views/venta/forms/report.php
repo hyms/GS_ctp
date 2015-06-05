@@ -1,7 +1,7 @@
 <?php
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -10,7 +10,7 @@
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['id'=>'form'])?>
-            <?= Html::hiddenInput('tipo'); ?>
+            <?= Html::hiddenInput('tipo',null,['id'=>'tipo']); ?>
             <div class="form-group">
                 <?= Html::label('Cliente:','clienteNegocio',array('class'=>'control-label')); ?>
                 <?= Html::textInput('clienteNegocio',$clienteNegocio,array('class'=>'form-control')); ?>

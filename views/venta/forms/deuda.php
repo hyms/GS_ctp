@@ -1,6 +1,6 @@
 <?php
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
 <div class="col-xs-7">
@@ -11,63 +11,63 @@
             </h4>
         </div>
         <div class="panel-body" style="overflow: auto;">
-            <div class="col-xs-6"><strong>Cliente: </strong><?php echo $orden->fkIdCliente->nombreNegocio; ?></div>
-            <div class="col-xs-6"><strong>NitCi: </strong><?php echo $orden->fkIdCliente->nitCi; ?></div>
-            <div class="col-xs-6"><strong>Responsable: </strong><?php echo $orden->responsable; ?></div>
-            <div class="col-xs-6"><strong>Telefono: </strong><?php echo $orden->telefono; ?></div>
+            <div class="col-xs-6"><strong>Cliente:</strong> <?= $orden->fkIdCliente->nombreNegocio; ?></div>
+            <div class="col-xs-6"><strong>NitCi:</strong> <?= $orden->fkIdCliente->nitCi; ?></div>
+            <div class="col-xs-6"><strong>Responsable:</strong> <?= $orden->responsable; ?></div>
+            <div class="col-xs-6"><strong>Telefono:</strong> <?= $orden->telefono; ?></div>
 
             <table class="table table-hover table-condensed" style="text-align: right;">
                 <thead><tr>
-                    <th><?php echo "Nº"; ?></th>
-                    <th><?php echo "Formato"; ?></th>
-                    <th><?php echo "Cant."; ?></th>
-                    <th><?php echo "Colores"; ?></th>
-                    <th><?php echo "Trabajo"; ?></th>
-                    <th><?php echo "Pinza"; ?></th>
-                    <th><?php echo "Resol."; ?></th>
-                    <th><?php echo "Costo"; ?></th>
-                    <th><?php echo "Adicional"; ?></th>
-                    <th><?php echo "Total"; ?></th>
+                    <th><?= "Nº"; ?></th>
+                    <th><?= "Formato"; ?></th>
+                    <th><?= "Cant."; ?></th>
+                    <th><?= "Colores"; ?></th>
+                    <th><?= "Trabajo"; ?></th>
+                    <th><?= "Pinza"; ?></th>
+                    <th><?= "Resol."; ?></th>
+                    <th><?= "Costo"; ?></th>
+                    <th><?= "Adicional"; ?></th>
+                    <th><?= "Total"; ?></th>
                 </tr></thead>
 
                 <tbody>
                 <?php $i=0; foreach ($orden->ordenDetalles as $producto){ $i++;?>
                     <tr>
                         <td>
-                            <?php echo $i;?>
+                            <?= $i;?>
                         </td>
                         <td>
-                            <?php echo $producto->fkIdProductoStock->fkIdProducto->formato;?>
+                            <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
                         </td>
                         <td>
-                            <?php echo $producto->cantidad; ?>
+                            <?= $producto->cantidad; ?>
                         </td>
                         <td>
-                            <?php echo (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
+                            <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                         </td>
                         <td>
-                            <?php echo $producto->trabajo;?>
+                            <?= $producto->trabajo;?>
                         </td>
                         <td>
-                            <?php echo $producto->pinza;?>
+                            <?= $producto->pinza;?>
                         </td>
                         <td>
-                            <?php echo $producto->resolucion;?>
+                            <?= $producto->resolucion;?>
                         </td>
                         <td>
-                            <?php echo $producto->costo;?>
+                            <?= $producto->costo;?>
                         </td>
                         <td>
-                            <?php echo $producto->adicional;?>
+                            <?= $producto->adicional;?>
                         </td>
                         <td>
-                            <?php echo $producto->total;?>
+                            <?= $producto->total;?>
                         </td>
                     </tr>
                 <?php }?>
                 </tbody>
             </table>
-            <div class="well well-sm col-xs-2 col-xs-offset-10"><strong>Total: </strong><?php echo $orden->montoVenta; ?></div>
+            <div class="well well-sm col-xs-2 col-xs-offset-10"><strong>Total: </strong><?= $orden->montoVenta; ?></div>
         </div>
     </div>
 </div>
@@ -82,15 +82,15 @@
         <div class="panel-body" style="overflow: auto;">
             <div class="well well-sm row">
                 <h4>Deuda Hasta el momento</h4>
-                <div class="col-xs-6"><strong>Cancelado: </strong><?php echo ($deuda); ?></div>
-                <div class="col-xs-6"><strong>Saldo: </strong><?php echo ($orden->montoVenta-$deuda); ?></div>
+                <div class="col-xs-6"><strong>Cancelado: </strong><?= ($deuda); ?></div>
+                <div class="col-xs-6"><strong>Saldo: </strong><?= ($orden->montoVenta-$deuda); ?></div>
             </div>
 
             <div class="well well-sm row">
 
                 <?php $form = ActiveForm::begin(['id'=>'form']);?>
-                <?php echo Html::hiddenInput('montoVenta',$orden->montoVenta,['id'=>'total']); ?>
-                <?php echo Html::hiddenInput('montoPagado',$deuda,['id'=>'pagado']); ?>
+                <?= Html::hiddenInput('montoVenta',$orden->montoVenta,['id'=>'total']); ?>
+                <?= Html::hiddenInput('montoPagado',$deuda,['id'=>'pagado']); ?>
                 <h4>A Cancelar</h4>
                 <div class="col-xs-6">
                     <?= $form->field($model,'monto')->textInput(['id'=>'acuenta']); ?>
@@ -100,8 +100,8 @@
                     <?= Html::textInput('saldo',null,['class'=>'form-control','id'=>'saldo']); ?>
                 </div>
                 <div class="col-xs-12 text-center">
-                    <?php echo Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-danger hidden-print','id'=>'reset')); ?>
-                    <?php echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-danger hidden-print','id'=>'reset')); ?>
+                    <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>

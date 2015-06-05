@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 
@@ -68,7 +68,10 @@
                                                        'title'=>''
                                                    ]);
                             $url = Url::to(['venta/venta','id'=>$model->idOrdenCTP]);
+                            if(empty($model->fechaCierre))
                             return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                            else
+                                return "";
                         },
                         'print'=>function($url,$model){
                             $options = array_merge([

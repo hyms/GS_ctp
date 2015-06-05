@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -54,8 +54,18 @@
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{cancel}',
+                    'template'=>'{update} {cancel}',
                     'buttons'=>[
+                        'update'=>function($url,$model){
+                            $options = array_merge([
+                                //'class'=>'btn btn-success',
+                                'data-original-title'=>'Modificar',
+                                'data-toggle'=>'tooltip',
+                                'title'=>''
+                            ]);
+                            $url = Url::to(['venta/venta','id'=>$model->idOrdenCTP]);
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                        },
                         'cancel'=>function($url,$model){
                             $options = array_merge([
                                                        //'class'=>'btn btn-success',
@@ -87,7 +97,6 @@
                                       'condensed'=>true,
                                       'hover'=>true,
                                       'bordered'=>false,
-                                      'pjax'=>true,
                                   ]);
         ?>
     </div>

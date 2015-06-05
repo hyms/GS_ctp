@@ -15,52 +15,52 @@
                 <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= $orden->fkIdCliente->nitCi;?></div>
             </div>
 
-            <div class="row well well-sm" style="height:170px; font-size: 11px; border-color: #000; background-color: #fff">
-                <table class="table table-hover table-condensed" style="font-size: 12px">
+            <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff">
+                <table class="table table-hover table-condensed">
                     <thead><tr>
-                        <th><?= "Nº"; ?></th>
-                        <th><?= "Formato"; ?></th>
-                        <th><?= "Cant."; ?></th>
-                        <th><?= "Colores"; ?></th>
-                        <th><?= "Trabajo"; ?></th>
-                        <th><?= "Pinza"; ?></th>
-                        <th><?= "Resol."; ?></th>
-                        <th><?= "Costo"; ?></th>
-                        <th><?= "Adicional"; ?></th>
-                        <th><?= "Total"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Nº"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Formato"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Cant."; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Colores"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Trabajo"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Pinza"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Resol."; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Costo"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Adicional"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Total"; ?></th>
                     </tr></thead>
 
                     <tbody>
                     <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
                         <tr>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= ($key+1);?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
                             </td>
-                            <td class="col-xs-1">
+                            <td class="col-xs-1" style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->cantidad; ?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->trabajo;?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->pinza;?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->resolucion;?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->costo;?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->adicional;?>
                             </td>
-                            <td>
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->total;?>
                             </td>
                         </tr>
@@ -83,11 +83,9 @@
                 </div>
                 <div class="col-xs-6 col-xs-offset-1">
                     <div class="row col-xs-12" style="border: 1.5px solid; border-formato: #000000;"><strong>Total:</strong>
-                        <?= $orden->montoVenta." Bs. <span style=\"font-size:11px\">(".$monto.")</span>";
-                        ?>
+                        <?= $orden->montoVenta?>Bs. <span style="font-size:11px"><?= $monto ?></span>
                     </div>
                     <?php if($orden->montoDescuento>0){?>
-                        <div class="row col-xs-5" style="font-size: 10px"><strong>Aut. por:</strong> <?= ($orden->tipoPago==1)?CHtml::encode(($orden->autorizado==0)?'Erick Paredes':'Miriam Martinez'):""?></div>
                         <div class="row col-xs-5" style="font-size: 10px"><strong>Desc:</strong> <?= $orden->montoDescuento." Bs.";?></div>
                     <?php }?>
                     <?php if($orden->tipoPago){?>
@@ -107,13 +105,13 @@
     </div>
     <div style="width:123px; position: relative; float: right;">
         <div class="row" style="font-size: 10.5px">
-            <div class="col-xs-12 row text-center"><h4><strong><?= $orden->correlativo;?></strong></h4></div>
+            <div class="col-xs-12 row text-center"><h3><strong><?= $orden->correlativo;?></strong></h3></div>
             <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
             <div class="col-xs-12 row text-center"><h4><strong><?= $orden->codigoServicio;?></strong></h4></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->fkIdCliente->nombreNegocio;?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "RESP:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></span></span></div>
-            <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?php $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
+            <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
             <div class="col-xs-12 row">
                 <?php foreach ($orden->ordenDetalles as $producto){ ?>
                     <div class="col-xs-12" style="border: 1.5px solid;">
