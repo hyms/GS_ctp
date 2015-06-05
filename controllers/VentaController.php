@@ -608,7 +608,7 @@ class VentaController extends Controller
                 $venta->andWhere(['!=', 'estado', '1']);
 
             if ($post['tipo'] == "d")
-                $venta->andWhere(['!=', 'estado', '2']);
+                $venta->andWhere(['estado'=> '2']);
 
             $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
             $venta->orderBy(['correlativo' => SORT_ASC]);
@@ -616,14 +616,21 @@ class VentaController extends Controller
             //$data = $venta->all();
 
             if ($post['tipo'] == "pd") {
-                $deudas = MovimientoCaja::find();
-                $deudas->where(['tipoMovimiento' => 0]);
+                $venta              = OrdenCTP::find();
+                $venta->joinWith(['fkIdMovimientoCaja']);
+                $deudas = MovimientoCaja::find()
+                    ->joinWith(['idParent0','ordenCTPs'])
+                    ->where(['tipoMovimiento' => 0])
+                    ->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
+                /*$deudas->where(['tipoMovimiento' => 0]);
                 $deudas->joinWith(['ordenCTPs']);
+                $deudas->joinWith(['idParent0']);
                 $deudas->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
                 $deudas->andWhere(['!=', 'OrdenCTP.estado', '1']);
                 $deudas->andWhere('DATE(`OrdenCTP`.`fechaCobro`) < DATE(`time`)');
-                $deudas->andWhere('`time` between "' . $post['fechaStart'] . ' 00:00:00" and "' . $post['fechaEnd'] . ' 23:59:59"');
-                $deudas->orderBy(['OrdenCTP.correlativo' => SORT_ASC]);
+                $deudas->andWhere('`times` between "' . $post['fechaStart'] . ' 00:00:00" and "' . $post['fechaEnd'] . ' 23:59:59"');
+                $deudas->orderBy(['OrdenCTP.correlativo' => SORT_ASC]);*/
+
                 $venta = $deudas;
             }
             $data = new ActiveDataProvider([

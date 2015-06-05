@@ -29,7 +29,7 @@
                     'header'=>'Operador',
                     'attribute'=>function($model)
                     {
-                        echo $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
+                        return $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
                     }
                 ],
                 [
@@ -83,7 +83,6 @@
                                       'condensed'=>true,
                                       'hover'=>true,
                                       'bordered'=>false,
-//                                    'pjax'=>true,
                                   ]);
         ?>
     </div>

@@ -43,7 +43,7 @@ class OrdenDetalle extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_idProductoStock', 'cantidad', 'trabajo', 'pinza', 'resolucion', 'fk_idOrden'], 'required'],
+            [['fk_idProductoStock', 'cantidad', 'trabajo', 'pinza', 'resolucion', 'fk_idOrden','costo'], 'required'],
             [['fk_idProductoStock', 'cantidad', 'C', 'M', 'Y', 'K', 'fk_idOrden', 'fk_idMovimientoStock'], 'integer'],
             [['pinza', 'resolucion', 'costo', 'adicional', 'total'], 'number'],
             [['trabajo'], 'string', 'max' => 30]

@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'header'=>'Correlativo',
             'attribute'=>'correlativo',
@@ -87,7 +87,9 @@ $columns = [
         ],
         [
             'header'=>'Desc',
-            'attribute'=>'montoDescuento',
+            'attribute'=>function($model){
+                return (empty($model->montoDescuento))?0:$model->montoDescuento;
+            },
         ],
         [
             'header'=>'Cobrar',
@@ -96,8 +98,18 @@ $columns = [
         ],
         [
             'header'=>'Cancelado',
-            'attribute'=>function($model){
-                return $model->fkIdMovimientoCaja->monto;
+            'attribute'=>function($model) {
+                $pagos = \app\models\MovimientoCaja::find()
+                    ->where(['idParent' => $model->fk_idMovimientoCaja])
+                    ->andWhere(['tipoMovimiento' => 0])
+                    ->andWhere('DATE(`time`) = "' . date("Y-m-d", strtotime($model->fechaCobro)) . '"')
+                    ->all();
+                $total = $model->fkIdMovimientoCaja->monto;
+                foreach ($pagos as $pago) {
+                    $total += $pago->monto;
+                }
+
+                return $total;
             },
             'pageSummary'=>true,
         ],
@@ -110,7 +122,9 @@ $columns = [
         ],
         [
             'header'=>'Factura',
-            'attribute'=>'factura',
+            'attribute'=>function($model){
+                return (empty($model->factura))?"":$model->factura;
+            },
         ],
         [
             'header'=>'Obs',
