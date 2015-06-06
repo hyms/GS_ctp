@@ -44,7 +44,6 @@ $columns = [
                               'hover'=>true,
                               'pjax'=>true,
                           ]);
-    echo $this->render('../scripts/tooltip');
     /*$script = "
     function clienteCosto(url,idOrden,tipoCliente,nombre,nit,id)
     {

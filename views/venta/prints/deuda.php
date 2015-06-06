@@ -73,7 +73,7 @@
         <div class="row">
             <div class="col-xs-5">
                 <div class="row">
-                    <div class="col-xs-11 well well-sm" style="border-color: #000000;">
+                    <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <h5><strong>Deuda</strong></h5>
                         <div class="row col-xs-5"><strong>Cancel.:</strong> <?php echo $oldDeuda." Bs";?></div>
                         <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - $oldDeuda)." Bs";?></div>
@@ -82,7 +82,7 @@
             </div>
             <div class="col-xs-5 col-xs-offset-1">
                 <div class="row">
-                    <div class="col-xs-11 well well-sm" style="border-color: #000000;">
+                    <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <h5><strong>Cancelado</strong></h5>
                         <div class="row col-xs-5"><strong>A/C:</strong> <?php echo $deuda->monto." Bs";?></div>
                         <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - ($oldDeuda+$deuda->monto))." Bs";?></div>

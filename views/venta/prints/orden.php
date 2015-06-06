@@ -73,7 +73,7 @@
             <div class="row">
                 <div class="col-xs-4">
                     <div class="row">
-                        <div class="col-xs-11 well well-sm" style="border-formato: #000000;">
+                        <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                             <br><br><br>
                             <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
                             <div><?= "Nombre: ".$orden->responsable?></div>

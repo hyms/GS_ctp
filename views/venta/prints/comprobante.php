@@ -7,14 +7,14 @@
     <div class="col-xs-5"><strong>Por concepto:</strong><?php echo " ".$arqueo->observaciones;?></div>
     <div class="col-xs-5"><strong>Cancelado a:</strong><?php echo " ADMINISTRACION"?></div>
     <div class="col-xs-12">
-        <div class="col-xs-offset-1 col-xs-4 well">
+        <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br><br>
             <div class="text-center"><small><?php echo "firma";?></small></div>
             <div class="text-justify"><strong><?php echo "Nombre y AP: ";?></strong><?php echo $arqueo->fkIdUser->nombre." ".$arqueo->fkIdUser->apellido;?></div>
             <div class="text-justify"><strong><?php echo "CI: ";?></strong><?php echo $arqueo->fkIdUser->CI;?></div>
             <div class="text-center"><small><?php echo "Entregue conforme";?></small></div>
         </div>
-        <div class="col-xs-offset-1 col-xs-4 well">
+        <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br><br>
             <div class="text-center"><small><?php echo "firma";?></small></div>
             <div class="text-justify"><strong><?php echo "Nombre y AP:";?></strong></div>

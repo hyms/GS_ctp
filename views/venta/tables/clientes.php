@@ -4,11 +4,6 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong class="panel-title">Ordenes de trabajo Pendientes</strong>
-    </div>
-    <div class="panel-body">
         <?=
         Html::a('Nuevo Cliente', "#", [
             'class'=>'btn btn-default',
@@ -27,12 +22,10 @@ use yii\helpers\Url;
                     });return false;"
         ]);
         ?>
-    </div>
-    <div style="overflow: auto">
         <?php
         $columns=[
             [
-                'header'=>'Codigo',
+                'header'=>'Categoria',
                 'attribute'=>'codigoCliente',
             ],
             [
@@ -89,10 +82,32 @@ use yii\helpers\Url;
             'dataProvider'=> $clientes,
             'filterModel' => $search,
             'columns' => $columns,
+            'toolbar' =>  [
+                '{export}',
+                '{toggleData}',
+            ],
+            // set export properties
+            'export' => [
+                'fontAwesome' => true
+            ],
             'responsive'=>true,
             'hover'=>true,
-            'bordered'=>false
+            'bordered'=>false,
+            'panel' => [
+                'type' => GridView::TYPE_DEFAULT,
+                'heading' => 'Clientes',
+            ],
+            'exportConfig' => [
+                GridView::EXCEL => [
+                    'label' => 'Excel',
+                    'filename' => 'Clientes',
+                    'alertMsg' => 'El EXCEL se generara para la descarga.',
+                ],
+                GridView::PDF => [
+                    'label' => 'PDF',
+                    'filename' => 'Clientes',
+                    'alertMsg' => 'El PDF se generara para la descarga.',
+                ],
+            ],
         ]);
         ?>
-    </div>
-</div>

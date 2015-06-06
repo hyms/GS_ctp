@@ -65,7 +65,7 @@ class Cliente extends \yii\db\ActiveRecord
             'telefono' => 'Telefono',
             'direccion' => 'Direccion',
             'nitCi' => 'Nit Ci',
-            'codigoCliente' => 'Codigo Cliente',
+            'codigoCliente' => 'Categoria',
             'enable' => 'Enable',
             'fk_idSucursal' => 'Fk Id Sucursal',
         ];

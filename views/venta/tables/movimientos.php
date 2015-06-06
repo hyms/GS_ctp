@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
         [
             'header'=>'Factura',
             'filterType'=>GridView::FILTER_SELECT2,
@@ -125,12 +125,12 @@
                               'exportConfig' => [
                                   GridView::EXCEL => [
                                       'label' => 'Excel',
-                                      'filename' => 'Productos',
+                                      'filename' => 'Ventas',
                                       'alertMsg' => 'El EXCEL se generara para la descarga.',
                                   ],
                                   GridView::PDF => [
                                       'label' => 'PDF',
-                                      'filename' => 'Productos',
+                                      'filename' => 'Ventas',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                   ],
                               ],

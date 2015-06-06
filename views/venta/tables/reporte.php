@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
         [
             'header'=>'Correlativo',
             'attribute'=>'correlativo',
@@ -163,12 +163,12 @@
                               'exportConfig' => [
                                   GridView::EXCEL => [
                                       'label' => 'Excel',
-                                      'filename' => 'Productos',
+                                      'filename' => 'Reporte',
                                       'alertMsg' => 'El EXCEL se generara para la descarga.',
                                   ],
                                   GridView::PDF => [
                                       'label' => 'PDF',
-                                      'filename' => 'Productos',
+                                      'filename' => 'Reporte',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                   ],
                               ],
