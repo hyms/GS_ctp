@@ -91,7 +91,7 @@
                 <div class="text-center">
                     <?php //echo CHtml::link('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
                     <?php // Html::submitButton($orden->isNewRecord ? 'Guardar' : 'Modificar', ['class' => $orden->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                    <?= Html::a($orden->isNewRecord ? 'Guardar' : 'Anular', '#', ['class' => $orden->isNewRecord ? 'btn btn-success' : 'btn btn-danger','id'=>'save']) ?>
+                    <?= Html::a($orden->isNewRecord ? 'Guardar' : 'Modificar', '#', ['class' => $orden->isNewRecord ? 'btn btn-success' : 'btn btn-warning','id'=>'save']) ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>

@@ -11,9 +11,6 @@ $this->title = 'Diseño-Dependientes';
         <?php
         if(isset($r)) {
             switch ($r) {
-                case 'buscar':
-                    echo $this->render('tables/buscar', ['orden' => $orden]);
-                    break;
                 case 'list':
                     echo $this->render('tables/ordenesDep', ['orden' => $orden, 'search' => $search]);
                     break;

@@ -464,14 +464,24 @@ class DisenoController extends Controller
         $suc = Sucursal::findAll(['fk_idParent' => $this->idSucursal]);
         if (isset($get['id'])) {
             $searchModel                = new OrdenCTPSearch();
-            $searchModel->fk_idSucursal = $get['id'];
             $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
             $ordenes->query
-                ->andWhere(['estado' => 0])
-                ->orWhere(['estado' => 2])
+                ->where(['fk_idSucursal'=>$get['id']])
                 ->andWhere(['tipoOrden' => 0])
+                ->andWhere('`estado`=0 OR `estado`=2')
                 ->orderBy(['fechaCobro' => SORT_DESC]);
             return $this->render('dependientes', ['r' => 'list', 'menu' => $suc, 'orden' => $ordenes, 'search' => $searchModel]);
+        }
+        $post=Yii::$app->request->post();
+        if(isset($post['id']))
+        {
+            $orden = OrdenCTP::findOne(['idOrdenCTP'=>$post['id']]);
+            $orden->fk_idUserD2 = Yii::$app->user->id;
+            if($orden->save())
+            {
+                return "done";
+                //$this->redirect(['diseno/dependientes','id'=>$orden->fk_idSucursal]);
+            }
         }
         return $this->render('dependientes', ['menu' => $suc]);
     }
