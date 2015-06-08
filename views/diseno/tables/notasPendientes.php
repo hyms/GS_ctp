@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="panel panel-danger">
@@ -14,7 +14,7 @@ use yii\helpers\Url;
             'header'=>'Contenido',
             'format'=>'raw',
             'value'=>function($model){
-                return '<div class="alert alert-danger" role="alert"><p>'.
+                return '<div class="alert alert-warning" role="alert"><p>'.
                 $model->texto.
                 '</p>'.
                 '<p class="text-right">'.

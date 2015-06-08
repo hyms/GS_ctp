@@ -251,7 +251,10 @@ class VentaController extends Controller
                 $orden->load($post);
                 foreach ($detalle as $key => $item)
                     $detalle[$key]->attributes = $post['OrdenDetalle'][$key];
-
+                if ($orden->cfSF == 0) {
+                    $orden->codigo = SGOrdenes::codigo($this->idSucursal, 0);
+                    $orden->secuencia += 1;
+                }
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
                 $op                        = new SGOrdenes();
                 $op->observacionMovimiento = "Orden CTP";
