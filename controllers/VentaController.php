@@ -55,8 +55,7 @@ class VentaController extends Controller
             if(!empty($arqueo)) {
                 if (empty($arqueo->fechaCierre)) {
                     $caja = Caja::findOne(['idCaja' => $this->idCaja]);
-                    $post = ['MovimientoCaja' => ['time' => date("Y-m-d H:i:s"), 'monto' => 0]];
-                    $datos = array('arqueo' => $post['MovimientoCaja'], 'caja' => $caja);
+                    $datos = ['arqueo' => ['time' => date("Y-m-d H:i:s"), 'monto' => 0], 'caja' => $caja];
                     $arqueoTransaccion = new SGOrdenes();
                     $arqueoTransaccion->arqueo($datos, true);
                 }
@@ -252,8 +251,12 @@ class VentaController extends Controller
                 foreach ($detalle as $key => $item)
                     $detalle[$key]->attributes = $post['OrdenDetalle'][$key];
                 if ($orden->cfSF == 0) {
-                    $orden->codigo = SGOrdenes::codigo($this->idSucursal, 0);
-                    $orden->secuencia += 1;
+                    $orden->codigoServicio = SGOrdenes::codigo($this->idSucursal, 0);
+                    $secuencia             = OrdenCTP::find()
+                        ->select('max(secuencia) as secuencia')
+                        ->where(['fk_idSucursal' => $this->idSucursal, 'tipoOrden' => 0])
+                        ->one();
+                    $orden->secuencia      = $secuencia->secuencia + 1;
                 }
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
                 $op                        = new SGOrdenes();

@@ -11,8 +11,8 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= $orden->fkIdCliente->nombreNegocio."(".$orden->responsable.")"." - ".$orden->correlativo;?></div>
-                <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= $orden->fkIdCliente->nitCi;?></div>
+                <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= ((empty($orden->fkIdCliente))?"":$orden->fkIdCliente->nombreNegocio)."(".$orden->responsable.") - ".$orden->correlativo; ?></div>
+                <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= ((empty($orden->fkIdCliente))?"":$orden->fkIdCliente->nitCi);?></div>
             </div>
 
             <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff">
@@ -105,7 +105,7 @@
     </div>
     <div style="width:123px; position: relative; float: right;">
         <div class="row" style="font-size: 10.5px">
-            <div class="col-xs-12 row text-center"><h3><strong><?= $orden->correlativo."(".$orden->codigo.")";?></strong></h3></div>
+            <div class="col-xs-12 row text-center"><h3><strong><?= $orden->correlativo;?></strong></h3></div>
             <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
             <div class="col-xs-12 row text-center"><h4><strong><?= $orden->codigoServicio;?></strong></h4></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->fkIdCliente->nombreNegocio;?></span></div>
