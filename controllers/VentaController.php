@@ -619,6 +619,7 @@ class VentaController extends Controller
                             'pageSize' => 20,
                         ],
                     ]);
+                    $r = "deuda";
                 }
                 else {
                     $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
@@ -646,9 +647,10 @@ class VentaController extends Controller
                     $data = new ActiveDataProvider([
                         'query' => $venta,
                     ]);
+                    $r = "table";
                 }
                 return $this->render('reporte', [
-                    'r' => 'table',
+                    'r' => $r,
                     'clienteNegocio' => $post['clienteNegocio'],
                     'clienteResponsable' => $post['clienteResponsable'],
                     'fechaStart' => $post['fechaStart'],

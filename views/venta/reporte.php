@@ -15,6 +15,9 @@
                             //echo $this->render('prints/report', ['data' => $data]);
                             echo $this->render('tables/reporte', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
                             break;
+                        case "deuda":
+                            echo $this->render('tables/reporteD', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
+                            break;
                     }
                 }
             ?>
