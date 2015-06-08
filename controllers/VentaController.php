@@ -20,6 +20,7 @@ use app\models\Sucursal;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\helpers\Json;
 use yii\helpers\Url;
@@ -601,7 +602,7 @@ class VentaController extends Controller
                 if ($post['tipo'] == "pd") {
                     $deudas = MovimientoCaja::find()
                         ->where(['tipoMovimiento' => 0])
-                        ->andWhere(['$fk_idCajaDestino' => $this->idCaja])
+                        ->andWhere(['fk_idCajaDestino' => $this->idCaja])
                         ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
                         ->select('idParent')
                         ->groupBy('idParent')
@@ -612,8 +613,11 @@ class VentaController extends Controller
                         if(!empty($orden))
                             array_push($venta, $orden);
                     }
-                    $data = new ActiveDataProvider([
+                    $data = new ArrayDataProvider([
                         'allModels' => $venta,
+                        'pagination' => [
+                            'pageSize' => 20,
+                        ],
                     ]);
                 }
                 else {
@@ -655,6 +659,8 @@ class VentaController extends Controller
                 //$mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
                 //Yii::app()->end();
             }
+            else
+                return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
         } else
             return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
     }
