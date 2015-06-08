@@ -47,6 +47,19 @@ class VentaController extends Controller
                 throw new HttpException(411, SGOperation::getError(411));
             else
                 $this->idCaja = $caja->idCaja;
+
+            $arqueo = MovimientoCaja::find()
+                ->where(['<','time',date("Y-m-d"). ' 00:59:59'])
+                ->one();
+            if(!empty($arqueo)) {
+                if (empty($arqueo->fechaCierre)) {
+                    $caja = Caja::findOne(['idCaja' => $this->idCaja]);
+                    $post = ['MovimientoCaja' => ['time' => date("Y-m-d H:i:s"), 'monto' => 0]];
+                    $datos = array('arqueo' => $post['MovimientoCaja'], 'caja' => $caja);
+                    $arqueoTransaccion = new SGOrdenes();
+                    $arqueoTransaccion->arqueo($datos, true);
+                }
+            }
         }
         parent::init();
     }
@@ -147,16 +160,16 @@ class VentaController extends Controller
                     $searchModel->fk_idSucursal = $this->idSucursal;
                     $ordenes                    = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
-                        ->andWhere(['estado' => 0])
-                        ->orWhere(['estado' => 2])
+                        ->andWhere('`estado`=0 or `estado`=2')
                         ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
                     if (Yii::$app->request->post('hasEditable')) {
                         $idOrdenCTP       = Yii::$app->request->post('editableKey');
                         $model            = OrdenCTP::findOne(['idOrdenCTP'=>$idOrdenCTP]);
                         $out              = Json::encode(['output' => '', 'message' => '']);
-                        $post             = Yii::$app->request->post();
-                        $post['OrdenCTP'] = current($post['OrdenCTP']);
+                        $post = [];
+                        $posted = current($_POST['OrdenCTP']);
+                        $post['OrdenCTP'] = $posted;
                         // load model like any single model validation
                         if ($model->load($post)) {
                             $model->save();
@@ -231,6 +244,7 @@ class VentaController extends Controller
 
             $search  = new ClienteSearch();
             $cliente = $search->search(Yii::$app->request->queryParams);
+            $cliente->query->andWhere(['fk_idSucursal'=>$this->idSucursal]);
             $post    = yii::$app->request->post();
             if (isset($post['OrdenCTP']) && isset($post['OrdenDetalle'])) {
                 $orden->load($post);
@@ -247,14 +261,6 @@ class VentaController extends Controller
                 $orden   = $data['orden'];
                 $detalle = $data['detalle'];
             }
-            /*return $this->render('orden', [
-                'r' => 'venta',
-                'orden' => $orden,
-                'detalle' => $detalle,
-                'clientes' => $cliente,
-                'search' => $search,
-                'monto' => $monto,
-            ]);*/
             return $this->render('forms/venta', [
                 'clientes' => $cliente,
                 'search'   => $search,
@@ -325,7 +331,7 @@ class VentaController extends Controller
                         else
                             $end = date("Y") . "-" . $m . "-" . $d . " 23:59:59";
 
-                        $variables = SGCaja::getSaldo($this->idCaja, $end);
+                        $variables = SGCaja::getSaldo($this->idCaja, $end,false,['arqueo'=>$end]);
 
                         return $this->render('caja',
                                              [
@@ -591,67 +597,69 @@ class VentaController extends Controller
     {
         $post = Yii::$app->request->post();
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd'])) {
-            $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
-            $post['fechaEnd']   = date('Y-m-d', strtotime($post['fechaEnd']));
-            $venta              = OrdenCTP::find();
-            $venta->where(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
-            $venta->joinWith('fkIdCliente');
-            $swdeuda = false;
-            if (!empty($post['clienteNegocio'])) {
-                $venta->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+            if (!empty($post['fechaStart']) && !empty($post['fechaEnd'])) {
+                if ($post['tipo'] == "pd") {
+                    $deudas = MovimientoCaja::find()
+                        ->where(['tipoMovimiento' => 0])
+                        ->andWhere(['$fk_idCajaDestino' => $this->idCaja])
+                        ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
+                        ->select('idParent')
+                        ->groupBy('idParent')
+                        ->all();
+                    $venta = [];
+                    foreach ($deudas as $deuda) {
+                        $orden = OrdenCTP::findOne(['fk_idMovimientoCaja'=>$deuda->idParent]);
+                        if(!empty($orden))
+                            array_push($venta, $orden);
+                    }
+                    $data = new ActiveDataProvider([
+                        'allModels' => $venta,
+                    ]);
+                }
+                else {
+                    $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
+                    $post['fechaEnd'] = date('Y-m-d', strtotime($post['fechaEnd']));
+                    $venta = OrdenCTP::find();
+                    $venta->where(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
+                    $venta->joinWith('fkIdCliente');
+                    if (!empty($post['clienteNegocio'])) {
+                        $venta->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                    }
+                    if (!empty($post['clienteResponsable'])) {
+                        $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                    }
+
+                    if ($post['tipo'] == "v")
+                        $venta->andWhere(['!=', 'estado', '1']);
+
+                    if ($post['tipo'] == "d")
+                        $venta->andWhere(['estado' => '2']);
+
+                    $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
+                    $venta->orderBy(['correlativo' => SORT_ASC]);
+
+                    //$data = $venta->all();
+                    $data = new ActiveDataProvider([
+                        'query' => $venta,
+                    ]);
+                }
+                return $this->render('reporte', [
+                    'r' => 'table',
+                    'clienteNegocio' => $post['clienteNegocio'],
+                    'clienteResponsable' => $post['clienteResponsable'],
+                    'fechaStart' => $post['fechaStart'],
+                    'fechaEnd' => $post['fechaEnd'],
+                    'data' => $data,
+                ]);
+
+                //$mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
+                //Yii::app()->end();
             }
-            if (!empty($post['clienteResponsable'])) {
-                $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
-            }
-
-            if ($post['tipo'] == "v")
-                $venta->andWhere(['!=', 'estado', '1']);
-
-            if ($post['tipo'] == "d")
-                $venta->andWhere(['estado'=> '2']);
-
-            $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
-            $venta->orderBy(['correlativo' => SORT_ASC]);
-
-            //$data = $venta->all();
-
-            if ($post['tipo'] == "pd") {
-                $venta              = OrdenCTP::find();
-                $venta->joinWith(['fkIdMovimientoCaja']);
-                $deudas = MovimientoCaja::find()
-                    ->joinWith(['idParent0','ordenCTPs'])
-                    ->where(['tipoMovimiento' => 0])
-                    ->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
-                /*$deudas->where(['tipoMovimiento' => 0]);
-                $deudas->joinWith(['ordenCTPs']);
-                $deudas->joinWith(['idParent0']);
-                $deudas->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
-                $deudas->andWhere(['!=', 'OrdenCTP.estado', '1']);
-                $deudas->andWhere('DATE(`OrdenCTP`.`fechaCobro`) < DATE(`time`)');
-                $deudas->andWhere('`times` between "' . $post['fechaStart'] . ' 00:00:00" and "' . $post['fechaEnd'] . ' 23:59:59"');
-                $deudas->orderBy(['OrdenCTP.correlativo' => SORT_ASC]);*/
-
-                $venta = $deudas;
-            }
-            $data = new ActiveDataProvider([
-                'query' => $venta,
-            ]);
-            return $this->render('reporte', [
-                'r'                  => 'table',
-                'clienteNegocio'     => $post['clienteNegocio'],
-                'clienteResponsable' => $post['clienteResponsable'],
-                'fechaStart'         => $post['fechaStart'],
-                'fechaEnd'           => $post['fechaEnd'],
-                'data'               => $data,
-            ]);
-
-            //$mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
-            //Yii::app()->end();
         } else
             return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
     }
 
-    public function actionAjaxfactura()
+    /*public function actionAjaxfactura()
     {
         if (yii::$app->request->isAjax) {
             $tipo = 0;
@@ -676,7 +684,7 @@ class VentaController extends Controller
                 return Json::encode($resultado);
             }
         }
-    }
+    }*/
 
     public function actionAddfactura()
     {

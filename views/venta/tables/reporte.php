@@ -98,11 +98,11 @@ $columns = [
         ],
         [
             'header'=>'Cancelado',
-            'attribute'=>function($model) {
+            'attribute'=>function($model) use($fechaStart,$fechaEnd) {
                 $pagos = \app\models\MovimientoCaja::find()
                     ->where(['idParent' => $model->fk_idMovimientoCaja])
                     ->andWhere(['tipoMovimiento' => 0])
-                    ->andWhere('DATE(`time`) = "' . date("Y-m-d", strtotime($model->fechaCobro)) . '"')
+                    ->andWhere(['between', 'time', $fechaStart . ' 00:00:00', $fechaEnd . ' 23:59:59'])
                     ->all();
                 $total = $model->fkIdMovimientoCaja->monto;
                 foreach ($pagos as $pago) {

@@ -13,7 +13,7 @@
                     switch ($r) {
                         case "table":
                             //echo $this->render('prints/report', ['data' => $data]);
-                            echo $this->render('tables/reporte', ['data' => $data]);
+                            echo $this->render('tables/reporte', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
                             break;
                     }
                 }

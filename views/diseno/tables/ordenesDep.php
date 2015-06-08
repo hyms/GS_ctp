@@ -1,8 +1,8 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
     <div class="panel panel-default">
@@ -45,17 +45,7 @@
                                                            'data-original-title'=>'Validar',
                                                            'data-toggle'=>'tooltip',
                                                            'title'=>'',
-                                                           'onclick'             => "
-                                                        $.ajax({
-                                                            type    :'post',
-                                                            cache   : false,
-                                                            data    :{id=".$model->idOrdenCTP."},
-                                                            url     : '" . Url::to(['diseno/dependientes']) . "',
-                                                            success : function(data) {
-                                                                if(data==\"done\")
-                                                                    location.reload();
-                                                            }
-                                                        });return false;"
+                                                           'onclick'             => "validar(".$model->idOrdenCTP.",'".Url::to(['diseno/dependientes'])."'); return false;"
                                                        ]);
                                 if(empty($model->fk_idUserD2))
                                     return Html::a('<span class="glyphicon glyphicon-check btn btn-success btn-sm"></span>', '#', $options);
@@ -115,4 +105,25 @@
                      'size'=>Modal::SIZE_LARGE,
                  ]);
     Modal::end();
+?>
+<?php
+$script = <<<js
+function validar(idOrden,url){
+var r = confirm("Desea Validar la Orden?");
+    if (r == true) {
+        $.ajax({
+        type    :'post',
+        cache   : false,
+        data    :{id:idOrden},
+        url     : url,
+        success : function(data) {
+            if(data=="done"){
+                location.reload();
+                }
+        }
+        });
+    }
+}
+js;
+$this->registerJs($script, \yii\web\View::POS_HEAD);
 ?>

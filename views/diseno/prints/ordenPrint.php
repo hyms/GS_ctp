@@ -2,7 +2,7 @@
     <div class="col-xs-12">
         <div class="row">
             <div class="row col-xs-12">
-                <h4 class="col-xs-5 text-center"><?= $orden->fkIdSucursal->nombre;?></h4>
+                <h4 class="col-xs-5"><?= $orden->fkIdSucursal->nombre." - ".$orden->correlativo;?></h4>
                 <div class="text-right"><strong><?= "FECHA:";?></strong> <?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></div>
             </div>
         </div>

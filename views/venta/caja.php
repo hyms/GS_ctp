@@ -25,9 +25,23 @@
                     echo $this->render('menus/arqueo');
                     if(isset($saldo)) {
                         echo  "<br><div class='row'>";
+                        echo "<div class='col-xs-9'>";
+                        echo $this->render('tables/registroDiario',
+                            [
+                                'fecha'       => $fecha,
+                                'saldo'       => $saldo,
+                                'ventas'      => $ventas,
+                                'deudas'      => $deudas,
+                                'recibos'     => $recibos,
+                                'cajas'       => $cajas,
+                                'comprobante' => '',
+                                'detalle'     => '',
+                                'arqueo'      => '',
+                            ]);
+                        echo "</div>";
                         echo "<div class='col-xs-3'>";
                         echo $this->render("forms/arqueo",
-                                           array(
+                                           [
                                                'saldo'   => $saldo,
                                                'arqueo'  => $arqueo,
                                                'caja'    => $caja,
@@ -35,25 +49,10 @@
                                                'ventas'  => $ventas,
                                                'recibos' => $recibos,
                                                'dia'     => $dia,
-                                           ));
-                        echo "</div>";
-                        echo "<div class='col-xs-9'>";
-                        $comprobante = '';
-                        $detalle     = '';
-                        $arqueo      = '';
-                        echo $this->render('tables/registroDiario',
-                                           [
-                                               'fecha'       => $fecha,
-                                               'saldo'       => $saldo,
-                                               'ventas'      => $ventas,
-                                               'deudas'      => $deudas,
-                                               'recibos'     => $recibos,
-                                               'cajas'       => $cajas,
-                                               'comprobante' => $comprobante,
-                                               'detalle'     => $detalle,
-                                               'arqueo'      => $arqueo,
                                            ]);
-                        echo "</div></div>";
+                        echo "</div>";
+
+                        echo "</div>";
                     }
                     break;
             }

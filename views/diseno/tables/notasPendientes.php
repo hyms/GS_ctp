@@ -4,7 +4,7 @@ use yii\helpers\Html;
 use yii\helpers\Url;
 
 ?>
-<div class="panel panel-default">
+<div class="panel panel-danger">
     <div class="panel-heading">
         <strong class="panel-title">Notas pendientes</strong>
     </div>
@@ -14,7 +14,7 @@ use yii\helpers\Url;
             'header'=>'Contenido',
             'format'=>'raw',
             'value'=>function($model){
-                return '<p>'.
+                return '<div class="alert alert-danger" role="alert"><p>'.
                 $model->texto.
                 '</p>'.
                 '<p class="text-right">'.
@@ -39,7 +39,7 @@ use yii\helpers\Url;
                         }
                     });return false;"
                 ]).
-                '</p>';
+                '</p></div>';
             },
         ],
     ];
