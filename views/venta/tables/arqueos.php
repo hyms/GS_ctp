@@ -7,7 +7,7 @@ use yii\helpers\Url;
 
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong class="panel-title">Arqueos Realizados</strong>
+        <strong class="panel-title">Historial Arqueos</strong>
     </div>
     <div class="panel-body" style="overflow: auto;">
         <?php
@@ -58,33 +58,6 @@ use yii\helpers\Url;
             ],
         ];
 
-        /*$columns=array(
-            array(
-                'header'=>'',
-                'class'=>'booster.widgets.TbButtonColumn',
-                'template'=>'{update} {print} {registro}',
-                'buttons'=>array(
-                    'update'=>
-                        array(
-                            'url'=>'#',
-                            'label'=>'Modificar',
-                            'visible'=>'false',
-                        ),
-                    'print'=>
-                        array(
-                            'url'=>'array("ctp/comprobante","id"=>$data->idArqueoCaja)',
-                            'label'=>'imprimir',
-                            'icon'=>'print',
-                        ),
-                    'registro'=>
-                        array(
-                            'url'=>'array("ctp/registroDiario","id"=>$data->idArqueoCaja)',
-                            'label'=>'Registro Diario',
-                            'icon'=>'list-alt',
-                        ),
-                ),
-            ),
-        */
         echo GridView::widget([
             'dataProvider'=> $arqueos,
             'filterModel' => $search,

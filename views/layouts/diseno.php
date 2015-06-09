@@ -1,13 +1,13 @@
 <?php
-    use app\assets\AppAsset2;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
+use app\assets\AppAsset2;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
 
-    /* @var $this \yii\web\View */
-    /* @var $content string */
+/* @var $this \yii\web\View */
+/* @var $content string */
 
-    AppAsset2::register($this);
+AppAsset2::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -24,44 +24,44 @@
 <?php $this->beginBody() ?>
 <div class="wrap">
     <?php
-        NavBar::begin([
-                          'brandLabel' => 'Grafica Singular '.((!empty(Yii::$app->user->identity->fk_idSucursal))?"(".Yii::$app->user->identity->fkIdSucursal->nombre.")":""),
-                          'brandUrl' => Yii::$app->homeUrl,
-                          'options' => [
-                              'class' => 'navbar navbar-default',
-                          ],
-                      ]);
-        $sucursal = \app\models\Sucursal::findOne(Yii::$app->user->identity->fk_idSucursal);
-        $items = [[
-            'label'=>'Ordenes',
-            'url'=>['/diseno/orden']
-        ]];
+    NavBar::begin([
+        'brandLabel' => 'Grafica Singular '.((!empty(Yii::$app->user->identity->fk_idSucursal))?"(".Yii::$app->user->identity->fkIdSucursal->nombre.")":""),
+        'brandUrl' => Yii::$app->homeUrl,
+        'options' => [
+            'class' => 'navbar navbar-default',
+        ],
+    ]);
+    $sucursal = \app\models\Sucursal::findOne(Yii::$app->user->identity->fk_idSucursal);
+    $items = [[
+        'label'=>'Ordenes',
+        'url'=>['/diseno/orden']
+    ]];
+    array_push($items,[
+        'label'=>'Internas',
+        'url'=>['/diseno/interna']
+    ]);
+    if(!empty($sucursal->sucursals))
+    {
         array_push($items,[
-            'label'=>'Internas',
-            'url'=>['/diseno/interna']
+            'label'=>'Suc. Dependientes',
+            'url'=>['/diseno/dependientes']
         ]);
-        if(!empty($sucursal->sucursals))
-        {
-            array_push($items,[
-                'label'=>'Suc. Dependientes',
-                'url'=>['/diseno/dependientes']
-            ]);
-        }
-        array_push($items,[
-            'label'=>'Reposiciones',
-            'url'=>['/diseno/reposicion']
-        ]);
-        array_push($items, Yii::$app->user->isGuest ?
-            ['label' => 'Login', 'url' => ['/site/login']] :
-            ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-             'url' => ['/site/logout'],
-             'linkOptions' => ['data-method' => 'post']]);
+    }
+    array_push($items,[
+        'label'=>'Reposiciones',
+        'url'=>['/diseno/reposicion']
+    ]);
+    array_push($items, Yii::$app->user->isGuest ?
+        ['label' => 'Login', 'url' => ['/site/login']] :
+        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+            'url' => ['/site/logout'],
+            'linkOptions' => ['data-method' => 'post']]);
 
-        echo Nav::widget([
-                             'options' => ['class' => 'navbar-nav navbar-right'],
-                             'items' => $items,
-                         ]);
-        NavBar::end();
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => $items,
+    ]);
+    NavBar::end();
     ?>
 
     <div class="container">
@@ -73,17 +73,17 @@
     <div class="container">
         <div class="col-xs-5">
             <?php
-                $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
-                foreach($sucursales as $key => $item)
-                {
-                    echo Html::a($item->nombre,'#',[
-                        'data-original-title'=>$item->descripcion,
-                        'data-toggle'=>'tooltip',
-                        'title'=>''
-                    ]);
-                    if(($key + 1) < count($sucursales))
-                        echo " - ";
-                }
+            $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
+            foreach($sucursales as $key => $item)
+            {
+                echo Html::a($item->nombre,'#',[
+                    'data-original-title'=>$item->descripcion,
+                    'data-toggle'=>'tooltip',
+                    'title'=>''
+                ]);
+                if(($key + 1) < count($sucursales))
+                    echo " - ";
+            }
             ?>
         </div>
         <div class="col-xs-2 text-center">&copy; Grafica Singular <?= date('Y') ?></div>
@@ -102,7 +102,7 @@ $("[data-toggle='popover']").popover();
 SCRIPT;
 // Register tooltip/popover initialization javascript
 $this->registerJs($js);
-    ?>
+?>
 <?php $this->endBody() ?>
 </body>
 </html>

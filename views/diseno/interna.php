@@ -12,26 +12,25 @@ $this->title = 'Diseño-Ordenes Internas';
         if(isset($r)) {
             switch ($r) {
                 case 'nuevo':
-                    echo $this->render('forms/cliente',[
-                        'orden'=>$orden,
-                        'detalle'=>$detalle,
-                        'producto'=>$producto,
+                    echo $this->render('forms/cliente', [
+                        'orden' => $orden,
+                        'detalle' => $detalle,
+                        'producto' => $producto,
                     ]);
                     break;
                 case 'buscar':
-                    echo $this->render('tables/buscarI',['orden'=>$orden]);
+                    echo $this->render('tables/buscarI', ['orden' => $orden]);
                     break;
                 case 'nota':
-                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search,'tipo'=>1]);
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search, 'tipo' => 1]);
                     break;
                 default:
                     break;
             }
         }
-        else
-        {
+        else {
             echo '<div class="col-xs-offset-7 col-xs-5">';
-            echo $this->render('tables/notasPendientes',['notas'=>$notas]);
+            echo $this->render('tables/notasPendientes', ['notas' => $notas]);
             echo '</div>';
         }
         ?>

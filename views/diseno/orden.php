@@ -13,8 +13,8 @@ $this->title = 'Diseño-Ordenes';
             switch ($r) {
                 case 'nuevo':
                     echo $this->render('forms/cliente', [
-                        'orden'    => $orden,
-                        'detalle'  => $detalle,
+                        'orden' => $orden,
+                        'detalle' => $detalle,
                         'producto' => $producto,
                     ]);
                     echo $this->render('scripts/save');
@@ -26,14 +26,13 @@ $this->title = 'Diseño-Ordenes';
                     echo $this->render('tables/ordenes', ['orden' => $orden, 'search' => $search]);
                     break;
                 case 'nota':
-                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search,'tipo'=>0]);
+                    echo $this->render('tables/notas', ['notas' => $notas, 'search' => $search, 'tipo' => 0]);
                     break;
             }
         }
-        else
-        {
+        else {
             echo '<div class="col-xs-offset-7 col-xs-5">';
-            echo $this->render('tables/notasPendientes',['notas'=>$notas]);
+            echo $this->render('tables/notasPendientes', ['notas' => $notas]);
             echo '</div>';
         }
         ?>

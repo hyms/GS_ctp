@@ -104,9 +104,9 @@ class DisenoController extends Controller
                     break;
                 case 'list':
                     $searchModel = new OrdenCTPSearch();
-                    $searchModel->fk_idSucursal = $this->idSucursal;
                     $ordenes = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
+                        ->where(['fk_idSucursal' => $this->idSucursal])
                         ->andWhere('`estado`=0 or `estado`=2')
                         ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
@@ -114,10 +114,11 @@ class DisenoController extends Controller
                     break;
                 case 'nota':
                     $search = new NotasSearch();
-                    $search->fk_idSucursal = $this->idSucursal;
-                    $search->tipoNota = 0;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
-                    $notas->query->orderBy(['fechaCreacion' => SORT_DESC]);
+                    $notas->query
+                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['tipoNota' => 0])
+                        ->orderBy(['fechaCreacion' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
@@ -154,9 +155,11 @@ class DisenoController extends Controller
                     break;
                 case 'nota':
                     $search = new NotasSearch();
-                    $search->fk_idSucursal = $this->idSucursal;
-                    $search->tipoNota = 1;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
+                    $notas->query
+                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['tipoNota' => 1])
+                        ->orderBy(['fechaCreacion' => SORT_DESC]);
                     return $this->render('interna', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
@@ -248,15 +251,18 @@ class DisenoController extends Controller
                     break;
                 case 'nota':
                     $search = new NotasSearch();
-                    $search->fk_idSucursal = $this->idSucursal;
-                    $search->tipoNota = 2;
                     $notas = $search->search(Yii::$app->request->getQueryParams());
+                    $notas->query
+                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['tipoNota' => 2])
+                        ->orderBy(['fechaCreacion' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }
-        $notas = Notas::find()->where(['is', 'fk_idUserVisto', null]);
-        $notas->andWhere(['tipoNota' => 2]);
+        $notas = Notas::find()
+            ->where(['is', 'fk_idUserVisto', null])
+            ->andWhere(['tipoNota' => 2]);
         $data = new ActiveDataProvider([
             'query' => $notas,
         ]);
@@ -363,8 +369,8 @@ class DisenoController extends Controller
     public function actionAdd_detalle()
     {
         $get = Yii::$app->request->get();
-        if (isset($get)) {
-            //if (Yii::$app->request->isAjax && isset($get)) {
+        //if (isset($get)) {
+        if (Yii::$app->request->isAjax && isset($get)) {
             $tipo = 0;
             $detalle = new OrdenDetalle();
             $almacen = null;
@@ -390,7 +396,8 @@ class DisenoController extends Controller
     public function actionAddreposicion()
     {
         $get = Yii::$app->request->get();
-        if (isset($get['id'])) {
+        if (Yii::$app->request->isAjax && isset($get['id'])) {
+        //if (isset($get['id'])) {
             //if (Yii::$app->request->isAjax && isset($get)) {
             $orden = OrdenCTP::findOne($get['id']);
             $detalle = $orden->ordenDetalles;
@@ -400,36 +407,40 @@ class DisenoController extends Controller
 
     public function actionNotas()
     {
-        $get = Yii::$app->request->get();
-        $nota = new Notas();
-        if (isset($get['id'])) {
-            $nota = Notas::findOne($get['id']);
-        } else {
-            $nota->fk_idSucursal = $this->idSucursal;
-            $nota->fk_idUserCreador = Yii::$app->user->id;
-            $nota->tipoNota = $get['tipo'];
-            if (empty($nota->fechaCreacion))
-                $nota->fechaCreacion = date('Y-m-d H:i:s');
-        }
-        $post = Yii::$app->request->post();
-        if (isset($post['Notas'])) {
-            $nota->attributes = $post['Notas'];
-            if ($nota->save()) {
-                return "done";
+        if (Yii::$app->request->isAjax) {
+            $get = Yii::$app->request->get();
+            $nota = new Notas();
+            if (isset($get['id'])) {
+                $nota = Notas::findOne($get['id']);
+            } else {
+                $nota->fk_idSucursal = $this->idSucursal;
+                $nota->fk_idUserCreador = Yii::$app->user->id;
+                $nota->tipoNota = $get['tipo'];
+                if (empty($nota->fechaCreacion))
+                    $nota->fechaCreacion = date('Y-m-d H:i:s');
             }
+            $post = Yii::$app->request->post();
+            if (isset($post['Notas'])) {
+                $nota->attributes = $post['Notas'];
+                if ($nota->save()) {
+                    return "done";
+                }
+            }
+            return $this->renderAjax('forms/nota', ['nota' => $nota]);
         }
-        return $this->renderAjax('forms/nota', ['nota' => $nota]);
     }
 
     public function actionVisto()
     {
-        $get = Yii::$app->request->get();
-        if (isset($get['id'])) {
-            $nota = Notas::findOne($get['id']);
-            $nota->fk_idUserVisto = Yii::$app->user->id;
-            $nota->fechaVisto = date('Y-m-d H:i:s');
-            if ($nota->save()) {
-                return "done";
+        if (Yii::$app->request->isAjax) {
+            $get = Yii::$app->request->get();
+            if (isset($get['id'])) {
+                $nota = Notas::findOne($get['id']);
+                $nota->fk_idUserVisto = Yii::$app->user->id;
+                $nota->fechaVisto = date('Y-m-d H:i:s');
+                if ($nota->save()) {
+                    return "done";
+                }
             }
         }
     }
@@ -438,23 +449,25 @@ class DisenoController extends Controller
     {
         $post = Yii::$app->request->post();
         if (isset($post['name'])) {
-            $cliente = Cliente::find();
-            $cliente->where(['fk_idSucursal' => $this->idSucursal]);
-            $cliente->andWhere(['nombreNegocio' => $post['name']]);
-            $cliente = $cliente->one();
+            $cliente = Cliente::find()
+                ->where(['fk_idSucursal' => $this->idSucursal])
+                ->andWhere(['nombreNegocio' => $post['name']])
+                ->one();
             return $cliente->telefono;
         }
     }
 
     public function actionReview()
     {
-        $get = Yii::$app->request->get();
-        if (isset($get['op']) && isset($get['id'])) {
-            switch ($get['op']) {
-                case "cliente":
-                    $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
-                    return $this->renderAjax('prints/orden', ['orden' => $orden]);
-                    break;
+        if (Yii::$app->request->isAjax) {
+            $get = Yii::$app->request->get();
+            if (isset($get['op']) && isset($get['id'])) {
+                switch ($get['op']) {
+                    case "cliente":
+                        $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+                        return $this->renderAjax('prints/orden', ['orden' => $orden]);
+                        break;
+                }
             }
         }
     }

@@ -1,6 +1,6 @@
 <?php
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="col-xs-3">
@@ -9,17 +9,17 @@
             <div class="form-group">
                 <?= Html::label('Seleccione Tipo de Repocicion',null,['class'=>'form-label'])?>
                 <?= Html::dropDownList('tipo',
-                                       $tipo,
-                                       [
-                                           'Nueva Reposicion',
-                                           'Reposicion de Cliente',
-                                           'Reposicion de una Interna'
-                                       ],
-                                       [
-                                           'prompt'=>'Seleccione una opcion',
-                                           'class'=>'form-control',
-                                           'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
-                                       ])
+                    $tipo,
+                    [
+                        'Nueva Reposicion',
+                        'Reposicion de Cliente',
+                        'Reposicion de una Interna'
+                    ],
+                    [
+                        'prompt'=>'Seleccione una opcion',
+                        'class'=>'form-control',
+                        'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
+                    ])
                 ?>
             </div>
         </div>
@@ -50,20 +50,20 @@
         <h4 class="text-center"><strong>Nueva Reposicion</strong></h4>
         <div id="orden">
             <?php
-                if(!empty($orden)) {
-                    echo $this->render('oRepos', ['idParent' => $idParent, 'orden' => $orden, 'detalle' => $detalle,'tipo'=>$tipo]);
-                }
+            if(!empty($orden)) {
+                echo $this->render('oRepos', ['idParent' => $idParent, 'orden' => $orden, 'detalle' => $detalle,'tipo'=>$tipo]);
+            }
             ?>
         </div>
     </div>
 </div>
 <?php
-    $script = <<<JS
+$script = <<<JS
 function select(val,url)
 {
     if(val!="")
         document.location.href = url+'?'+'tipo='+val;
 }
 JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
+$this->registerJs($script, \yii\web\View::POS_HEAD);
 ?>

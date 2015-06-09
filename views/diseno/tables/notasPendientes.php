@@ -1,12 +1,12 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-danger">
     <div class="panel-heading">
-        <strong class="panel-title">Notas pendientes</strong>
+        <strong class="panel-title">Notas</strong>
     </div>
     <?php
     $columns = [

@@ -1,56 +1,26 @@
 <?php
+use kartik\widgets\SideNav;
 
-    use kartik\widgets\SideNav;
-
-    echo SideNav::widget([
-                             'type' => SideNav::TYPE_PRIMARY,
-                             'encodeLabels' => false,
-                             'heading' => false,
-                             'items' => [
-                                 [
-                                     'label'=>'Recibos',
-                                     'url'=>['venta/caja','op'=>'recibo']
-                                 ],
-                                 [
-                                     'label'=>'Caja Chica',
-                                     'url'=>['venta/caja','op'=>'chica']
-                                 ],
-                                 [
-                                     'label'=>'Arqueo',
-                                     'url'=>['venta/caja','op'=>'arqueo']
-                                 ],
-                                 [
-                                     'label'=>'Arqueos',
-                                     'url'=>['venta/caja','op'=>'arqueos']
-                                 ],
-                             ],
-                         ]);
-
-/*use yii\bootstrap\Nav;
-
-echo Nav::widget([
-    'options' => ['class' => 'nav-tabs'],
+echo SideNav::widget([
+    'type' => SideNav::TYPE_PRIMARY,
+    'encodeLabels' => false,
+    'heading' => false,
     'items' => [
         [
-            'label'=>'Pendientes',
-            'url'=>['venta/orden','op'=>'pendiente']
+            'label'=>'Recibos',
+            'url'=>['venta/caja','op'=>'recibo']
         ],
         [
-            'label'=>'Buscar',
-            'url'=>['venta/orden','op'=>'buscar']
+            'label'=>'Caja Chica',
+            'url'=>['venta/caja','op'=>'chica']
         ],
         [
-            'label'=>'Ventas Realizadas',
-            'url'=>['venta/orden','op'=>'diario']
+            'label'=>'Arqueo',
+            'url'=>['venta/caja','op'=>'arqueo']
         ],
         [
-            'label'=>'Deudores',
-            'url'=>['venta/deuda','op'=>'deuda']
+            'label'=>'Arqueos',
+            'url'=>['venta/caja','op'=>'arqueos']
         ],
-        [
-            'label'=>'H. Pago de Deudas',
-            'url'=>['venta/deuda','op'=>'deudas']
-        ],
-
     ],
-]);*/
+]);

@@ -6,7 +6,7 @@ use yii\helpers\Url;
 ?>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <strong class="panel-title">Block de Notas</strong>
+            <strong class="panel-title">Historial Notas</strong>
         </div>
         <div class="panel-body">
             <?=

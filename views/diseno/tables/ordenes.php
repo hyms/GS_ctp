@@ -6,12 +6,12 @@ use yii\helpers\Url;
 
 ?>
 
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong class="panel-title">Historial de ordenes de trabajo</strong>
-    </div>
-    <div>
-        <?php
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <strong class="panel-title">Historial de ordenes de trabajo</strong>
+        </div>
+        <div>
+            <?php
             $columns = [
                 [
                     'header'=>'Correlativo',
@@ -66,21 +66,19 @@ use yii\helpers\Url;
                 ],
             ];
             echo GridView::widget([
-                                      'dataProvider'=> $orden,
-                                      'filterModel' => $search,
-                                      'columns' => $columns,
-                                      'responsive'=>true,
-                                      'condensed'=>true,
-                                      'hover'=>true,
-                                      'bordered'=>false,
-//                                    'pjax'=>true,
-                                  ]);
-        ?>
+                'dataProvider'=> $orden,
+                'filterModel' => $search,
+                'columns' => $columns,
+                'responsive'=>true,
+                'condensed'=>true,
+                'hover'=>true,
+                'bordered'=>false,
+            ]);
+            ?>
+        </div>
     </div>
-</div>
+
 <?php
-
-
 Modal::begin([
     'id'=>'viewModal',
     'size'=>Modal::SIZE_LARGE,

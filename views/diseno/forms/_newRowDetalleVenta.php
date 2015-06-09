@@ -1,5 +1,5 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
 ?>
     <tr class="tabular-input">
@@ -78,5 +78,4 @@
     </tr>
 <?php
 echo $this->render('../scripts/checkbox',['index'=>$index]);
-//echo $this->render('../scripts/tooltip');
 ?>

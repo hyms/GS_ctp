@@ -11,7 +11,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= ((empty($orden->fkIdCliente))?"":$orden->fkIdCliente->nombreNegocio)."(".$orden->responsable.") - ".$orden->correlativo; ?></div>
+                <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= ((empty($orden->fkIdCliente))?"":$orden->fkIdCliente->nombreNegocio)."(".$orden->responsable.")"; ?></div>
                 <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= ((empty($orden->fkIdCliente))?"":$orden->fkIdCliente->nitCi);?></div>
             </div>
 
@@ -76,7 +76,7 @@
                         <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                             <br><br><br>
                             <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                            <div><?= "Nombre: ".$orden->responsable?></div>
+                            <div><?= "Nombre: ".$orden->responsable." "?><span class="badge"><?= $orden->correlativo?></span></div>
                             <div class="text-center" style="font-size: 10px"><small><?= "Autorizo la elaboración de la presente orden";?></small></div>
                         </div>
                     </div>

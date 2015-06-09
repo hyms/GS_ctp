@@ -1,7 +1,7 @@
 <?php
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="col-xs-3">
@@ -10,17 +10,17 @@
             <div class="form-group">
                 <?= Html::label('Seleccione Tipo de Repocicion',null,['class'=>'form-label'])?>
                 <?= Html::dropDownList('tipo',
-                                       $tipo,
-                                       [
-                                           'Nueva Reposicion',
-                                           'Reposicion de Cliente',
-                                           'Reposicion de una Interna'
-                                       ],
-                                       [
-                                           'prompt'=>'Seleccione una opcion',
-                                           'class'=>'form-control',
-                                           'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
-                                       ])
+                    $tipo,
+                    [
+                        'Nueva Reposicion',
+                        'Reposicion de Cliente',
+                        'Reposicion de una Interna'
+                    ],
+                    [
+                        'prompt'=>'Seleccione una opcion',
+                        'class'=>'form-control',
+                        'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
+                    ])
                 ?>
             </div>
         </div>
@@ -41,7 +41,7 @@
         <div class="row">
             <div class="col-xs-6">
                 <?=
-                    $form->field($orden, 'tipoRepos', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])
+                $form->field($orden, 'tipoRepos', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])
                     ->dropDownList(\app\components\SGOperation::tiposReposicion(),['prompt'=>'Seleccione el Error'])
                     ->label("Tipo_Error")
                 ?>
@@ -70,14 +70,14 @@
     </div>
 </div>
 <?php
-    $script = <<<JS
+$script = <<<JS
 function select(val,url)
 {
     if(val!="")
         document.location.href = url+'?'+'tipo='+val;
 }
 JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
+$this->registerJs($script, \yii\web\View::POS_HEAD);
 ?>
 <?= $this->render('../scripts/save') ?>
 <?= $this->render('../scripts/reset') ?>

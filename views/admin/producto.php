@@ -44,11 +44,10 @@
                         break;
 
                     case "costo":
-                        echo $this->render('menus/costoMenu',['submenu' => $submenu]);
-                        if(isset($placas))
-                        {
-                            echo $this->render('tables/ctpList',['placas'=>$placas]);
-                            echo $this->render('scripts/modal',['size'=>'L']);
+                        echo $this->render('menus/costoMenu', ['submenu' => $submenu]);
+                        if (isset($placas)) {
+                            echo $this->render('tables/ctpList', ['placas' => $placas]);
+                            echo $this->render('scripts/modal', ['size' => 'L']);
                         }
                         break;
 

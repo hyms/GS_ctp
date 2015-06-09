@@ -1,6 +1,6 @@
 <?php
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
 <?php $form = ActiveForm::begin(
@@ -10,9 +10,9 @@
 <div class="row">
     <div class="col-xs-6">
         <?=
-            $form->field($orden, 'tipoRepos', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])
-                ->dropDownList(\app\components\SGOperation::tiposReposicion(),['prompt'=>'Seleccione el Error'])
-                ->label("Tipo_Falla")
+        $form->field($orden, 'tipoRepos', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])
+            ->dropDownList(\app\components\SGOperation::tiposReposicion(),['prompt'=>'Seleccione el Error'])
+            ->label("Tipo_Falla")
         ?>
     </div>
     <div class="col-xs-6">
@@ -43,4 +43,3 @@
 <?php ActiveForm::end(); ?>
 <?= $this->render('../scripts/save') ?>
 <?= $this->render('../scripts/reset') ?>
-

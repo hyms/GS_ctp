@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 
-use app\components\precios;
 use app\components\SGProducto;
 use app\models\Producto;
 use app\models\ProductoSearch;
@@ -47,11 +46,11 @@ class AdminController extends Controller
     public function actions()
     {
         return [
-            'error'   => [
+            'error' => [
                 'class' => 'yii\web\ErrorAction',
             ],
             'captcha' => [
-                'class'           => 'yii\captcha\CaptchaAction',
+                'class' => 'yii\captcha\CaptchaAction',
                 'fixedVerifyCode' => YII_ENV_TEST ? 'testme' : null,
             ],
         ];
@@ -68,18 +67,17 @@ class AdminController extends Controller
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "new":
-                    $render   = "new";
+                    $render = "new";
                     $producto = new Producto();
                     if ($producto->load(Yii::$app->request->post())) {
-                        if ($producto->save())
-                        {
+                        if ($producto->save()) {
                             SGProducto::initStock($producto->idProducto);
                             return $this->redirect(['admin/producto', 'op' => 'list']);
                         }
                     }
                     return $this->render('producto', ['r' => $render, 'producto' => $producto]);
                 case "list":
-                    $search   = new ProductoSearch();
+                    $search = new ProductoSearch();
                     $producto = $search->search(Yii::$app->request->queryParams);
                     return $this->render('producto', ['r' => "list", 'producto' => $producto, 'search' => $search]);
                 case "edit":
@@ -89,9 +87,10 @@ class AdminController extends Controller
                 case "add":
                     $submenu = Sucursal::find()->all();
                     if (isset($get['id'])) {
-                        $search    = new ProductoStockSearch();
+                        $search = new ProductoStockSearch();
                         $productos = $search->search(yii::$app->request->queryParams);
-                        $productos->query->andWhere(['is', 'fk_idSucursal', null]);
+                        $productos->query
+                            ->andWhere(['is', 'fk_idSucursal', null]);
                         if (isset($get['producto'])) {
                             SGProducto::initStock($get['producto'], $get['id']);
                         }
@@ -134,10 +133,12 @@ class AdminController extends Controller
                     $search = new ProductoStockSearch;
                     $productos = $search->search(yii::$app->request->queryParams);
                     if ($get['id'] == 0) {
-                        $productos->query->andWhere(['is', 'fk_idSucursal', null]);
+                        $productos->query
+                            ->andWhere(['is', 'fk_idSucursal', null]);
                         $nombre = "Deposito";
                     } else {
-                        $productos->query->andWhere(['fk_idSucursal' => $get['id']]);
+                        $productos->query
+                            ->andWhere(['fk_idSucursal' => $get['id']]);
                         foreach ($submenu as $item) {
                             if ($item->idSucursal == $get['id']) {
                                 $nombre = $item->nombre;
@@ -183,7 +184,7 @@ class AdminController extends Controller
         return $this->render('producto', ['r' => 'stocks', 'submenu' => $submenu]);
     }
 
-    public function actionCosto()
+    /*public function actionCosto()
     {
         $get     = Yii::$app->request->get();
         $submenu = Sucursal::find()->all();
@@ -222,7 +223,7 @@ class AdminController extends Controller
             }
         }
         return $this->render('producto', ['r' => 'costo', 'submenu' => $submenu]);
-    }
+    }*/
 
     public function actionConfig()
     {
@@ -231,41 +232,39 @@ class AdminController extends Controller
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case 'sucursal':
-                    if(isset($get['frm']))
-                    {
+                    if (isset($get['frm'])) {
                         $sucursal = New Sucursal();
-                        if(isset($get['id']))
-                            $sucursal = Sucursal::findOne(['idSucursal'=>$get['id']]);
+                        if (isset($get['id']))
+                            $sucursal = Sucursal::findOne(['idSucursal' => $get['id']]);
                         if ($sucursal->load(Yii::$app->request->post())) {
                             if ($sucursal->save()) {
-                                return $this->redirect(['config','op'=>'sucursal']);
+                                return $this->redirect(['config', 'op' => 'sucursal']);
                             }
                         }
                         return $this->renderAjax('forms/sucursal', ['model' => $sucursal]);
                     }
                     $search = new SucursalSearch();
                     $sucursales = $search->search(Yii::$app->request->queryParams);
-                    return $this->render('config',['r'=>'sucursales','sucursales'=>$sucursales]);
+                    return $this->render('config', ['r' => 'sucursales', 'sucursales' => $sucursales]);
                     break;
                 case 'user':
-                    if(isset($get['frm']))
-                    {
+                    if (isset($get['frm'])) {
                         $user = new User();
-                        if(isset($get['id']))
-                            $user = User::findOne(['idUser'=>$get['id']]);
+                        if (isset($get['id']))
+                            $user = User::findOne(['idUser' => $get['id']]);
                         if ($user->load(Yii::$app->request->post())) {
-                            $tmp =  User::findOne(['idUser'=>$get['id']]);
-                            if(md5($user->password)!=$tmp->password)
+                            $tmp = User::findOne(['idUser' => $get['id']]);
+                            if (md5($user->password) != $tmp->password)
                                 $user->password = md5($user->password);
                             if ($user->save()) {
-                                return $this->redirect(['config','op'=>'user']);
+                                return $this->redirect(['config', 'op' => 'user']);
                             }
                         }
                         return $this->renderAjax('forms/user', ['model' => $user]);
                     }
                     $search = new UserSearch();
                     $usuarios = $search->search(Yii::$app->request->queryParams);
-                    return $this->render('config',['r'=>'usuarios','usuarios'=>$usuarios]);
+                    return $this->render('config', ['r' => 'usuarios', 'usuarios' => $usuarios]);
                     break;
             }
         }

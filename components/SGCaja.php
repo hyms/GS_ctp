@@ -85,15 +85,14 @@ class SGCaja extends Component
             $movimientosAll = null;
 
         $arqueos     = array();
-        $movimientos = MovimientoCaja::find();
-        $movimientos->where('`fk_idCajaOrigen`='.$idCaja.' or `fk_idCajaDestino`='.$idCaja);
+        $movimientos = MovimientoCaja::find()
+            ->where('`fk_idCajaOrigen`='.$idCaja.' or `fk_idCajaDestino`='.$idCaja);
         if(isset($get['arqueo']))
             $movimientos->andWhere(['like','fechaCierre' , date("Y-m-d",strtotime($get['arqueo']))]);
         else
             $movimientos->andWhere(['is','fechaCierre' ,null]);
-        //$movimientos->where(['between', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 00:00:00'", date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59'"]);
-        $movimientos->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
 
+        $movimientos->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
         $movimientos = $movimientos->all();
         $total       = 0;
 

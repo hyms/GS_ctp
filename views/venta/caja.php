@@ -1,13 +1,13 @@
 <?php
-    /* @var $this yii\web\View */
-    $this->title = 'Venta-Caja';
+/* @var $this yii\web\View */
+$this->title = 'Venta-Caja';
 ?>
 <div class="row">
     <div class="col-xs-2">
         <?= $this->render('menus/cajaMenu'); ?>
     </div>
     <div class="col-xs-10">
-    <?php
+        <?php
         if(isset($r)) {
             switch ($r) {
                 case "cajaChica":
@@ -41,15 +41,15 @@
                         echo "</div>";
                         echo "<div class='col-xs-3'>";
                         echo $this->render("forms/arqueo",
-                                           [
-                                               'saldo'   => $saldo,
-                                               'arqueo'  => $arqueo,
-                                               'caja'    => $caja,
-                                               'fecha'   => $fecha,
-                                               'ventas'  => $ventas,
-                                               'recibos' => $recibos,
-                                               'dia'     => $dia,
-                                           ]);
+                            [
+                                'saldo'   => $saldo,
+                                'arqueo'  => $arqueo,
+                                'caja'    => $caja,
+                                'fecha'   => $fecha,
+                                'ventas'  => $ventas,
+                                'recibos' => $recibos,
+                                'dia'     => $dia,
+                            ]);
                         echo "</div>";
 
                         echo "</div>";
@@ -57,6 +57,6 @@
                     break;
             }
         }
-    ?>
+        ?>
     </div>
 </div>

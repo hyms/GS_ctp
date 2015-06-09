@@ -1,11 +1,11 @@
 <?php
-    use app\assets\AppAsset2;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
-    use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset2;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
-    /* @var $this \yii\web\View */
+/* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset2::register($this,true);
@@ -74,24 +74,24 @@ AppAsset2::register($this,true);
     <div class="container">
         <div class="col-xs-5">
             <?php
-                $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
-                foreach($sucursales as $key => $item)
-                {
-                    echo Html::a($item->nombre,'#',[
-                        'data-original-title'=>$item->descripcion,
-                        'data-toggle'=>'tooltip',
-                        'title'=>''
-                    ]);
-                    if(($key + 1) < count($sucursales))
-                        echo " - ";
-                }
+            $sucursales = \app\models\Sucursal::find()->where(['enable'=>true])->all();
+            foreach($sucursales as $key => $item)
+            {
+                echo Html::a($item->nombre,'#',[
+                    'data-original-title'=>$item->descripcion,
+                    'data-toggle'=>'tooltip',
+                    'title'=>''
+                ]);
+                if(($key + 1) < count($sucursales))
+                    echo " - ";
+            }
             ?>
         </div>
         <div class="col-xs-2 text-center">&copy; Grafica Singular <?= date('Y') ?></div>
     </div>
 </footer>
 <?php
-    $js = <<< 'SCRIPT'
+$js = <<< 'SCRIPT'
 /* To initialize BS3 tooltips set this below */
 $(function () {
 $("[data-toggle='tooltip']").tooltip();
@@ -101,8 +101,8 @@ $(function () {
 $("[data-toggle='popover']").popover();
 });
 SCRIPT;
-    // Register tooltip/popover initialization javascript
-    $this->registerJs($js);
+// Register tooltip/popover initialization javascript
+$this->registerJs($js);
 ?>
 <?php $this->endBody() ?>
 </body>

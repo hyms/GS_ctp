@@ -1,19 +1,19 @@
 <?php
-    $mes = array(
-        '01'=>'Enero',
-        '02'=>'Febrero',
-        '03'=>'Marzo',
-        '04'=>'Abril',
-        '05'=>'Mayo',
-        '06'=>'Junio',
-        '07'=>'Julio',
-        '08'=>'Agosto',
-        '09'=>'Septiembre',
-        '10'=>'Octubre',
-        '11'=>'Noviembre',
-        '12'=>'Diciembre',
-    );
-    ?>
+$mes = array(
+    '01'=>'Enero',
+    '02'=>'Febrero',
+    '03'=>'Marzo',
+    '04'=>'Abril',
+    '05'=>'Mayo',
+    '06'=>'Junio',
+    '07'=>'Julio',
+    '08'=>'Agosto',
+    '09'=>'Septiembre',
+    '10'=>'Octubre',
+    '11'=>'Noviembre',
+    '12'=>'Diciembre',
+);
+?>
 <div style="width:793px; height:529px;">
     <div class="col-xs-12">
         <div class="row">
@@ -44,15 +44,15 @@
                 </div>
             </div>
             <div class="col-xs-5 col-xs-offset-1">
-            <div class="row">
-                <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
-                    <br><br><br>
-                    <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                    <div><?= "Nombre: ".(($recibo->tipoRecibo)?$recibo->nombre:($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido))?></div>
-                    <div class="text-center" style="font-size: 11px"><small><?= "Recibí Confirme";?></small></div>
+                <div class="row">
+                    <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
+                        <br><br><br>
+                        <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
+                        <div><?= "Nombre: ".(($recibo->tipoRecibo)?$recibo->nombre:($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido))?></div>
+                        <div class="text-center" style="font-size: 11px"><small><?= "Recibí Confirme";?></small></div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>

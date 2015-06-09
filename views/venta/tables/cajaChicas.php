@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -10,9 +10,9 @@
     </div>
     <div class="panel-body">
         <?=
-            Html::a('Nueva Transaccion', "#", [
-                'class'=>'btn btn-default',
-                'onclick'  => "
+        Html::a('Nueva Transaccion', "#", [
+            'class'=>'btn btn-default',
+            'onclick'  => "
                     $.ajax({
                         type    :'POST',
                         cache   : false,
@@ -25,48 +25,48 @@
                             }
                         }
                     });return false;"
-            ]);
+        ]);
         ?>
     </div>
     <?php
-        $columns = [
-            [
-                'header'=>'Usuario',
-                'attribute'=>function($model)
-                {
-                    return $model->fkIdUser->username;
-                }
-            ],
-            [
-                'header'=>'Nombre',
-                'attribute'=>function($model)
-                {
-                    return $model->fkIdUser->nombre." ".$model->fkIdUser->apellido;
-                }
-            ],
-            [
-                'header'=>'Monto',
-                'attribute'=>'monto',
-            ],
-            [
-                'header'=>'Detalle',
-                'attribute'=>'observaciones',
-            ],
-            [
-                'header'=>'Fecha',
-                'attribute'=>'time',
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template'=>'{update}',
-                'buttons'=>[
-                    'update'=>function($url,$model){
-                        $options = array_merge([
-                                                   //'class'=>'btn btn-success',
-                                                   'data-original-title'=>'Modificar',
-                                                   'data-toggle'=>'tooltip',
-                                                   'title'=>'',
-                                                   'onclick'             => "
+    $columns = [
+        [
+            'header'=>'Usuario',
+            'attribute'=>function($model)
+            {
+                return $model->fkIdUser->username;
+            }
+        ],
+        [
+            'header'=>'Nombre',
+            'attribute'=>function($model)
+            {
+                return $model->fkIdUser->nombre." ".$model->fkIdUser->apellido;
+            }
+        ],
+        [
+            'header'=>'Monto',
+            'attribute'=>'monto',
+        ],
+        [
+            'header'=>'Detalle',
+            'attribute'=>'observaciones',
+        ],
+        [
+            'header'=>'Fecha',
+            'attribute'=>'time',
+        ],
+        [
+            'class' => 'yii\grid\ActionColumn',
+            'template'=>'{update}',
+            'buttons'=>[
+                'update'=>function($url,$model){
+                    $options = array_merge([
+                        //'class'=>'btn btn-success',
+                        'data-original-title'=>'Modificar',
+                        'data-toggle'=>'tooltip',
+                        'title'=>'',
+                        'onclick'             => "
                                                         $.ajax({
                                                             type     :'POST',
                                                             cache    : false,
@@ -79,21 +79,21 @@
                                                                 }
                                                             }
                                                         });return false;"
-                                               ]);
-                        return Html::a('<span class="glyphicon glyphicon-pencil"></span>', "#", $options);
-                    },
-                ]
-            ],
-        ];
-        echo GridView::widget([
-                                  'dataProvider'=> $cajasChicas,
-                                  'filterModel' => $search,
-                                  'columns' => $columns,
-                                  'responsive'=>true,
-                                  'condensed'=>true,
-                                  'hover'=>true,
-                                  'bordered'=>false,
-                                  'pjax'=>true,
-                              ]);
+                    ]);
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', "#", $options);
+                },
+            ]
+        ],
+    ];
+    echo GridView::widget([
+        'dataProvider'=> $cajasChicas,
+        'filterModel' => $search,
+        'columns' => $columns,
+        'responsive'=>true,
+        'condensed'=>true,
+        'hover'=>true,
+        'bordered'=>false,
+        'pjax'=>true,
+    ]);
     ?>
 </div>

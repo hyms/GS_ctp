@@ -143,8 +143,8 @@ class SGOrdenes extends Component
     {
         $row = OrdenCTP::find()
             ->where(['fk_idSucursal' => $idSucursal])
-            ->select('max(correlativo) as correlativo')
             ->andWhere(['tipoOrden' => $tipo])
+            ->select('max(correlativo) as correlativo')
             ->one();
         return ($row->correlativo + 1);
     }
@@ -153,13 +153,13 @@ class SGOrdenes extends Component
     {
         $row   = OrdenCTP::find()
             ->where(['fk_idSucursal' => $idSucursal])
-            ->select('max(correlativo) as correlativo')
             ->andWhere(['tipoOrden' => $tipo])
+            ->select('max(correlativo) as correlativo')
             ->one();
         $sigla = "";
         switch ($tipo) {
             case 0:
-                return "O-" . ($row->secuencia + 1);
+                return "O-";
                 break;
             case 1:
                 $sigla = "I";
@@ -251,10 +251,8 @@ class SGOrdenes extends Component
             $datos['caja']->monto -= $arqueo->monto;
 
             $variables = SGCaja::getSaldo($datos['caja']->idCaja, $arqueo->time, false, ['movimientos' => true]);
-            //$variables = SGServicioVenta::getSaldo($datos['caja']->idCaja, $datos['arqueo']->fechaMovimientos, false, false, true);
 
-            ///generar arqueo o cierre de caJA
-
+            ///generar arqueo o cierre de caja
             $arqueo->saldoCierre = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $arqueo->monto, 1, PHP_ROUND_HALF_UP);
 
             if ($arqueo->monto == 0) {
