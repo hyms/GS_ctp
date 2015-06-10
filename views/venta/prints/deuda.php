@@ -1,66 +1,66 @@
 <div style="width:793px; height:529px;">
     <div class="col-xs-12">
         <div class="row">
-            <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?php echo "Pago de Deuda";?></strong></h3>
-            <div class="text-right"><strong><?php echo "FECHA:";?></strong> <?php echo date("d-m-Y",strtotime($deuda->time));?></div>
+            <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?="Pago de Deuda";?></strong></h3>
+            <div class="text-right"><strong><?="FECHA:";?></strong> <?=date("d-m-Y",strtotime($deuda->time));?></div>
         </div>
 
         <div class="row">
-            <div class="col-xs-5"><strong>Cliente: </strong><?php echo $orden->fkIdCliente->nombreNegocio; ?></div>
-            <div class="col-xs-5"><strong>NitCi: </strong><?php echo $orden->fkIdCliente->nitCi; ?></div>
+            <div class="col-xs-5"><strong>Cliente: </strong><?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:""; ?></div>
+            <div class="col-xs-5"><strong>NitCi: </strong><?=(!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:""; ?></div>
         </div>
         <div class="row">
-            <div class="col-xs-5"><strong>Responsable: </strong><?php echo $orden->responsable; ?></div>
-            <div class="col-xs-5"><strong>Telefono: </strong><?php echo $orden->telefono; ?></div>
+            <div class="col-xs-5"><strong>Responsable: </strong><?=$orden->responsable; ?></div>
+            <div class="col-xs-5"><strong>Telefono: </strong><?=$orden->telefono; ?></div>
         </div>
 
         <div class="row well well-sm" style="height:180px; border-color: #000000">
             <table class="table table-condensed">
                 <thead><tr>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Nº"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Formato"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Nº Placas"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Colores"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Trabajo"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Pinza"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Resol."; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Costo"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Adicional"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?php echo "Total"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Nº"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Formato"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Nº Placas"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Colores"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Trabajo"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Pinza"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Resol."; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Costo"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Adicional"; ?></th>
+                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Total"; ?></th>
                 </tr></thead>
 
                 <tbody>
                 <?php $i=0; foreach ($orden->ordenDetalles as $producto){ $i++;?>
                     <tr>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $i;?>
+                            <?=$i;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->fkIdProductoStock->fkIdProducto->formato;?>
+                            <?=$producto->fkIdProductoStock->fkIdProducto->formato;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->cantidad; ?>
+                            <?=$producto->cantidad; ?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
+                            <?=(($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->trabajo;?>
+                            <?=$producto->trabajo;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->pinza;?>
+                            <?=$producto->pinza;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->resolucion;?>
+                            <?=$producto->resolucion;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->costo;?>
+                            <?=$producto->costo;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->adicional;?>
+                            <?=$producto->adicional;?>
                         </td>
                         <td style="font-size:12px; padding-top: 4px;">
-                            <?php echo $producto->total;?>
+                            <?=$producto->total;?>
                         </td>
                     </tr>
                 <?php }?>
@@ -75,8 +75,8 @@
                 <div class="row">
                     <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <h5><strong>Deuda</strong></h5>
-                        <div class="row col-xs-5"><strong>Cancel.:</strong> <?php echo $oldDeuda." Bs";?></div>
-                        <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - $oldDeuda)." Bs";?></div>
+                        <div class="row col-xs-5"><strong>Cancel.:</strong> <?=$oldDeuda." Bs";?></div>
+                        <div class="row col-xs-5"><strong>Saldo:</strong> <?=($orden->montoVenta - $oldDeuda)." Bs";?></div>
                     </div>
                 </div>
             </div>
@@ -84,8 +84,8 @@
                 <div class="row">
                     <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <h5><strong>Cancelado</strong></h5>
-                        <div class="row col-xs-5"><strong>A/C:</strong> <?php echo $deuda->monto." Bs";?></div>
-                        <div class="row col-xs-5"><strong>Saldo:</strong> <?php echo ($orden->montoVenta - ($oldDeuda+$deuda->monto))." Bs";?></div>
+                        <div class="row col-xs-5"><strong>A/C:</strong> <?=$deuda->monto." Bs";?></div>
+                        <div class="row col-xs-5"><strong>Saldo:</strong> <?=($orden->montoVenta - ($oldDeuda+$deuda->monto))." Bs";?></div>
                     </div>
                 </div>
             </div>

@@ -55,10 +55,12 @@ class SGOrdenes extends Component
                 }*/
                 $movimientoStock[$key]->cantidad = $item->cantidad;
             }
-
-            $cliente = Cliente::findOne(['idCliente' => $data['orden']->fk_idCliente]);
-            if (!empty($cliente))
-                $cliente = $cliente->nombreNegocio;
+            $cliente="";
+            if(!empty($data['orden']->fk_idCliente)) {
+                $cliente = Cliente::findOne(['idCliente' => $data['orden']->fk_idCliente]);
+                if (!empty($cliente))
+                    $cliente = $cliente->nombreNegocio;
+            }
 
             $movimientoCaja = SGCaja::movimientoCajaVenta($data['orden']->fk_idMovimientoCaja, $data['caja']->idCaja, $this->observacionMovimiento . " a " . $cliente);
             if (!$movimientoCaja->isNewRecord)

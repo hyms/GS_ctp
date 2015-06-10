@@ -11,8 +11,8 @@ use yii\helpers\Html;
                 </h4>
             </div>
             <div class="panel-body" style="overflow: auto;">
-                <div class="col-xs-6"><strong>Cliente:</strong> <?= $orden->fkIdCliente->nombreNegocio; ?></div>
-                <div class="col-xs-6"><strong>NitCi:</strong> <?= $orden->fkIdCliente->nitCi; ?></div>
+                <div class="col-xs-6"><strong>Cliente:</strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:""; ?></div>
+                <div class="col-xs-6"><strong>NitCi:</strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:""; ?></div>
                 <div class="col-xs-6"><strong>Responsable:</strong> <?= $orden->responsable; ?></div>
                 <div class="col-xs-6"><strong>Telefono:</strong> <?= $orden->telefono; ?></div>
 

@@ -29,7 +29,7 @@ $this->title = 'Diseño-Ordenes Internas';
             }
         }
         else {
-            echo '<div class="col-xs-offset-7 col-xs-5">';
+            echo '<div class="col-xs-offset-6 col-xs-6">';
             echo $this->render('tables/notasPendientes', ['notas' => $notas]);
             echo '</div>';
         }

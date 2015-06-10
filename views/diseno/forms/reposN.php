@@ -43,7 +43,7 @@ use yii\helpers\Url;
                 <?=
                 $form->field($orden, 'tipoRepos', ['template' => '<div class="col-xs-6">{label}</div><div class="col-xs-6">{input}{error}{hint}</div>'])
                     ->dropDownList(\app\components\SGOperation::tiposReposicion(),['prompt'=>'Seleccione el Error'])
-                    ->label("Tipo_Error")
+                    ->label("Tipo_Falla")
                 ?>
             </div>
             <div class="col-xs-6">

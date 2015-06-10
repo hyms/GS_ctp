@@ -8,8 +8,8 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= $orden->fkIdCliente->nombreNegocio."(".$orden->responsable.")";?></div>
-            <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= $orden->fkIdCliente->nitCi;?></div>
+            <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= $orden->responsable;?></div>
+            <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:"";?></div>
         </div>
 
         <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff">

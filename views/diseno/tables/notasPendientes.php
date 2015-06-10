@@ -24,8 +24,8 @@ use yii\helpers\Url;
                 'En fecha <b>'.$model->fechaCreacion.'</b>'.
                 '</p>'.
                 '<p class="text-right">'.
-                Html::a('Visto', "#", [
-                    //'class'=>'btn btn-default',
+                Html::a('Visto<span class="glyphicon glyphicon-ok"></span>', "#", [
+                    'class'=>'btn btn-success btn-sm',
                     'onclick'  => "
                     $.ajax({
                         type    :'POST',

@@ -25,6 +25,8 @@ use yii\helpers\Url;
             {
                 if(empty($model->idParent0))
                     return "";
+                if(empty($model->idParent0->ordenCTPs[0]->fkIdCliente))
+                    return "";
                 return $model->idParent0->ordenCTPs[0]->fkIdCliente->nombreNegocio;
             }
 
