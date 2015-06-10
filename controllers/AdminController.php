@@ -3,6 +3,9 @@
 namespace app\controllers;
 
 use app\components\SGProducto;
+use app\models\Caja;
+use app\models\MovimientoCaja;
+use app\models\OrdenCTP;
 use app\models\Producto;
 use app\models\ProductoSearch;
 use app\models\ProductoStock;
@@ -13,6 +16,8 @@ use app\models\TipoCliente;
 use app\models\User;
 use app\models\UserSearch;
 use Yii;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 
@@ -269,5 +274,90 @@ class AdminController extends Controller
             }
         }
         return $this->render('config');
+    }
+
+    public function actionReport()
+    {
+        $post = Yii::$app->request->post();
+        if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
+            if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
+                if ($post['tipo'] == "pd") {
+                    $idCaja = Caja::find()->where(['fk_idSucursal'=>$post['sucursal']])->one();
+                    $deudas = MovimientoCaja::find()
+                        ->where(['tipoMovimiento' => 0])
+                        ->andWhere(['fk_idCajaDestino' => $idCaja->idCaja])
+                        ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
+                        ->select('idParent')
+                        ->groupBy('idParent')
+                        ->all();
+                    $venta = [];
+                    foreach ($deudas as $deuda) {
+                        $orden = OrdenCTP::findOne(['fk_idMovimientoCaja' => $deuda->idParent]);
+                        if (!empty($orden))
+                            array_push($venta, $orden);
+                    }
+                    $data = new ArrayDataProvider([
+                        'allModels' => $venta,
+                        'pagination' => [
+                            'pageSize' => 20,
+                        ],
+                    ]);
+                    $r = "deuda";
+                } else {
+                    $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
+                    $post['fechaEnd'] = date('Y-m-d', strtotime($post['fechaEnd']));
+                    $venta = OrdenCTP::find();
+                    $venta->where(['OrdenCTP.fk_idSucursal' => $post['sucursal']]);
+                    $venta->joinWith('fkIdCliente');
+                    if (!empty($post['clienteNegocio'])) {
+                        $venta->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                    }
+                    if (!empty($post['clienteResponsable'])) {
+                        $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                    }
+
+                    if ($post['tipo'] == "v")
+                        $venta->andWhere(['!=', 'estado', '1']);
+
+                    if ($post['tipo'] == "d")
+                        $venta->andWhere(['estado' => '2']);
+
+                    $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
+                    $venta->orderBy(['correlativo' => SORT_ASC]);
+
+                    //$data = $venta->all();
+                    $data = new ActiveDataProvider([
+                        'query' => $venta,
+                    ]);
+                    $r = "table";
+                }
+                return $this->render('reporte', [
+                    'r' => $r,
+                    'clienteNegocio' => $post['clienteNegocio'],
+                    'clienteResponsable' => $post['clienteResponsable'],
+                    'fechaStart' => $post['fechaStart'],
+                    'fechaEnd' => $post['fechaEnd'],
+                    'sucursal' => $post['sucursal'],
+                    'data' => $data,
+                ]);
+
+                //$mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
+                //Yii::app()->end();
+            } else
+                return $this->render('reporte', [
+                    'clienteNegocio' => '',
+                    'clienteResponsable' => '',
+                    'fechaStart' => $post['fechaStart'],
+                    'fechaEnd' => $post['fechaEnd'],
+                    'sucursal' => $post['sucursal'],
+                ]);
+        } else
+            return $this->render('reporte', [
+                'clienteNegocio' => '',
+                'clienteResponsable' => '',
+                'fechaStart' => '',
+                'fechaEnd' => '',
+                'sucursal' => '',
+            ]);
     }
 }

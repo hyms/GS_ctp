@@ -76,7 +76,28 @@ class DisenoController extends Controller
 
     public function actionIndex()
     {
-        return $this->render('index');
+        $notasC = Notas::find()->where(['is', 'fk_idUserVisto', null]);
+        $notasC->andWhere(['tipoNota' => 0]);
+        $data1 = new ActiveDataProvider([
+            'query' => $notasC,
+        ]);
+        $notasI = Notas::find()->where(['is', 'fk_idUserVisto', null]);
+        $notasI->andWhere(['tipoNota' => 1]);
+        $data2 = new ActiveDataProvider([
+            'query' => $notasI,
+        ]);
+        $notasR = Notas::find()->where(['is', 'fk_idUserVisto', null]);
+        $notasR->andWhere(['tipoNota' => 2]);
+        $data3 = new ActiveDataProvider([
+            'query' => $notasR,
+        ]);
+        //return $this->render('orden', ['notas' => $data]);
+
+        return $this->render('index', [
+            'notas1' => $data1,
+            'notas2' => $data2,
+            'notas3' => $data3,
+        ]);
     }
 
     public function actionOrden()

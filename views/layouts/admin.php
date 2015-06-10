@@ -37,6 +37,10 @@ AppAsset2::register($this,true);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             [
+                'label'=>'Reportes de Venta',
+                'url'=>['admin/report']
+            ],
+            [
                 'label'=>'Producto',
                 'url'=>['admin/producto']
             ],
