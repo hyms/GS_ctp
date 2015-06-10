@@ -94,6 +94,4 @@ class SGProducto extends Component
         return true;
     }
 
-
-
 }

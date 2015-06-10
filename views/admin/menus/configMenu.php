@@ -14,13 +14,5 @@
                                      'label' => 'Usuarios',
                                      'url' => ['admin/config','op'=>'user'],
                                  ],
-                                 /*[
-               'label' => 'Nuevo Productos',
-               'url' => ['admin/config','op'=>'new'],
-           ],
-           [
-               'label' => 'Añadir a Almacen',
-               'url' => ['admin/config','op'=>'addProduct'],
-           ]*/
                              ],
                          ]);

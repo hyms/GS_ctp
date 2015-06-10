@@ -1,6 +1,6 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
 <div class="row">
@@ -10,9 +10,9 @@ use yii\helpers\Html;
                 <strong class="panel-title">Clientes</strong>
             </div>
             <?php
-            /*$this->render('../tables/cliente',[
-                'producto'=>$producto,
-            ]);*/
+                /*$this->render('../tables/cliente',[
+                    'producto'=>$producto,
+                ]);*/
             ?>
         </div>
     </div>

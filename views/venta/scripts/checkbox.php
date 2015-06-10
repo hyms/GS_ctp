@@ -1,5 +1,5 @@
 <?php
-echo "
+    echo "
 <script>
     $('#f_". $index ."').change(function(e){
         $('#c_" . $index . "').prop('checked',$('#f_" . $index . "').is(':checked'));

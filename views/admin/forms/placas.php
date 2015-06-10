@@ -24,52 +24,59 @@
             <div class="form-group">
                 <?= Html::label('De:','fechaStart',array('class'=>'control-label')); ?>
                 <?= DatePicker::widget([
-                    'name' => 'fechaStart',
-                    'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                    'language'=>'es',
-                    'value' => $fechaStart,
-                    'pluginOptions' => [
-                        'autoclose'=>true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]); ?>
+                                           'name' => 'fechaStart',
+                                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                           'language'=>'es',
+                                           'value' => $fechaStart,
+                                           'pluginOptions' => [
+                                               'autoclose'=>true,
+                                               'format' => 'yyyy-mm-dd'
+                                           ]
+                                       ]); ?>
             </div>
             <div class="form-group">
                 <?= Html::label('A:','fechaEnd',array('class'=>'control-label')); ?>
                 <?= DatePicker::widget([
-                    'name' => 'fechaEnd',
-                    'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                    'language'=>'es',
-                    'value' => $fechaEnd,
-                    'pluginOptions' => [
-                        'autoclose'=>true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]); ?>
+                                           'name' => 'fechaEnd',
+                                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                           'language'=>'es',
+                                           'value' => $fechaEnd,
+                                           'pluginOptions' => [
+                                               'autoclose'=>true,
+                                               'format' => 'yyyy-mm-dd'
+                                           ]
+                                       ]); ?>
             </div>
             <div class="form-group">
-                <?= Html::label('Formato:','formato',array('class'=>'control-label')); ?>
+                <?= Html::label('TipoOrden:','tipoOrden',array('class'=>'control-label')); ?>
+                <?php
+                    $tipo = [
+                        0 => "Orden de Trabajo",
+                        1 => "Orden Interna",
+                        2 => "Reposicion",
+                    ];
+                ?>
                 <?= Html::dropDownList(
-                    'formato',
-                    $formato,
-                    \yii\helpers\ArrayHelper::map(\app\models\Producto::find()->where(['toSell'=>true])->all(),'idProducto','formato'),
-                    array('class'=>'form-control','prompt'=>'Selecciona formato')
+                    'tipoOrden',
+                    $tipoOrden,
+                    $tipo,
+                    array('class'=>'form-control','prompt'=>'Seleccione tipoOrden')
                 );
                 ?>
             </div>
             <?php ActiveForm::end(); ?>
             <h3>Generadores</h3>
             <?= Html::a('Movimiento de Placas','#',array('class'=>'list-group-item','onclick'=>'report("a")')); ?>
-            <?= Html::a('Movimiento por Formato','#',array('class'=>'list-group-item','onclick'=>'report("f")')); ?>
+            <?php //Html::a('Movimiento por Formato','#',array('class'=>'list-group-item','onclick'=>'report("f")')); ?>
         </div>
     </div>
 
 <?php
-$script = <<<JS
+    $script = <<<JS
 function report(tipo)
 	{
 	    $("#tipo").val(tipo);
 	    $("#form").submit();
 	}
 JS;
-$this->registerJs($script, \yii\web\View::POS_HEAD);
+    $this->registerJs($script, \yii\web\View::POS_HEAD);

@@ -1,5 +1,5 @@
 <?php
-$script = <<<JS
+    $script = <<<JS
 function formaPago(value) {
     $('#fechaPlazo').prop('disabled', value);
     $('#autorizado').prop('disabled', value);
@@ -40,4 +40,4 @@ $('#descuento').keydown(function(e) {
     }
 });
 JS;
-$this->registerJs($script, \yii\web\View::POS_END);
+    $this->registerJs($script, \yii\web\View::POS_END);

@@ -1,7 +1,7 @@
 <?php
-use kartik\widgets\SideNav;
+    use kartik\widgets\SideNav;
 
-echo SideNav::widget([
+    echo SideNav::widget([
                              'type' => SideNav::TYPE_PRIMARY,
                              'encodeLabels' => false,
                              'heading' => false,

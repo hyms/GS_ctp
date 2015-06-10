@@ -1,7 +1,7 @@
 <?php
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -24,28 +24,28 @@ use yii\helpers\Html;
             <div class="form-group">
                 <?= Html::label('De:','fechaStart',array('class'=>'control-label')); ?>
                 <?= DatePicker::widget([
-                    'name' => 'fechaStart',
-                    'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                    'language'=>'es',
-                    'value' => $fechaStart,
-                    'pluginOptions' => [
-                        'autoclose'=>true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]); ?>
+                                           'name' => 'fechaStart',
+                                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                           'language'=>'es',
+                                           'value' => $fechaStart,
+                                           'pluginOptions' => [
+                                               'autoclose'=>true,
+                                               'format' => 'yyyy-mm-dd'
+                                           ]
+                                       ]); ?>
             </div>
             <div class="form-group">
                 <?= Html::label('A:','fechaEnd',array('class'=>'control-label')); ?>
                 <?= DatePicker::widget([
-                    'name' => 'fechaEnd',
-                    'type' => DatePicker::TYPE_COMPONENT_APPEND,
-                    'language'=>'es',
-                    'value' => $fechaEnd,
-                    'pluginOptions' => [
-                        'autoclose'=>true,
-                        'format' => 'yyyy-mm-dd'
-                    ]
-                ]); ?>
+                                           'name' => 'fechaEnd',
+                                           'type' => DatePicker::TYPE_COMPONENT_APPEND,
+                                           'language'=>'es',
+                                           'value' => $fechaEnd,
+                                           'pluginOptions' => [
+                                               'autoclose'=>true,
+                                               'format' => 'yyyy-mm-dd'
+                                           ]
+                                       ]); ?>
             </div>
             <div class="form-group">
                 <?= Html::label('Cliente:','clienteNegocio',array('class'=>'control-label')); ?>
@@ -64,11 +64,11 @@ use yii\helpers\Html;
     </div>
 
 <?php
-$script = <<<JS
+    $script = <<<JS
 function report(tipo)
 	{
 	    $("#tipo").val(tipo);
 	    $("#form").submit();
 	}
 JS;
-$this->registerJs($script, \yii\web\View::POS_HEAD);
+    $this->registerJs($script, \yii\web\View::POS_HEAD);

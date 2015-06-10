@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
 ?>
     <tr class="tabular-input">
@@ -50,32 +50,29 @@ use yii\helpers\Html;
             </div>
         </td>
         <?php
-        if(isset($tipo)){
-            if($tipo==0)
-            {
-                ?>
-                <td class="col-xs-1">
-                    <div <?= ($model->hasErrors('adicional'))?'class="has-error"':''; ?> >
-                        <?= Html::activeTextInput($model,"[$index]adicional",['class'=>'form-control input-sm','id'=>'adicional_'.$index]); ?>
-                    </div>
-                </td>
-            <?php
+            if(isset($tipo)){
+                if($tipo==0)
+                {
+                    ?>
+                    <td class="col-xs-1">
+                        <div <?= ($model->hasErrors('adicional'))?'class="has-error"':''; ?> >
+                            <?= Html::activeTextInput($model,"[$index]adicional",['class'=>'form-control input-sm','id'=>'adicional_'.$index]); ?>
+                        </div>
+                    </td>
+                <?php
+                }
             }
-        }
         ?>
         <td class="col-xs-1">
-            <?php
-            echo Html::a('<i class="glyphicon glyphicon-remove"></i>','#',
-                    [
-                        'class'=>'btn btn-danger tabular-input-remove',
-                        'data-original-title'=>'Quitar',
-                        'data-toggle'=>'tooltip',
-                        'title'=>''
-                    ]
-                ).'<input type="hidden" class="tabular-input-index" value="'.$index.'" />';
+            <?= Html::a('<i class="glyphicon glyphicon-remove"></i>','#',
+                             [
+                                 'class'=>'btn btn-danger tabular-input-remove',
+                                 'data-original-title'=>'Quitar',
+                                 'data-toggle'=>'tooltip',
+                                 'title'=>''
+                             ]
+                    ).'<input type="hidden" class="tabular-input-index" value="'.$index.'" />';
             ?>
         </td>
     </tr>
-<?php
-echo $this->render('../scripts/checkbox',['index'=>$index]);
-?>
+<?= $this->render('../scripts/checkbox',['index'=>$index]); ?>

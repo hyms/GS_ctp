@@ -60,37 +60,37 @@ class SGCaja extends Component
     static public function getSaldo($idCaja, $fechaMovimientos, $array = false, $get = null)
     {
         if ($array || isset($get['deudas']))
-            $deudas  = array();
+            $deudas = array();
         else
-            $deudas  = 0;
+            $deudas = 0;
 
         if ($array || isset($get['ventas']))
-            $ventas  = array();
+            $ventas = array();
         else
-            $ventas  = 0;
+            $ventas = 0;
 
         if ($array || isset($get['recibos']))
-            $recibos  = array();
+            $recibos = array();
         else
-            $recibos  = 0;
+            $recibos = 0;
 
         if ($array || isset($get['cajas']))
-            $cajas  = array();
+            $cajas = array();
         else
-            $cajas  = 0;
+            $cajas = 0;
 
-        if(isset($get['movimientos']))
-            $movimientosAll=array();
+        if (isset($get['movimientos']))
+            $movimientosAll = array();
         else
             $movimientosAll = null;
 
         $arqueos     = array();
         $movimientos = MovimientoCaja::find()
-            ->where('`fk_idCajaOrigen`='.$idCaja.' or `fk_idCajaDestino`='.$idCaja);
-        if(isset($get['arqueo']))
-            $movimientos->andWhere(['like','fechaCierre' , date("Y-m-d",strtotime($get['arqueo']))]);
+            ->where('`fk_idCajaOrigen`=' . $idCaja . ' or `fk_idCajaDestino`=' . $idCaja);
+        if (isset($get['arqueo']))
+            $movimientos->andWhere(['like', 'fechaCierre', date("Y-m-d", strtotime($get['arqueo']))]);
         else
-            $movimientos->andWhere(['is','fechaCierre' ,null]);
+            $movimientos->andWhere(['is', 'fechaCierre', null]);
 
         $movimientos->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
         $movimientos = $movimientos->all();
@@ -165,11 +165,11 @@ class SGCaja extends Component
         else
             $saldo = 0;
 
-        $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo,'movimientos'=>$movimientosAll);
+        $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo, 'movimientos' => $movimientosAll);
         return $datos;
     }
 
-    public $success=false;
+    public $success = false;
 
     public function cajaChica($data)
     {

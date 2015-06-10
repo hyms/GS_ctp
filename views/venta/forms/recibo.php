@@ -1,5 +1,5 @@
 <?php
-$form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
+    $form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
 ?>
     <div class="row" >
         <div class="col-xs-6">

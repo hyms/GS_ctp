@@ -1,5 +1,5 @@
 <?php
-use yii\bootstrap\ActiveForm;
+    use yii\bootstrap\ActiveForm;
 
 ?>
 <h2>Orden: <small><?= $orden->correlativo . "(" . $orden->codigoServicio . ")"; ?></small></h2>

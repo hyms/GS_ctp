@@ -1,5 +1,5 @@
 <?php
-$script = <<<JS
+    $script = <<<JS
 function pagado()
 {
     $('#cambio').val(redondeo(resta($('#pagado').val(), $('#total').val())));
@@ -25,4 +25,4 @@ $('#pagado').keydown(function(e) {
     }
 });
 JS;
-$this->registerJs($script, \yii\web\View::POS_READY);
+    $this->registerJs($script, \yii\web\View::POS_READY);

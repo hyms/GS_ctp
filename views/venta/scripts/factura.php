@@ -1,5 +1,5 @@
 <?php
-$script = <<<JS
+    $script = <<<JS
 function factura(tipo,url,idVenta,tipoCliente) {
     jsonObj = [];
     $('#ywventa > tbody  > tr').each(function (index, value) {
@@ -30,4 +30,4 @@ function factura(tipo,url,idVenta,tipoCliente) {
         });
 }
 JS;
-$this->registerJs($script, \yii\web\View::POS_HEAD);
+    $this->registerJs($script, \yii\web\View::POS_HEAD);

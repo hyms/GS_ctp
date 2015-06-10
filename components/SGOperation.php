@@ -41,4 +41,3 @@ class SGOperation extends Component
         return $tipos[$id];
     }
 }
-

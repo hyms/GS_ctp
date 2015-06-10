@@ -1,6 +1,6 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
     <div class="col-xs-7">
@@ -109,7 +109,7 @@ use yii\helpers\Html;
         </div>
     </div>
 <?php
-$script = <<<JS
+    $script = <<<JS
     $('#acuenta').keydown(function(e) {
         if (e.keyCode == 13 || e.keyCode == 9) {
             $('#saldo').val(resta($('#total').val(), suma($('#acuenta').val(),$('#pagado').val())));
@@ -120,7 +120,7 @@ $script = <<<JS
     })
 JS;
 
-$this->registerJs($script, \yii\web\View::POS_READY);
-echo $this->render('../scripts/operaciones');
-echo $this->render('../scripts/save');
-echo $this->render('../scripts/reset');
+    $this->registerJs($script, \yii\web\View::POS_READY);
+    echo $this->render('../scripts/operaciones');
+    echo $this->render('../scripts/save');
+    echo $this->render('../scripts/reset');

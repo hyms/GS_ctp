@@ -1,5 +1,5 @@
 <?php
-$form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
+    $form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
 ?>
 <?= $form->field($cajaChica,'observaciones')->textarea()->label('Detalle');; ?>
     <div class="row" >

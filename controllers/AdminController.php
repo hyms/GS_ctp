@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\components\SGOperation;
 use app\components\SGProducto;
 use app\models\Caja;
 use app\models\MovimientoCaja;
@@ -310,10 +311,10 @@ class AdminController extends Controller
                     $venta->where(['OrdenCTP.fk_idSucursal' => $post['sucursal']]);
                     $venta->joinWith('fkIdCliente');
                     if (!empty($post['clienteNegocio'])) {
-                        $venta->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                        $venta->andWhere(['like','cliente.nombreNegocio', '%'.$post['clienteNegocio'].'%']);
                     }
                     if (!empty($post['clienteResponsable'])) {
-                        $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                        $venta->andWhere(['like','cliente.nombreResponsable' , '%'.$post['clienteResponsable'].'%']);
                     }
 
                     if ($post['tipo'] == "v")
@@ -369,48 +370,90 @@ class AdminController extends Controller
                 if ($post['tipo'] == "a") {
                     $ordenes = OrdenCTP::find()
                         ->andWhere(['between', 'fechaGenerada', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
-                        ->all();
-                    $placas = ProductoStock::find()->where(['fk_idSucursal'=>$post['sucursal']])->all();
-
+                        ->andWhere(['fk_idSucursal' => $post['sucursal']])
+                        ->orderBy(['fechaGenerada' => SORT_ASC]);
+                    if (isset($post['tipoOrden']) && $post['tipoOrden'] != "")
+                        $ordenes->andWhere(['tipoOrden' => $post['tipoOrden']]);
+                    $ordenes = $ordenes->all();
+                    $placas  = ProductoStock::find()->where(['fk_idSucursal' => $post['sucursal']])->all();
+                    $tipo    = [
+                        0 => "Orden de Trabajo",
+                        1 => "Orden Interna",
+                        2 => "Reposicion",
+                    ];
+                    $data    = [];
+                    foreach ($ordenes as $orden) {
+                        if ($orden->tipoOrden == 0) {
+                            if ($orden->estado == 1)
+                                continue;
+                        }
+                        $row = [
+                            'fecha' => $orden->fechaGenerada,
+                            'orden' => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
+                            'tipo'  => $tipo[$orden->tipoOrden]
+                        ];
+                        foreach ($placas as $key => $placa) {
+                            $row[$placa->fkIdProducto->formato] = 0;
+                        }
+                        $row['observaciones'] = "";
+                        if ($orden->estado >= 0) {
+                            foreach ($orden->ordenDetalles as $detalle) {
+                                $row[$detalle->fkIdProductoStock->fkIdProducto->formato] = $detalle->cantidad;
+                            }
+                        } else {
+                            $row['observaciones'] = "<span class=\"text-danger\">Anulado</span>";
+                        }
+                        if ($orden->tipoOrden != 0) {
+                            if ($orden->tipoOrden == 2) {
+                                if (!empty($row['observaciones']))
+                                    $row['observaciones'] = $row['observaciones'] . "-";
+                                $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . SGOperation::tiposReposicion($orden->tipoRepos) . "</span>";
+                            }
+                            if (!empty($row['observaciones']))
+                                $row['observaciones'] = $row['observaciones'] . "-";
+                            $row['observaciones'] = $row['observaciones'] . $orden->observaciones;
+                        }
+                        array_push($data, $row);
+                    }
                     $data = new ArrayDataProvider([
-                                                      'allModels' => $placas,
+                                                      'allModels'  => $data,
                                                       'pagination' => [
                                                           'pageSize' => 20,
                                                       ],
                                                   ]);
-                    $r="all";
+                    $r    = "all";
                 }
                 if ($post['tipo'] == "f") {
                     $placa = [];
-                    $data = new ArrayDataProvider([
-                                                      'allModels' => $placa,
-                                                      'pagination' => [
-                                                          'pageSize' => 20,
-                                                      ],
-                                                  ]);
-                    $r="formato";
+                    $data  = new ArrayDataProvider([
+                                                       'allModels'  => $placa,
+                                                       'pagination' => [
+                                                           'pageSize' => 20,
+                                                       ],
+                                                   ]);
+                    $r     = "formato";
                 }
-                return $this->render('reporte', [
-                    'r' => $r,
+                return $this->render('placas', [
+                    'r'          => $r,
                     'fechaStart' => $post['fechaStart'],
-                    'fechaEnd' => $post['fechaEnd'],
-                    'sucursal' => $post['sucursal'],
-                    'formato'=>$post['formato'],
-                    'data' => $data,
+                    'fechaEnd'   => $post['fechaEnd'],
+                    'sucursal'   => $post['sucursal'],
+                    'tipoOrden'  => $post['tipoOrden'],
+                    'data'       => $data,
                 ]);
             }
-            return $this->render('placas',[
-                'fechaStart'=>$post['fechaStart'],
-                'fechaEnd'=>$post['fechaEnd'],
-                'sucursal'=>$post['sucursal'],
-                'formato'=>'',
+            return $this->render('placas', [
+                'fechaStart' => $post['fechaStart'],
+                'fechaEnd'   => $post['fechaEnd'],
+                'sucursal'   => $post['sucursal'],
+                'tipoOrden'  => '',
             ]);
         }
-        return $this->render('placas',[
-            'fechaStart'=>'',
-            'fechaEnd'=>'',
-            'sucursal'=>'',
-            'formato'=>'',
+        return $this->render('placas', [
+            'fechaStart' => '',
+            'fechaEnd'   => '',
+            'sucursal'   => '',
+            'tipoOrden'  => '',
         ]);
     }
 }

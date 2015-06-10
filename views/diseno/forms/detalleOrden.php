@@ -1,8 +1,7 @@
 <?php
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
 ?>
-
     <table id="ywventa" class="table table-condensed table-hover">
         <thead class="tabular-header"><tr>
             <td><?php echo Html::label('Nº','number')?></td>
@@ -23,22 +22,21 @@ use yii\helpers\Html;
         </tr></thead>
         <tbody class="tabular-input-container">
         <?php
-        if(count($detalle)>=1){
-            if(!isset($detalle->isNewRecord)){
-                foreach ($detalle as $key=>$item){
-                    if(!empty($item['fk_idProductoStock'])){
-                        echo $this->render('_newRowDetalleVenta', array(
-                            'model'=>$item,
-                            'index'=>$key,
-                            'tipo'=>$orden->tipoOrden,
-                            'almacen'=>\app\models\ProductoStock::findOne(['idProductoStock'=>$item['fk_idProductoStock']]),
-                        ));
+            if(count($detalle)>=1){
+                if(!isset($detalle->isNewRecord)){
+                    foreach ($detalle as $key=>$item){
+                        if(!empty($item['fk_idProductoStock'])){
+                            echo $this->render('_newRowDetalleVenta', array(
+                                'model'=>$item,
+                                'index'=>$key,
+                                'tipo'=>$orden->tipoOrden,
+                                'almacen'=>\app\models\ProductoStock::findOne(['idProductoStock'=>$item['fk_idProductoStock']]),
+                            ));
+                        }
                     }
                 }
             }
-        }
         ?>
         </tbody>
     </table>
-<?php
-echo $this->render('../scripts/removeList');
+<?= $this->render('../scripts/removeList'); ?>

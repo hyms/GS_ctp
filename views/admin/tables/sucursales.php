@@ -29,27 +29,27 @@
         ?>
     </div>
     <?php
-    $columns = [
-        ['class' => 'yii\grid\SerialColumn'],
-        [
-            'header'=>'Nombre',
-            'value'=>'nombre',
-        ],
-        [
-            'header'=>'Descripcion',
-            'value'=>'descripcion',
-        ],
-        [
-            'class' => 'yii\grid\ActionColumn',
-            'template'=>'{update}',
-            'buttons'=>[
-                'update'=>function($url,$model) {
-                    $options = array_merge([
-                        //'class'=>'btn btn-success',
-                        'data-original-title' => 'Añadir a Stock',
-                        'data-toggle'         => 'tooltip',
-                        'title'               => '',
-                        'onclick'             => "
+        $columns = [
+            ['class' => 'yii\grid\SerialColumn'],
+            [
+                'header'=>'Nombre',
+                'value'=>'nombre',
+            ],
+            [
+                'header'=>'Descripcion',
+                'value'=>'descripcion',
+            ],
+            [
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>'{update}',
+                'buttons'=>[
+                    'update'=>function($url,$model) {
+                        $options = array_merge([
+                                                   //'class'=>'btn btn-success',
+                                                   'data-original-title' => 'Añadir a Stock',
+                                                   'data-toggle'         => 'tooltip',
+                                                   'title'               => '',
+                                                   'onclick'             => "
                                                         $.ajax({
                                                             type     :'POST',
                                                             cache    : false,
@@ -62,12 +62,12 @@
                                                                 }
                                                             }
                                                         });return false;"
-                    ]);
-                    return Html::a('<span class="glyphicon glyphicon-import"></span>', "#", $options);
-                },
-            ]
-        ],
-    ];
+                                               ]);
+                        return Html::a('<span class="glyphicon glyphicon-import"></span>', "#", $options);
+                    },
+                ]
+            ],
+        ];
         echo GridView::widget([
                                   'dataProvider'=> $sucursales,
                                   //'filterModel' => $search,

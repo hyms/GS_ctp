@@ -1,6 +1,5 @@
 <?php
-/* @var $this yii\web\View */
-$this->title = 'Administracion-Placas';
+    $this->title = 'Administracion-Placas';
 ?>
 <div class="row">
     <div class="col-xs-3">
@@ -8,23 +7,23 @@ $this->title = 'Administracion-Placas';
             'fechaStart'=>$fechaStart,
             'fechaEnd'=>$fechaEnd,
             'sucursal'=>$sucursal,
-            'formato'=>$formato,
+            'tipoOrden'=>$tipoOrden,
         ]); ?>
     </div>
     <div class="col-xs-9">
         <div id="table">
             <?php
-            if(isset($r)) {
-                switch ($r) {
-                    case "table":
-                        //echo $this->render('prints/report', ['data' => $data]);
-                        echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
-                        break;
-                    case "deuda":
-                        echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
-                        break;
+                if(isset($r)) {
+                    switch ($r) {
+                        case "all":
+                            //echo $this->render('prints/report', ['data' => $data]);
+                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd,'sucursal'=>$sucursal]);
+                            break;
+                        case "formato":
+                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
+                            break;
+                    }
                 }
-            }
             ?>
         </div>
     </div>

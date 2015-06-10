@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
     <div class="panel panel-default">
@@ -10,9 +10,9 @@ use yii\helpers\Url;
         </div>
         <div class="panel-body">
             <?=
-            Html::a('Nuevo', "#", [
-                'class'=>'btn btn-default',
-                'onclick'  => "
+                Html::a('Nuevo', "#", [
+                    'class'=>'btn btn-default',
+                    'onclick'  => "
                     $.ajax({
                         type    :'get',
                         cache   : false,
@@ -25,49 +25,49 @@ use yii\helpers\Url;
                             }
                         }
                     });return false;"
-            ]);
+                ]);
             ?>
         </div>
         <?php
-        $columns = [
-            [
-                'header'=>'Fecha Creada',
-                'value'=>'fechaCreacion',
-            ],
-            [
-                'header'=>'Creado Por',
-                'value'=>function($model)
-                {
-                    return $model->fkIdUserCreador->nombre.' '.$model->fkIdUserCreador->apellido;
-                },
-            ],
-            [
-                'header'=>'Contenido',
-                'value'=>'texto',
-            ],
-            [
-                'header'=>'Visto por',
-                'value'=>function($model) {
-                    if (isset($model->fkIdUserVisto))
-                        return $model->fkIdUserVisto->nombre . ' ' . $model->fkIdUserVisto->apellido;
-                    else
-                        return '';
-                },
-            ],
-            [
-                'header'=>'Fecha Visto',
-                'value'=>'fechaVisto',
-            ],
-            [
-                'class' => 'yii\grid\ActionColumn',
-                'template'=>'{update}',
-                'buttons'=>[
-                    'update'=>function($url,$model){
-                        $options = array_merge([
-                            'data-original-title' => 'Modificar',
-                            'data-toggle'         => 'tooltip',
-                            'title'               => '',
-                            'onclick'             => "
+            $columns = [
+                [
+                    'header'=>'Fecha Creada',
+                    'value'=>'fechaCreacion',
+                ],
+                [
+                    'header'=>'Creado Por',
+                    'value'=>function($model)
+                    {
+                        return $model->fkIdUserCreador->nombre.' '.$model->fkIdUserCreador->apellido;
+                    },
+                ],
+                [
+                    'header'=>'Contenido',
+                    'value'=>'texto',
+                ],
+                [
+                    'header'=>'Visto por',
+                    'value'=>function($model) {
+                        if (isset($model->fkIdUserVisto))
+                            return $model->fkIdUserVisto->nombre . ' ' . $model->fkIdUserVisto->apellido;
+                        else
+                            return '';
+                    },
+                ],
+                [
+                    'header'=>'Fecha Visto',
+                    'value'=>'fechaVisto',
+                ],
+                [
+                    'class' => 'yii\grid\ActionColumn',
+                    'template'=>'{update}',
+                    'buttons'=>[
+                        'update'=>function($url,$model){
+                            $options = array_merge([
+                                                       'data-original-title' => 'Modificar',
+                                                       'data-toggle'         => 'tooltip',
+                                                       'title'               => '',
+                                                       'onclick'             => "
                                                         $.ajax({
                                                             type    :'get',
                                                             cache   : false,
@@ -80,26 +80,24 @@ use yii\helpers\Url;
                                                                 }
                                                             }
                                                         });return false;"
-                        ]);
-                        $url     = "#";
-                        if($model->fk_idUserCreador==Yii::$app->user->id)
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
-                        else
-                            return "";
-                    },
-                ]
-            ],
-        ];
+                                                   ]);
+                            $url     = "#";
+                            if($model->fk_idUserCreador==Yii::$app->user->id)
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                            else
+                                return "";
+                        },
+                    ]
+                ],
+            ];
 
-        echo GridView::widget([
-            'dataProvider'=> $notas,
-            //'filterModel' => $search,
-            'columns' => $columns,
-            'responsive'=>true,
-            'hover'=>true
-        ]);
+            echo GridView::widget([
+                                      'dataProvider'=> $notas,
+                                      //'filterModel' => $search,
+                                      'columns' => $columns,
+                                      'responsive'=>true,
+                                      'hover'=>true
+                                  ]);
         ?>
     </div>
-<?php
-echo $this->render('../scripts/modal');
-?>
+<?= $this->render('../scripts/modal');?>

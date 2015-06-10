@@ -1,10 +1,7 @@
 <?php
-use yii\widgets\ActiveForm;
+    use yii\widgets\ActiveForm;
 
-/* @var $this yii\web\View */
-/* @var $model app\models\Cliente */
-
-$this->title = 'Crear Cliente';
+    $this->title = 'Crear Cliente';
 ?>
 <div class="row">
 

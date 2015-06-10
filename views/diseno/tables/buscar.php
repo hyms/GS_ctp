@@ -1,5 +1,5 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
 ?>
 <div class="panel panel-default">
@@ -8,44 +8,44 @@ use kartik\grid\GridView;
     </div>
     <div class="panel-body">
         <?php
-        $columns = [
-            [
-                'header'=>'Correlativo',
-                'value'=>'correlativo',
-            ],
-            /*[
-                'header'=>'Cliente',
-                'value'=>'$model->correlativo',
-            ],*/
-            [
-                'header'=>'Responsable',
-                'value'=>'responsable',
-            ],
-            [
-                'header'=>'Telefono',
-                'value'=>'telefono',
-            ],
-            [
-                'header'=>'Fecha',
-                'value'=>'fechaGenerada',
-            ],
-            [
-                'header'=>'',
-                'format'=>'raw',
-                'value'=>function($model){
-                    return \yii\helpers\Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",['diseno/orden','op'=>'cliente','id'=>$model->idOrdenCTP],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
-                },
-            ],
+            $columns = [
+                [
+                    'header'=>'Correlativo',
+                    'value'=>'correlativo',
+                ],
+                /*[
+                    'header'=>'Cliente',
+                    'value'=>'$model->correlativo',
+                ],*/
+                [
+                    'header'=>'Responsable',
+                    'value'=>'responsable',
+                ],
+                [
+                    'header'=>'Telefono',
+                    'value'=>'telefono',
+                ],
+                [
+                    'header'=>'Fecha',
+                    'value'=>'fechaGenerada',
+                ],
+                [
+                    'header'=>'',
+                    'format'=>'raw',
+                    'value'=>function($model){
+                        return \yii\helpers\Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",['diseno/orden','op'=>'cliente','id'=>$model->idOrdenCTP],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
+                    },
+                ],
 
-        ];
+            ];
 
-        echo GridView::widget([
-            'dataProvider'=> $orden,
-            //'filterModel' => $searchModel,
-            'columns' => $columns,
-            'responsive'=>true,
-            'hover'=>true
-        ]);
+            echo GridView::widget([
+                                      'dataProvider'=> $orden,
+                                      //'filterModel' => $searchModel,
+                                      'columns' => $columns,
+                                      'responsive'=>true,
+                                      'hover'=>true
+                                  ]);
         ?>
     </div>
 </div>

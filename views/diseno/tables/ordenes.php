@@ -1,8 +1,8 @@
 <?php
-use kartik\grid\GridView;
-use yii\bootstrap\Modal;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\bootstrap\Modal;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 
@@ -12,40 +12,40 @@ use yii\helpers\Url;
         </div>
         <div>
             <?php
-            $columns = [
-                [
-                    'header'=>'Correlativo',
-                    'attribute'=>'correlativo',
-                ],
-                [
-                    'header'=>'Responsable',
-                    'attribute'=>'responsable',
-                ],
-                [
-                    'header'=>'Telefono',
-                    'attribute'=>'telefono',
-                ],
-                [
-                    'header'=>'Operador',
-                    'attribute'=>function($model)
-                    {
-                        echo $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
-                    }
-                ],
-                [
-                    'header'=>'Fecha',
-                    'attribute'=>'fechaGenerada',
-                ],
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{view}',
-                    'buttons'=>[
-                        'view'=>function($url,$model) {
-                            $options = array_merge([
-                                'data-original-title' => 'Ver Orden de Trabajo',
-                                'data-toggle'         => 'tooltip',
-                                'title'               => '',
-                                'onclick'             => "
+                $columns = [
+                    [
+                        'header'=>'Correlativo',
+                        'attribute'=>'correlativo',
+                    ],
+                    [
+                        'header'=>'Responsable',
+                        'attribute'=>'responsable',
+                    ],
+                    [
+                        'header'=>'Telefono',
+                        'attribute'=>'telefono',
+                    ],
+                    [
+                        'header'=>'Operador',
+                        'attribute'=>function($model)
+                        {
+                            echo $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
+                        }
+                    ],
+                    [
+                        'header'=>'Fecha',
+                        'attribute'=>'fechaGenerada',
+                    ],
+                    [
+                        'class' => 'yii\grid\ActionColumn',
+                        'template'=>'{view}',
+                        'buttons'=>[
+                            'view'=>function($url,$model) {
+                                $options = array_merge([
+                                                           'data-original-title' => 'Ver Orden de Trabajo',
+                                                           'data-toggle'         => 'tooltip',
+                                                           'title'               => '',
+                                                           'onclick'             => "
                                                         $.ajax({
                                                             type    :'get',
                                                             cache   : false,
@@ -58,30 +58,30 @@ use yii\helpers\Url;
                                                                 }
                                                             }
                                                         });return false;"
-                            ]);
-                            $url     = "#";
-                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
-                        },
-                    ]
-                ],
-            ];
-            echo GridView::widget([
-                'dataProvider'=> $orden,
-                'filterModel' => $search,
-                'columns' => $columns,
-                'responsive'=>true,
-                'condensed'=>true,
-                'hover'=>true,
-                'bordered'=>false,
-            ]);
+                                                       ]);
+                                $url     = "#";
+                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                            },
+                        ]
+                    ],
+                ];
+                echo GridView::widget([
+                                          'dataProvider'=> $orden,
+                                          'filterModel' => $search,
+                                          'columns' => $columns,
+                                          'responsive'=>true,
+                                          'condensed'=>true,
+                                          'hover'=>true,
+                                          'bordered'=>false,
+                                      ]);
             ?>
         </div>
     </div>
 
 <?php
-Modal::begin([
-    'id'=>'viewModal',
-    'size'=>Modal::SIZE_LARGE,
-]);
-Modal::end();
+    Modal::begin([
+                     'id'=>'viewModal',
+                     'size'=>Modal::SIZE_LARGE,
+                 ]);
+    Modal::end();
 ?>

@@ -1,5 +1,5 @@
 <?php
-use yii\helpers\Html;
+    use yii\helpers\Html;
 
 ?>
     <tr class="tabular-input">
@@ -50,7 +50,7 @@ use yii\helpers\Html;
         </td>
     </tr>
 <?php
-echo "
+    echo "
 <script>
     $('#cantidad_". $index ."').blur(function(e){
         $('#costoTotal_". $index ."').val(redondeo(suma($('#cantidad_".  $index ."').val()*$('#costo_". $index ."').val(),$('#adicional_". $index ."').val())));

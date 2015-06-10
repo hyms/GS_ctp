@@ -1,9 +1,9 @@
 <?php
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
-$this->title = 'Venta-Orden'
+    $this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
@@ -24,18 +24,18 @@ $this->title = 'Venta-Orden'
 
 
                 <?php
-                $form = ActiveForm::begin(['id'=>'form']);
+                    $form = ActiveForm::begin(['id'=>'form']);
                 ?>
                 <div class="row">
                     <div class="col-xs-8">
                         <?php
-                        $datoCliente = "";
-                        $tipoCliente = "";
-                        if(!empty($orden->fk_idCliente)) {
-                            $tmpCliente = \app\models\Cliente::findOne(['idCliente' => $orden->fk_idCliente]);
-                            if (!empty($tmpCliente))
-                                $datoCliente = $tmpCliente->nombreNegocio . " - " . $tmpCliente->nitCi;
-                        }
+                            $datoCliente = "";
+                            $tipoCliente = "";
+                            if(!empty($orden->fk_idCliente)) {
+                                $tmpCliente = \app\models\Cliente::findOne(['idCliente' => $orden->fk_idCliente]);
+                                if (!empty($tmpCliente))
+                                    $datoCliente = $tmpCliente->nombreNegocio . " - " . $tmpCliente->nitCi;
+                            }
                         ?>
                         <?= Html::label('Cliente','cliente')?>
                         <?= Html::input('','cliente',$datoCliente,['class'=>'form-control','id'=>'cliente']) ?>
@@ -88,15 +88,15 @@ $this->title = 'Venta-Orden'
 
                     <div class="col-xs-4"><?= '<label class="control-label">Fecha Plazo</label>'; ?>
                         <?= DatePicker::widget([
-                            'model' => $orden,
-                            'attribute' => 'fechaPlazo',
-                            'type' => DatePicker::TYPE_INPUT,
-                            'options' => ['placeholder' => 'Ingresa fecha plazo','id'=>'fechaPlazo','disabled'=>true],
-                            'pluginOptions' => [
-                                'autoclose'=>true,
-                                'format' => 'yyyy-mm-dd'
-                            ]
-                        ]); ?>
+                                                   'model' => $orden,
+                                                   'attribute' => 'fechaPlazo',
+                                                   'type' => DatePicker::TYPE_INPUT,
+                                                   'options' => ['placeholder' => 'Ingresa fecha plazo','id'=>'fechaPlazo','disabled'=>true],
+                                                   'pluginOptions' => [
+                                                       'autoclose'=>true,
+                                                       'format' => 'yyyy-mm-dd'
+                                                   ]
+                                               ]); ?>
                     </div>
                     <div class="col-xs-4">
                         <?= $form->field($orden,'montoDescuento')->textInput(['id'=>'descuento'])?>
@@ -120,15 +120,15 @@ $this->title = 'Venta-Orden'
 <?= $this->render('../scripts/reset') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>
 <?php
-/*$js  ="
-    function radio()
-    {
-    var val = $('input:radio[name=\"OrdenCTP[tipoPago]\"]:checked').val();
-    cliente = $('#idCliente').val();
-    if($('#idCliente').val().length>0)
-        factura(val,'".Url::to(['venta/ajaxfactura'])."',".$orden->idOrdenCTP.",$('#tipoCliente').val());
-    else
-        alert(\"Debe seleccionar un Cliente\");
-    }";
-$this->registerJs($js, \yii\web\View::POS_HEAD);*/
+    /*$js  ="
+        function radio()
+        {
+        var val = $('input:radio[name=\"OrdenCTP[tipoPago]\"]:checked').val();
+        cliente = $('#idCliente').val();
+        if($('#idCliente').val().length>0)
+            factura(val,'".Url::to(['venta/ajaxfactura'])."',".$orden->idOrdenCTP.",$('#tipoCliente').val());
+        else
+            alert(\"Debe seleccionar un Cliente\");
+        }";
+    $this->registerJs($js, \yii\web\View::POS_HEAD);*/
 ?>

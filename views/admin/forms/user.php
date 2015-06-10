@@ -2,9 +2,6 @@
     use yii\bootstrap\ActiveForm;
     use yii\helpers\ArrayHelper;
 
-    /* @var $this yii\web\View */
-    /* @var $model app\models\Sucursal */
-    /* @var $form ActiveForm */
 ?>
 <div class="row">
     <?php $form = ActiveForm::begin(['id'=>'form']); ?>
@@ -43,5 +40,3 @@
     </div>
     <?php ActiveForm::end(); ?>
 </div>
-
-

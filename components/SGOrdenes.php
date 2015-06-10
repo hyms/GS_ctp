@@ -15,18 +15,17 @@ use yii\data\ActiveDataProvider;
 
 class SGOrdenes extends Component
 {
-    public $error = "";
-    public $success = false;
+    public $error                 = "";
+    public $success               = false;
     public $observacionMovimiento = "";
 
     public function grabar($data, $venta = false, $anular = false)
     {
         if (!$venta) {
-            if($data['orden']->tipoOrden==0) {
+            if ($data['orden']->tipoOrden == 0) {
                 if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
                     return $data;
-            }
-            else
+            } else
                 if (!$data['orden']->validate(['responsable', 'observaciones']))
                     return $data;
 
@@ -45,18 +44,18 @@ class SGOrdenes extends Component
             }
             return $data;
         } else {
-            $productoStocks = [];
+            $productoStocks  = [];
             $movimientoStock = [];
             foreach ($data['detalle'] as $key => $item) {
-                $productoStocks[$key] = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
+                $productoStocks[$key]  = ProductoStock::findOne(['idProductoStock' => $item->fk_idProductoStock]);
                 $movimientoStock[$key] = SGProducto::movimientoStockVenta($item->fk_idMovimientoStock, $productoStocks[$key]);
                 /*if (!$movimientoStock[$key]->isNewRecord) {
                     $productoStocks[$key]->cantidad += $movimientoStock[$key]->cantidad;
                 }*/
                 $movimientoStock[$key]->cantidad = $item->cantidad;
             }
-            $cliente="";
-            if(!empty($data['orden']->fk_idCliente)) {
+            $cliente = "";
+            if (!empty($data['orden']->fk_idCliente)) {
                 $cliente = Cliente::findOne(['idCliente' => $data['orden']->fk_idCliente]);
                 if (!empty($cliente))
                     $cliente = $cliente->nombreNegocio;
@@ -70,11 +69,11 @@ class SGOrdenes extends Component
 
             if ($movimientoCaja->monto < $data['orden']->montoVenta) {
                 $data['orden']->tipoPago = 1;
-                $data['orden']->estado = 2;
+                $data['orden']->estado   = 2;
             } else {
                 if ($movimientoCaja->monto > $data['orden']->montoVenta)
                     $movimientoCaja->monto = $data['orden']->montoVenta;
-                $data['orden']->estado = 0;
+                $data['orden']->estado   = 0;
                 $data['orden']->tipoPago = 0;
             }
             if ($anular) {
@@ -118,20 +117,20 @@ class SGOrdenes extends Component
         }
     }
 
-    static public function getOrdenes($sucursal,$tipo=0, $dataProvider = true, $pager = 10)
+    static public function getOrdenes($sucursal, $tipo = 0, $dataProvider = true, $pager = 10)
     {
         $query = OrdenCTP::find()
             ->where(['fk_idSucursal' => $sucursal])
             ->andWhere(['estado' => 1])
             ->andWhere(['tipoOrden' => $tipo])
-            ->orderBy(['fechaGenerada'=>SORT_DESC]);
+            ->orderBy(['fechaGenerada' => SORT_DESC]);
         if ($dataProvider) {
             return new ActiveDataProvider([
-                'query' => $query,
-                'pagination' => [
-                    'pageSize' => $pager,
-                ],
-            ]);
+                                              'query'      => $query,
+                                              'pagination' => [
+                                                  'pageSize' => $pager,
+                                              ],
+                                          ]);
         }
         return $query;
     }
@@ -141,7 +140,7 @@ class SGOrdenes extends Component
         return $model = OrdenCTP::findOne($data);
     }
 
-    static public function correlativo($idSucursal,$tipo=0)
+    static public function correlativo($idSucursal, $tipo = 0)
     {
         $row = OrdenCTP::find()
             ->where(['fk_idSucursal' => $idSucursal])
@@ -151,7 +150,7 @@ class SGOrdenes extends Component
         return ($row->correlativo + 1);
     }
 
-    static public function codigo($idSucursal,$tipo=0)
+    static public function codigo($idSucursal, $tipo = 0)
     {
         $row   = OrdenCTP::find()
             ->where(['fk_idSucursal' => $idSucursal])
@@ -211,7 +210,7 @@ class SGOrdenes extends Component
                 $datos['deuda'] = SGCaja::movimientoCajaVenta(null, $datos['caja']->idCaja, "Pago de deuda", $datos['oldDeuda']->idMovimientoCaja, 0);
             }
             $datos['deuda']->attributes = $datos['post'];
-            $saldo = $datos['orden']->montoVenta - ($datos['oldDeuda']->monto + $datos['deuda']->monto);
+            $saldo                      = $datos['orden']->montoVenta - ($datos['oldDeuda']->monto + $datos['deuda']->monto);
             if ($saldo <= 0) {
                 $datos['orden']->estado = 0;
             } else {
@@ -231,18 +230,18 @@ class SGOrdenes extends Component
     public function arqueo($datos)
     {
         if (isset($datos['caja']) && isset($datos['arqueo'])) {
-            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja",null, 3);
+            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja", null, 3);
 
-            $tmp = MovimientoCaja::find()
+            $tmp                       = MovimientoCaja::find()
                 ->where(['fk_idCajaOrigen' => $datos['caja']->idCaja])
                 ->andWhere(['tipoMovimiento' => 4])
                 ->select('max(correlativoCierre) as correlativoCierre')
                 ->one();
             $arqueo->correlativoCierre = $tmp->correlativoCierre + 1;
-            $cajaAdmin = Caja::findOne(['idCaja' => $datos['caja']->fk_idCaja]);
+            $cajaAdmin                 = Caja::findOne(['idCaja' => $datos['caja']->fk_idCaja]);
 
             $arqueo->fechaCierre = date("Y-m-d H:i:s");
-            $arqueo->attributes = $datos['arqueo'];
+            $arqueo->attributes  = $datos['arqueo'];
             if (!$arqueo->isNewRecord) {
                 $datos['caja']->monto += $arqueo->monto;
                 if (!empty($cajaAdmin)) {
@@ -278,7 +277,7 @@ class SGOrdenes extends Component
                 $cajaAdmin->save();
             }
             $datos['movimientos'] = $variables['movimientos'];
-            $this->success = true;
+            $this->success        = true;
             return $datos;
         }
     }
