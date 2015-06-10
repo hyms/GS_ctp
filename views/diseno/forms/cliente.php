@@ -1,9 +1,9 @@
 <?php
-use kartik\widgets\TypeaheadBasic;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\widgets\TypeaheadBasic;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="row">
@@ -28,7 +28,7 @@ use yii\helpers\Url;
                 <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y",strtotime($orden->fechaGenerada));?></strong></h4>
             </div>
 
-            <?php $form = ActiveForm::begin(['layout' => 'horizontal']); ?>
+            <?php $form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']); ?>
             <div class="row">
                 <?php if($orden->tipoOrden==0){?>
                     <div class="col-xs-6">
@@ -89,12 +89,13 @@ use yii\helpers\Url;
             <?= $form->field($orden, 'observaciones')->textArea(); ?>
             <div class="form-group">
                 <div class="text-center">
-                    <?php //echo CHtml::link('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
-                    <?php // Html::submitButton($orden->isNewRecord ? 'Guardar' : 'Modificar', ['class' => $orden->isNewRecord ? 'btn btn-success' : 'btn btn-primary']) ?>
-                    <?= Html::a($orden->isNewRecord ? 'Guardar' : 'Modificar', '#', ['class' => $orden->isNewRecord ? 'btn btn-success' : 'btn btn-warning','id'=>'save']) ?>
+                    <?php echo Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
+                    <?php echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
         </div>
     </div>
 </div>
+<?= $this->render('../scripts/save') ?>
+<?= $this->render('../scripts/reset') ?>

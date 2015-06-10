@@ -267,7 +267,14 @@ class DisenoController extends Controller
                     ]);
 
                 case 'list':
-                    $ordenes = SGOrdenes::getOrdenes($this->idSucursal, 2);
+                    $query = OrdenCTP::find()
+                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['tipoOrden' => 2])
+                        ->orderBy(['fechaGenerada'=>SORT_DESC]);
+
+                    $ordenes= new ActiveDataProvider([
+                                                          'query' => $query,
+                                                      ]);
                     return $this->render('repos', ['r' => 'list', 'orden' => $ordenes]);
                     break;
                 case 'nota':
@@ -277,7 +284,7 @@ class DisenoController extends Controller
                         ->where(['fk_idSucursal' => $this->idSucursal])
                         ->andWhere(['tipoNota' => 2])
                         ->orderBy(['fechaCreacion' => SORT_DESC]);
-                    return $this->render('orden', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
+                    return $this->render('repos', ['r' => 'nota', 'notas' => $notas, 'search' => $search]);
                     break;
             }
         }

@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
     [
         'header'=>'Usuario',
         'attribute'=>function($model){
@@ -124,8 +124,17 @@ $columns = [
     ],
     [
         'header'=>'Saldo',
-        'attribute'=>function($model){
-            return ($model->montoVenta-$model->fkIdMovimientoCaja->monto);
+        'attribute'=>function($model) use ($fechaStart,$fechaEnd){
+            $pagos = \app\models\MovimientoCaja::find()
+                ->where(['idParent' => $model->fk_idMovimientoCaja])
+                ->andWhere(['between', 'time', $fechaStart . ' 00:00:00', $fechaEnd . ' 23:59:59'])
+                ->andWhere(['tipoMovimiento' => 0])
+                ->all();
+            $total = 0;
+            foreach ($pagos as $pago) {
+                $total += $pago->monto;
+            }
+            return ($model->montoVenta-($model->fkIdMovimientoCaja->monto+$total));
         },
         'pageSummary'=>true,
     ],
@@ -143,7 +152,37 @@ $columns = [
     ],
     [
         'header'=>'Fecha',
-        'value'=>'fechaCobro',
+        'format'=>'raw',
+        'value'=>function($model) use ($fechaStart,$fechaEnd){
+            $pagos = \app\models\MovimientoCaja::find()
+                ->where(['idParent' => $model->fk_idMovimientoCaja])
+                ->andWhere(['tipoMovimiento' => 0])
+                ->andWhere(['between', 'time', $fechaStart . ' 00:00:00', $fechaEnd . ' 23:59:59'])
+                ->andWhere(['not between', 'time', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 00:00:00', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 23:59:59'])
+                ->all();
+            $fecha = "";
+            foreach ($pagos as $pago) {
+                $fecha = $fecha . "<p>" .date("Y-m-d/H:i", strtotime($pago->time)) . "</p>";
+            }
+            return $fecha;
+        },
+    ],
+    [
+        'header'=>'Monto',
+        'format'=>'raw',
+        'value'=>function($model) use ($fechaStart,$fechaEnd){
+            $pagos = \app\models\MovimientoCaja::find()
+                ->where(['idParent' => $model->fk_idMovimientoCaja])
+                ->andWhere(['tipoMovimiento' => 0])
+                ->andWhere(['between', 'time', $fechaStart . ' 00:00:00', $fechaEnd . ' 23:59:59'])
+                ->andWhere(['not between', 'time', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 00:00:00', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 23:59:59'])
+                ->all();
+            $fecha = "";
+            foreach ($pagos as $pago) {
+                $fecha = $fecha . "<p>" . $pago->monto . "</p>";
+            }
+            return $fecha;
+        },
     ],
 ];
 echo GridView::widget([

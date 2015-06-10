@@ -360,4 +360,57 @@ class AdminController extends Controller
                 'sucursal' => '',
             ]);
     }
+
+    public function actionPlacas()
+    {
+        $post = Yii::$app->request->post();
+        if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
+            if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
+                if ($post['tipo'] == "a") {
+                    $ordenes = OrdenCTP::find()
+                        ->andWhere(['between', 'fechaGenerada', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
+                        ->all();
+                    $placas = ProductoStock::find()->where(['fk_idSucursal'=>$post['sucursal']])->all();
+
+                    $data = new ArrayDataProvider([
+                                                      'allModels' => $placas,
+                                                      'pagination' => [
+                                                          'pageSize' => 20,
+                                                      ],
+                                                  ]);
+                    $r="all";
+                }
+                if ($post['tipo'] == "f") {
+                    $placa = [];
+                    $data = new ArrayDataProvider([
+                                                      'allModels' => $placa,
+                                                      'pagination' => [
+                                                          'pageSize' => 20,
+                                                      ],
+                                                  ]);
+                    $r="formato";
+                }
+                return $this->render('reporte', [
+                    'r' => $r,
+                    'fechaStart' => $post['fechaStart'],
+                    'fechaEnd' => $post['fechaEnd'],
+                    'sucursal' => $post['sucursal'],
+                    'formato'=>$post['formato'],
+                    'data' => $data,
+                ]);
+            }
+            return $this->render('placas',[
+                'fechaStart'=>$post['fechaStart'],
+                'fechaEnd'=>$post['fechaEnd'],
+                'sucursal'=>$post['sucursal'],
+                'formato'=>'',
+            ]);
+        }
+        return $this->render('placas',[
+            'fechaStart'=>'',
+            'fechaEnd'=>'',
+            'sucursal'=>'',
+            'formato'=>'',
+        ]);
+    }
 }

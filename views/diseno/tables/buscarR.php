@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -17,8 +17,10 @@ use yii\helpers\Url;
             ],
             [
                 'header'=>'Tipo Reposicion',
-                'value'=>function($model){
+                'value'=>function($model) {
                     $dato = \app\components\SGOperation::tiposReposicion($model->tipoRepos);
+                    if (!is_array($dato))
+                        return $dato;
                     return "";
                 },
             ],
@@ -38,7 +40,7 @@ use yii\helpers\Url;
                             'title' => ''
                         ]);
                         $url = Url::to(['diseno/reposicion', 'tipo' => 3, 'id' => $model->idOrdenCTP]);
-                        if (empty($model->fechaCierre))
+                        if (empty($model->fechaCierre) && ($model->estado >=0))
                             return Html::a("<i class=\"glyphicon glyphicon-remove-circle text-danger\"></i>", $url, $options);
                         else
                             return "";
