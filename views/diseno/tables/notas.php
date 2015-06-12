@@ -32,7 +32,10 @@
             $columns = [
                 [
                     'header'=>'Fecha Creada',
-                    'value'=>'fechaCreacion',
+                    'value'=>function($model)
+                    {
+                        return date("Y-m-d H:i",strtotime($model->fechaCreacion));
+                    }
                 ],
                 [
                     'header'=>'Creado Por',
@@ -56,7 +59,11 @@
                 ],
                 [
                     'header'=>'Fecha Visto',
-                    'value'=>'fechaVisto',
+                    'value'=>function($model) {
+                        if (empty($model->fechaVisto))
+                            return "";
+                        return date("Y-m-d H:i", strtotime($model->fechaVisto));
+                    }
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',

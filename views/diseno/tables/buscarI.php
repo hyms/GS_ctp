@@ -13,15 +13,26 @@
             $columns = [
                 [
                     'header'=>'Correlativo',
-                    'value'=>'correlativo',
+                    'attribute'=>'correlativo',
+                ],
+                [
+                    'header'=>'Usuario',
+                    'attribute'=>'nombreUsuario',
+                    'value'=>function($model){
+                        return $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
+                    },
                 ],
                 [
                     'header'=>'Responsable',
-                    'value'=>'responsable',
+                    'attribute'=>'responsable',
                 ],
                 [
                     'header'=>'Fecha',
-                    'value'=>'fechaGenerada',
+                    'attribute'=>'fechaGenerada',
+                    'value'=>function($model)
+                    {
+                        return date("Y-m-d H:i",strtotime($model->fechaGenerada));
+                    }
                 ],
                 [
                     'class' => 'yii\grid\ActionColumn',
@@ -56,7 +67,7 @@
 
             echo GridView::widget([
                                       'dataProvider'=> $orden,
-                                      //'filterModel' => $searchModel,
+                                      'filterModel' => $search,
                                       'columns' => $columns,
                                       'responsive'=>true,
                                       'hover'=>true

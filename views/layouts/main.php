@@ -1,11 +1,11 @@
 <?php
-use app\assets\AppAsset;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+    use app\assets\AppAsset;
+    use yii\bootstrap\Nav;
+    use yii\bootstrap\NavBar;
+    use yii\helpers\Html;
+    use yii\widgets\Breadcrumbs;
 
-/* @var $this \yii\web\View */
+    /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
@@ -32,21 +32,26 @@ AppAsset::register($this);
                     'class' => 'navbar-inverse',
                 ],
             ]);
+
+            $items = [['label' => 'Home', 'url' => ['/site/index']]];
+            if(Yii::$app->user->isGuest)
+            {
+                array_push($items,['label' => 'Login', 'url' => ['/site/login']]);
+            }
+            else
+            {
+                array_push($items,
+                           ['label' => 'Admin', 'url' => ['/admin/index']],
+                           ['label' => 'Diseño', 'url' => ['/diseno/index']],
+                           ['label' => 'Venta', 'url' => ['/venta/index']],
+                           ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
+                            'url' => ['/site/logout'],
+                            'linkOptions' => ['data-method' => 'post']]
+                );
+            }
             echo Nav::widget([
                 'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => [
-                    ['label' => 'Home', 'url' => ['/site/index']],
-                    //['label' => 'About', 'url' => ['/site/about']],
-                    ['label' => 'Admin', 'url' => ['/admin/index']],
-                    ['label' => 'Diseño', 'url' => ['/diseno/index']],
-                    ['label' => 'Venta', 'url' => ['/venta/index']],
-                    //['label' => 'Contact', 'url' => ['/site/contact']],
-                    Yii::$app->user->isGuest ?
-                        ['label' => 'Login', 'url' => ['/site/login']] :
-                        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post']],
-                ],
+                'items' => $items,
             ]);
             NavBar::end();
         ?>

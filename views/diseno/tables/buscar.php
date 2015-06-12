@@ -27,7 +27,10 @@
                 ],
                 [
                     'header'=>'Fecha',
-                    'value'=>'fechaGenerada',
+                    'value'=>function($model)
+                    {
+                        return date("Y-m-d H:i",strtotime($model->fechaGenerada));
+                    }
                 ],
                 [
                     'header'=>'',

@@ -1,17 +1,39 @@
 <?php
-    use kartik\grid\GridView;
     use yii\helpers\Html;
     use yii\helpers\Url;
 
-    $columns = [
+    echo '<div class="list-group">';
+    foreach($producto->getModels() as $model)
+    {
+        echo Html::a($model->fkIdProducto->formato." ".$model->fkIdProducto->dimension,'#',
+                     [
+                         'onclick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
+                         'class'=>'list-group-item',
+                         'data-original-title'=>'Añadir',
+                         'data-toggle'=>'tooltip',
+                         'title'=>''
+                     ]
+        );
+    }
+    echo '</div>';
+    /*$columns = [
         [
             'header'=>'Placas',
             'format'=>'raw',
-            'value'=>function($model){
-                return $model->fkIdProducto->formato."<br>".$model->fkIdProducto->dimension;
+            'value'=>function($model)use ($tipo){
+                return Html::a($model->fkIdProducto->formato." ".$model->fkIdProducto->dimension,'#',
+                               [
+                                   'onclick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
+                                   'class'=>'list-group-item',
+                                   'data-original-title'=>'Añadir',
+                                   'data-toggle'=>'tooltip',
+                                   'title'=>''
+                               ]
+                );
+                //return $model->fkIdProducto->formato."<br>".$model->fkIdProducto->dimension;
             },
         ],
-        [
+        /*[
             'header'=>'',
             'format' => 'raw',
             'value'=> function ($model) use ($tipo) {
@@ -36,6 +58,6 @@
                               'condensed' => true,
                               'hover'=>true,
                               'bordered'=>false,
-                          ]);
+                          ]);*/
 ?>
 <?= $this->render('../scripts/addList'); ?>

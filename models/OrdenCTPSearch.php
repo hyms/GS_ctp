@@ -11,6 +11,8 @@ use yii\data\ActiveDataProvider;
  */
 class OrdenCTPSearch extends OrdenCTP
 {
+    public $nombreCliente;
+    public $nombreUsuario;
     /**
      * @inheritdoc
      */
@@ -18,7 +20,7 @@ class OrdenCTPSearch extends OrdenCTP
     {
         return [
             [['idOrdenCTP', 'cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado'], 'integer'],
-            [['fechaGenerada', 'fechaCobro', 'fechaPlazo', 'codigoServicio', 'autorizado', 'observaciones', 'observacionesCaja', 'responsable', 'telefono', 'observacionAdicional', 'factura', 'codDependiente'], 'safe'],
+            [['fechaGenerada', 'fechaCobro', 'fechaPlazo', 'codigoServicio', 'autorizado', 'observaciones', 'observacionesCaja', 'responsable', 'telefono', 'observacionAdicional', 'factura', 'codDependiente','nombreCliente','nombreUsuario'], 'safe'],
             [['montoVenta', 'montoDescuento'], 'number'],
         ];
     }
@@ -57,8 +59,6 @@ class OrdenCTPSearch extends OrdenCTP
 
         $query->andFilterWhere([
             'idOrdenCTP' => $this->idOrdenCTP,
-            'fechaGenerada' => $this->fechaGenerada,
-            'fechaCobro' => $this->fechaCobro,
             'cfSF' => $this->cfSF,
             'tipoPago' => $this->tipoPago,
             'fechaPlazo' => $this->fechaPlazo,
@@ -87,7 +87,12 @@ class OrdenCTPSearch extends OrdenCTP
             ->andFilterWhere(['like', 'telefono', $this->telefono])
             ->andFilterWhere(['like', 'observacionAdicional', $this->observacionAdicional])
             ->andFilterWhere(['like', 'factura', $this->factura])
-            ->andFilterWhere(['like', 'codDependiente', $this->codDependiente]);
+            ->andFilterWhere(['like', 'codDependiente', $this->codDependiente])
+            ->andFilterWhere(['like', 'fechaGenerada', $this->fechaGenerada])
+            ->andFilterWhere(['like', 'fechaCobro',$this->fechaCobro]);
+
+        $query->joinWith('fkIdUserD');
+        $query->andFilterWhere(['like','nombre',$this->nombreUsuario]);
 
         return $dataProvider;
     }

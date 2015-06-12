@@ -26,7 +26,8 @@
                     ],
                     [
                         'header'=>'Operador',
-                        'attribute'=>function($model)
+                        'attribute'=>'nombreUsuario',
+                        'value'=>function($model)
                         {
                             return $model->fkIdUserD->nombre." ".$model->fkIdUserD->apellido;
                         }
@@ -34,6 +35,10 @@
                     [
                         'header'=>'Fecha',
                         'attribute'=>'fechaGenerada',
+                        'value'=>function($model)
+                        {
+                            return date("Y-m-d H:i",strtotime($model->fechaGenerada));
+                        }
                     ],
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -82,7 +87,7 @@
                                                         });return false;"
                                                        ]);
                                 $url     = "#";
-                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, $options);
                             },
                         ]
                     ],
