@@ -159,7 +159,7 @@ class VentaController extends Controller
                     $searchModel = new OrdenCTPSearch();
                     $ordenes     = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
-                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere('`estado`=0 or `estado`=2')
                         ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
@@ -197,7 +197,7 @@ class VentaController extends Controller
                     $search  = new OrdenCTPSearch();
                     $ordenes = $search->search(yii::$app->request->getQueryParams());
                     $ordenes->query
-                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere(['!=', 'estado', '1'])
                         ->andWhere(['tipoOrden' => 0]);
                     return $this->render('orden', ['r' => 'diario', 'ordenes' => $ordenes, 'search' => $search]);
@@ -207,7 +207,7 @@ class VentaController extends Controller
                     $searchModel = new OrdenCTPSearch();
                     $ordenes     = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
-                        ->where(['fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere(['tipoOrden' => 0])
                         ->andWhere(['estado' => 2])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
@@ -302,7 +302,7 @@ class VentaController extends Controller
                     $search  = new ReciboSearch();
                     $recibos = $search->search(yii::$app->request->queryParams);
                     $recibos->query
-                        ->where(['fk_idSucursal' => $this->idSucursal]);
+                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal]);
                     return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                     break;
                 case "arqueos":

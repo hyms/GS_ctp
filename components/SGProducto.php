@@ -60,7 +60,7 @@ class SGProducto extends Component
         }
         if ($dataProvider) {
             return new ActiveDataProvider([
-                                              'query'      => ProductoStock::find()->where(['fk_idSucursal' => $sucursal])->andWhere(['enable' => 1]),
+                                              'query'      => ProductoStock::find()->where(['fk_idSucursal' => $sucursal,'enable' => 1])->joinWith('fkIdProducto')->orderBy('`formato`'),
                                               'pagination' => [
                                                   'pageSize' => $pager
                                               ]

@@ -3,12 +3,12 @@
     use yii\helpers\Url;
 
     echo '<div class="list-group">';
-    foreach($producto->getModels() as $model)
+    foreach($producto->getModels() as $key => $model)
     {
-        echo Html::a($model->fkIdProducto->formato." ".$model->fkIdProducto->dimension,'#',
+		echo Html::a($model->fkIdProducto->formato." ".$model->fkIdProducto->dimension,'#',
                      [
                          'onclick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
-                         'class'=>'list-group-item',
+                         'class'=>'list-group-item'.((($key % 2)==0)?' list-group-item-info':''),
                          'data-original-title'=>'Añadir',
                          'data-toggle'=>'tooltip',
                          'title'=>''
