@@ -110,7 +110,7 @@ class AdminController extends Controller
                         $almacen = ProductoStock::findOne(['idProductoStock' => $get['producto']]);
                         if ($almacen->cantidad > 0) {
                             $almacen0 = ProductoStock::find()
-                                ->where(['is', 'fk_idSucursal', null])
+                                ->andWhere(['is', 'fk_idSucursal', null])
                                 ->andWhere(['fk_idProducto' => $almacen->fk_idProducto])
                                 ->one();
                             $almacen0->cantidad += $almacen->cantidad;
@@ -160,7 +160,7 @@ class AdminController extends Controller
                         $deposito = null;
                         if (!empty($almacen->fkIdSucursal)) {
                             $deposito = ProductoStock::find()
-                                ->where(['fk_idProducto' => $almacen->fk_idProducto])
+                                ->andWhere(['fk_idProducto' => $almacen->fk_idProducto])
                                 ->andWhere(['fk_idSucursal' => $almacen->fkIdSucursal->fk_idParent])
                                 ->one();
                         }
@@ -283,9 +283,9 @@ class AdminController extends Controller
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
             if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
                 if ($post['tipo'] == "pd") {
-                    $idCaja = Caja::find()->where(['fk_idSucursal'=>$post['sucursal']])->one();
+                    $idCaja = Caja::find()->andWhere(['fk_idSucursal'=>$post['sucursal']])->one();
                     $deudas = MovimientoCaja::find()
-                        ->where(['tipoMovimiento' => 0])
+                        ->andWhere(['tipoMovimiento' => 0])
                         ->andWhere(['fk_idCajaDestino' => $idCaja->idCaja])
                         ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
                         ->select('idParent')
@@ -293,7 +293,19 @@ class AdminController extends Controller
                         ->all();
                     $venta = [];
                     foreach ($deudas as $deuda) {
-                        $orden = OrdenCTP::findOne(['fk_idMovimientoCaja' => $deuda->idParent]);
+                        $orden = OrdenCTP::find()
+                            ->andWhere(['fk_idMovimientoCaja' => $deuda->idParent]);
+                        $orden->joinWith('fkIdCliente');
+                        if (!empty($post['clienteNegocio'])) {
+                            $orden->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                        }
+                        if (!empty($post['clienteResponsable'])) {
+                            $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                        }
+                        if (!empty($post['factura'])) {
+                            $orden->andWhere(['cfSF' => $post['factura']]);
+                        }
+                        $orden = $orden->one();
                         if (!empty($orden))
                             array_push($venta, $orden);
                     }
@@ -308,7 +320,7 @@ class AdminController extends Controller
                     $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
                     $post['fechaEnd'] = date('Y-m-d', strtotime($post['fechaEnd']));
                     $venta = OrdenCTP::find();
-                    $venta->where(['OrdenCTP.fk_idSucursal' => $post['sucursal']]);
+                    $venta->andWhere(['OrdenCTP.fk_idSucursal' => $post['sucursal']]);
                     $venta->joinWith('fkIdCliente');
                     if (!empty($post['clienteNegocio'])) {
                         $venta->andWhere(['like','cliente.nombreNegocio', '%'.$post['clienteNegocio'].'%']);
@@ -316,7 +328,9 @@ class AdminController extends Controller
                     if (!empty($post['clienteResponsable'])) {
                         $venta->andWhere(['like','cliente.nombreResponsable' , '%'.$post['clienteResponsable'].'%']);
                     }
-
+                    if (!empty($post['factura'])) {
+                        $venta->andWhere(['cfSF' => $post['factura']]);
+                    }
                     if ($post['tipo'] == "v")
                         $venta->andWhere(['!=', 'estado', '1']);
 
@@ -339,6 +353,7 @@ class AdminController extends Controller
                     'fechaStart' => $post['fechaStart'],
                     'fechaEnd' => $post['fechaEnd'],
                     'sucursal' => $post['sucursal'],
+                    'factura' => $post['factura'],
                     'data' => $data,
                 ]);
 
@@ -351,6 +366,7 @@ class AdminController extends Controller
                     'fechaStart' => $post['fechaStart'],
                     'fechaEnd' => $post['fechaEnd'],
                     'sucursal' => $post['sucursal'],
+                    'factura' => '',
                 ]);
         } else
             return $this->render('reporte', [
@@ -359,6 +375,7 @@ class AdminController extends Controller
                 'fechaStart' => '',
                 'fechaEnd' => '',
                 'sucursal' => '',
+                'factura' => '',
             ]);
     }
 
@@ -375,7 +392,7 @@ class AdminController extends Controller
                     if (isset($post['tipoOrden']) && $post['tipoOrden'] != "")
                         $ordenes->andWhere(['tipoOrden' => $post['tipoOrden']]);
                     $ordenes = $ordenes->all();
-                    $placas  = ProductoStock::find()->where(['fk_idSucursal' => $post['sucursal']])->all();
+                    $placas  = ProductoStock::find()->andWhere(['fk_idSucursal' => $post['sucursal']])->all();
                     $tipo    = [
                         0 => "Orden de Trabajo",
                         1 => "Orden Interna",

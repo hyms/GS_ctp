@@ -21,8 +21,7 @@
                         echo $this->render('tables/arqueos', ['arqueos' => $arqueos, 'search' => $search]);
                         break;
                     case "arqueo":
-                        echo $this->render('menus/arqueo');
-                        if (isset($saldo)) {
+                        //echo $this->render('menus/arqueo');
                             echo "<br><div class='row'>";
                             echo "<div class='col-xs-9'>";
                             echo $this->render('tables/registroDiario',
@@ -52,7 +51,6 @@
                             echo "</div>";
 
                             echo "</div>";
-                        }
                         break;
                 }
             }

@@ -76,7 +76,7 @@
                         <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                             <br><br><br>
                             <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                            <div><?= "Nombre: ".$orden->responsable." "?><span class="badge"><?= $orden->correlativo?></span></div>
+                            <div class="row col-xs-12"><?= "Nombre: ".$orden->responsable."  "?><span class="label label-default" style="font-size: 14px"><strong><?= $orden->correlativo?></strong></span></div>
                             <div class="text-center" style="font-size: 10px"><small><?= "Autorizo la elaboración de la presente orden";?></small></div>
                         </div>
                     </div>

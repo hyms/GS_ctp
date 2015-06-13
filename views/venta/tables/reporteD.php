@@ -1,7 +1,10 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
+        [
+            'class' => '\kartik\grid\SerialColumn'
+        ],
         [
             'header'=>'Usuario',
             'attribute'=>function($model){

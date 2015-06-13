@@ -50,7 +50,7 @@ class VentaController extends Controller
                 $this->idCaja = $caja->idCaja;
 
             $arqueo = MovimientoCaja::find()
-                ->where(['<', 'time', date("Y-m-d") . ' 00:59:59'])
+                ->andWhere(['<', 'time', date("Y-m-d") . ' 00:59:59'])
                 ->one();
             if (!empty($arqueo)) {
                 if (empty($arqueo->fechaCierre)) {
@@ -149,7 +149,7 @@ class VentaController extends Controller
             switch ($get['op']) {
                 case "pendiente":
                     $ordenes = OrdenCTP::find()
-                        ->where(['estado' => 1])
+                        ->andWhere(['estado' => 1])
                         ->andWhere(['fk_idSucursal' => $this->idSucursal])
                         ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['secuencia' => SORT_ASC]);
@@ -217,7 +217,7 @@ class VentaController extends Controller
                     $searchModel = new MovimientoCajaSearch();
                     $deudas      = $searchModel->search(Yii::$app->request->getQueryParams());
                     $deudas->query
-                        ->where(['fk_idCajaDestino' => $this->idCaja])
+                        ->andWhere(['fk_idCajaDestino' => $this->idCaja])
                         ->andWhere(['is not', 'idParent', null])
                         ->orderBy(['time' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'deudas', 'deudas' => $deudas, 'search' => $searchModel]);
@@ -236,7 +236,6 @@ class VentaController extends Controller
 
         if (isset($get['id'])) {
             $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
-            //$orden->tipoPago = 1;
             $orden->fechaCobro = date("Y-m-d H:i:s");
             $orden->fk_idUserV = yii::$app->user->id;
             $detalle           = $orden->ordenDetalles;
@@ -257,9 +256,10 @@ class VentaController extends Controller
                     $orden->codigoServicio = SGOrdenes::codigo($this->idSucursal, 0);
                     $secuencia             = OrdenCTP::find()
                         ->select('max(secuencia) as secuencia')
-                        ->where(['fk_idSucursal' => $this->idSucursal, 'tipoOrden' => 0])
+                        ->andWhere(['fk_idSucursal' => $this->idSucursal, 'tipoOrden' => 0])
                         ->one();
                     $orden->secuencia      = $secuencia->secuencia + 1;
+                    $orden->codigoServicio = $orden->codigoServicio.$orden->secuencia;
                 }
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
                 $op                        = new SGOrdenes();
@@ -291,7 +291,7 @@ class VentaController extends Controller
                     $search = new MovimientoCajaSearch();
                     $cchica = $search->search(yii::$app->request->queryParams);
                     $cchica->query
-                        ->where(['tipoMovimiento' => 2])
+                        ->andWhere(['tipoMovimiento' => 2])
                         ->andWhere(['fk_idCajaOrigen' => $this->idCaja]);
                     if (isset($get['CajaChica'])) {
                         $cchica->attributes = $get['CajaChica'];
@@ -299,14 +299,14 @@ class VentaController extends Controller
                     return $this->render('caja', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
                     break;
                 case "recibo":
-                    $search  = new ReciboSearch();
+                    $search = new ReciboSearch();
                     $recibos = $search->search(yii::$app->request->queryParams);
                     $recibos->query
-                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal]);
+                        ->andWhere(['fk_idSucursal' => $this->idSucursal]);
                     return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                     break;
                 case "arqueos":
-                    $search  = new MovimientoCajaSearch();
+                    $search = new MovimientoCajaSearch();
                     $arqueos = $search->search(Yii::$app->request->queryParams);
                     $arqueos->query
                         ->andWhere(['tipoMovimiento' => 3])
@@ -316,52 +316,35 @@ class VentaController extends Controller
                     break;
                 case "arqueo":
                     $arqueo = new MovimientoCaja();
-                    $caja   = Caja::findOne(['idCaja' => $this->idCaja]);
-                    $post   = Yii::$app->request->post();
+                    $caja = Caja::findOne(['idCaja' => $this->idCaja]);
+                    $post = Yii::$app->request->post();
                     if (isset($post['MovimientoCaja'])) {
-                        $datos             = array('arqueo' => $post['MovimientoCaja'], 'caja' => $caja);
+                        $datos = array('arqueo' => $post['MovimientoCaja'], 'caja' => $caja);
                         $arqueoTransaccion = new SGOrdenes();
-                        $datos             = $arqueoTransaccion->arqueo($datos, true);
+                        $datos = $arqueoTransaccion->arqueo($datos, true);
                         if ($arqueoTransaccion->success) {
                             return $this->redirect(['caja', 'op' => 'arqueos']);
                         }
                     }
+                    $d = date("d");
+                    $end = date("Y-m-d H:i:s");
 
-                    if (isset($get['d'])) {
-                        $d   = $get['d'];
-                        $dia = date("w", strtotime(date("Y-m-") . $d));
-                        if ($dia == 0)
-                            $d -= 1;
-                        if (strlen($d) == 1)
-                            $d = "0" . $d;
-                        $m = date("m");
-                        if ($d == 0) {
-                            $m--;
-                            $d = SGOperation::ultimoDiaMes(date("Y"), $m);
-                        }
-                        if (date("d") == $d)
-                            $end = date("Y-m-d H:i:s");
-                        else
-                            $end = date("Y") . "-" . $m . "-" . $d . " 23:59:59";
+                    $variables = SGCaja::getSaldo($this->idCaja, $end, false, ['arqueo' => $end]);
 
-                        $variables = SGCaja::getSaldo($this->idCaja, $end, false, ['arqueo' => $end]);
-
-                        return $this->render('caja',
-                                             [
-                                                 'r'       => 'arqueo',
-                                                 'saldo'   => $variables['saldo'],
-                                                 'arqueo'  => $arqueo,
-                                                 'caja'    => $caja,
-                                                 'fecha'   => date('Y-m-d H:i:s', strtotime($end)),
-                                                 'ventas'  => $variables['ventas'],
-                                                 'deudas'  => $variables['deudas'],
-                                                 'recibos' => $variables['recibos'],
-                                                 'cajas'   => $variables['cajas'],
-                                                 'dia'     => $d,
-                                             ]);
-                        break;
-                    }
-                    return $this->render('caja', ['r' => 'arqueo']);
+                    return $this->render('caja',
+                        [
+                            'r' => 'arqueo',
+                            'saldo' => $variables['saldo'],
+                            'arqueo' => $arqueo,
+                            'caja' => $caja,
+                            'fecha' => date('Y-m-d H:i:s', strtotime($end)),
+                            'ventas' => $variables['ventas'],
+                            'deudas' => $variables['deudas'],
+                            'recibos' => $variables['recibos'],
+                            'cajas' => $variables['cajas'],
+                            'dia' => $d,
+                        ]);
+                    break;
             }
 
         }
@@ -455,7 +438,7 @@ class VentaController extends Controller
                 case "registro":
                     $arqueoTmp = MovimientoCaja::findOne(['idMovimientoCaja' => $get['id']]);
                     $arqueo    = MovimientoCaja::find()
-                        ->where(['!=', 'idMovimientoCaja', $get['id']])
+                        ->andWhere(['!=', 'idMovimientoCaja', $get['id']])
                         ->andWhere(['<=', 'fechaCierre', $arqueoTmp->fechaCierre])
                         ->andWhere(['fk_idCajaOrigen' => $arqueoTmp->fk_idCajaOrigen])
                         ->andWhere(['tipoMovimiento' => 3])
@@ -614,30 +597,43 @@ class VentaController extends Controller
             if (!empty($post['fechaStart']) && !empty($post['fechaEnd'])) {
                 if ($post['tipo'] == "pd") {
                     $deudas = MovimientoCaja::find()
-                        ->where(['tipoMovimiento' => 0])
+                        ->andWhere(['tipoMovimiento' => 0])
                         ->andWhere(['fk_idCajaDestino' => $this->idCaja])
                         ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
                         ->select('idParent')
                         ->groupBy('idParent')
                         ->all();
-                    $venta  = [];
+
+                    $venta = [];
                     foreach ($deudas as $deuda) {
-                        $orden = OrdenCTP::findOne(['fk_idMovimientoCaja' => $deuda->idParent]);
+                        $orden = OrdenCTP::find()
+                            ->andWhere(['fk_idMovimientoCaja' => $deuda->idParent]);
+                        $orden->joinWith('fkIdCliente');
+                        if (!empty($post['clienteNegocio'])) {
+                            $orden->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                        }
+                        if (!empty($post['clienteResponsable'])) {
+                            $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                        }
+                        if (!empty($post['factura'])) {
+                            $orden->andWhere(['cfSF' => $post['factura']]);
+                        }
+                        $orden = $orden->one();
                         if (!empty($orden))
                             array_push($venta, $orden);
                     }
                     $data = new ArrayDataProvider([
-                                                      'allModels'  => $venta,
-                                                      'pagination' => [
-                                                          'pageSize' => 20,
-                                                      ],
-                                                  ]);
-                    $r    = "deuda";
+                        'allModels' => $venta,
+                        'pagination' => [
+                            'pageSize' => 20,
+                        ],
+                    ]);
+                    $r = "deuda";
                 } else {
                     $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
-                    $post['fechaEnd']   = date('Y-m-d', strtotime($post['fechaEnd']));
-                    $venta              = OrdenCTP::find();
-                    $venta->where(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
+                    $post['fechaEnd'] = date('Y-m-d', strtotime($post['fechaEnd']));
+                    $venta = OrdenCTP::find();
+                    $venta->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
                     $venta->joinWith('fkIdCliente');
                     if (!empty($post['clienteNegocio'])) {
                         $venta->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
@@ -645,7 +641,9 @@ class VentaController extends Controller
                     if (!empty($post['clienteResponsable'])) {
                         $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
                     }
-
+                    if (!empty($post['factura'])) {
+                        $venta->andWhere(['cfSF' => $post['factura']]);
+                    }
                     if ($post['tipo'] == "v")
                         $venta->andWhere(['!=', 'estado', '1']);
 
@@ -657,25 +655,40 @@ class VentaController extends Controller
 
                     //$data = $venta->all();
                     $data = new ActiveDataProvider([
-                                                       'query' => $venta,
-                                                   ]);
-                    $r    = "table";
+                        'query' => $venta,
+                    ]);
+                    $r = "table";
                 }
                 return $this->render('reporte', [
-                    'r'                  => $r,
-                    'clienteNegocio'     => $post['clienteNegocio'],
+                    'r' => $r,
+                    'clienteNegocio' => $post['clienteNegocio'],
                     'clienteResponsable' => $post['clienteResponsable'],
-                    'fechaStart'         => $post['fechaStart'],
-                    'fechaEnd'           => $post['fechaEnd'],
-                    'data'               => $data,
+                    'fechaStart' => $post['fechaStart'],
+                    'fechaEnd' => $post['fechaEnd'],
+                    'factura' => $post['factura'],
+                    'data' => $data,
                 ]);
 
                 //$mPDF1->WriteHTML($this->renderPartial('prints/report', array('data' => $data, 'deuda' => $deuda), true));
                 //Yii::app()->end();
             } else
-                return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
+                return $this->render('reporte',
+                    [
+                        'clienteNegocio' => '',
+                        'clienteResponsable' => '',
+                        'fechaStart' => $post['fechaStart'],
+                        'fechaEnd' => $post['fechaEnd'],
+                        'factura' => ''
+                    ]);
         } else
-            return $this->render('reporte', ['clienteNegocio' => '', 'clienteResponsable' => '', 'fechaStart' => '', 'fechaEnd' => '']);
+            return $this->render('reporte',
+                [
+                    'clienteNegocio' => '',
+                    'clienteResponsable' => '',
+                    'fechaStart' => '',
+                    'fechaEnd' => '',
+                    'factura' => ''
+                ]);
     }
 
     /*public function actionAjaxfactura()

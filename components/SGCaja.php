@@ -86,9 +86,9 @@ class SGCaja extends Component
 
         $arqueos     = array();
         $movimientos = MovimientoCaja::find()
-            ->where('`fk_idCajaOrigen`=' . $idCaja . ' or `fk_idCajaDestino`=' . $idCaja);
+            ->andWhere('`fk_idCajaOrigen`=' . $idCaja . ' or `fk_idCajaDestino`=' . $idCaja);
         if (isset($get['arqueo']))
-            $movimientos->andWhere(['like', 'fechaCierre', date("Y-m-d", strtotime($get['arqueo']))]);
+            $movimientos->andFilterWhere(['like', 'fechaCierre', date("Y-m-d", strtotime($get['arqueo']))]);
         else
             $movimientos->andWhere(['is', 'fechaCierre', null]);
 
@@ -159,9 +159,14 @@ class SGCaja extends Component
             }
         }
 
-        $ctmp = count($arqueos);
-        if ($ctmp > 0)
-            $saldo = $arqueos[$ctmp - 1]->saldoCierre;
+
+        $saldos = MovimientoCaja::find()
+            ->andWhere(['tipoMovimiento'=>3])
+            ->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos))])
+            ->orderBy(['time'=>SORT_DESC])
+            ->one();
+        if (!empty($saldos))
+            $saldo = $saldos->saldoCierre;
         else
             $saldo = 0;
 

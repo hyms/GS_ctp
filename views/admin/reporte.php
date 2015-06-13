@@ -10,6 +10,7 @@
             'fechaStart'=>$fechaStart,
             'fechaEnd'=>$fechaEnd,
             'sucursal'=>$sucursal,
+            'factura'=>$factura,
         ]); ?>
     </div>
     <div class="col-xs-9">

@@ -1,7 +1,7 @@
 <?php
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -11,14 +11,6 @@
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['id'=>'form'])?>
             <?= Html::hiddenInput('tipo',null,['id'=>'tipo']); ?>
-            <div class="form-group">
-                <?= Html::label('Cliente:','clienteNegocio',array('class'=>'control-label')); ?>
-                <?= Html::textInput('clienteNegocio',$clienteNegocio,array('class'=>'form-control')); ?>
-            </div>
-            <div class="form-group">
-                <?= Html::label('Responsable:','clienteResponsable',array('class'=>'control-label')); ?>
-                <?= Html::textInput('clienteResponsable',$clienteResponsable,array('class'=>'form-control')); ?>
-            </div>
             <div class="form-group">
                 <?= Html::label('De:','fechaStart',array('class'=>'control-label')); ?>
                 <?= DatePicker::widget([
@@ -44,6 +36,18 @@
                                                'format' => 'yyyy-mm-dd'
                                            ]
                                        ]); ?>
+            </div>
+            <div class="form-group">
+                <?= Html::label('Cliente:','clienteNegocio',array('class'=>'control-label')); ?>
+                <?= Html::textInput('clienteNegocio',$clienteNegocio,array('class'=>'form-control')); ?>
+            </div>
+            <div class="form-group">
+                <?= Html::label('Responsable:','clienteResponsable',array('class'=>'control-label')); ?>
+                <?= Html::textInput('clienteResponsable',$clienteResponsable,array('class'=>'form-control')); ?>
+            </div>
+            <div class="form-group">
+                <?= Html::label('Factura:','factura',array('class'=>'control-label')); ?>
+                <?= Html::dropDownList('factura',$factura,['C/Factura','S/Factura'],array('class'=>'form-control','prompt'=>'')); ?>
             </div>
             <?php ActiveForm::end(); ?>
             <h3>Generadores</h3>

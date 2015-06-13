@@ -3,7 +3,15 @@
 ?>
 <div class="row">
     <div class="col-xs-3">
-        <?= $this->render('forms/report',['clienteNegocio'=>$clienteNegocio,'clienteResponsable'=>$clienteResponsable,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]); ?>
+        <?= $this->render(
+            'forms/report',
+            [
+                'clienteNegocio'=>$clienteNegocio,
+                'clienteResponsable'=>$clienteResponsable,
+                'fechaStart'=>$fechaStart,
+                'fechaEnd'=>$fechaEnd,
+                'factura'=>$factura
+            ]); ?>
     </div>
     <div class="col-xs-9">
         <div id="table">
