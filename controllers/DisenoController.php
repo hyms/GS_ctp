@@ -217,7 +217,7 @@ class DisenoController extends Controller
                     $search  = new OrdenCTPSearch();
                     $ordenes = $search->search(Yii::$app->request->queryParams);
                     $ordenes->query
-                        ->andWhere(['tipoOrden' => 0, 'fk_idSucursal' => $this->idSucursal])
+                        ->andWhere(['tipoOrden' => 0, '`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere('`estado`=0 or `estado`=2');
                     $idParent = '';
                     if ($post = Yii::$app->request->post('idParent'))
@@ -241,7 +241,7 @@ class DisenoController extends Controller
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
                     $search   = new OrdenCTPSearch();
                     $ordenes  = $search->search(Yii::$app->request->queryParams);
-                    $ordenes->query->andWhere(['tipoOrden' => 1, 'fk_idSucursal' => $this->idSucursal]);
+                    $ordenes->query->andWhere(['tipoOrden' => 1, '`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal]);
                     $idParent = '';
                     if ($post = Yii::$app->request->post('idParent'))
                         $idParent = $post['idParent'];
@@ -253,6 +253,39 @@ class DisenoController extends Controller
                     return $this->render('repos', ['r' => '2', 'idParent' => $idParent, 'ordenes' => $ordenes, 'search' => $search, 'tipo' => $get['tipo'], 'detalle' => $detalle, 'orden' => $orden, 'producto' => $producto]);
                     break;
                 case 3:
+                    $sucursal = \app\models\Sucursal::findOne(Yii::$app->user->identity->fk_idSucursal);
+                    $cond = "";
+                    if(!empty($sucursal->sucursals)) {
+                        foreach ($sucursal->sucursals as $key=>$suc) {
+                            if($key>0)
+                                $cond.=" or ";
+                            $cond = $cond."`OrdenCTP`.`fk_idSucursal`=".$suc->idSucursal;
+                        }
+                    }
+                    $search  = new \app\models\OrdenCTPSearchSucursal();
+                    $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $ordenes->query
+                        ->andWhere(['tipoOrden' => 0])
+                        ->andWhere('`estado`=0 or `estado`=2')
+                        ->andWhere($cond);
+                    $idParent = '';
+                    if ($post = Yii::$app->request->post('idParent'))
+                        $idParent = $post['idParent'];
+                    $datos = $this->ordenes($get, 2, $idParent);
+                    if (!is_array($datos))
+                        return $this->redirect(['reposicion', 'op' => 'list']);
+                    $orden   = $datos['orden'];
+                    $detalle = $datos['detalle'];
+                    return $this->render('repos', [
+                        'r'        => '1',
+                        'idParent' => $idParent,
+                        'ordenes'  => $ordenes,
+                        'search'   => $search,
+                        'tipo'     => $get['tipo'],
+                        'detalle'  => $detalle,
+                        'orden'    => $orden,
+                    ]);
+                case 5:
                     $idParent = '';
                     if ($post = Yii::$app->request->post('idParent'))
                         $idParent = $post['idParent'];

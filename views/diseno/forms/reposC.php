@@ -1,27 +1,10 @@
 <?php
-    use yii\helpers\Html;
-    use yii\helpers\Url;
 
 ?>
 <div class="col-xs-3">
     <div class="panel panel-default">
         <div class="panel-body">
-            <div class="form-group">
-                <?= Html::label('Seleccione Tipo de Repocicion',null,['class'=>'form-label'])?>
-                <?= Html::dropDownList('tipo',
-                                       $tipo,
-                                       [
-                                           'Nueva Reposicion',
-                                           'Reposicion de Cliente',
-                                           'Reposicion de una Interna'
-                                       ],
-                                       [
-                                           'prompt'=>'Seleccione una opcion',
-                                           'class'=>'form-control',
-                                           'onChange'=>'select(this.value,"'.Url::to(['diseno/reposicion']).'")',
-                                       ])
-                ?>
-            </div>
+            <?= $this->render('optionRepos',['tipo'=>$tipo]) ?>
         </div>
     </div>
 

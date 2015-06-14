@@ -1,11 +1,11 @@
 <?php
-    use app\assets\AppAsset;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
-    use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
-    /* @var $this \yii\web\View */
+/* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset::register($this);
@@ -40,10 +40,19 @@ AppAsset::register($this);
             }
             else
             {
+                if(Yii::$app->user->identity->role<=2)
+                {
+                    array_push($items,['label' => 'Admin', 'url' => ['/admin/index']]);
+                }
+                if(Yii::$app->user->identity->role<=2 || Yii::$app->user->identity->role>=4)
+                {
+                    array_push($items,['label' => 'Diseño', 'url' => ['/diseno/index']]);
+                }
+                if(Yii::$app->user->identity->role<=3)
+                {
+                    array_push($items,['label' => 'Venta', 'url' => ['/venta/index']]);
+                }
                 array_push($items,
-                           ['label' => 'Admin', 'url' => ['/admin/index']],
-                           ['label' => 'Diseño', 'url' => ['/diseno/index']],
-                           ['label' => 'Venta', 'url' => ['/venta/index']],
                            ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
                             'url' => ['/site/logout'],
                             'linkOptions' => ['data-method' => 'post']]

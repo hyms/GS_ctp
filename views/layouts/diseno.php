@@ -47,10 +47,12 @@ AppAsset2::register($this);
             'url'=>['/diseno/dependientes']
         ]);
     }
-    array_push($items,[
-        'label'=>'Reposiciones',
-        'url'=>['/diseno/reposicion']
-    ]);
+    if(Yii::$app->user->identity->role==4 || Yii::$app->user->identity->role<=2) {
+        array_push($items, [
+            'label' => 'Reposiciones',
+            'url' => ['/diseno/reposicion']
+        ]);
+    }
     array_push($items, Yii::$app->user->isGuest ?
         ['label' => 'Login', 'url' => ['/site/login']] :
         ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
