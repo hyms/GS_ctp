@@ -1,10 +1,10 @@
 <?php
-use app\assets\AppAsset2;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\helpers\Html;
+    use app\assets\AppAsset2;
+    use yii\bootstrap\Nav;
+    use yii\bootstrap\NavBar;
+    use yii\helpers\Html;
 
-/* @var $this \yii\web\View */
+    /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset2::register($this);
@@ -63,7 +63,8 @@ AppAsset2::register($this);
                 'linkOptions' => ['data-method' => 'post'],
                     ],
                 [
-                    'label'=>'Cambiar Contraseña'
+                    'label'=>'Cambiar Contraseña',
+                    'url'=>['diseno/user'],
                 ]
             ]
         ]);

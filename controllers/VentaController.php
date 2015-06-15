@@ -17,6 +17,7 @@ use app\models\OrdenCTPSearch;
 use app\models\Recibo;
 use app\models\ReciboSearch;
 use app\models\Sucursal;
+use app\models\User;
 use kartik\mpdf\Pdf;
 use Yii;
 use yii\data\ActiveDataProvider;
@@ -736,5 +737,23 @@ class VentaController extends Controller
                 }
             }
         }
+    }
+
+    public function actionUser()
+    {
+        $user = User::findOne(['idUser' => Yii::$app->user->id]);
+        if ($user->load(Yii::$app->request->post())) {
+            $tmp = User::findOne(['idUser' => Yii::$app->user->id]);
+            if (md5($user->password) != $tmp->password)
+                $user->password = md5($user->password);
+            if ($user->save()) {
+                Yii::$app->session->setFlash('success', 'Guardado de datos Exitoso');
+                return $this->redirect(['user']);
+            } else {
+                Yii::$app->session->setFlash('error', $user->getError());
+                return $this->redirect(['user']);
+            }
+        }
+        return $this->render('forms/user', ['model' => $user]);
     }
 }
