@@ -265,7 +265,7 @@ class VentaController extends Controller
                 }
                 else
                 {
-                    $orden->secuencia      = "";
+                    $orden->secuencia      = 0;
                     $orden->codigoServicio = "";
                 }
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
