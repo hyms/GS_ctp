@@ -55,9 +55,18 @@ AppAsset2::register($this);
     }
     array_push($items, Yii::$app->user->isGuest ?
         ['label' => 'Login', 'url' => ['/site/login']] :
-        ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-            'url' => ['/site/logout'],
-            'linkOptions' => ['data-method' => 'post']]);
+        ['label' => 'user('.Yii::$app->user->identity->username.')',
+            'items'=>[
+                [
+                'label' => 'Logout',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post'],
+                    ],
+                [
+                    'label'=>'Cambiar Contraseña'
+                ]
+            ]
+        ]);
 
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],

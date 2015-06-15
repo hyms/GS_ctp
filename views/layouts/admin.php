@@ -1,11 +1,11 @@
 <?php
-    use app\assets\AppAsset2;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
-    use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset2;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
-    /* @var $this \yii\web\View */
+/* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset2::register($this,true);
@@ -54,9 +54,18 @@ AppAsset2::register($this,true);
             ],
             Yii::$app->user->isGuest ?
                 ['label' => 'Login', 'url' => ['/site/login']] :
-                ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                    'url' => ['/site/logout'],
-                    'linkOptions' => ['data-method' => 'post']],
+                ['label' => 'user('.Yii::$app->user->identity->username.')',
+                    'items'=>[
+                        [
+                            'label' => 'Logout',
+                            'url' => ['/site/logout'],
+                            'linkOptions' => ['data-method' => 'post'],
+                        ],
+                        [
+                            'label'=>'Cambiar Contraseña'
+                        ]
+                    ]
+                ],
         ],
     ]);
     NavBar::end();
