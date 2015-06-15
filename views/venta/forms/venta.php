@@ -41,7 +41,7 @@
                         <?= Html::input('','cliente',$datoCliente,['class'=>'form-control','id'=>'cliente']) ?>
                     </div>
                     <div class="col-xs-4">
-                        <?= $form->field($orden,'cfSF',['template'=>'{input}'])->radioList(['Con Factura','Sin Factura']); ?>
+                        <?= $form->field($orden,'cfSF',['template'=>'{input}'])->checkbox()->label('Con Factura'); ?>
                     </div>
 
                 </div>

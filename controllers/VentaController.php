@@ -237,6 +237,7 @@ class VentaController extends Controller
 
         if (isset($get['id'])) {
             $orden = OrdenCTP::findOne(['idOrdenCTP' => $get['id']]);
+            if(empty($orden->fechaCobro))
             $orden->fechaCobro = date("Y-m-d H:i:s");
             $orden->fk_idUserV = yii::$app->user->id;
             $detalle           = $orden->ordenDetalles;
@@ -253,7 +254,7 @@ class VentaController extends Controller
                 $orden->load($post);
                 foreach ($detalle as $key => $item)
                     $detalle[$key]->attributes = $post['OrdenDetalle'][$key];
-                if ($orden->cfSF == 0) {
+                if ($orden->cfSF == 1) {
                     $orden->codigoServicio = SGOrdenes::codigo($this->idSucursal, 0);
                     $secuencia             = OrdenCTP::find()
                         ->select('max(secuencia) as secuencia')
@@ -261,6 +262,11 @@ class VentaController extends Controller
                         ->one();
                     $orden->secuencia      = $secuencia->secuencia + 1;
                     $orden->codigoServicio = $orden->codigoServicio.$orden->secuencia;
+                }
+                else
+                {
+                    $orden->secuencia      = "";
+                    $orden->codigoServicio = "";
                 }
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
                 $op                        = new SGOrdenes();

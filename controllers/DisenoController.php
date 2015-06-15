@@ -351,6 +351,7 @@ class DisenoController extends Controller
             $ordenes->correlativo   = SGOrdenes::correlativo($ordenes->fk_idSucursal, $tipo);
             if ($tipo != 0)
                 $ordenes->codigoServicio = SGOrdenes::codigo($ordenes->fk_idSucursal, $tipo);
+
             if (empty($ordenes->fechaGenerada))
                 $ordenes->fechaGenerada = date('Y-m-d H:i:s');
         }
