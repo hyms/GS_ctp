@@ -510,9 +510,9 @@ class VentaController extends Controller
                 $recibo->fk_idUser     = Yii::$app->user->id;
             }
             if ($get['op'] == 'i') {
-                $recibo->tipoRecibo = 0;
-            } else {
                 $recibo->tipoRecibo = 1;
+            } else {
+                $recibo->tipoRecibo = 0;
             }
 
             $post = yii::$app->request->post();
@@ -520,7 +520,7 @@ class VentaController extends Controller
                 $op   = new SGRecibo();
                 $data = $op->grabar(['recibo' => $recibo, 'caja' => Caja::findOne(['idCaja' => $this->idCaja])]);
                 if ($op->success)
-                    return $this->redirect(['venta/recibos']);
+                    return $this->redirect(['venta/caja','op'=>'recibo']);
             }
 
             return $this->renderAjax('forms/recibo', ['recibo' => $recibo]);

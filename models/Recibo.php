@@ -14,7 +14,6 @@ use Yii;
  * @property string $detalle
  * @property string $nombre
  * @property string $ciNit
- * @property double $saldo
  * @property double $monto
  * @property double $acuenta
  * @property string $fechaRegistro
@@ -44,9 +43,9 @@ class Recibo extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['codigo', 'secuencia', 'fk_idSucursal', 'detalle', 'nombre', 'ciNit', 'monto','fechaRegistro', 'fk_idUser', 'tipoRecibo', 'fk_idMovimientoCaja'], 'required'],
             [['secuencia', 'fk_idSucursal', 'fk_idUser', 'tipoRecibo', 'fk_idMovimientoCaja'], 'integer'],
-            [['saldo', 'monto', 'acuenta'], 'number'],
+            [['fk_idSucursal', 'detalle', 'nombre', 'ciNit', 'monto', 'fechaRegistro', 'fk_idUser', 'tipoRecibo', 'fk_idMovimientoCaja'], 'required'],
+            [['monto', 'acuenta'], 'number'],
             [['fechaRegistro'], 'safe'],
             [['codigo', 'codigoVenta'], 'string', 'max' => 100],
             [['detalle'], 'string', 'max' => 500],
@@ -69,7 +68,6 @@ class Recibo extends \yii\db\ActiveRecord
             'detalle' => 'Detalle',
             'nombre' => 'Nombre',
             'ciNit' => 'Ci Nit',
-            'saldo' => 'Saldo',
             'monto' => 'Monto',
             'acuenta' => 'Acuenta',
             'fechaRegistro' => 'Fecha Registro',

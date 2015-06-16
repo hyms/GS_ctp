@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -54,10 +54,10 @@
                     return (($model->tipoRecibo)?"Egreso":"Ingreso");
                 },
             ],
-            [
+            /*[
                 'header'=>'Codigo',
                 'attribute'=>'codigo',
-            ],
+            ],*/
             [
                 'header'=>'Nombre',
                 'attribute'=>'nombre',
@@ -65,6 +65,10 @@
             [
                 'header'=>'Monto',
                 'attribute'=>'monto',
+            ],
+            [
+                'header'=>'Detalle',
+                'attribute'=>'detalle',
             ],
             [
                 'header'=>'Fecha',

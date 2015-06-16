@@ -19,7 +19,7 @@ class ReciboSearch extends Recibo
         return [
             [['idRecibo', 'secuencia', 'fk_idSucursal', 'fk_idUser', 'tipoRecibo', 'fk_idMovimientoCaja'], 'integer'],
             [['codigo', 'detalle', 'nombre', 'ciNit', 'fechaRegistro', 'codigoVenta', 'observaciones'], 'safe'],
-            [['saldo', 'monto', 'acuenta'], 'number'],
+            [['monto', 'acuenta'], 'number'],
         ];
     }
 
@@ -59,7 +59,6 @@ class ReciboSearch extends Recibo
             'idRecibo' => $this->idRecibo,
             'secuencia' => $this->secuencia,
             'fk_idSucursal' => $this->fk_idSucursal,
-            'saldo' => $this->saldo,
             'monto' => $this->monto,
             'acuenta' => $this->acuenta,
             'fechaRegistro' => $this->fechaRegistro,
