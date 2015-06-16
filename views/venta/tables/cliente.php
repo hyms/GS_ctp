@@ -3,10 +3,10 @@
     use yii\helpers\Html;
 
     $columns = [
-        [
+        /*[
             'header'=>'Nit/Ci',
             'attribute'=>'nitCi',
-        ],
+        ],*/
         [
             'header' => 'Negocio',
             'attribute'=>'nombreNegocio',

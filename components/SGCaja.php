@@ -142,19 +142,21 @@ class SGCaja extends Component
                     $total += $movimiento->monto;
                     break;
                 case 4:
-                    if (isset($get['movimientos'])) {
-                        array_push($movimientosAll, $movimiento);
+                    if(!empty($movimiento->recibos)) {
+                        if (isset($get['movimientos'])) {
+                            array_push($movimientosAll, $movimiento);
+                        }
+                        if ($array || isset($get['recibos'])) {
+                            $tmp = $movimiento->recibos;
+                            array_push($recibos, $movimiento->recibos[0]);
+                        } else {
+                            if ($movimiento->recibos[0]->tipoRecibo)
+                                $recibos -= $movimiento->monto;
+                            else
+                                $recibos += $movimiento->monto;
+                        }
+                        $total += $movimiento->monto;
                     }
-                    if ($array || isset($get['recibos'])) {
-                        $tmp = $movimiento->recibos;
-                        array_push($recibos, $movimiento->recibos[0]);
-                    } else {
-                        if ($movimiento->recibos[0]->tipoRecibo)
-                            $recibos -= $movimiento->monto;
-                        else
-                            $recibos += $movimiento->monto;
-                    }
-                    $total += $movimiento->monto;
                     break;
             }
         }

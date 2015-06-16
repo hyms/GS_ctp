@@ -336,7 +336,7 @@ class VentaController extends Controller
                     $d = date("d");
                     $end = date("Y-m-d H:i:s");
 
-                    $variables = SGCaja::getSaldo($this->idCaja, $end, false, ['arqueo' => $end]);
+                    $variables = SGCaja::getSaldo($this->idCaja, $end, false, false);
 
                     return $this->render('caja',
                         [
@@ -497,8 +497,8 @@ class VentaController extends Controller
         $get = yii::$app->request->get();
         if (empty($get['op'])) {
             $search                = new ReciboSearch();
-            $search->fk_idSucursal = $this->idSucursal;
             $recibos               = $search->search(yii::$app->request->queryParams);
+            $recibos->query->andWhere(['fk_idSucursal'=>$this->idSucursal]);
             return $this->render('recibo', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
         } else {
             if (isset($get['id']))
@@ -516,13 +516,11 @@ class VentaController extends Controller
             }
 
             $post = yii::$app->request->post();
-            if (isset($post['Recibo'])) {
-                if ($recibo->load($post)) {
-                    $op   = new SGRecibo();
-                    $data = $op->grabar(['recibo' => $recibo, 'caja' => Caja::findOne(['idCaja' => $this->idCaja])]);
-                    if ($op->success)
-                        return $this->redirect(['venta/recibos']);
-                }
+            if ($recibo->load($post)) {
+                $op   = new SGRecibo();
+                $data = $op->grabar(['recibo' => $recibo, 'caja' => Caja::findOne(['idCaja' => $this->idCaja])]);
+                if ($op->success)
+                    return $this->redirect(['venta/recibos']);
             }
 
             return $this->renderAjax('forms/recibo', ['recibo' => $recibo]);

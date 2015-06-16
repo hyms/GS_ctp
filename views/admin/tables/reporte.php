@@ -15,12 +15,30 @@
             'attribute'=>'correlativo',
         ],
         [
+            'header'=>'Codigo',
+            'attribute'=>function($model){
+                if(empty($model->codigoServicio))
+                    return "";
+                return $model->codigoServicio;
+            },
+        ],
+        [
             'header'=>'Cliente',
             'attribute'=>function($model)
             {
                 if(empty($model->fkIdCliente))
                     return "";
                 return $model->fkIdCliente->nombreNegocio;
+            },
+            //'pageSummary'=>'Total',
+        ],
+        [
+            'header'=>'CAT',
+            'attribute'=>function($model)
+            {
+                if(empty($model->fkIdCliente))
+                    return "C";
+                return $model->fkIdCliente->codigoCliente;
             },
             //'pageSummary'=>'Total',
         ],
@@ -124,7 +142,17 @@
         [
             'header'=>'Saldo',
             'attribute'=>function($model){
-                return ($model->montoVenta-$model->fkIdMovimientoCaja->monto);
+                $pagos = \app\models\MovimientoCaja::find()
+                    ->where(['idParent' => $model->fk_idMovimientoCaja])
+                    ->andWhere(['tipoMovimiento' => 0])
+                    ->andWhere(['between', 'time', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 00:00:00', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 23:59:59'])
+                    ->all();
+                $total = $model->fkIdMovimientoCaja->monto;
+                foreach ($pagos as $pago) {
+                    $total += $pago->monto;
+                }
+
+                return ($model->montoVenta-$total);
             },
             'pageSummary'=>true,
         ],

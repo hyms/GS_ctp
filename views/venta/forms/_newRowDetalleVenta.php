@@ -38,7 +38,7 @@
         <td>
             <?= Html::activeTextInput($model,"[$index]resolucion",array('class'=>'form-control input-sm','id'=>'resolucion_'.$index,'readonly'=>true)); ?>
         </td>
-        <td class="col-xs-1 ".<?= ($model->hasErrors('resolucion'))?'class="has-error"':''; ?>>
+        <td class="col-xs-1 <?= ($model->hasErrors('resolucion'))?'class="has-error"':''; ?>">
             <?= Html::activeTextInput($model,"[$index]costo",array('class'=>'form-control input-sm','id'=>'costo_'.$index)); ?>
         </td>
         <td class="col-xs-1">

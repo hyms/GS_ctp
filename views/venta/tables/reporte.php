@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
@@ -18,12 +18,30 @@ $columns = [
             'attribute'=>'correlativo',
         ],
         [
+            'header'=>'Codigo',
+            'attribute'=>function($model){
+                if(empty($model->codigoServicio))
+                    return "";
+                return $model->codigoServicio;
+            },
+        ],
+        [
             'header'=>'Cliente',
             'attribute'=>function($model)
             {
                 if(empty($model->fkIdCliente))
                     return "";
                 return $model->fkIdCliente->nombreNegocio;
+            },
+            //'pageSummary'=>'Total',
+        ],
+        [
+            'header'=>'CAT',
+            'attribute'=>function($model)
+            {
+                if(empty($model->fkIdCliente))
+                    return "C";
+                return $model->fkIdCliente->codigoCliente;
             },
             //'pageSummary'=>'Total',
         ],
@@ -137,7 +155,7 @@ $columns = [
                     $total += $pago->monto;
                 }
 
-                return ($model->montoVenta-($model->fkIdMovimientoCaja->monto+$total));
+                return ($model->montoVenta-$total);
             },
             'pageSummary'=>true,
         ],

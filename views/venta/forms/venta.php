@@ -7,14 +7,14 @@
 ?>
 
     <div class="row">
-        <div class="col-xs-5">
+        <div class="col-xs-4">
             <div class="panel panel-default">
                 <div class="panel-heading"><strong class="panel-title">Clientes</strong></div>
                 <?= $this->render('../tables/cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]) ?>
             </div>
 
         </div>
-        <div class="col-xs-7">
+        <div class="col-xs-8">
             <div class="well well-sm">
                 <div class = "row">
                     <h4 class="col-xs-4"><strong>Orden de Trabajo</strong></h4>

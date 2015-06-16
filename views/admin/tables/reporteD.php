@@ -15,12 +15,30 @@
             'attribute'=>'correlativo',
         ],
         [
+            'header'=>'Codigo',
+            'attribute'=>function($model){
+                if(empty($model->codigoServicio))
+                    return "";
+                return $model->codigoServicio;
+            },
+        ],
+        [
             'header'=>'Cliente',
             'attribute'=>function($model)
             {
                 if(empty($model->fkIdCliente))
                     return "";
                 return $model->fkIdCliente->nombreNegocio;
+            },
+            //'pageSummary'=>'Total',
+        ],
+        [
+            'header'=>'CAT',
+            'attribute'=>function($model)
+            {
+                if(empty($model->fkIdCliente))
+                    return "C";
+                return $model->fkIdCliente->codigoCliente;
             },
             //'pageSummary'=>'Total',
         ],
