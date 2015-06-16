@@ -10,7 +10,7 @@ use Yii;
  * @property integer $idOrdenCTP
  * @property string $fechaGenerada
  * @property string $fechaCobro
- * @property integer $cfSF
+ * @property integer $cfSF //c/factura =1, s/factura=0
  * @property integer $tipoPago
  * @property string $fechaPlazo
  * @property string $codigoServicio

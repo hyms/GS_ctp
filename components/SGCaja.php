@@ -164,7 +164,7 @@ class SGCaja extends Component
 
         $saldos = MovimientoCaja::find()
             ->andWhere(['tipoMovimiento'=>3])
-            ->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos))])
+            ->andWhere(['<=', 'time', date("Y-m-d H:i", strtotime($fechaMovimientos))])
             ->orderBy(['time'=>SORT_DESC])
             ->one();
         if (!empty($saldos))

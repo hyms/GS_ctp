@@ -10,74 +10,73 @@
     </div>
     <div>
         <?php
-            $columns = [
-                [
-                    'header'=>'Correlativo',
-                    'attribute'=>'correlativo',
+            $columns = [];
+            array_push($columns,[
+                'header'=>'Correlativo',
+                'attribute'=>'correlativo',
+            ]);
+            array_push($columns,[
+                'header'=>'Codigo',
+                'attribute'=>'codigoServicio',
+            ]);
+            array_push($columns,[
+                'header'=>'Cliente',
+                'attribute'=>function($model){
+                    if(empty($model->fkIdCliente))
+                        return "";
+                    return $model->fkIdCliente->nombreNegocio;
+                },
+            ]);
+            array_push($columns, [
+                'header'=>'Responsable',
+                'attribute'=>'responsable',
+            ]);
+            array_push($columns, [
+                'header'=>'Fecha Generada',
+                'attribute'=>'fechaGenerada',
+            ]);
+            array_push($columns, [
+                'header'=>'Fecha Venta',
+                'attribute'=>'fechaCobro',
+            ]);
+            array_push($columns, [
+                'class'=>'kartik\grid\EditableColumn',
+                'attribute'=>'factura',
+                'editableOptions'=>[
+                    'header'=>'Factura',
+                    'inputType'=>\kartik\editable\Editable::INPUT_TEXT,
+                    'format' => \kartik\editable\Editable::FORMAT_BUTTON,
                 ],
-                [
-                    'header'=>'Codigo',
-                    'attribute'=>'codigoServicio',
-                ],
-                [
-                    'header'=>'Cliente',
-                    'attribute'=>function($model){
-                        if(empty($model->fkIdCliente))
+            ]);
+            array_push($columns, [
+                'class' => 'yii\grid\ActionColumn',
+                'template'=>'{update} {anular} {print}',
+                'buttons'=>[
+                    'update'=>function($url,$model){
+                        $options = array_merge([
+                                                   //'class'=>'btn btn-success',
+                                                   'data-original-title'=>'Modificar',
+                                                   'data-toggle'=>'tooltip',
+                                                   'title'=>''
+                                               ]);
+                        $url = Url::to(['venta/venta','id'=>$model->idOrdenCTP]);
+                        if(empty($model->fechaCierre))
+                            return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                        else
                             return "";
-                        return $model->fkIdCliente->nombreNegocio;
                     },
-                ],
-                [
-                    'header'=>'Responsable',
-                    'attribute'=>'responsable',
-                ],
-                [
-                    'header'=>'Fecha Generada',
-                    'attribute'=>'fechaGenerada',
-                ],
-                [
-                    'header'=>'Fecha Venta',
-                    'attribute'=>'fechaCobro',
-                ],
-                [
-                    'class'=>'kartik\grid\EditableColumn',
-                    'attribute'=>'factura',
-                    'editableOptions'=>[
-                        'header'=>'Factura',
-                        'inputType'=>\kartik\editable\Editable::INPUT_TEXT,
-                        'format' => \kartik\editable\Editable::FORMAT_BUTTON,
-                    ],
-                ],
-                [
-                    'class' => 'yii\grid\ActionColumn',
-                    'template'=>'{update} {anular} {print}',
-                    'buttons'=>[
-                        'update'=>function($url,$model){
-                            $options = array_merge([
-                                                       //'class'=>'btn btn-success',
-                                                       'data-original-title'=>'Modificar',
-                                                       'data-toggle'=>'tooltip',
-                                                       'title'=>''
-                                                   ]);
-                            $url = Url::to(['venta/venta','id'=>$model->idOrdenCTP]);
-                            if(empty($model->fechaCierre))
-                                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
-                            else
-                                return "";
-                        },
-                        'print'=>function($url,$model){
-                            $options = array_merge([
-                                                       //'class'=>'btn btn-success',
-                                                       'data-original-title'=>'Imprimir',
-                                                       'data-toggle'=>'tooltip',
-                                                       'title'=>''
-                                                   ]);
-                            $url = Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
-                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
-                        },
-                    ]
-                ],
-            ];
+                    'print'=>function($url,$model){
+                        $options = array_merge([
+                                                   //'class'=>'btn btn-success',
+                                                   'data-original-title'=>'Imprimir',
+                                                   'data-toggle'=>'tooltip',
+                                                   'title'=>''
+                                               ]);
+                        $url = Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
+                        return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                    },
+                ]
+            ]);
             echo GridView::widget([
                                       'dataProvider'=> $orden,
                                       'filterModel' => $search,

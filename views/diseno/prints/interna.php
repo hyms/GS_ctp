@@ -1,4 +1,4 @@
-<div style="background-color: #ffffff; color: #000000; width:752px;height:306px;">
+<div style="width:593px; position: relative; float: left;">
     <div class="col-xs-12">
         <div class="row">
             <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?= "Orden Interna";?></strong></h3>
@@ -68,6 +68,29 @@
             <div class="row">
                 <div class="col-xs-12"><strong>Obs:</strong> <?= $orden->observaciones;?></div>
             </div>
+        </div>
+    </div>
+</div>
+<div style="width:123px; position: relative; float: right;">
+    <div class="row" style="font-size: 10.5px">
+        <div class="col-xs-12 row text-center"><h3><strong><?= $orden->codigoServicio;?></strong></h3></div>
+        <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
+        <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
+        <div class="col-xs-12 row"><span class="row"><strong><?= "I.IMP:";?></strong> <span class="col-xs-12"><?= $orden->codDependiente;?></span></div>
+        <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></span></span></div>
+        <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
+        <div class="col-xs-12 row">
+            <?php foreach ($orden->ordenDetalles as $producto){ ?>
+                <div class="col-xs-12" style="border: 1.5px solid;">
+                    <?= $producto->fkIdProductoStock->fkIdProducto->formato;?> /
+                    <?= $producto->cantidad; ?> /
+                    <?= (($producto->C)?"C":"").(($producto->M)?"M":"").(($producto->Y)?"Y":"").(($producto->K)?"K":"");?>
+                    <br>
+                    <?= $producto->trabajo;?> /
+                    <?= $producto->pinza;?> /
+                    <?= $producto->resolucion;?>
+                </div>
+            <?php }?>
         </div>
     </div>
 </div>

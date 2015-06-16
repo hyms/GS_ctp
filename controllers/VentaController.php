@@ -51,7 +51,9 @@ class VentaController extends Controller
                 $this->idCaja = $caja->idCaja;
 
             $arqueo = MovimientoCaja::find()
-                ->andWhere(['<', 'time', date("Y-m-d") . ' 00:59:59'])
+                ->andWhere(['<', 'time', date("Y-m-d") . ' 23:59:59'])
+                ->orderBy(['time'=>SORT_DESC])
+                //->andWhere(['tipoMovimiento'=>3])
                 ->one();
             if (!empty($arqueo)) {
                 if (empty($arqueo->fechaCierre)) {
@@ -167,29 +169,31 @@ class VentaController extends Controller
                     if (Yii::$app->request->post('hasEditable')) {
                         $idOrdenCTP       = Yii::$app->request->post('editableKey');
                         $model            = OrdenCTP::findOne(['idOrdenCTP' => $idOrdenCTP]);
-                        $out              = Json::encode(['output' => '', 'message' => '']);
-                        $post             = [];
-                        $posted           = current($_POST['OrdenCTP']);
-                        $post['OrdenCTP'] = $posted;
-                        // load model like any single model validation
-                        if ($model->load($post)) {
-                            $model->save();
-                            $output = '';
-                            // specific use case where you need to validate a specific
-                            // editable column posted when you have more than one
-                            // EditableColumn in the grid view. We evaluate here a
-                            // check to see if buy_amount was posted for the Book model
-                            if (isset($posted['factura'])) {
-                                $output = $model->factura;
+                        if($model->cfSF) {
+                            $out              = Json::encode(['output' => '', 'message' => '']);
+                            $post             = [];
+                            $posted           = current($_POST['OrdenCTP']);
+                            $post['OrdenCTP'] = $posted;
+                            // load model like any single model validation
+                            if ($model->load($post)) {
+                                $model->save();
+                                $output = '';
+                                // specific use case where you need to validate a specific
+                                // editable column posted when you have more than one
+                                // EditableColumn in the grid view. We evaluate here a
+                                // check to see if buy_amount was posted for the Book model
+                                if (isset($posted['factura'])) {
+                                    $output = $model->factura;
+                                }
+                                // similarly you can check if the name attribute was posted as well
+                                // if (isset($posted['name'])) {
+                                //   $output =  ''; // process as you need
+                                // }
+                                $out = Json::encode(['output' => $output, 'message' => '']);
                             }
-                            // similarly you can check if the name attribute was posted as well
-                            // if (isset($posted['name'])) {
-                            //   $output =  ''; // process as you need
-                            // }
-                            $out = Json::encode(['output' => $output, 'message' => '']);
+                            echo $out;
+                            return;
                         }
-                        echo $out;
-                        return;
                     }
 
                     return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes, 'search' => $searchModel]);
