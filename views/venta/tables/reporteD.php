@@ -213,7 +213,6 @@
                               // set your toolbar
                               'toolbar' =>  [
                                   '{export}',
-                                  '{toggleData}',
                               ],
                               // set export properties
                               'export' => [

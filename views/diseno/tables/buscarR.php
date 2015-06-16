@@ -1,7 +1,8 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use app\components\SGOperation;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -13,12 +14,20 @@ use yii\helpers\Url;
             $columns = [
                 [
                     'header'=>'Correlativo',
-                    'value'=>'correlativo',
+                    'attribute'=>'correlativo',
                 ],
                 [
                     'header'=>'Tipo Reposicion',
+                    'attribute'=>'tipoRepos',
+                    'filterType'=>GridView::FILTER_SELECT2,
+                    'filter'=>SGOperation::tiposReposicion(),
+                    'filterWidgetOptions'=>[
+                        'pluginOptions'=>['allowClear'=>true],
+                    ],
+                    'filterInputOptions'=>['placeholder'=>'Seleccionar'],
+                    'format'=>'raw',
                     'value'=>function($model) {
-                        $dato = \app\components\SGOperation::tiposReposicion($model->tipoRepos);
+                        $dato = SGOperation::tiposReposicion($model->tipoRepos);
                         if (!is_array($dato))
                             return $dato;
                         return "";
@@ -26,6 +35,7 @@ use yii\helpers\Url;
                 ],
                 [
                     'header'=>'Fecha',
+                    'attribute'=>'fechaGenerada',
                     'value'=>function($model)
                     {
                         return date("Y-m-d H:i",strtotime($model->fechaGenerada));
@@ -64,7 +74,7 @@ use yii\helpers\Url;
 
             echo GridView::widget([
                                       'dataProvider'=> $orden,
-                                      //'filterModel' => $searchModel,
+                                      'filterModel' => $search,
                                       'columns' => $columns,
                                       'responsive'=>true,
                                       'hover'=>true

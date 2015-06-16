@@ -1,21 +1,21 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
         [
             'header'=>'Factura',
             'filterType'=>GridView::FILTER_SELECT2,
-            'filter'=>["C/Factura","S/Factura",],
+            'filter'=>["S/Factura","C/Factura"],
             'filterWidgetOptions'=>[
                 'pluginOptions'=>['allowClear'=>true],
             ],
             'filterInputOptions'=>['placeholder'=>'Seleccionar'],
             'format'=>'raw',
             'value'=>function($model) {
-                return (($model->cfSF) ? "S/Factura" : "C/Factura");
+                return (($model->cfSF) ? "C/Factura" : "S/Factura");
             },
             'attribute'=>'cfSF',
         ],

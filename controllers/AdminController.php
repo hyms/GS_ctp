@@ -315,9 +315,7 @@ class AdminController extends Controller
                     }
                     $data = new ArrayDataProvider([
                         'allModels' => $venta,
-                        'pagination' => [
-                            'pageSize' => 20,
-                        ],
+                        'pagination' => false,
                     ]);
                     $r = "deuda";
                 } else {
@@ -347,6 +345,7 @@ class AdminController extends Controller
                     //$data = $venta->all();
                     $data = new ActiveDataProvider([
                         'query' => $venta,
+                        'pagination' => false,
                     ]);
                     $r = "table";
                 }
@@ -396,7 +395,11 @@ class AdminController extends Controller
                     if (isset($post['tipoOrden']) && $post['tipoOrden'] != "")
                         $ordenes->andWhere(['tipoOrden' => $post['tipoOrden']]);
                     $ordenes = $ordenes->all();
-                    $placas  = ProductoStock::find()->andWhere(['fk_idSucursal' => $post['sucursal']])->all();
+                    $placas  = ProductoStock::find()
+                        ->joinWith('fkIdProducto')
+                        ->andWhere(['fk_idSucursal' => $post['sucursal']])
+                        ->orderBy(['formato'=>SORT_ASC,'dimension'=>SORT_ASC])
+                        ->all();
                     $tipo    = [
                         0 => "Orden de Trabajo",
                         1 => "Orden Interna",
@@ -438,9 +441,7 @@ class AdminController extends Controller
                     }
                     $data = new ArrayDataProvider([
                                                       'allModels'  => $data,
-                                                      'pagination' => [
-                                                          'pageSize' => 20,
-                                                      ],
+                                                      'pagination' => false,
                                                   ]);
                     $r    = "all";
                 }

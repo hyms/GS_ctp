@@ -79,16 +79,19 @@ class DisenoController extends Controller
     {
         $notasC = Notas::find()->andWhere(['is', 'fk_idUserVisto', null]);
         $notasC->andWhere(['tipoNota' => 0]);
+        $notasC->andWhere(['fk_idSucursal' => $this->idSucursal]);
         $data1  = new ActiveDataProvider([
                                              'query' => $notasC,
                                          ]);
         $notasI = Notas::find()->andWhere(['is', 'fk_idUserVisto', null]);
         $notasI->andWhere(['tipoNota' => 1]);
+        $notasC->andWhere(['fk_idSucursal' => $this->idSucursal]);
         $data2  = new ActiveDataProvider([
                                              'query' => $notasI,
                                          ]);
         $notasR = Notas::find()->andWhere(['is', 'fk_idUserVisto', null]);
         $notasR->andWhere(['tipoNota' => 2]);
+        $notasC->andWhere(['fk_idSucursal' => $this->idSucursal]);
         $data3 = new ActiveDataProvider([
                                             'query' => $notasR,
                                         ]);
@@ -146,6 +149,7 @@ class DisenoController extends Controller
             }
         }
         $notas = Notas::find()->andWhere(['is', 'fk_idUserVisto', null]);
+        $notas->andWhere(['fk_idSucursal' => $this->idSucursal]);
         $notas->andWhere(['tipoNota' => 0]);
         $data = new ActiveDataProvider([
                                            'query' => $notas,
@@ -194,6 +198,7 @@ class DisenoController extends Controller
         }
         $notas = Notas::find()->andWhere(['is', 'fk_idUserVisto', null]);
         $notas->andWhere(['tipoNota' => 1]);
+        $notas->andWhere(['fk_idSucursal' => $this->idSucursal]);
         $data = new ActiveDataProvider([
                                            'query' => $notas,
                                        ]);
@@ -307,15 +312,14 @@ class DisenoController extends Controller
                     ]);
 
                 case 'list':
-                    $query = OrdenCTP::find()
-                        ->andWhere(['fk_idSucursal' => $this->idSucursal])
+                    $search = new OrdenCTPSearch();
+                    $ordenes = $search->search(Yii::$app->request->getQueryParams());
+                    $ordenes->query
+                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere(['tipoOrden' => 2])
                         ->orderBy(['fechaGenerada' => SORT_DESC]);
 
-                    $ordenes = new ActiveDataProvider([
-                                                          'query' => $query,
-                                                      ]);
-                    return $this->render('repos', ['r' => 'list', 'orden' => $ordenes]);
+                    return $this->render('repos', ['r' => 'list', 'orden' => $ordenes,'search'=>$search]);
                     break;
                 case 'nota':
                     $search = new NotasSearch();
@@ -330,6 +334,7 @@ class DisenoController extends Controller
         }
         $notas = Notas::find()
             ->andWhere(['is', 'fk_idUserVisto', null])
+            ->andWhere(['fk_idSucursal' => $this->idSucursal])
             ->andWhere(['tipoNota' => 2]);
         $data  = new ActiveDataProvider([
                                             'query' => $notas,

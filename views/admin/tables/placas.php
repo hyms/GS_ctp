@@ -13,7 +13,11 @@
             'pageSummary'=>'Total',
         ]
     ];
-    $placas = ProductoStock::find()->where(['fk_idSucursal'=>$sucursal])->all();
+    $placas = ProductoStock::find()
+        ->joinWith('fkIdProducto')
+        ->andWhere(['fk_idSucursal' => $sucursal])
+        ->orderBy(['formato'=>SORT_ASC,'dimension'=>SORT_ASC])
+        ->all();
     foreach($placas as $placa) {
         array_push($columns, [
             'attribute' => $placa->fkIdProducto->formato,
