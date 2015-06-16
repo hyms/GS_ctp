@@ -51,7 +51,7 @@ class VentaController extends Controller
                 $this->idCaja = $caja->idCaja;
 
             $arqueo = MovimientoCaja::find()
-                ->andWhere(['<', 'time', date("Y-m-d") . ' 23:59:59'])
+                ->andWhere(['<', 'time', date("Y-m-d", mktime(23,0,0,date('m'),date('d')-1,date('Y')))])
                 ->orderBy(['time'=>SORT_DESC])
                 //->andWhere(['tipoMovimiento'=>3])
                 ->one();
@@ -624,7 +624,7 @@ class VentaController extends Controller
                         if (!empty($post['clienteResponsable'])) {
                             $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
                         }
-                        if (!empty($post['factura'])) {
+                        if ($post['factura']!="") {
                             $orden->andWhere(['cfSF' => $post['factura']]);
                         }
                         $orden = $orden->one();
@@ -650,7 +650,7 @@ class VentaController extends Controller
                     if (!empty($post['clienteResponsable'])) {
                         $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
                     }
-                    if (!empty($post['factura'])) {
+                    if ($post['factura']!="") {
                         $venta->andWhere(['cfSF' => $post['factura']]);
                     }
                     if ($post['tipo'] == "v")

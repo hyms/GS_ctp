@@ -1,7 +1,7 @@
 <?php
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -47,7 +47,7 @@ use yii\helpers\Html;
             </div>
             <div class="form-group">
                 <?= Html::label('Factura:','factura',array('class'=>'control-label')); ?>
-                <?= Html::dropDownList('factura',$factura,['C/Factura','S/Factura'],array('class'=>'form-control','prompt'=>'')); ?>
+                <?= Html::dropDownList('factura',$factura,['S/Factura','C/Factura'],array('class'=>'form-control','prompt'=>'')); ?>
             </div>
             <?php ActiveForm::end(); ?>
             <h3>Generadores</h3>

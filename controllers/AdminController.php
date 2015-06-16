@@ -306,7 +306,7 @@ class AdminController extends Controller
                         if (!empty($post['clienteResponsable'])) {
                             $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
                         }
-                        if (!empty($post['factura'])) {
+                        if ($post['factura']!="") {
                             $orden->andWhere(['cfSF' => $post['factura']]);
                         }
                         $orden = $orden->one();
@@ -332,7 +332,7 @@ class AdminController extends Controller
                     if (!empty($post['clienteResponsable'])) {
                         $venta->andWhere(['like','cliente.nombreResponsable' , '%'.$post['clienteResponsable'].'%']);
                     }
-                    if (!empty($post['factura'])) {
+                    if ($post['factura']!="") {
                         $venta->andWhere(['cfSF' => $post['factura']]);
                     }
                     if ($post['tipo'] == "v")
