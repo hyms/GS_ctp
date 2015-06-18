@@ -497,8 +497,8 @@ class VentaController extends Controller
                                // enhanced bootstrap css built by Krajee for mPDF formatting
                                'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
                                // set mPDF properties on the fly
-                               'marginLeft'   => 10, // margin_left. Sets the page margins for the new document.
-                               'marginRight'  => 10, // margin_right
+                               'marginLeft'   => 9, // margin_left. Sets the page margins for the new document.
+                               'marginRight'  => 9, // margin_right
                                'marginTop'    => 8, // margin_top
                                'marginBottom' => 8, // margin_bottom
                                'marginHeader' => 9, // margin_header
