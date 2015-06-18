@@ -11,7 +11,7 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= ((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:"")."(".$orden->responsable.")"; ?></div>
+                <div class="col-xs-7"><strong><?= "CLIENTE:";?></strong> <?= ((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:$orden->responsable)." - ".$orden->telefono; ?></div>
                 <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:"";?></div>
             </div>
 
@@ -108,7 +108,7 @@
             <div class="col-xs-12 row text-center"><h3><strong><?= $orden->correlativo;?></strong></h3></div>
             <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
             <div class="col-xs-12 row text-center"><h4><strong><?= $orden->codigoServicio;?></strong></h4></div>
-            <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:"";?></span></div>
+            <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= ((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:$orden->responsable);?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "RESP:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
             <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></span></span></div>
             <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>

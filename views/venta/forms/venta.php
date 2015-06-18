@@ -105,8 +105,16 @@
 
                 <div class="form-group">
                     <div class="text-center">
-                        <?php echo Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
-                        <?php echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
+                        <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
+                        <?php
+                            $hora = strtotime($orden->fechaCobro)+600;
+                            if($hora<=strtotime(date("Y-m-d H:i:s"))) {
+                                echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print', 'id' => 'save'));
+                            }else {
+                                echo Html::hiddenInput('anular','1');
+                                echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'save'));
+                            }
+                        ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>

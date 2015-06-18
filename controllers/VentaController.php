@@ -265,17 +265,28 @@ class VentaController extends Controller
                         ->andWhere(['fk_idSucursal' => $this->idSucursal, 'tipoOrden' => 0])
                         ->one();
                     $orden->secuencia      = $secuencia->secuencia + 1;
-                    $orden->codigoServicio = $orden->codigoServicio.$orden->secuencia;
-                }
-                else
-                {
+                    $orden->codigoServicio = $orden->codigoServicio . $orden->secuencia;
+                } else {
                     $orden->secuencia      = 0;
                     $orden->codigoServicio = "";
                 }
+
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
                 $op                        = new SGOrdenes();
                 $op->observacionMovimiento = "Orden CTP";
-                $data                      = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true);
+                if (isset($post['anular'])) {
+                    $monto             = 0;
+                    $orden->montoVenta = 0;
+                    if (!empty($orden->montoDescuento))
+                        $orden->montoDescuento = 0;
+                    foreach ($detalle as $key => $item) {
+                        $detalle[$key]->costo     = 0;
+                        $detalle[$key]->adicional = 0;
+                    }
+                    $data = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true, true);
+                } else {
+                    $data = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true);
+                }
                 if ($op->success)
                     return $this->redirect(['venta/orden', 'op' => 'buscar', 'print' => $data['orden']->idOrdenCTP]);
 

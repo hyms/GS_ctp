@@ -53,6 +53,10 @@ AppAsset2::register($this);
             'url' => ['/diseno/reposicion']
         ]);
     }
+        array_push($items, [
+            'label' => 'Clientes',
+            'url' => ['/diseno/clientes']
+        ]);
     array_push($items, Yii::$app->user->isGuest ?
         ['label' => 'Login', 'url' => ['/site/login']] :
         ['label' => 'user('.Yii::$app->user->identity->username.')',

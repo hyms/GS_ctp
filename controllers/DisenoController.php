@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\components\SGOrdenes;
 use app\components\SGProducto;
 use app\models\Cliente;
+use app\models\ClienteSearch;
 use app\models\Notas;
 use app\models\NotasSearch;
 use app\models\OrdenCTP;
@@ -590,5 +591,14 @@ class DisenoController extends Controller
             }
         }
         return $this->render('forms/user', ['model' => $user]);
+    }
+
+    public function actionClientes()
+    {
+        $search   = new ClienteSearch();
+        $clientes = $search->search(Yii::$app->request->getQueryParams());
+        $clientes->query
+            ->andWhere(['fk_idSucursal' => $this->idSucursal]);
+        return $this->render('tables/clientes', ['clientes' => $clientes, 'search' => $search]);
     }
 }
