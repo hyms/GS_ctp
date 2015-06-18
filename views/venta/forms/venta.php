@@ -107,14 +107,14 @@
                     <div class="text-center">
                         <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
                         <?php
-                            $hora = strtotime($orden->fechaCobro)+600;
-                            if($hora<=strtotime(date("Y-m-d H:i:s"))) {
+                            $hora = strtotime($orden->fechaCobro)+1200; //20 mins para espera de los botones
+                            if(strtotime(date("Y-m-d H:i:s"))<=$hora) {
                                 echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print', 'id' => 'save'));
-                            }else {
-                                echo Html::hiddenInput('anular','1');
-                                echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'save'));
+                                echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Retorno', "#", array('class' => 'btn btn-info hidden-print', 'id' => 'reenviar'));
                             }
-                        ?>
+                            echo Html::hiddenInput('anular','0',['id'=>'anular']);
+                            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller'));
+						?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>
@@ -124,6 +124,7 @@
 <?= $this->render('../scripts/operaciones') ?>
 <?= $this->render('../scripts/totalVenta') ?>
 <?= $this->render('../scripts/detalleVenta') ?>
+<?= $this->render('../scripts/anular') ?>
 <?= $this->render('../scripts/save') ?>
 <?= $this->render('../scripts/reset') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>

@@ -155,7 +155,7 @@ class VentaController extends Controller
                         ->andWhere(['estado' => 1])
                         ->andWhere(['fk_idSucursal' => $this->idSucursal])
                         ->andWhere(['tipoOrden' => 0])
-                        ->orderBy(['secuencia' => SORT_ASC]);
+                        ->orderBy(['secuencia' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'pendiente', 'orden' => $ordenes]);
                     break;
                 case "buscar":
@@ -274,7 +274,7 @@ class VentaController extends Controller
                 $monto                     = (!empty($post['monto'])) ? $post['monto'] : 0;
                 $op                        = new SGOrdenes();
                 $op->observacionMovimiento = "Orden CTP";
-                if (isset($post['anular'])) {
+                if ($post['anular']>0) {
                     $monto             = 0;
                     $orden->montoVenta = 0;
                     if (!empty($orden->montoDescuento))
@@ -283,7 +283,7 @@ class VentaController extends Controller
                         $detalle[$key]->costo     = 0;
                         $detalle[$key]->adicional = 0;
                     }
-                    $data = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true, true);
+                    $data = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true, $post['anular']);
                 } else {
                     $data = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true);
                 }

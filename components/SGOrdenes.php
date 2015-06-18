@@ -76,9 +76,13 @@ class SGOrdenes extends Component
                 $data['orden']->estado   = 0;
                 $data['orden']->tipoPago = 0;
             }
-            if ($anular) {
-                $data['orden']->estado            = (-1);
-                $data['orden']->observacionesCaja = "ANULADO " . $data['orden']->observacionesCaja;
+            if ($anular!=false) {
+                if ($anular == 1) {
+                    $data['orden']->estado = (-1);
+                    $data['orden']->observacionesCaja = "ANULADO " . $data['orden']->observacionesCaja;
+                }
+                if ($anular == 2)
+                    $data['orden']->estado = 1;
             }
 
             $data['caja']->monto += $movimientoCaja->monto;
