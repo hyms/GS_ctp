@@ -51,7 +51,7 @@ class VentaController extends Controller
                 $this->idCaja = $caja->idCaja;
 
             $arqueo = MovimientoCaja::find()
-                ->andWhere(['<', 'time', date("Y-m-d", mktime(23,0,0,date('m'),date('d')-1,date('Y')))])
+                ->andWhere(['<=', 'time', date("Y-m-d H:i:s", mktime(23,59,59,date('m'),date('d')-1,date('Y')))])
                 ->orderBy(['time'=>SORT_DESC])
                 //->andWhere(['tipoMovimiento'=>3])
                 ->one();
