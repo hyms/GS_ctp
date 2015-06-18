@@ -33,7 +33,8 @@
         ],
         [
             'header'=>'Nombre',
-            'attribute'=>function($model)
+            'attribute'=>'nombreUsuario',
+            'value'=>function($model)
             {
                 return $model->fkIdUser->nombre." ".$model->fkIdUser->apellido;
             }

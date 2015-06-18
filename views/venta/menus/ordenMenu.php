@@ -14,10 +14,10 @@
                                      'label'=>'Buscar',
                                      'url'=>['venta/orden','op'=>'buscar']
                                  ],
-                                 [
+                                 /*[
                                      'label'=>'Historial Ventas',
                                      'url'=>['venta/orden','op'=>'diario']
-                                 ],
+                                 ],*/
                                  [
                                      'label'=>'Deudores',
                                      'url'=>['venta/orden','op'=>'deuda']

@@ -12,8 +12,10 @@ use app\models\Cliente;
 use app\models\ClienteSearch;
 use app\models\MovimientoCaja;
 use app\models\MovimientoCajaSearch;
+use app\models\MovimientoCajaSearchUser;
 use app\models\OrdenCTP;
 use app\models\OrdenCTPSearch;
+use app\models\OrdenCTPSearchCliente;
 use app\models\Recibo;
 use app\models\ReciboSearch;
 use app\models\Sucursal;
@@ -155,17 +157,19 @@ class VentaController extends Controller
                         ->andWhere(['estado' => 1])
                         ->andWhere(['fk_idSucursal' => $this->idSucursal])
                         ->andWhere(['tipoOrden' => 0])
-                        ->orderBy(['secuencia' => SORT_DESC]);
+                        ->orderBy(['fechaGenerada' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'pendiente', 'orden' => $ordenes]);
                     break;
                 case "buscar":
-                    $searchModel = new OrdenCTPSearch();
+                    $searchModel = new OrdenCTPSearchCliente();
                     $ordenes     = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
                         ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere('`estado`=0 or `estado`=2')
+                        ->andWhere(['like','fechaCobro',date("Y-m-d")])
                         ->andWhere(['tipoOrden' => 0])
                         ->orderBy(['fechaCobro' => SORT_DESC]);
+
                     if (Yii::$app->request->post('hasEditable')) {
                         $idOrdenCTP       = Yii::$app->request->post('editableKey');
                         $model            = OrdenCTP::findOne(['idOrdenCTP' => $idOrdenCTP]);
@@ -209,7 +213,7 @@ class VentaController extends Controller
                     break;
 
                 case "deuda":
-                    $searchModel = new OrdenCTPSearch();
+                    $searchModel = new OrdenCTPSearchCliente();
                     $ordenes     = $searchModel->search(Yii::$app->request->getQueryParams());
                     $ordenes->query
                         ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
@@ -310,7 +314,7 @@ class VentaController extends Controller
         if (isset($get['op'])) {
             switch ($get['op']) {
                 case "chica":
-                    $search = new MovimientoCajaSearch();
+                    $search = new MovimientoCajaSearchUser();
                     $cchica = $search->search(yii::$app->request->queryParams);
                     $cchica->query
                         ->andWhere(['tipoMovimiento' => 2])
@@ -328,7 +332,7 @@ class VentaController extends Controller
                     return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                     break;
                 case "arqueos":
-                    $search = new MovimientoCajaSearch();
+                    $search = new MovimientoCajaSearchUser();
                     $arqueos = $search->search(Yii::$app->request->queryParams);
                     $arqueos->query
                         ->andWhere(['tipoMovimiento' => 3])

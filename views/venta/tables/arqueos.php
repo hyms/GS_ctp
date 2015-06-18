@@ -6,6 +6,7 @@
     $columns = [
         [
             'header'=>'Usuario',
+            'attribute'=>'nombreUsuario',
             'value'=>function($model){
                 return $model->fkIdUser->nombre." ".$model->fkIdUser->apellido;
             },

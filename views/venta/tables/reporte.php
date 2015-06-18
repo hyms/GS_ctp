@@ -175,6 +175,32 @@
             'header'=>'Fecha',
             'value'=>'fechaCobro',
         ],
+        [
+            'class'=>'kartik\grid\ActionColumn',
+            'template'=>'{print}',
+            'buttons'=>[
+                /*'update'=>function($url,$model){
+                    $options = array_merge([
+                                               //'class'=>'btn btn-success',
+                                               'data-original-title'=>'Modificar',
+                                               'data-toggle'=>'tooltip',
+                                               'title'=>''
+                                           ]);
+                    $url = Url::to(['venta/venta','id'=>$model->idOrdenCTP]);
+                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                },*/
+                'print'=>function($url,$model){
+                    $options = array_merge([
+                                               //'class'=>'btn btn-success',
+                                               'data-original-title'=>'Imprimir',
+                                               'data-toggle'=>'tooltip',
+                                               'title'=>''
+                                           ]);
+                    $url = \yii\helpers\Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
+                    return \yii\helpers\Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                },
+            ]
+        ],
     ];
     echo GridView::widget([
                               'dataProvider' => $data,

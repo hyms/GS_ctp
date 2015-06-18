@@ -21,7 +21,8 @@
                 ],
                 [
                     'header'=>'Cliente',
-                    'attribute'=>function($model){
+                    'attribute'=>'nombreCliente',
+                    'value'=>function($model){
                         if(empty($model->fkIdCliente))
                             return "";
                         return $model->fkIdCliente->nombreNegocio;

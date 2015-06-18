@@ -12,7 +12,8 @@
         $columns=[
             [
                 'header'=>'Orden',
-                'attribute'=>function($model)
+                'attribute'=>'orden',
+                'value'=>function($model)
                 {
                     if(empty($model->idParent0))
                         return "";
@@ -21,7 +22,8 @@
             ],
             [
                 'header'=>'Cliente',
-                'attribute'=>function($model)
+                //'attribute'=>'cliente',
+                'value'=>function($model)
                 {
                     if(empty($model->idParent0))
                         return "";
@@ -33,7 +35,8 @@
             ],
             [
                 'header'=>'Responsable',
-                'attribute'=>function($model)
+                'attribute'=>'responsable',
+                'value'=>function($model)
                 {
                     if(empty($model->idParent0))
                         return "";
@@ -56,7 +59,7 @@
             ],
             [
                 'header'=>'A/C',
-                'attribute'=>'monto',
+                'value'=>'monto',
             ],
             [
                 'header'=>'Saldo',

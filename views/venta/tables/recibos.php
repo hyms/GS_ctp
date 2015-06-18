@@ -44,10 +44,19 @@
     $columns = [
         [
             'header'=>'Tipo',
-            'attribute'=>function($model){
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter'=>["Ingreso","Egreso"],
+            'filterWidgetOptions'=>[
+                'pluginOptions'=>['allowClear'=>true],
+            ],
+            'filterInputOptions'=>['placeholder'=>'Seleccionar'],
+            'format'=>'raw',
+            'value'=>function($model) {
                 return (($model->tipoRecibo)?"Egreso":"Ingreso");
             },
+            'attribute'=>'tipoRecibo',
         ],
+
         /*[
             'header'=>'Codigo',
             'attribute'=>'codigo',
