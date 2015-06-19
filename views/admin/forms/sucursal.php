@@ -21,9 +21,6 @@
     <div class="col-xs-4">
         <?= $form->field($model, 'central')->checkbox() ?>
     </div>
-    <div class="col-xs-4">
-        <?= $form->field($model, 'independiente')->checkbox() ?>
-    </div>
     <div class="col-xs-6">
         <?= $form->field($model, 'fk_idParent')->dropDownList(ArrayHelper::map(($model->isNewRecord)?\app\models\Sucursal::find()->all():\app\models\Sucursal::find()->where(['!=','idSucursal',$model->idSucursal])->all(),'idSucursal','nombre'),['prompt'=>''])->label('Depende de'); ?>
     </div>

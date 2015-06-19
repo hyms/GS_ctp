@@ -51,9 +51,9 @@
             </div>
             <?php ActiveForm::end(); ?>
             <h3>Generadores</h3>
-            <?= Html::a('Reporte de Ventas','#',array('class'=>'list-group-item','onclick'=>'report("v")')); ?>
-            <?= Html::a('Reporte de Deudores','#',array('class'=>'list-group-item','onclick'=>'report("d")')); ?>
-            <?= Html::a('Reporte de Pagos de Deudores','#',array('class'=>'list-group-item','onclick'=>'report("pd")')); ?>
+            <?= Html::a('Reporte de Ventas','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("v")')); ?>
+            <?= Html::a('Reporte de Deudores','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("d")')); ?>
+            <?= Html::a('Reporte de Pagos de Deudores','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("pd")')); ?>
         </div>
     </div>
 

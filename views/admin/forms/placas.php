@@ -66,7 +66,7 @@
             </div>
             <?php ActiveForm::end(); ?>
             <h3>Generadores</h3>
-            <?= Html::a('Movimiento de Placas','#',array('class'=>'list-group-item','onclick'=>'report("a")')); ?>
+            <?= Html::a('Movimiento de Placas','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("a")')); ?>
             <?php //Html::a('Movimiento por Formato','#',array('class'=>'list-group-item','onclick'=>'report("f")')); ?>
         </div>
     </div>
