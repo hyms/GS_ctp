@@ -471,7 +471,7 @@ class VentaController extends Controller
                         ->one();
                     if (empty($arqueo))
                         $arqueo = new MovimientoCaja();
-                    $variables = SGCaja::getSaldo($this->idCaja, $arqueoTmp->time, false, ['recibos' => true, 'arqueo' => $arqueoTmp->fechaCierre]);
+                    $variables = SGCaja::getSaldo($this->idCaja, $arqueoTmp->time, false, ['arqueo' => $arqueoTmp->fechaCierre]);
                     $content   = $this->renderPartial('prints/registroDiario',
                                                       array(
                                                           'saldo'   => $arqueo->saldoCierre,

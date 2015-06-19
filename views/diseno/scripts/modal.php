@@ -1,8 +1,8 @@
 <?php
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
 
-    Modal::begin([
+Modal::begin([
                      'id'=>'viewModal',
                      'footer'=>Html::a(
                              'Guardar',
@@ -25,8 +25,13 @@
     Modal::end();
 
     $script = <<<JS
+var isProcessing = false;
 function formSubmit()
 {
+    if(isProcessing){
+            return;
+        }
+        isProcessing = true;
     data=$("#form").serialize();
     $.ajax({
         type: "POST",

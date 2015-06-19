@@ -72,7 +72,7 @@ class SGCaja extends Component
         if ($array || isset($get['recibos']))
             $recibos = array();
         else
-            $recibos = 0;
+            $recibos = [0,0];
 
         if ($array || isset($get['cajas']))
             $cajas = array();
@@ -151,9 +151,9 @@ class SGCaja extends Component
                             array_push($recibos, $movimiento->recibos[0]);
                         } else {
                             if ($movimiento->recibos[0]->tipoRecibo)
-                                $recibos -= $movimiento->monto;
+                                $recibos[1]+=$movimiento->monto;
                             else
-                                $recibos += $movimiento->monto;
+                                $recibos[0]+=$movimiento->monto;
                         }
                         $total += $movimiento->monto;
                     }

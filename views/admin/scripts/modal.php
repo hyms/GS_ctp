@@ -1,8 +1,8 @@
 <?php
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
 
-    if(isset($size)) {
+if(isset($size)) {
         if ($size == "L")
             $size = Modal::SIZE_LARGE;
         if ($size == "S")
@@ -34,8 +34,13 @@
     Modal::end();
 
     $script = <<<JS
+var isProcessing = false;
 function formSubmit()
 {
+    if(isProcessing){
+            return;
+        }
+        isProcessing = true;
     data=$("#form").serialize();
     $.ajax({
         type: "POST",

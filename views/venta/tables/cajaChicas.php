@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <?=
@@ -75,6 +75,8 @@
                                                             }
                                                         });return false;"
                                            ]);
+                        if(!empty($model->fechaCierre))
+                            return "";
                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', "#", $options);
                 },
             ]

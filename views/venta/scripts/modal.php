@@ -1,32 +1,38 @@
 <?php
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
 
-    Modal::begin([
-                     'id'=>'viewModal',
-                     'footer'=>Html::a(
-                             'Guardar',
-                             "#",
-                             [
-                                 'onclick' => 'formSubmit();',
-                                 'class'=>'btn btn-success'
-                             ]
-                         )
-                         ." ".
-                         Html::a(
-                             'Cancelar',
-                             "#",
-                             [
-                                 'data-dismiss' => 'modal',
-                                 'class'=>'btn btn-danger'
-                             ]
-                         ),
-                 ]);
-    Modal::end();
+Modal::begin([
+    'id'=>'viewModal',
+    'footer'=>Html::a(
+            'Guardar',
+            "#",
+            [
+                'onclick' => 'formSubmit();',
+                'ondblclick' => 'return false',
+                'class'=>'btn btn-success'
+            ]
+        )
+        ." ".
+        Html::a(
+            'Cancelar',
+            "#",
+            [
+                'data-dismiss' => 'modal',
+                'class'=>'btn btn-danger'
+            ]
+        ),
+]);
+Modal::end();
 
-    $script = <<<JS
+$script = <<<JS
+var isProcessing = false;
 function formSubmit()
 {
+    if(isProcessing){
+            return;
+        }
+        isProcessing = true;
     data=$("#form").serialize();
     $.ajax({
         type: "POST",
@@ -41,4 +47,4 @@ function formSubmit()
     });
 }
 JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
+$this->registerJs($script, \yii\web\View::POS_HEAD);

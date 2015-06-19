@@ -259,7 +259,7 @@ class SGOrdenes extends Component
             $variables = SGCaja::getSaldo($datos['caja']->idCaja, $arqueo->time, false, ['movimientos' => true]);
 
             ///generar arqueo o cierre de caja
-            $arqueo->saldoCierre = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + $variables['recibos'] - $variables['cajas'] - $arqueo->monto, 1, PHP_ROUND_HALF_UP);
+            $arqueo->saldoCierre = round($variables['saldo'] + $variables['ventas'] + $variables['deudas'] + ($variables['recibos'][1]-$variables['recibos'][0]) - $variables['cajas'] - $arqueo->monto, 1, PHP_ROUND_HALF_UP);
 
             if ($arqueo->monto == 0) {
                 $arqueo->correlativoCierre = "";

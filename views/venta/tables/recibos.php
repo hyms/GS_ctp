@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <?=
@@ -45,14 +45,14 @@
         [
             'header'=>'Tipo',
             'filterType'=>GridView::FILTER_SELECT2,
-            'filter'=>["Ingreso","Egreso"],
+            'filter'=>["Egreso","Ingreso"],
             'filterWidgetOptions'=>[
                 'pluginOptions'=>['allowClear'=>true],
             ],
             'filterInputOptions'=>['placeholder'=>'Seleccionar'],
             'format'=>'raw',
             'value'=>function($model) {
-                return (($model->tipoRecibo)?"Egreso":"Ingreso");
+                return (($model->tipoRecibo)?"Ingreso":"Egreso");
             },
             'attribute'=>'tipoRecibo',
         ],
@@ -102,6 +102,9 @@
                                                         });return false;"
                                            ]);
                     $url     = "#";
+                    if(!empty($model->fkIdMovimientoCaja))
+                        if(!empty($model->fkIdMovimientoCaja->fechaCierre))
+                            return "";
                     return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
                 },
                 'print'=>function($url,$model){

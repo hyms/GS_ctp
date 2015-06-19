@@ -32,25 +32,20 @@
             <td style="border: 1px solid black;"></td>
             <td style="border: 1px solid black;"><?php $total=$total+$ventas+$deudas; 	echo $total;?></td>
         </tr>
-        <?php if(is_array($recibos)){?>
-            <?php foreach($recibos as $recibo){?>
-                <tr>
-                    <td style="border: 1px solid black;"><?php echo $recibo->codigo;?></td>
-                    <td style="border: 1px solid black;"><?php echo $recibo->fkIdMovimientoCaja->observaciones;?></td>
-                    <td style="border: 1px solid black;"><?php echo (!$recibo->tipoRecibo)?$recibo->fkIdMovimientoCaja->monto:"";?></td>
-                    <td style="border: 1px solid black;"><?php echo ($recibo->tipoRecibo)?$recibo->fkIdMovimientoCaja->monto:"";?></td>
-                    <td style="border: 1px solid black;"><?php $total=($recibo->tipoRecibo)?($total-$recibo->fkIdMovimientoCaja->monto):($total+$recibo->fkIdMovimientoCaja->monto);	echo $total;?></td>
-                </tr>
-            <?php }?>
-        <?php }else{?>
-            <tr>
-                <td style="border: 1px solid black;"></td>
-                <td><?php echo "Recibos del día";?></td>
-                <td><?php echo ($recibos>0)?$recibos:"";?></td>
-                <td><?php echo ($recibos<0)?($recibos*(-1)):"";?></td>
-                <td><?php $total=$total+$recibos;	echo $total;?></td>
-            </tr>
-        <?php }?>
+        <tr>
+            <td style="border: 1px solid black;"></td>
+            <td style="border: 1px solid black;">Recibos de Ingreso</td>
+            <td style="border: 1px solid black;"><?= $recibos[1];?></td>
+            <td style="border: 1px solid black;"></td>
+            <td style="border: 1px solid black;"><?php $total=$total+$recibos[1];	echo $total;?></td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black;"></td>
+            <td style="border: 1px solid black;">Recibos de Engreso</td>
+            <td style="border: 1px solid black;"></td>
+            <td style="border: 1px solid black;"><?= $recibos[0];?></td>
+            <td style="border: 1px solid black;"><?php $total=$total-$recibos[0];	echo $total;?></td>
+        </tr>
         <tr>
             <td style="border: 1px solid black;"></td>
             <td style="border: 1px solid black;"><?php echo "CAJA CHICA GASTOS";?></td>
