@@ -7,7 +7,7 @@
         ],
         [
             'header'=>'Usuario',
-            'attribute'=>function($model){
+            'value'=>function($model){
                 if(empty($model->fkIdUserV))
                     return "";
                 return $model->fkIdUserV->nombre;
@@ -15,11 +15,11 @@
         ],
         [
             'header'=>'Correlativo',
-            'attribute'=>'correlativo',
+            'value'=>'correlativo',
         ],
         [
             'header'=>'Codigo',
-            'attribute'=>function($model){
+            'value'=>function($model){
                 if(empty($model->codigoServicio))
                     return "";
                 return $model->codigoServicio;
@@ -27,7 +27,7 @@
         ],
         [
             'header'=>'Cliente',
-            'attribute'=>function($model)
+            'value'=>function($model)
             {
                 if(empty($model->fkIdCliente))
                     return "";
@@ -37,7 +37,7 @@
         ],
         [
             'header'=>'CAT',
-            'attribute'=>function($model)
+            'value'=>function($model)
             {
                 if(empty($model->fkIdCliente))
                     return "C";
@@ -47,7 +47,7 @@
         ],
         [
             'header'=>'Responsable',
-            'attribute'=>'responsable',
+            'value'=>'responsable',
         ],
         [
             'header'=>'Trabajo',
@@ -116,18 +116,18 @@
         ],
         [
             'header'=>'Desc',
-            'attribute'=>function($model){
+            'value'=>function($model){
                 return (empty($model->montoDescuento))?0:$model->montoDescuento;
             },
         ],
         [
             'header'=>'Cobrar',
-            'attribute'=>'montoVenta',
+            'value'=>'montoVenta',
             'pageSummary'=>true,
         ],
         [
             'header'=>'Cancelado',
-            'attribute'=>function($model){
+            'value'=>function($model){
                 $pagos = \app\models\MovimientoCaja::find()
                     ->where(['idParent' => $model->fk_idMovimientoCaja])
                     ->andWhere(['tipoMovimiento' => 0])
@@ -144,7 +144,7 @@
         ],
         [
             'header'=>'Saldo',
-            'attribute'=>function($model){
+            'value'=>function($model){
                 $pagos = \app\models\MovimientoCaja::find()
                     ->where(['idParent' => $model->fk_idMovimientoCaja])
                     ->andWhere(['tipoMovimiento' => 0])
@@ -161,7 +161,7 @@
         ],
         [
             'header'=>'Factura',
-            'attribute'=>function($model){
+            'value'=>function($model){
                 return (empty($model->factura))?"":$model->factura;
             },
         ],
@@ -173,7 +173,9 @@
         ],
         [
             'header'=>'Fecha',
-            'value'=>'fechaCobro',
+            'value'=>function($model){
+                return date("Y-m-d H:i",strtotime($model->fechaCobro));
+            },
         ],
         [
             'class'=>'kartik\grid\ActionColumn',
