@@ -110,9 +110,11 @@
                             $hora = strtotime($orden->fechaCobro)+1200; //20 mins para espera de los botones
                             if(strtotime(date("Y-m-d H:i:s"))<=$hora) {
                                 echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print', 'id' => 'save'));
+                                if(!empty($orden->montoVenta))
                                 echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Retorno', "#", array('class' => 'btn btn-info hidden-print', 'id' => 'reenviar'));
                             }
                             echo Html::hiddenInput('anular','0',['id'=>'anular']);
+                            if(!empty($orden->montoVenta))
                             echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller'));
 						?>
                     </div>

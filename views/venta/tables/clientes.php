@@ -100,13 +100,21 @@
                               'exportConfig' => [
                                   GridView::EXCEL => [
                                       'label' => 'Excel',
-                                      'filename' => 'Clientes',
+                                      'filename' => 'Reporte Clientes',
                                       'alertMsg' => 'El EXCEL se generara para la descarga.',
+                                      'showPageSummary' => true,
                                   ],
                                   GridView::PDF => [
                                       'label' => 'PDF',
-                                      'filename' => 'Clientes',
+                                      'filename' => 'Reporte Clientes',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
+                                      'config' => [
+                                          'format' => 'Letter-L',
+                                          'marginTop' => 5,
+                                          'marginBottom' => 5,
+                                          'marginLeft' => 5,
+                                          'marginRight' => 5,
+                                      ]
                                   ],
                               ],
                           ]);

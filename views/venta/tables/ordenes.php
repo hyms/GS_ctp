@@ -33,20 +33,22 @@
                     'attribute'=>'responsable',
                 ],
                 [
-                    //'header'=>'fechaGenerada',
-                    'attribute'=>'fechaGenerada',
+                    'header'=>'fechaGenerada',
+                    'value'=>function($model){
+                        return date("Y-m-d H:i",strtotime($model->fechaGenerada));
+                    },
                 ],
                 [
                     'header'=>'',
                     'format'=>'raw',
                     'value'=>function($model){
-                        return Html::a('<i class="glyphicon glyphicon-pencil"></i>',
+                        return Html::a('<i class="glyphicon glyphicon-shopping-cart"></i>',
                                        ['venta/venta','id'=>$model->idOrdenCTP],
                                        [
                                            'class'=>"update",
                                            'title'=>"",
                                            'data-toggle'=>"tooltip",
-                                           'data-original-title'=>"Modificar",
+                                           'data-original-title'=>"Realizar Tranzaccion",
                                        ]);
                     },
                 ],

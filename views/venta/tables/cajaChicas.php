@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\grid\GridView;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <?=
@@ -104,13 +104,21 @@ use yii\helpers\Url;
                               'exportConfig' => [
                                   GridView::EXCEL => [
                                       'label' => 'Excel',
-                                      'filename' => 'Caja Chica',
+                                      'filename' => 'Reporte Caja Chica',
                                       'alertMsg' => 'El EXCEL se generara para la descarga.',
+                                      'showPageSummary' => true,
                                   ],
                                   GridView::PDF => [
                                       'label' => 'PDF',
-                                      'filename' => 'Caja Chica',
+                                      'filename' => 'Reporte Caja Chica',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
+                                      'config' => [
+                                          'format' => 'Letter-L',
+                                          'marginTop' => 5,
+                                          'marginBottom' => 5,
+                                          'marginLeft' => 5,
+                                          'marginRight' => 5,
+                                      ]
                                   ],
                               ],
                           ]);

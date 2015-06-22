@@ -214,12 +214,13 @@
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               // parameters from the demo form
                               'bordered' => true,
                               'condensed' => true,
-                              'responsive' => true,
+                              'persistResize' => false,
                               'hover' => true,
                               'showPageSummary' => true,
                               'panel' => [
@@ -229,13 +230,21 @@
                               'exportConfig' => [
                                   GridView::EXCEL => [
                                       'label' => 'Excel',
-                                      'filename' => 'Reporte',
+                                      'filename' => 'Reporte Venta',
                                       'alertMsg' => 'El EXCEL se generara para la descarga.',
+                                      'showPageSummary' => true,
                                   ],
                                   GridView::PDF => [
                                       'label' => 'PDF',
-                                      'filename' => 'Reporte',
+                                      'filename' => 'Reporte Venta',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
+                                      'config' => [
+                                      'format' => 'Letter-L',
+                                      'marginTop' => 5,
+                                      'marginBottom' => 5,
+                                      'marginLeft' => 5,
+                                      'marginRight' => 5,
+                                      ]
                                   ],
                               ],
                           ]);
