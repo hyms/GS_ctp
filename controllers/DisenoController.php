@@ -577,11 +577,10 @@ class DisenoController extends Controller
     {
         $user = User::findOne(['idUser' => Yii::$app->user->id]);
         if ($user->load(Yii::$app->request->post())) {
-            $tmp = User::findOne(['idUser' => Yii::$app->user->id]);
-            if (md5($user->password) != $tmp->password)
+            $userBpk = User::findOne($user->idUser);
+            if ($userBpk->password != $user->password)
                 $user->password = md5($user->password);
-            else
-                $user->password = $tmp->password;
+
             if ($user->save()) {
                 Yii::$app->session->setFlash('success', 'Guardado de datos Exitoso');
                 return $this->redirect(['diseno/user']);

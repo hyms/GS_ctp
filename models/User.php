@@ -268,7 +268,8 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
             '2' => 'admin',
             '3' => 'venta',
             '4' => 'operario',
-            '5' => 'diseño'
+            '5' => 'diseño',
+            '6' => 'auxVenta'
         );
         if(is_null($int))
             return $roles;

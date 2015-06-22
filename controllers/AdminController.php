@@ -259,13 +259,13 @@ class AdminController extends Controller
                         if (isset($get['id']))
                             $user = User::findOne(['idUser' => $get['id']]);
                         if ($user->load(Yii::$app->request->post())) {
-                            $tmp = new User();
-                            if (isset($get['id']))
-                            $tmp = User::findOne(['idUser' => $get['id']]);
-                            if (md5($user->password) != $tmp->password)
+                            if ($user->idUser != null) {
+                                $userBpk = User::findOne($user->idUser);
+                                if ($userBpk->password != $user->password)
+                                    $user->password = md5($user->password);
+                            } else {
                                 $user->password = md5($user->password);
-                            else
-                                $user->password = $tmp->password;
+                            }
                             if ($user->save()) {
                                 return $this->redirect(['config', 'op' => 'user']);
                             }
