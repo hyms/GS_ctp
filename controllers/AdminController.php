@@ -62,6 +62,17 @@ class AdminController extends Controller
         ];
     }
 
+    public function init()
+    {
+        if (!empty(Yii::$app->user->identity)) {
+            if(Yii::$app->user->identity->role !=1 && Yii::$app->user->identity->role !=2)
+            {
+                return $this->redirect(Yii::$app->homeUrl);
+            }
+        }
+        parent::init();
+    }
+
     public function actionIndex()
     {
         return $this->render('index');

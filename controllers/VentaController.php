@@ -41,6 +41,10 @@ class VentaController extends Controller
     public function init()
     {
         if (!empty(yii::$app->user->identity)) {
+            if(Yii::$app->user->identity->role ==4 || Yii::$app->user->identity->role ==5)
+            {
+                return $this->redirect(Yii::$app->homeUrl);
+            }
             $sucursal = Sucursal::findOne(['idSucursal' => yii::$app->user->identity->fk_idSucursal]);
             if (empty($sucursal))
                 throw new HttpException(412, SGOperation::getError(412));

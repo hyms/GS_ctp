@@ -33,41 +33,45 @@ AppAsset2::register($this,true);
             'class' => 'navbar navbar-default',
         ],
     ]);
+        $items =[];
+        array_push($items,[
+            'label'=>'Orden',
+            'url'=>['venta/orden']
+        ]);
+        array_push($items,[
+            'label'=>'Caja',
+            'url'=>['venta/caja']
+        ]);
+        if(Yii::$app->user->identity->role!=6) {
+            array_push($items, [
+                'label' => 'Reportes',
+                'url'   => ['venta/report']
+            ]);
+        }
+        array_push($items,[
+            'label'=>'Cliente',
+            'url'=>['venta/cliente']
+        ]);
+        array_push($items,
+                   Yii::$app->user->isGuest ?
+                       ['label' => 'Login', 'url' => ['/site/login']] :
+                       ['label' => 'user('.Yii::$app->user->identity->username.')',
+                        'items'=>[
+                            [
+                                'label' => 'Logout',
+                                'url' => ['/site/logout'],
+                                'linkOptions' => ['data-method' => 'post'],
+                            ],
+                            [
+                                'label'=>'Cambiar Contraseña',
+                                'url'=>['venta/user'],
+                            ]
+                        ]
+                       ]
+        );
     echo Nav::widget([
         'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            [
-                'label'=>'Orden',
-                'url'=>['venta/orden']
-            ],
-            [
-                'label'=>'Caja',
-                'url'=>['venta/caja']
-            ],
-            [
-                'label'=>'Reportes',
-                'url'=>['venta/report']
-            ],
-            [
-                'label'=>'Cliente',
-                'url'=>['venta/cliente']
-            ],
-            Yii::$app->user->isGuest ?
-                ['label' => 'Login', 'url' => ['/site/login']] :
-                ['label' => 'user('.Yii::$app->user->identity->username.')',
-                    'items'=>[
-                        [
-                            'label' => 'Logout',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post'],
-                        ],
-                        [
-                            'label'=>'Cambiar Contraseña',
-                            'url'=>['venta/user'],
-                        ]
-                    ]
-                ]
-        ]
+        'items' => $items
     ]);
     NavBar::end();
     ?>

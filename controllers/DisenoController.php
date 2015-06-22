@@ -31,6 +31,10 @@ class DisenoController extends Controller
     public function init()
     {
         if (!empty(Yii::$app->user->identity)) {
+            if(Yii::$app->user->identity->role ==3 || Yii::$app->user->identity->role ==6)
+            {
+                return $this->redirect(Yii::$app->homeUrl);
+            }
             $sucursal = Sucursal::findOne(['idSucursal' => Yii::$app->user->identity->fk_idSucursal]);
             if (empty($sucursal))
                 throw new HttpException(412, SGOperation::getError(412));
