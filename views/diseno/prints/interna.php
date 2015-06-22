@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-xs-4">
                 <strong><?= "Cliente:";?></strong>
-                <?= $orden->responsable;?>
+                <span class="text-capitalize"><?= $orden->responsable;?></span>
             </div>
             <div class="col-xs-2">
                 <strong><?= "O. Imprenta:";?></strong>
@@ -63,7 +63,7 @@
         </div>
         <div class="col-xs-12 row">
             <div class="row">
-                <div class="col-xs-12"><strong>Gerenado por: </strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido?></div>
+                <div class="col-xs-12"><strong>Gerenado por: </strong> <span class="text-capitalize"><?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido?></span></div>
             </div>
             <div class="row">
                 <div class="col-xs-12"><strong>Obs:</strong> <?= $orden->observaciones;?></div>
@@ -78,7 +78,7 @@
         <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
         <div class="col-xs-12 row"><span class="row"><strong><?= "I.IMP:";?></strong> <span class="col-xs-12"><?= $orden->codDependiente;?></span></div>
         <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></span></span></div>
-        <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
+        <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <span class="text-capitalize"><?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></span></div>
         <div class="col-xs-12 row">
             <?php foreach ($orden->ordenDetalles as $producto){ ?>
                 <div class="col-xs-12" style="border: 1.5px solid;">

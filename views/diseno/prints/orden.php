@@ -8,7 +8,7 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-7"><strong><?= "Responsable:";?></strong> <?= $orden->responsable;?></div>
+            <div class="col-xs-7"><strong><?= "Responsable:";?></strong> <span class="text-capitalize"><?= $orden->responsable;?><span></div>
             <div class="col-xs-3"><strong><?= "Telefono:";?></strong> <?= $orden->telefono;?></div>
         </div>
 

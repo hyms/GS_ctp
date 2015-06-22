@@ -38,7 +38,7 @@
                     <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <br><br><br>
                         <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                        <div><?= "Nombre: ".(($recibo->tipoRecibo)?($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido):$recibo->nombre)?></div>
+                        <div class="text-capitalize"><?= "Nombre: ".(($recibo->tipoRecibo)?($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido):$recibo->nombre)?></div>
                         <div class="text-center" style="font-size: 11px"><small><?= "Entregué Conforme";?></small></div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <br><br><br>
                         <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                        <div><?= "Nombre: ".(($recibo->tipoRecibo)?$recibo->nombre:($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido))?></div>
+                        <div class="text-capitalize"><?= "Nombre: ".(($recibo->tipoRecibo)?$recibo->nombre:($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido))?></div>
                         <div class="text-center" style="font-size: 11px"><small><?= "Recibí Confirme";?></small></div>
                     </div>
                 </div>

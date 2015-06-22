@@ -6,11 +6,11 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-5"><strong>Cliente: </strong><?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:""; ?></div>
+            <div class="col-xs-5"><strong>Cliente: </strong><span class="text-capitalize"><?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:""; ?></span></div>
             <div class="col-xs-5"><strong>NitCi: </strong><?=(!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:""; ?></div>
         </div>
         <div class="row">
-            <div class="col-xs-5"><strong>Responsable: </strong><?=$orden->responsable; ?></div>
+            <div class="col-xs-5"><strong>Responsable: </strong><span class="text-capitalize"><?=$orden->responsable; ?></span></div>
             <div class="col-xs-5"><strong>Telefono: </strong><?=$orden->telefono; ?></div>
         </div>
 
