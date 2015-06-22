@@ -1,8 +1,8 @@
 <?php
-use yii\bootstrap\Modal;
-use yii\helpers\Html;
+    use yii\bootstrap\Modal;
+    use yii\helpers\Html;
 
-if(isset($size)) {
+    if(isset($size)) {
         if ($size == "L")
             $size = Modal::SIZE_LARGE;
         if ($size == "S")
@@ -47,8 +47,10 @@ function formSubmit()
         data:data,
         url: $("#form").attr("action"),
         success: function(data){
-            if(data=="done")
+            if(data=="done"){
+                isProcessing = false;
                 location.reload();
+                }
             else
                 $("#viewModal .modal-body ").html(data);
         }

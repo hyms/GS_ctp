@@ -1,8 +1,8 @@
 <?php
-use yii\bootstrap\Modal;
-use yii\helpers\Html;
+    use yii\bootstrap\Modal;
+    use yii\helpers\Html;
 
-Modal::begin([
+    Modal::begin([
                      'id'=>'viewModal',
                      'footer'=>Html::a(
                              'Guardar',
@@ -38,8 +38,10 @@ function formSubmit()
         data:data,
         url: $("#form").attr("action"),
         success: function(data){
-            if(data=="done")
+            if(data=="done"){
+                isProcessing = false;
                 location.reload();
+            }
             else
                 $("#viewModal .modal-body ").html(data);
         }
