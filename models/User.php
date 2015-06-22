@@ -40,7 +40,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
      */
     //const ROLE_USER = 10;
     //const ROLE_MODERATOR = 20;
-    const ROLE_ADMIN = 1;
+    //const ROLE_ADMIN = 1;
+    public $auth_key;
+    public $password_reset_token;
 
     public static function tableName()
     {
