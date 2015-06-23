@@ -4,24 +4,6 @@
     use yii\helpers\Url;
 
 ?>
-<?=
-    Html::a('Nueva Transaccion', "#", [
-        'class'=>'btn btn-default',
-        'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '".Url::to(['venta/chica','op'=>'new'])."',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-    ]);
-?>
 <?php
     $columns = [
         [
@@ -87,12 +69,33 @@
                               'filterModel' => $search,
                               'columns' => $columns,
                               'toolbar' =>  [
+                                  [
+                                      'content'=>
+                                          Html::a('Nueva Transaccion', "#", [
+                                              'class'=>'btn btn-default',
+                                              'onclick'  => "
+                    $.ajax({
+                        type    :'POST',
+                        cache   : false,
+                        url     : '".Url::to(['venta/chica','op'=>'new'])."',
+                        success : function(data) {
+                            if(data.length>0){
+                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
+                                $('#viewModal .modal-body').html(data);
+                                $('#viewModal').modal();
+                            }
+                        }
+                    });return false;"
+                                          ]),
+                                      'options' => ['class' => 'btn-group']
+                                  ],
                                   '{export}',
                                   '{toggleData}',
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               'responsive'=>true,
                               'hover'=>true,

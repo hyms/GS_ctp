@@ -113,7 +113,8 @@
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               // parameters from the demo form
                               'bordered' => true,

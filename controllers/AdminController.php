@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\components\SGOperation;
 use app\components\SGProducto;
 use app\models\Caja;
+use app\models\Cliente;
+use app\models\ClienteSearch;
 use app\models\MovimientoCaja;
 use app\models\OrdenCTP;
 use app\models\Producto;
@@ -488,5 +490,36 @@ class AdminController extends Controller
             'sucursal'   => '',
             'tipoOrden'  => '',
         ]);
+    }
+
+    public function actionCliente()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['id'])) {
+            $model = Cliente::findOne($get['id']);
+            if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                return $this->redirect(['admin/cliente']);
+            } else {
+                return $this->renderAjax('forms/cliente', [
+                    'model' => $model,
+                ]);
+            }
+        }
+        if (isset($get['op'])) {
+            if ($get['op'] == "new") {
+                $model                = new Cliente();
+                $model->fechaRegistro = date("Y-m-d H:i:s");
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    return $this->redirect(['admin/cliente']);
+                } else {
+                    return $this->renderAjax('forms/cliente', [
+                        'model' => $model,
+                    ]);
+                }
+            }
+        }
+        $search   = new ClienteSearch();
+        $clientes = $search->search(Yii::$app->request->queryParams);
+        return $this->render('cliente', ['r' => 'list', 'clientes' => $clientes, 'search' => $search]);
     }
 }

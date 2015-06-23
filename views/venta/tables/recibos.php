@@ -4,42 +4,6 @@
     use yii\helpers\Url;
 
 ?>
-<?=
-    Html::a('Recibo Ingreso', "#", [
-        'class'=>'btn btn-default',
-        'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/recibos', 'op' => 'i']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Ingreso</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-    ]);
-?>
-<?=
-    Html::a('Recibo Egreso', "#", [
-        'class'=>'btn btn-default',
-        'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/recibos', 'op' => 'e']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Egreso</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-    ]);
-?>
 <?php
     $columns = [
         [
@@ -126,12 +90,50 @@
                               'filterModel' => $search,
                               'columns' => $columns,
                               'toolbar' =>  [
+                                  [
+                                      'content'=>
+                                          Html::a('Recibo Ingreso', "#", [
+                                              'class'=>'btn btn-default',
+                                              'onclick'  => "
+                    $.ajax({
+                        type    :'POST',
+                        cache   : false,
+                        url     : '" . Url::to(['venta/recibos', 'op' => 'i']) . "',
+                        success : function(data) {
+                            if(data.length>0){
+                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Ingreso</h3>');
+                                $('#viewModal .modal-body').html(data);
+                                $('#viewModal').modal();
+                            }
+                        }
+                    });return false;"
+                                          ])
+                                          ." ".
+                                          Html::a('Recibo Egreso', "#", [
+                                              'class'=>'btn btn-default',
+                                              'onclick'  => "
+                    $.ajax({
+                        type    :'POST',
+                        cache   : false,
+                        url     : '" . Url::to(['venta/recibos', 'op' => 'e']) . "',
+                        success : function(data) {
+                            if(data.length>0){
+                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Egreso</h3>');
+                                $('#viewModal .modal-body').html(data);
+                                $('#viewModal').modal();
+                            }
+                        }
+                    });return false;"
+                                          ]),
+                                      'options' => ['class' => 'btn-group']
+                                  ],
                                   '{export}',
                                   '{toggleData}',
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               'responsive'=>true,
                               'hover'=>true,

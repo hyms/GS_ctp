@@ -49,6 +49,10 @@ AppAsset2::register($this,true);
                 'url'=>['admin/producto']
             ],
             [
+                'label'=>'Clientes',
+                'url'=>['admin/cliente']
+            ],
+            [
                 'label'=>'Configuracion',
                 'url'=>['admin/config']
             ],

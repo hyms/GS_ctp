@@ -1,11 +1,28 @@
 <?php
+    use app\models\Sucursal;
     use kartik\grid\GridView;
+    use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
 
 ?>
 <?php
     $columns=[
+        [
+            'header'=>'Sucursal',
+            'filterType'=>GridView::FILTER_SELECT2,
+            'filter'=>ArrayHelper::map(Sucursal::find()->all(),'idSucursal','nombre'),
+            'filterWidgetOptions'=>[
+                'pluginOptions'=>['allowClear'=>true],
+            ],
+            'filterInputOptions'=>['placeholder'=>'Seleccionar'],
+            'format'=>'raw',
+            'value'=>function($model)
+            {
+                return $model->fkIdSucursal->nombre;
+            },
+            'attribute'=>'fk_idSucursal',
+        ],
         [
             'header'=>'Categoria',
             'attribute'=>'codigoCliente',
@@ -44,7 +61,7 @@
                                                         $.ajax({
                                                             type     :'POST',
                                                             cache    : false,
-                                                            url  : '" . Url::to(['venta/cliente','id'=>$model->idCliente]) . "',
+                                                            url  : '" . Url::to(['admin/cliente','id'=>$model->idCliente]) . "',
                                                             success  : function(data) {
                                                                 if(data.length>0){
                                                                     $('#viewModal .modal-header').html('<h3 class=\"text-center\">Cliente: ".$model->nombreNegocio."</h3>');
@@ -73,7 +90,7 @@
                     $.ajax({
                         type    :'POST',
                         cache   : false,
-                        url     : '" . Url::to(['venta/cliente', 'op' => 'new']) . "',
+                        url     : '" . Url::to(['admin/cliente', 'op' => 'new']) . "',
                         success : function(data) {
                             if(data.length>0){
                                 $('#viewModal .modal-header').html('<h3 class=\"text-center\">Nuevo Cliente</h3>');

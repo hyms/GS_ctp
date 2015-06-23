@@ -40,7 +40,8 @@
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               // parameters from the demo form
                               'bordered' => true,
@@ -64,7 +65,7 @@
                                       'filename' => 'Reporte Placas',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                       'config' => [
-                                          'format' => 'Letter-L',
+                                          'format' => 'Letter',
                                           'marginTop' => 5,
                                           'marginBottom' => 5,
                                           'marginLeft' => 5,

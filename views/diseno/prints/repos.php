@@ -6,19 +6,22 @@
             <h3 class="text-right"><strong><?= $orden->codigoServicio; ?></strong></h3>
         </div>
         <div class="row">
-            <div class="col-xs-4">
-                <strong>Tipo de Falla: </strong><?php $data = \app\components\SGOperation::tiposReposicion($orden->tipoRepos); if(!is_array($data))echo $data; ?>
-            </div>
             <div class="text-right">
                 <strong>Fecha: </strong><?= date('d-m-Y / H:i',strtotime($orden->fechaGenerada)); ?>
             </div>
         </div>
         <div class="row">
-            <div class="col-xs-4">
-                <strong>Atribuible a: </strong><?= $orden->responsable ?>
+            <div class="col-xs-5">
+                <strong>Tipo de Falla: </strong><?php $data = \app\components\SGOperation::tiposReposicion($orden->tipoRepos); if(!is_array($data))echo $data; ?>
             </div>
-            <div class="col-xs-4">
+            <div class="col-xs-5">
+                <strong>Atribuible a: </strong><?= $orden->attribuible ?>
+            </div>
+            <div class="col-xs-5">
                 <strong>Correlativo de Orden: </strong><?php if(empty($orden->fk_idParent)) echo $orden->codDependiente;else echo $orden->fkIdParent->correlativo; ?>
+            </div>
+            <div class="col-xs-5">
+                <strong>Cliente: </strong><?php if(empty($orden->fk_idParent)) echo $orden->responsable;else{ if(empty($orden->fkIdParent->fkIdCliente))echo $orden->fkIdParent->responsable; else echo $orden->fkIdParent->fkIdCliente->nombreNegocio; }?>
             </div>
         </div>
         <div class="row well well-sm" style="height:200px; border-color: #000000; background-color: #ffffff">
@@ -76,7 +79,7 @@
     <div class="row" style="font-size: 10.5px">
         <div class="col-xs-12 row text-center"><h3><strong><?= $orden->codigoServicio;?></strong></h3></div>
         <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
-        <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></span></span></div>
+        <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaGenerada));?></span></span></div>
         <div class="col-xs-12 row" style="font-size: 10px"><strong>Diseñador/a:</strong> <span class="text-capitalize"><?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></span></div>
         <div class="col-xs-12 row">
             <?php foreach ($orden->ordenDetalles as $producto){ ?>

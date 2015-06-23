@@ -77,7 +77,8 @@
                                   '{toggleData}',
                               ],
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               //'bordered' => true,
                               'condensed' => true,

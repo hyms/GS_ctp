@@ -16,6 +16,9 @@
             ?>
         </div>
         <div class="col-xs-6">
+            <?= $form->field($orden, 'attribuible',['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])->textInput(['maxlength' => 50])->label('Atribuible') ?>
+        </div>
+        <div class="col-xs-6">
             <?= $form->field($orden, 'responsable',['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])->textInput(['maxlength' => 50]) ?>
         </div>
 

@@ -132,7 +132,7 @@
                     ->where(['idParent' => $model->fk_idMovimientoCaja])
                     ->andWhere(['tipoMovimiento' => 0])
                     ->andWhere(['between', 'time', $fechaStart . ' 00:00:00', $fechaEnd . ' 23:59:59'])
-                    ->andWhere(['not between', 'time', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 00:00:00', date("Y-m-d",strtotime($model->fkIdMovimientoCaja->time)) . ' 23:59:59'])
+                    ->andWhere(['not between', 'time', date("Y-m-d",strtotime($model->fechaCobro)) . ' 00:00:00', date("Y-m-d",strtotime($model->fechaCobro)) . ' 23:59:59'])
                     ->all();
                 $total = 0;
                 foreach ($pagos as $pago) {
@@ -216,7 +216,8 @@
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               // parameters from the demo form
                               'bordered' => true,

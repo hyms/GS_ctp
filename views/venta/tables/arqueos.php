@@ -61,7 +61,8 @@
                               ],
                               // set export properties
                               'export' => [
-                                  'fontAwesome' => true
+                                  'fontAwesome' => true,
+                                  'target'=>GridView::TARGET_BLANK,
                               ],
                               'responsive'=>true,
                               'hover'=>true,
