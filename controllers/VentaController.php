@@ -66,7 +66,7 @@ class VentaController extends Controller
                     $caja              = Caja::findOne(['idCaja' => $this->idCaja]);
                     $datos             = ['arqueo' => ['time' => date("Y-m-d H:i:s"), 'monto' => 0], 'caja' => $caja];
                     $arqueoTransaccion = new SGOrdenes();
-                    $arqueoTransaccion->arqueo($datos, true);
+                    $arqueoTransaccion->arqueo($datos,true);
                 }
             }
         }
@@ -351,7 +351,7 @@ class VentaController extends Controller
                     if (isset($post['MovimientoCaja'])) {
                         $datos = array('arqueo' => $post['MovimientoCaja'], 'caja' => $caja);
                         $arqueoTransaccion = new SGOrdenes();
-                        $datos = $arqueoTransaccion->arqueo($datos, true);
+                        $datos = $arqueoTransaccion->arqueo($datos);
                         if ($arqueoTransaccion->success) {
                             return $this->redirect(['caja', 'op' => 'arqueos']);
                         }
@@ -467,19 +467,10 @@ class VentaController extends Controller
                     break;
                 case "registro":
                     $arqueoTmp = MovimientoCaja::findOne(['idMovimientoCaja' => $get['id']]);
-                    $arqueo    = MovimientoCaja::find()
-                        ->andWhere(['!=', 'idMovimientoCaja', $get['id']])
-                        ->andWhere(['<=', 'fechaCierre', $arqueoTmp->fechaCierre])
-                        ->andWhere(['fk_idCajaOrigen' => $arqueoTmp->fk_idCajaOrigen])
-                        ->andWhere(['tipoMovimiento' => 3])
-                        ->orderBy('fechaCierre')
-                        ->one();
-                    if (empty($arqueo))
-                        $arqueo = new MovimientoCaja();
                     $variables = SGCaja::getSaldo($this->idCaja, $arqueoTmp->time, false, ['arqueo' => $arqueoTmp->fechaCierre]);
                     $content   = $this->renderPartial('prints/registroDiario',
                                                       array(
-                                                          'saldo'   => $arqueo->saldoCierre,
+                                                          'saldo'   => $variables['saldo'],
                                                           'fecha'   => date("Y-m-d", strtotime($arqueoTmp->fechaCierre)),
                                                           'arqueo'  => $arqueoTmp,
                                                           'ventas'  => $variables['ventas'],
@@ -487,7 +478,7 @@ class VentaController extends Controller
                                                           'cajas'   => $variables['cajas'],
                                                           'deudas'  => $variables['deudas'],
                                                       ));
-                    $title     = 'Registro Diario ' . date("d-m-Y", strtotime($arqueo->fechaCierre));
+                    $title     = 'Registro Diario ' . date("d-m-Y", strtotime($arqueoTmp->fechaCierre));
                     break;
 
             }

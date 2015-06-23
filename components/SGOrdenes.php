@@ -232,10 +232,10 @@ class SGOrdenes extends Component
         }
     }
 
-    public function arqueo($datos)
+    public function arqueo($datos,$automatico=false)
     {
         if (isset($datos['caja']) && isset($datos['arqueo'])) {
-            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja", null, 3);
+            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja".($automatico)?" (Cierre Automatico)":"", null, 3);
 
             $tmp                       = MovimientoCaja::find()
                 ->where(['fk_idCajaOrigen' => $datos['caja']->idCaja])
