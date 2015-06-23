@@ -67,13 +67,13 @@
         </tbody>
     </table>
     <div class="row">
-        <div class="col-xs-offset-1 col-xs-4 well">
+        <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br>
             <p class="text-center"><?php echo "firma";?></p>
             <span><?php echo "Nombre: ".Yii::$app->user->identity->nombre." ".Yii::$app->user->identity->apellido?></span>
             <p class="text-center"><?php echo "Entregue conforme";?></p>
         </div>
-        <div class="col-xs-offset-1 col-xs-4 well">
+        <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br>
             <p class="text-center"><?php echo "firma";?></p>
             <span><?php echo "Nombre: Miriam Martinez";?></span>
