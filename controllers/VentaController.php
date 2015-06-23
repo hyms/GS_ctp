@@ -472,6 +472,7 @@ class VentaController extends Controller
                         ->andWhere(['<=', 'fechaCierre', $arqueoTmp->fechaCierre])
                         ->andWhere(['fk_idCajaOrigen' => $arqueoTmp->fk_idCajaOrigen])
                         ->andWhere(['tipoMovimiento' => 3])
+                        ->orderBy('fechaCierre')
                         ->one();
                     if (empty($arqueo))
                         $arqueo = new MovimientoCaja();
@@ -479,7 +480,7 @@ class VentaController extends Controller
                     $content   = $this->renderPartial('prints/registroDiario',
                                                       array(
                                                           'saldo'   => $arqueo->saldoCierre,
-                                                          'fecha'   => date("Y-m-d", strtotime($arqueo->fechaCierre)),
+                                                          'fecha'   => date("Y-m-d", strtotime($arqueoTmp->fechaCierre)),
                                                           'arqueo'  => $arqueoTmp,
                                                           'ventas'  => $variables['ventas'],
                                                           'recibos' => $variables['recibos'],
