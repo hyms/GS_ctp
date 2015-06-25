@@ -289,7 +289,12 @@ class VentaController extends Controller
                         $orden->montoDescuento = 0;
                     foreach ($detalle as $key => $item) {
                         $detalle[$key]->costo     = 0;
+                        $detalle[$key]->total     = 0;
                         $detalle[$key]->adicional = 0;
+                    }
+                    foreach($orden->fkIdMovimientoCaja->movimientoCajas as $deuda) {
+                        if ($deuda->tipoMovimiento == 0)
+                            $deuda->delete();
                     }
                     $data = $op->grabar(['orden' => $orden, 'detalle' => $detalle, 'caja' => Caja::findOne(['idCaja' => $this->idCaja]), 'monto' => $monto], true, $post['anular']);
                 } else {

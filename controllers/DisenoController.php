@@ -168,7 +168,11 @@ class DisenoController extends Controller
             switch ($get['op']) {
                 case "nueva":
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
-                    $datos = $this->ordenes($get, 1);
+                    $nulled = false;
+                    if ($post = Yii::$app->request->post())
+                        if (isset($post['anular']))
+                            $nulled = $post['anular'];
+                    $datos = $this->ordenes($get, 1, null, $nulled);
                     if (!is_array($datos))
                         return $this->redirect(['interna', 'op' => 'list']);
                     $ordenes = $datos['orden'];

@@ -1,9 +1,9 @@
 <?php
-    use kartik\widgets\TypeaheadBasic;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\widgets\TypeaheadBasic;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="row">
@@ -92,12 +92,11 @@
                     <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
                     <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
 					<?php
-					/*if($orden->tipoOrden==1)
-					{
-						echo Html::hiddenInput('anular','0',['id'=>'anular']);
-						echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller');
-						echo $this->render('../scripts/anular');
-					}*/
+					if($orden->tipoOrden==1 && !empty($orden->idOrdenCTP)) {
+                        echo Html::hiddenInput('anular', '0', ['id' => 'anular']);
+                        echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller'));
+                        echo $this->render('../scripts/anular');
+                    }
 					?>
                 </div>
             </div>
