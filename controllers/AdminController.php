@@ -296,7 +296,7 @@ class AdminController extends Controller
 
     public function actionReport()
     {
-        $post = Yii::$app->request->post();
+        $post = Yii::$app->request->get();
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
             if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
                 if ($post['tipo'] == "pd") {

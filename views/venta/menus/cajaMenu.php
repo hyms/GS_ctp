@@ -19,7 +19,7 @@
     ]);
     if(Yii::$app->user->identity->role != 6) {
         array_push($items, [
-            'label' => 'Arqueos',
+            'label' => 'Historial Arqueos',
             'url'   => ['venta/caja', 'op' => 'arqueos']
         ]);
     }

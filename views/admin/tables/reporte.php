@@ -73,6 +73,19 @@
             },
         ],
         [
+            'header'=>'Cant',
+            'format'=>'raw',
+            'value'=>function($model){
+                $trabajos = $model->ordenDetalles;
+                $string ="";
+                foreach($trabajos as $key=>$trabajo)
+                {
+                    $string =$string."<p>".$trabajo->cantidad."</p>";
+                }
+                return $string;
+            },
+        ],
+		[
             'header'=>'Costo',
             'format'=>'raw',
             'value'=>function($model){

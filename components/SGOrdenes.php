@@ -235,12 +235,13 @@ class SGOrdenes extends Component
     public function arqueo($datos,$automatico=false)
     {
         if (isset($datos['caja']) && isset($datos['arqueo'])) {
-            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja".($automatico)?" (Cierre Automatico)":"", null, 3);
+            $arqueo = SGCaja::movimientoCajaTraspaso(null, $datos['caja']->idCaja, $datos['caja']->fk_idCaja, "Arqueo de caja".(($automatico)?" (Cierre Automatico)":""), null, 3);
 
             $tmp                       = MovimientoCaja::find()
                 ->where(['fk_idCajaOrigen' => $datos['caja']->idCaja])
-                ->andWhere(['tipoMovimiento' => 4])
+                ->andWhere(['tipoMovimiento' => 3])
                 ->select('max(correlativoCierre) as correlativoCierre')
+				->orderBy(['time' => SORT_DESC])
                 ->one();
             $arqueo->correlativoCierre = $tmp->correlativoCierre + 1;
             $cajaAdmin                 = Caja::findOne(['idCaja' => $datos['caja']->fk_idCaja]);

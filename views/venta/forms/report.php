@@ -9,7 +9,7 @@
             <h3 class="panel-title"><strong>Reportes</strong></h3>
         </div>
         <div class="panel-body">
-            <?php $form = ActiveForm::begin(['id'=>'form'])?>
+            <?php $form = ActiveForm::begin(['id'=>'form','method' => 'get'])?>
             <?= Html::hiddenInput('tipo',null,['id'=>'tipo']); ?>
             <div class="form-group">
                 <?= Html::label('De:','fechaStart',array('class'=>'control-label')); ?>

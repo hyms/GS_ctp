@@ -1,7 +1,7 @@
 <?php
     $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
     $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
-    $fecha = $dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de ".$meses[date('n',strtotime($fecha))-1]. " del ".date('Y',strtotime($fecha));
+    $fecha = $dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de ".$meses[date('n',strtotime($fecha))-1]. " del ".date('Y',strtotime($fecha))." / ".date('H:i',strtotime($fecha));
 ?>
 <div>
     <h3 class="text-center"><strong><?php echo "REGISTRO DIARIO"?></strong></h3>
@@ -70,7 +70,7 @@
         <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br>
             <p class="text-center"><?php echo "firma";?></p>
-            <span><?php echo "Nombre: ".Yii::$app->user->identity->nombre." ".Yii::$app->user->identity->apellido?></span>
+            <span><?php echo "Nombre: ".$arqueo->fkIdUser->nombre." ".$arqueo->fkIdUser->apellido?></span>
             <p class="text-center"><?php echo "Entregue conforme";?></p>
         </div>
         <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">

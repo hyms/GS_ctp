@@ -91,6 +91,14 @@
                 <div class="text-center">
                     <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
                     <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
+					<?php
+					/*if($orden->tipoOrden==1)
+					{
+						echo Html::hiddenInput('anular','0',['id'=>'anular']);
+						echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller');
+						echo $this->render('../scripts/anular');
+					}*/
+					?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>

@@ -471,7 +471,7 @@ class VentaController extends Controller
                     $content   = $this->renderPartial('prints/registroDiario',
                                                       array(
                                                           'saldo'   => $variables['saldo'],
-                                                          'fecha'   => date("Y-m-d", strtotime($arqueoTmp->fechaCierre)),
+                                                          'fecha'   => $arqueoTmp->fechaCierre,
                                                           'arqueo'  => $arqueoTmp,
                                                           'ventas'  => $variables['ventas'],
                                                           'recibos' => $variables['recibos'],
@@ -612,7 +612,7 @@ class VentaController extends Controller
 
     public function actionReport()
     {
-        $post = Yii::$app->request->post();
+        $post = Yii::$app->request->get();
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd'])) {
             if (!empty($post['fechaStart']) && !empty($post['fechaEnd'])) {
                 if ($post['tipo'] == "pd") {

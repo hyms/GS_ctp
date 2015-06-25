@@ -88,7 +88,7 @@ class SGCaja extends Component
         $movimientos = MovimientoCaja::find()
             ->andWhere('`fk_idCajaOrigen`=' . $idCaja . ' or `fk_idCajaDestino`=' . $idCaja);
         if (isset($get['arqueo']))
-            $movimientos->andFilterWhere(['like', 'fechaCierre', date("Y-m-d", strtotime($get['arqueo']))]);
+            $movimientos->andFilterWhere(['like', 'fechaCierre', $get['arqueo']]);
         else
             $movimientos->andWhere(['is', 'fechaCierre', null]);
 
@@ -164,6 +164,7 @@ class SGCaja extends Component
 
         $saldos = MovimientoCaja::find()
             ->andWhere(['tipoMovimiento'=>3])
+			->andWhere('`fk_idCajaOrigen`=' . $idCaja . ' or `fk_idCajaDestino`=' . $idCaja)
             ->andWhere(['<=', 'time', date("Y-m-d H:i", strtotime($fechaMovimientos))])
             ->orderBy(['time'=>SORT_DESC])
             ->one();

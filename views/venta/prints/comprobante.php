@@ -10,7 +10,7 @@
         <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br><br>
             <div class="text-center"><small><?php echo "firma";?></small></div>
-            <div class="text-justify"><strong><span class="text-capitalize"><?php echo "Nombre y AP: ";?></strong><?php echo $arqueo->fkIdUser->nombre." ".$arqueo->fkIdUser->apellido;?></span></div>
+            <div class="text-justify"><strong><span class="text-capitalize"><?php echo "Nombre y AP: ";?></strong><?= $arqueo->fkIdUser->nombre." ".$arqueo->fkIdUser->apellido;?></span></div>
             <div class="text-justify"><strong><?php echo "CI: ";?></strong><?php echo $arqueo->fkIdUser->CI;?></div>
             <div class="text-center"><small><?php echo "Entregue conforme";?></small></div>
         </div>

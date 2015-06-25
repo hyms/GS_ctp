@@ -38,7 +38,7 @@
                             }
                         ?>
                         <?= Html::label('Cliente','cliente')?>
-                        <?= Html::input('','cliente',$datoCliente,['class'=>'form-control','id'=>'cliente']) ?>
+                        <?= Html::input('','cliente',$datoCliente,['class'=>'form-control','id'=>'cliente','onchange'=>'clienteName(this.value)']) ?>
                     </div>
                     <div class="col-xs-4">
                         <?= $form->field($orden,'cfSF',['template'=>'{input}'])->checkbox()->label('Con Factura'); ?>
@@ -131,15 +131,13 @@
 <?= $this->render('../scripts/reset') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>
 <?php
-    /*$js  ="
-        function radio()
+    $js  ="
+        function clienteName(val)
         {
-        var val = $('input:radio[name=\"OrdenCTP[tipoPago]\"]:checked').val();
-        cliente = $('#idCliente').val();
-        if($('#idCliente').val().length>0)
-            factura(val,'".Url::to(['venta/ajaxfactura'])."',".$orden->idOrdenCTP.",$('#tipoCliente').val());
-        else
-            alert(\"Debe seleccionar un Cliente\");
+			if(val=='')
+			{
+				$('#idCliente').val('');
+			}
         }";
-    $this->registerJs($js, \yii\web\View::POS_HEAD);*/
+    $this->registerJs($js, \yii\web\View::POS_HEAD);
 ?>
