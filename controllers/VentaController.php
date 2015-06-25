@@ -56,7 +56,7 @@ class VentaController extends Controller
             else
                 $this->idCaja = $caja->idCaja;
 
-            $arqueo = MovimientoCaja::find()
+            /*$arqueo = MovimientoCaja::find()
                 ->andWhere(['<=', 'time', date("Y-m-d H:i:s", mktime(23,59,59,date('m'),date('d')-1,date('Y')))])
                 ->orderBy(['time'=>SORT_DESC])
                 //->andWhere(['tipoMovimiento'=>3])
@@ -68,7 +68,7 @@ class VentaController extends Controller
                     $arqueoTransaccion = new SGOrdenes();
                     $arqueoTransaccion->arqueo($datos,true);
                 }
-            }
+            }*/
         }
         parent::init();
     }

@@ -12,6 +12,7 @@
             <div class="panel-body" style="overflow: auto;">
                 <?php $form = ActiveForm::begin(['id' => 'form']); ?>
                 <?= $form->field($arqueo, 'monto')->label('Monto a Entregar'); ?>
+                <?= $form->field($arqueo, 'observaciones')->label('Concepto')->textarea(); ?>
                 <?= $form->field($arqueo, 'time')->hiddenInput()->label(false); ?>
                 <?= Html::submitButton('Continuar', array('class' => 'btn btn-default col-xs-offset-1')); ?>
                 <?php ActiveForm::end(); ?>

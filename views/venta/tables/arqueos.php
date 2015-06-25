@@ -30,7 +30,7 @@
                 'print'=>function($url,$model){
                     $options = array_merge([
                                                //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Imprimir',
+                                               'data-original-title'=>'Comprobante',
                                                'data-toggle'=>'tooltip',
                                                'title'=>''
                                            ]);
@@ -40,7 +40,7 @@
                 'registro'=>function($url,$model){
                     $options = array_merge([
                                                //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Registro',
+                                               'data-original-title'=>'Registro Diario',
                                                'data-toggle'=>'tooltip',
                                                'title'=>''
                                            ]);
