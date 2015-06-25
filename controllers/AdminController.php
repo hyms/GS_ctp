@@ -2,12 +2,14 @@
 
 namespace app\controllers;
 
+use app\components\SGCaja;
 use app\components\SGOperation;
 use app\components\SGProducto;
 use app\models\Caja;
 use app\models\Cliente;
 use app\models\ClienteSearch;
 use app\models\MovimientoCaja;
+use app\models\MovimientoCajaSearchUserCaja;
 use app\models\OrdenCTP;
 use app\models\Producto;
 use app\models\ProductoSearch;
@@ -18,6 +20,7 @@ use app\models\SucursalSearch;
 use app\models\TipoCliente;
 use app\models\User;
 use app\models\UserSearch;
+use kartik\mpdf\Pdf;
 use Yii;
 use yii\data\ActiveDataProvider;
 use yii\data\ArrayDataProvider;
@@ -521,5 +524,116 @@ class AdminController extends Controller
         $search   = new ClienteSearch();
         $clientes = $search->search(Yii::$app->request->queryParams);
         return $this->render('cliente', ['r' => 'list', 'clientes' => $clientes, 'search' => $search]);
+    }
+
+    public function actionArqueos()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['op'])) {
+            switch ($get['op']) {
+                /*case "chica":
+                    $search = new MovimientoCajaSearchUser();
+                    $cchica = $search->search(yii::$app->request->queryParams);
+                    $cchica->query
+                        ->andWhere(['tipoMovimiento' => 2])
+                        ->andWhere(['fk_idCajaOrigen' => $this->idCaja]);
+                    if (isset($get['CajaChica'])) {
+                        $cchica->attributes = $get['CajaChica'];
+                    }
+                    return $this->render('caja', ['r' => 'cajaChica', 'cajasChicas' => $cchica, 'search' => $search]);
+                    break;
+                case "recibo":
+                    $search = new ReciboSearch();
+                    $recibos = $search->search(yii::$app->request->queryParams);
+                    $recibos->query
+                        ->andWhere(['fk_idSucursal' => $this->idSucursal]);
+                    return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
+                    break;*/
+                case "arqueos":
+                    $search = new MovimientoCajaSearchUserCaja();
+                    $arqueos = $search->search(Yii::$app->request->queryParams);
+                    $arqueos->query
+                        ->andWhere(['tipoMovimiento' => 3])
+                        ->orderBy(["time" => SORT_DESC]);
+                    return $this->render('caja', ['r' => 'arqueos', 'arqueos' => $arqueos, 'search' => $search]);
+                    break;
+                case "arqueo":
+                    $sucursales = Sucursal::find()->all();
+                    if(isset($get['ic'])) {
+                        $arqueo = new MovimientoCaja();
+                        $caja   = Caja::findOne(['fk_idSucursal' => $get['ic']]);
+                        $d   = date("d");
+                        $end = date("Y-m-d H:i:s");
+
+                        $variables = SGCaja::getSaldo($caja->idCaja, $end, false, false);
+
+                        return $this->render('caja',
+                                             [
+                                                 'r'          => 'arqueo',
+                                                 'sucursales' => $sucursales,
+                                                 'saldo'      => $variables['saldo'],
+                                                 'arqueo'     => $arqueo,
+                                                 'caja'       => $caja,
+                                                 'fecha'      => date('Y-m-d H:i:s', strtotime($end)),
+                                                 'ventas'     => $variables['ventas'],
+                                                 'deudas'     => $variables['deudas'],
+                                                 'recibos'    => $variables['recibos'],
+                                                 'cajas'      => $variables['cajas'],
+                                                 'dia'        => $d,
+                                             ]);
+                        break;
+                    }
+                return $this->render('caja',['r'=>'arqueo','sucursales'=>$sucursales]);
+            }
+
+        }
+        return $this->render('caja');
+    }
+
+    public function actionPrint()
+    {
+        $get = Yii::$app->request->get();
+        if (isset($get['op']) && isset($get['id'])) {
+            switch ($get['op']) {
+                case "registro":
+                    $arqueoTmp = MovimientoCaja::findOne(['idMovimientoCaja' => $get['id']]);
+                    $variables = SGCaja::getSaldo($arqueoTmp->fk_idCajaOrigen, $arqueoTmp->time, false, ['arqueo' => $arqueoTmp->fechaCierre]);
+                    $content   = $this->renderPartial('prints/registroDiario',
+                                                      array(
+                                                          'saldo'   => $variables['saldo'],
+                                                          'fecha'   => $arqueoTmp->fechaCierre,
+                                                          'arqueo'  => $arqueoTmp,
+                                                          'ventas'  => $variables['ventas'],
+                                                          'recibos' => $variables['recibos'],
+                                                          'cajas'   => $variables['cajas'],
+                                                          'deudas'  => $variables['deudas'],
+                                                      ));
+                    $title     = 'Registro Diario ' . date("d-m-Y", strtotime($arqueoTmp->fechaCierre));
+                    break;
+
+            }
+            $pdf = new Pdf([
+                               // set to use core fonts only
+                               'mode'         => Pdf::MODE_CORE,
+                               'format'       => Pdf::FORMAT_LETTER,
+                               'orientation'  => Pdf::ORIENT_PORTRAIT,
+                               'destination'  => Pdf::DEST_BROWSER,
+                               'content'      => $content,
+                               // format content from your own css file if needed or use the
+                               // enhanced bootstrap css built by Krajee for mPDF formatting
+                               'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
+                               // set mPDF properties on the fly
+                               'marginLeft'   => 9, // margin_left. Sets the page margins for the new document.
+                               'marginRight'  => 9, // margin_right
+                               'marginTop'    => 8, // margin_top
+                               'marginBottom' => 8, // margin_bottom
+                               'marginHeader' => 9, // margin_header
+                               'marginFooter' => 9, // margin_footer
+                               'options'      => ['title' => $title],
+                           ]);
+
+            // return the pdf output as per the destination setting
+            return $pdf->render();
+        }
     }
 }

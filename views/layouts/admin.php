@@ -41,8 +41,17 @@ AppAsset2::register($this,true);
                 'url'=>['admin/placas']
             ],
             [
-                'label'=>'Reportes de Venta',
-                'url'=>['admin/report']
+                'label'=>'Reportes de Caja',
+                'items'=>[
+                    [
+                        'label' => 'Reportes de Venta',
+                        'url'=>['admin/report'],
+                    ],
+                    [
+                        'label'=>'Reporte de Arqueos',
+                        'url'=>['admin/arqueos']
+                    ]
+                ]
             ],
             [
                 'label'=>'Producto',
