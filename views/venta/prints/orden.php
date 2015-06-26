@@ -96,7 +96,7 @@
                     <?php } ?>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Diseñador/a:</strong> <span class="text-capitalize"><?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></span></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observaciones;?></div>
-                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <span class="text-capitalize"><?= ((empty($orden->fkIdUserV))?"":$orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido);?></span></div>
+                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <span class="text-capitalize"><?= ((empty($orden->fkIdUserV))?Yii::$app->user->identity->nombre." ".Yii::$app->user->identity->apellido:$orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido);?></span></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observacionesCaja;?></div>
                 </div>
 

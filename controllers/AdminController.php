@@ -439,7 +439,7 @@ class AdminController extends Controller
                         $row['observaciones'] = "";
                         if ($orden->estado >= 0) {
                             foreach ($orden->ordenDetalles as $detalle) {
-                                $row[$detalle->fkIdProductoStock->fkIdProducto->formato] = $detalle->cantidad;
+                                $row[$detalle->fkIdProductoStock->fkIdProducto->formato] += $detalle->cantidad;
                             }
                         } else {
                             $row['observaciones'] = "<span class=\"text-danger\">Anulado</span>";
