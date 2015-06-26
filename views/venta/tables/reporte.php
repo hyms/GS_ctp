@@ -225,6 +225,7 @@
                               'toolbar' =>  [
                                   '{export}',
                               ],
+                              'containerOptions'=>['style'=>'overflow: auto'],
                               // set export properties
                               'export' => [
                                   'fontAwesome' => true,
@@ -233,7 +234,7 @@
                               // parameters from the demo form
                               'bordered' => true,
                               'condensed' => true,
-                              'responsive'=>true,
+                              'responsive'=> false,
                               'hover' => true,
                               'showPageSummary' => true,
                               'panel' => [
@@ -253,11 +254,13 @@
                                       'filename' => 'Reporte Venta',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                       'config' => [
-                                      'format' => 'Letter-L',
+                                      'format' => 'A4-L',
+                                      ///'defaultFontSize'=>0.5,
                                       'marginTop' => 5,
                                       'marginBottom' => 5,
                                       'marginLeft' => 5,
                                       'marginRight' => 5,
+                                      //'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
                                       ]
                                   ],
                               ],

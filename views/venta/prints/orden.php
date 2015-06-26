@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" style="color: #000000">
     <div style="width:593px; position: relative; float: left;">
         <div class="col-xs-12">
             <div class="row">
@@ -6,7 +6,7 @@
                 <h4 class="text-right"><strong><?= ($orden->cfSF==0)?$orden->codigoServicio:" "; ?></strong></h4>
                 <div class="row col-xs-12">
                     <div class="col-xs-offset-4 col-xs-3 text-center"><small><?= $orden->fkIdSucursal->nombre;?></small></div>
-                    <div class="text-right"><strong><?= "FECHA:";?></strong> <?= date("d-m-Y / H:i",strtotime($orden->fechaCobro));?></div>
+                    <div class="text-right"><strong><?= "FECHA:";?></strong> <?= (((empty($orden->fechaCobro))?date("d-m-Y / H:i"):date("d-m-Y / H:i",strtotime($orden->fechaCobro))));?></div>
                 </div>
             </div>
 
@@ -15,7 +15,7 @@
                 <div class="col-xs-3"><strong><?= "NIT:";?></strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:"";?></div>
             </div>
 
-            <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff">
+            <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff; color: #000">
                 <table class="table table-hover table-condensed">
                     <thead><tr>
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Nº"; ?></th>
