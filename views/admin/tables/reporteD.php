@@ -3,6 +3,10 @@
 
     $columns = [
         [
+            'class' => '\kartik\grid\SerialColumn',
+            'width'=>'36px',
+        ],
+        [
             'header'=>'Usuario',
             'attribute'=>function($model){
                 if(empty($model->fkIdUserV))

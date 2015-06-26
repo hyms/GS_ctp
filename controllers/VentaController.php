@@ -496,7 +496,7 @@ class VentaController extends Controller
                                'content'      => $content,
                                // format content from your own css file if needed or use the
                                // enhanced bootstrap css built by Krajee for mPDF formatting
-                               'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
+                               'cssFile'      => '@webroot/css/bootstrap.min.simplex.css',
                                // set mPDF properties on the fly
                                'marginLeft'   => 9, // margin_left. Sets the page margins for the new document.
                                'marginRight'  => 9, // margin_right

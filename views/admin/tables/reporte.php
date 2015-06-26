@@ -3,6 +3,9 @@
 
     $columns = [
         [
+            'class' => '\kartik\grid\SerialColumn',
+        ],
+        [
             'header'=>'Usuario',
             'value'=>function($model){
                 if(empty($model->fkIdUserV))
@@ -203,7 +206,7 @@
                               ],
                               // parameters from the demo form
                               'bordered' => true,
-                              'condensed' => true,
+                              'condensed'=>true,
                               'responsive' => true,
                               'hover' => true,
                               'showPageSummary' => true,
@@ -224,7 +227,7 @@
                                       'filename' => 'Reporte ventas',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                       'config' => [
-                                          'format' => 'Letter-L',
+                                          'format' => 'Letter',
                                           'marginTop' => 5,
                                           'marginBottom' => 5,
                                           'marginLeft' => 5,
