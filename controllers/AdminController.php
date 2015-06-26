@@ -400,7 +400,7 @@ class AdminController extends Controller
 
     public function actionPlacas()
     {
-        $post = Yii::$app->request->post();
+        $post = Yii::$app->request->get();
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
             if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
                 if ($post['tipo'] == "a") {
@@ -430,7 +430,8 @@ class AdminController extends Controller
                         $row = [
                             'fecha' => $orden->fechaGenerada,
                             'orden' => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
-                            'tipo'  => $tipo[$orden->tipoOrden]
+                            'tipo'  => $tipo[$orden->tipoOrden],
+                            'estado'=> $orden->estado
                         ];
                         foreach ($placas as $key => $placa) {
                             $row[$placa->fkIdProducto->formato] = 0;
@@ -447,7 +448,7 @@ class AdminController extends Controller
                             if ($orden->tipoOrden == 2) {
                                 if (!empty($row['observaciones']))
                                     $row['observaciones'] = $row['observaciones'] . "-";
-                                $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . SGOperation::tiposReposicion($orden->tipoRepos) . "</span>";
+                                $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . SGOperation::tiposReposicion($orden->tipoRepos) . "</span>".((empty($orden->attribuible))?"":"-".$orden->attribuible);
                             }
                             if (!empty($row['observaciones']))
                                 $row['observaciones'] = $row['observaciones'] . "-";

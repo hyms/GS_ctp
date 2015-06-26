@@ -2,6 +2,7 @@
     use kartik\grid\GridView;
     use yii\data\ActiveDataProvider;
     use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -39,18 +40,30 @@
                     },
                 ],
                 [
-                    'header'=>'',
-                    'format'=>'raw',
-                    'value'=>function($model){
-                        return Html::a('<i class="glyphicon glyphicon-shopping-cart"></i>',
-                                       ['venta/venta','id'=>$model->idOrdenCTP],
-                                       [
-                                           'class'=>"update",
-                                           'title'=>"",
-                                           'data-toggle'=>"tooltip",
-                                           'data-original-title'=>"Realizar Tranzaccion",
-                                       ]);
-                    },
+                    'class' => 'yii\grid\ActionColumn',
+                    'template'=>'{update} {print}',
+                    'buttons'=>[
+                        'update'=>function($url,$model){
+                            return Html::a('<i class="glyphicon glyphicon-shopping-cart"></i>',
+                                           ['venta/venta','id'=>$model->idOrdenCTP],
+                                           [
+                                               'class'=>"update",
+                                               'title'=>"",
+                                               'data-toggle'=>"tooltip",
+                                               'data-original-title'=>"Realizar Tranzaccion",
+                                           ]);
+                        },
+                        'print'=>function($url,$model){
+                            $options = array_merge([
+                                                       //'class'=>'btn btn-success',
+                                                       'data-original-title'=>'Imprimir',
+                                                       'data-toggle'=>'tooltip',
+                                                       'title'=>''
+                                                   ]);
+                            $url = Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
+                            return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                        },
+                    ]
                 ],
             ];
             echo GridView::widget([

@@ -83,7 +83,7 @@
                 </div>
                 <div class="col-xs-6 col-xs-offset-1">
                     <div class="row col-xs-12" style="border: 1.5px solid; border-formato: #000000;"><strong>Total:</strong>
-                        <?= $orden->montoVenta?>Bs. <span style="font-size:11px"><?= $monto ?></span>
+                        <?php if(is_numeric($orden->montoVenta)){ ?><?= $orden->montoVenta?>Bs. <span style="font-size:11px"><?= $monto ?></span> <?php } ?>
                     </div>
                     <?php if($orden->montoDescuento>0){?>
                         <div class="row col-xs-5" style="font-size: 10px"><strong>Desc:</strong> <?= $orden->montoDescuento." Bs.";?></div>
@@ -96,7 +96,7 @@
                     <?php } ?>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Diseñador/a:</strong> <span class="text-capitalize"><?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></span></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observaciones;?></div>
-                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <span class="text-capitalize"><?= $orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido;?></span></div>
+                    <div class="row col-xs-12" style="font-size: 10px"><strong>Cajer@:</strong> <span class="text-capitalize"><?= ((empty($orden->fkIdUserV))?"":$orden->fkIdUserV->nombre." ".$orden->fkIdUserV->apellido);?></span></div>
                     <div class="row col-xs-12" style="font-size: 10px"><strong>Obs:</strong> <?= $orden->observacionesCaja;?></div>
                 </div>
 
