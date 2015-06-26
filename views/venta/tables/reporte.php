@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
@@ -233,12 +233,13 @@ $columns = [
                               // parameters from the demo form
                               'bordered' => true,
                               'condensed' => true,
-                              'persistResize' => false,
+                              'responsive'=>true,
                               'hover' => true,
                               'showPageSummary' => true,
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
                                   'heading' => 'ordenes',
+                                  'footer'=>false,
                               ],
                               'exportConfig' => [
                                   GridView::EXCEL => [

@@ -403,6 +403,7 @@ class AdminController extends Controller
         $post = Yii::$app->request->get();
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
             if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
+                $total = 0;
                 if ($post['tipo'] == "a") {
                     $ordenes = OrdenCTP::find()
                         ->andWhere(['between', 'fechaGenerada', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
@@ -414,7 +415,7 @@ class AdminController extends Controller
                     $placas  = ProductoStock::find()
                         ->joinWith('fkIdProducto')
                         ->andWhere(['fk_idSucursal' => $post['sucursal']])
-                        ->orderBy(['formato'=>SORT_ASC,'dimension'=>SORT_ASC])
+                        ->orderBy(['formato' => SORT_ASC, 'dimension' => SORT_ASC])
                         ->all();
                     $tipo    = [
                         0 => "Orden de Trabajo",
@@ -422,16 +423,17 @@ class AdminController extends Controller
                         2 => "Reposicion",
                     ];
                     $data    = [];
+
                     foreach ($ordenes as $orden) {
                         if ($orden->tipoOrden == 0) {
                             if ($orden->estado == 1)
                                 continue;
                         }
                         $row = [
-                            'fecha' => $orden->fechaGenerada,
-                            'orden' => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
-                            'tipo'  => $tipo[$orden->tipoOrden],
-                            'estado'=> $orden->estado
+                            'fecha'  => $orden->fechaGenerada,
+                            'orden'  => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
+                            'tipo'   => $tipo[$orden->tipoOrden],
+                            'estado' => $orden->estado
                         ];
                         foreach ($placas as $key => $placa) {
                             $row[$placa->fkIdProducto->formato] = 0;
@@ -440,6 +442,7 @@ class AdminController extends Controller
                         if ($orden->estado >= 0) {
                             foreach ($orden->ordenDetalles as $detalle) {
                                 $row[$detalle->fkIdProductoStock->fkIdProducto->formato] += $detalle->cantidad;
+                                $total += $detalle->cantidad;
                             }
                         } else {
                             $row['observaciones'] = "<span class=\"text-danger\">Anulado</span>";
@@ -448,7 +451,7 @@ class AdminController extends Controller
                             if ($orden->tipoOrden == 2) {
                                 if (!empty($row['observaciones']))
                                     $row['observaciones'] = $row['observaciones'] . "-";
-                                $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . SGOperation::tiposReposicion($orden->tipoRepos) . "</span>".((empty($orden->attribuible))?"":"-".$orden->attribuible);
+                                $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . SGOperation::tiposReposicion($orden->tipoRepos) . "</span>" . ((empty($orden->attribuible)) ? "" : "-" . $orden->attribuible);
                             }
                             if (!empty($row['observaciones']))
                                 $row['observaciones'] = $row['observaciones'] . "-";
@@ -479,6 +482,7 @@ class AdminController extends Controller
                     'sucursal'   => $post['sucursal'],
                     'tipoOrden'  => $post['tipoOrden'],
                     'data'       => $data,
+                    'total'      => $total,
                 ]);
             }
             return $this->render('placas', [

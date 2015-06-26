@@ -14,7 +14,7 @@
             <td><?php echo Html::label('B','k')?></td>
             <td><?php echo Html::label('Trabajo','trabajo')?></td>
             <td><?php echo Html::label('Pinza','pinza')?></td>
-            <td><?php echo Html::label('Resolucion','resolucion')?></td>
+            <td><?php echo Html::label('Resol.','resolucion')?></td>
             <?php if($orden->tipoOrden==0){?>
                 <td><?php echo Html::label('Adicional','adicional')?></td>
             <?php } ?>

@@ -33,7 +33,7 @@
             <?= Html::activeCheckBox($model,"[$index]K",['id'=>'k_'.$index,'label' => null]); ?>
         </td>
 
-        <td>
+        <td class="col-xs-2">
             <div <?= ($model->hasErrors('trabajo'))?'class="has-error"':''; ?> >
                 <?= Html::activeTextInput($model,"[$index]trabajo",['class'=>'form-control input-sm','id'=>'trabajo_'.$index]); ?>
             </div>

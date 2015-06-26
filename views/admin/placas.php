@@ -17,7 +17,7 @@
                     switch ($r) {
                         case "all":
                             //echo $this->render('prints/report', ['data' => $data]);
-                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd,'sucursal'=>$sucursal]);
+                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd,'sucursal'=>$sucursal,'total'=>$total]);
                             break;
                         case "formato":
                             echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);

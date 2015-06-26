@@ -1,7 +1,7 @@
 <?php
-use kartik\grid\GridView;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'header'=>'Usuario',
             'attribute'=>function($model){
@@ -238,6 +238,7 @@ $columns = [
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
                                   'heading' => 'ordenes',
+                                  'footer'=>false,
                               ],
                               'exportConfig' => [
                                   GridView::EXCEL => [

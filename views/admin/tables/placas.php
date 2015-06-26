@@ -52,6 +52,8 @@
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
                                   'heading' => 'ordenes',
+                                  'after'=>'<h3 class="text-right"><span class="label label-default">Total Placas: <strong>'.$total.'</strong></span></h3>',
+                                  'footer'=>false,
                               ],
                               'exportConfig' => [
                                   GridView::EXCEL => [
