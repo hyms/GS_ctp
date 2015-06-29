@@ -25,9 +25,14 @@ class SGOrdenes extends Component
             if ($data['orden']->tipoOrden == 0) {
                 if (!$data['orden']->validate(['responsable', 'observaciones', 'telefono']))
                     return $data;
-            } else
+            } else {
                 if (!$data['orden']->validate(['responsable', 'observaciones']))
                     return $data;
+                if($data['orden']->tipoOrden == 1  && ($data['orden']->codDependiente=="")) {
+                    $data['orden']->addError('codDependiente','No puede estar vacio');
+                    return $data;
+                }
+            }
 
             if (!Model::validateMultiple($data['detalle'], ['cantidad', 'trabajo', 'pinza', 'resolucion']))
                 return $data;
