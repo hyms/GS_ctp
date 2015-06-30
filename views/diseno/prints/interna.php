@@ -74,7 +74,7 @@
 <div style="width:123px; position: relative; float: right;">
     <div class="row" style="font-size: 10.5px">
         <div class="col-xs-12 row text-center"><h3><strong><?= $orden->codigoServicio;?></strong></h3></div>
-        <div class="col-xs-12 row text-center" style="font-size: 8px"><?= $orden->fkIdSucursal->nombre;?></div>
+        <div class="col-xs-12 row text-center" style="font-size: 8px"><strong><?= $orden->fkIdSucursal->nombre;?></strong></div>
         <div class="col-xs-12 row"><span class="row"><strong><?= "CLIENTE:";?></strong> <span class="col-xs-12"><?= $orden->responsable;?></span></div>
         <div class="col-xs-12 row"><span class="row"><strong><?= "I.IMP:";?></strong> <span class="col-xs-12"><?= $orden->codDependiente;?></span></div>
         <div class="col-xs-12 row"><span class="row"><strong><?= "FECHA:";?></strong> <span class="col-xs-12"><?= date("d-m-Y / H:i",strtotime($orden->fechaGenerada));?></span></span></div>

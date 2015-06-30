@@ -1,9 +1,9 @@
 <?php
-use kartik\widgets\TypeaheadBasic;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use kartik\widgets\TypeaheadBasic;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <div class="row">
@@ -54,6 +54,7 @@ use yii\helpers\Url;
                                         data: "name="+suggestion["value"],
                                         success: function(data) {
                                             $("#telefono").val(data);
+                                            $("#telefono").focus();
                                         }
                                 }); }',
                                         ]
