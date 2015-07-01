@@ -1,9 +1,9 @@
 <?php
-    use kartik\widgets\TypeaheadBasic;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\widgets\TypeaheadBasic;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="row">
@@ -33,33 +33,34 @@
                 <?php if($orden->tipoOrden==0){?>
                     <div class="col-xs-6">
                         <?php
-                            $data = ArrayHelper::map(\app\models\Cliente::findAll(['fk_idSucursal'=>$orden->fk_idSucursal]),'idCliente','nombreNegocio');
-                            if(empty($data))
-                            {
-                                echo $form->field($orden, 'responsable', ['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])
-                                    ->textInput(['maxlength' => 50]);
-                            }
-                            else {
-                                echo $form->field($orden, 'responsable', ['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])
-                                    ->textInput(['maxlength' => 50])
-                                    ->widget(TypeaheadBasic::classname(), [
-                                        'data'          => $data,
-                                        'options'       => ['placeholder' => 'Nombre del Negocio'],
-                                        'pluginOptions' => ['highlight' => true],
-                                        'pluginEvents'  => [
-                                            'typeahead:selected' => 'function(event,suggestion) {
+                        $data = ArrayHelper::map(\app\models\Cliente::findAll(['fk_idSucursal'=>$orden->fk_idSucursal]),'idCliente','nombreNegocio');
+                        if(empty($data))
+                        {
+                            echo $form->field($orden, 'responsable', ['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])
+                                ->textInput(['maxlength' => 50]);
+                        }
+                        else {
+                            echo $form->field($orden, 'responsable', ['template' => '<div class="col-xs-4">{label}</div><div class="col-xs-8">{input}{error}{hint}</div>'])
+                                ->textInput(['maxlength' => 50])
+                                ->widget(TypeaheadBasic::classname(), [
+                                    'data'          => $data,
+                                    'options'       => ['placeholder' => 'Nombre del Negocio'],
+                                    'pluginOptions' => ['highlight' => true],
+                                    'pluginEvents'  => [
+                                        'typeahead:selected' => 'function(obj, selected, name) {
+
                                     $.ajax({
                                         url: "' . Url::to(['diseno/cliente']) . '",
                                         type: "post",
-                                        data: "name="+suggestion["value"],
+                                        data: "name="+selected.toString(),
                                         success: function(data) {
                                             $("#telefono").val(data);
                                             $("#telefono").focus();
                                         }
                                 }); }',
-                                        ]
-                                    ]);
-                            }
+                                    ]
+                                ]);
+                        }
                         ?>
                     </div>
                     <div class="col-xs-6">
@@ -92,13 +93,13 @@
                 <div class="text-center">
                     <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
                     <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
-					<?php
-					if($orden->tipoOrden==1 && !empty($orden->idOrdenCTP)) {
+                    <?php
+                    if($orden->tipoOrden==1 && !empty($orden->idOrdenCTP)) {
                         echo Html::hiddenInput('anular', '0', ['id' => 'anular']);
                         echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller'));
                         echo $this->render('../scripts/anular');
                     }
-					?>
+                    ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>
