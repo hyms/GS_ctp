@@ -60,7 +60,7 @@
                             'print'=>function($url,$model){
                                 $options = array_merge([
                                                            //'class'=>'btn btn-success',
-                                                           'data-original-title'=>'Imprimir',
+                                                           'data-original-title'=>(($model->estado<0)?'ANULADO':'Imprimir'),
                                                            'data-toggle'=>'tooltip',
                                                            'title'=>''
                                                        ]);
@@ -100,6 +100,13 @@
                                           'condensed'=>true,
                                           'hover'=>true,
                                           'bordered'=>false,
+                                          'rowOptions' => function ($model, $index, $widget, $grid){
+                                              if($model->estado<0){
+                                                  return ['class' => GridView::TYPE_DANGER];
+                                              }else{
+                                                  return [];
+                                              }
+                                          },
                                       ]);
             ?>
         </div>

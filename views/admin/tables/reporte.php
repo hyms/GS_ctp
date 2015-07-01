@@ -195,6 +195,15 @@
                               'dataProvider' => $data,
                               //'filterModel' => $search,
                               'columns' => $columns,
+                              'rowOptions' => function ($model, $index, $widget, $grid){
+                                  if($model->estado<0){
+                                      return ['class' => GridView::TYPE_DANGER];
+                                  }elseif($model->estado==2){
+                                      return ['class' => GridView::TYPE_WARNING];
+                                  }else{
+                                      return [];
+                                  }
+                              },
                               // set your toolbar
                               'toolbar' =>  [
                                   '{export}',

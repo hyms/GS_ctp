@@ -327,7 +327,8 @@ class VentaController extends Controller
                     $cchica = $search->search(yii::$app->request->queryParams);
                     $cchica->query
                         ->andWhere(['tipoMovimiento' => 2])
-                        ->andWhere(['fk_idCajaOrigen' => $this->idCaja]);
+                        ->andWhere(['fk_idCajaOrigen' => $this->idCaja])
+                        ->orderBy(['time'=>SORT_DESC]);
                     if (isset($get['CajaChica'])) {
                         $cchica->attributes = $get['CajaChica'];
                     }
@@ -337,7 +338,8 @@ class VentaController extends Controller
                     $search = new ReciboSearch();
                     $recibos = $search->search(yii::$app->request->queryParams);
                     $recibos->query
-                        ->andWhere(['fk_idSucursal' => $this->idSucursal]);
+                        ->andWhere(['fk_idSucursal' => $this->idSucursal])
+                        ->orderBy(['fechaRegistro'=>SORT_DESC]);;
                     return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                     break;
                 case "arqueos":
@@ -625,25 +627,34 @@ class VentaController extends Controller
                         ->andWhere(['tipoMovimiento' => 0])
                         ->andWhere(['fk_idCajaDestino' => $this->idCaja])
                         ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
-                        ->select('idParent')
+                        ->select(['idParent'])
                         ->groupBy('idParent')
                         ->all();
 
                     $venta = [];
                     foreach ($deudas as $deuda) {
-                        $orden = OrdenCTP::find()
-                            ->andWhere(['fk_idMovimientoCaja' => $deuda->idParent]);
-                        $orden->joinWith('fkIdCliente');
-                        if (!empty($post['clienteNegocio'])) {
-                            $orden->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                        $tmp =  MovimientoCaja::find()
+                            ->andWhere(['idParent'=>$deuda->idParent])
+                            ->all();
+                        $orden = null;
+                        foreach($tmp as $key => $item) {
+                            $orden = OrdenCTP::find()
+                                ->andWhere(['fk_idMovimientoCaja' => $item->idParent])
+                                ->andWhere(['NOT LIKE', 'fechaCobro', date('Y-m-d', strtotime($item->time))]);
+                            $orden->joinWith('fkIdCliente');
+                            if (!empty($post['clienteNegocio'])) {
+                                $orden->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                            }
+                            if (!empty($post['clienteResponsable'])) {
+                                $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                            }
+                            if ($post['factura'] != "") {
+                                $orden->andWhere(['cfSF' => $post['factura']]);
+                            }
+                            $orden = $orden->one();
+                            if (!empty($orden))
+                                break;
                         }
-                        if (!empty($post['clienteResponsable'])) {
-                            $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
-                        }
-                        if ($post['factura']!="") {
-                            $orden->andWhere(['cfSF' => $post['factura']]);
-                        }
-                        $orden = $orden->one();
                         if (!empty($orden))
                             array_push($venta, $orden);
                     }

@@ -313,19 +313,28 @@ class AdminController extends Controller
                         ->all();
                     $venta = [];
                     foreach ($deudas as $deuda) {
-                        $orden = OrdenCTP::find()
-                            ->andWhere(['fk_idMovimientoCaja' => $deuda->idParent]);
-                        $orden->joinWith('fkIdCliente');
-                        if (!empty($post['clienteNegocio'])) {
-                            $orden->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                        $tmp =  MovimientoCaja::find()
+                            ->andWhere(['idParent'=>$deuda->idParent])
+                            ->all();
+                        $orden = null;
+                        foreach($tmp as $key => $item) {
+                            $orden = OrdenCTP::find()
+                                ->andWhere(['fk_idMovimientoCaja' => $item->idParent])
+                                ->andWhere(['NOT LIKE', 'fechaCobro', date('Y-m-d', strtotime($item->time))]);
+                            $orden->joinWith('fkIdCliente');
+                            if (!empty($post['clienteNegocio'])) {
+                                $orden->andWhere(['cliente.nombreNegocio' => $post['clienteNegocio']]);
+                            }
+                            if (!empty($post['clienteResponsable'])) {
+                                $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
+                            }
+                            if ($post['factura'] != "") {
+                                $orden->andWhere(['cfSF' => $post['factura']]);
+                            }
+                            $orden = $orden->one();
+                            if (!empty($orden))
+                                break;
                         }
-                        if (!empty($post['clienteResponsable'])) {
-                            $orden->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
-                        }
-                        if ($post['factura']!="") {
-                            $orden->andWhere(['cfSF' => $post['factura']]);
-                        }
-                        $orden = $orden->one();
                         if (!empty($orden))
                             array_push($venta, $orden);
                     }
@@ -555,7 +564,7 @@ class AdminController extends Controller
                     return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                     break;*/
                 case "arqueos":
-                    $search = new MovimientoCajaSearchUserCaja();
+                    $search  = new MovimientoCajaSearchUserCaja();
                     $arqueos = $search->search(Yii::$app->request->queryParams);
                     $arqueos->query
                         ->andWhere(['tipoMovimiento' => 3])
@@ -564,11 +573,11 @@ class AdminController extends Controller
                     break;
                 case "arqueo":
                     $sucursales = Sucursal::find()->all();
-                    if(isset($get['ic'])) {
+                    if (isset($get['ic'])) {
                         $arqueo = new MovimientoCaja();
                         $caja   = Caja::findOne(['fk_idSucursal' => $get['ic']]);
-                        $d   = date("d");
-                        $end = date("Y-m-d H:i:s");
+                        $d      = date("d");
+                        $end    = date("Y-m-d H:i:s");
 
                         $variables = SGCaja::getSaldo($caja->idCaja, $end, false, false);
 
@@ -588,9 +597,12 @@ class AdminController extends Controller
                                              ]);
                         break;
                     }
-                return $this->render('caja',['r'=>'arqueo','sucursales'=>$sucursales]);
-            }
+                    return $this->render('caja', ['r' => 'arqueo', 'sucursales' => $sucursales]);
 
+                case "arqueos":
+                    return $this->render('caja');
+                    break;
+            }
         }
         return $this->render('caja');
     }

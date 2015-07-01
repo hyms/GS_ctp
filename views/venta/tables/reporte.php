@@ -221,6 +221,15 @@
                               'dataProvider' => $data,
                               //'filterModel' => $search,
                               'columns' => $columns,
+                              'rowOptions' => function ($model, $index, $widget, $grid){
+                                  if($model->estado<0){
+                                      return ['class' => GridView::TYPE_DANGER];
+                                  }elseif($model->estado==2){
+                                      return ['class' => GridView::TYPE_WARNING];
+                                  }else{
+                                      return [];
+                                  }
+                              },
                               // set your toolbar
                               'toolbar' =>  [
                                   '{export}',
@@ -235,6 +244,7 @@
                               'bordered' => true,
                               'condensed' => true,
                               'responsive'=> false,
+                              'responsiveWrap'=> true,
                               'hover' => true,
                               'showPageSummary' => true,
                               'panel' => [
@@ -255,7 +265,7 @@
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                       'config' => [
                                       'format' => 'A4-L',
-                                      ///'defaultFontSize'=>0.5,
+                                      'defaultFontSize'=>7,
                                       'marginTop' => 5,
                                       'marginBottom' => 5,
                                       'marginLeft' => 5,

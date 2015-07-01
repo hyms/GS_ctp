@@ -19,6 +19,10 @@
         'label' => 'Historial Arqueos',
         'url'   => ['admin/arqueos', 'op' => 'arqueos']
     ]);
+    array_push($items, [
+        'label' => 'Calcular Montos',
+        'url'   => ['admin/arqueos', 'op' => 'calc']
+    ]);
     echo SideNav::widget([
                              'type' => SideNav::TYPE_PRIMARY,
                              'encodeLabels' => false,

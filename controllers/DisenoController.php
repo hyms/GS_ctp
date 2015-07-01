@@ -573,7 +573,7 @@ class DisenoController extends Controller
             $ordenes->query
                 ->andWhere('`OrdenCTP`.`fk_idSucursal`=' . $get['id'])
                 ->andWhere(['tipoOrden' => 0])
-                ->andWhere('`estado`=0 OR `estado`=2')
+                ->andWhere('`estado`=0 OR `estado`=2 OR `estado`=(-1)')
                 ->orderBy(['fechaCobro' => SORT_DESC]);
             return $this->render('dependientes', ['r' => 'list', 'menu' => $suc, 'orden' => $ordenes, 'search' => $searchModel]);
         }

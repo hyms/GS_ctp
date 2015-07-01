@@ -19,7 +19,7 @@ use Yii;
  * @property integer $correlativo
  * @property double $montoVenta
  * @property double $montoDescuento
- * @property integer $estado
+ * @property integer $estado //cobrado=0, en proceso=1, deuda=2,anulado =-1
  * @property string $autorizado
  * @property string $observaciones
  * @property string $observacionesCaja
@@ -189,5 +189,19 @@ class OrdenCTP extends \yii\db\ActiveRecord
     public function getOrdenDetalles()
     {
         return $this->hasMany(OrdenDetalle::className(), ['fk_idOrden' => 'idOrdenCTP']);
+    }
+
+    static public function estadoCTP($id=null)
+    {
+        $estado = [
+            '-1' => 'Anulado',
+            '0'  => 'Cancelado',
+            '1'  => 'En Proceso',
+            '2'  => 'Deuda',
+        ];
+        if (is_null($id))
+            return $estado;
+
+        return $estado[$id];
     }
 }

@@ -534,21 +534,21 @@
         },
         {
             "name": "kartik-v/yii2-editable",
-            "version": "v1.7.2",
+            "version": "v1.7.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-editable.git",
-                "reference": "eddb718d49fe4b21f9b50457066a4091b5a72a4a"
+                "reference": "bbbe10218d1539c31f1628e86ee889a27629e3f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-editable/zipball/eddb718d49fe4b21f9b50457066a4091b5a72a4a",
-                "reference": "eddb718d49fe4b21f9b50457066a4091b5a72a4a",
+                "url": "https://api.github.com/repos/kartik-v/yii2-editable/zipball/bbbe10218d1539c31f1628e86ee889a27629e3f5",
+                "reference": "bbbe10218d1539c31f1628e86ee889a27629e3f5",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "*",
-                "kartik-v/yii2-popover-x": "*"
+                "kartik-v/yii2-krajee-base": "~1.7",
+                "kartik-v/yii2-popover-x": "~1.3"
             },
             "type": "yii2-extension",
             "autoload": {
@@ -558,7 +558,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD 3-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -578,7 +578,7 @@
                 "popover-x",
                 "widget"
             ],
-            "time": "2015-03-29 14:10:03"
+            "time": "2015-07-01 16:46:53"
         },
         {
             "name": "kartik-v/yii2-export",
@@ -773,21 +773,21 @@
         },
         {
             "name": "kartik-v/yii2-popover-x",
-            "version": "v1.3.0",
+            "version": "v1.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-popover-x.git",
-                "reference": "b1c458338a315d047b74356532563722ce9e29c6"
+                "reference": "6a21af40c66dd10588fede392d7458f80890cac3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-popover-x/zipball/b1c458338a315d047b74356532563722ce9e29c6",
-                "reference": "b1c458338a315d047b74356532563722ce9e29c6",
+                "url": "https://api.github.com/repos/kartik-v/yii2-popover-x/zipball/6a21af40c66dd10588fede392d7458f80890cac3",
+                "reference": "6a21af40c66dd10588fede392d7458f80890cac3",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/bootstrap-popover-x": "*",
-                "kartik-v/yii2-krajee-base": "*"
+                "kartik-v/bootstrap-popover-x": "~1.4",
+                "kartik-v/yii2-krajee-base": "~1.7"
             },
             "type": "yii2-extension",
             "autoload": {
@@ -797,7 +797,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD 3-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -817,7 +817,7 @@
                 "popover",
                 "popover-x"
             ],
-            "time": "2014-11-25 09:26:09"
+            "time": "2015-07-01 16:51:32"
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
@@ -1167,12 +1167,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-fileinput.git",
-                "reference": "bfed1b4201cc5fb3ac11563e1269f0ca64071e0b"
+                "reference": "d96e605a9c9d72774b6dd6cd64a8a766e9b1bb7c"
             },
             "dist": {
                 "type": "zip",
                 "url": "https://api.github.com/repos/kartik-v/yii2-widget-fileinput/zipball/bfed1b4201cc5fb3ac11563e1269f0ca64071e0b",
-                "reference": "bfed1b4201cc5fb3ac11563e1269f0ca64071e0b",
+                "reference": "d96e605a9c9d72774b6dd6cd64a8a766e9b1bb7c",
                 "shasum": ""
             },
             "require": {
@@ -1209,7 +1209,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-26 20:23:24"
+            "time": "2015-06-26 15:03:56"
         },
         {
             "name": "kartik-v/yii2-widget-growl",
@@ -1362,16 +1362,16 @@
         },
         {
             "name": "kartik-v/yii2-widget-select2",
-            "version": "v2.0.1",
+            "version": "v2.0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-select2.git",
-                "reference": "d2d65a7e3b88b965f231a5949dc693807c03fff8"
+                "reference": "585e8797d7982e0c9d09370b98b451a028a59439"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/d2d65a7e3b88b965f231a5949dc693807c03fff8",
-                "reference": "d2d65a7e3b88b965f231a5949dc693807c03fff8",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-select2/zipball/585e8797d7982e0c9d09370b98b451a028a59439",
+                "reference": "585e8797d7982e0c9d09370b98b451a028a59439",
                 "shasum": ""
             },
             "require": {
@@ -1406,7 +1406,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-17 17:16:38"
+            "time": "2015-07-01 15:20:59"
         },
         {
             "name": "kartik-v/yii2-widget-sidenav",

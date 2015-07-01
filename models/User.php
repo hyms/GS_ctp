@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\db\ActiveRecord;
 use yii\helpers\Security;
 use yii\web\IdentityInterface;
 
@@ -33,7 +34,7 @@ use yii\web\IdentityInterface;
  * @property Recibo[] $recibos
  * @property Sucursal $fkIdSucursal
  */
-class User extends \yii\db\ActiveRecord implements IdentityInterface
+class User extends ActiveRecord implements IdentityInterface
 {
     /**
      * @inheritdoc
@@ -41,8 +42,9 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     //const ROLE_USER = 10;
     //const ROLE_MODERATOR = 20;
     //const ROLE_ADMIN = 1;
-    public $auth_key;
-    public $password_reset_token;
+    public $authKey;
+    public $accessToken;
+    //public $password_reset_token;
 
     public static function tableName()
     {
@@ -158,13 +160,7 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
     {
         return static::findOne(['access_token' => $token]);
     }
-
-    /* removed
-        public static function findIdentityByAccessToken($token)
-        {
-            throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
-        }
-    */
+    //*/
     /**
      * Finds user by username
      * @param  string $username
@@ -229,38 +225,6 @@ class User extends \yii\db\ActiveRecord implements IdentityInterface
         return $this->password === md5($password);
     }
 
-    /**
-     * Generates password hash from password and sets it to the model
-     * @param string $password
-     */
-    public function setPassword($password)
-    {
-        $this->password_hash = Security::generatePasswordHash($password);
-    }
-
-    /**
-     * Generates "remember me" authentication key
-     */
-    public function generateAuthKey()
-    {
-        $this->auth_key = Security::generateRandomKey();
-    }
-
-    /**
-     * Generates new password reset token
-     */
-    public function generatePasswordResetToken()
-    {
-        $this->password_reset_token = Security::generateRandomKey() . '_' . time();
-    }
-
-    /**
-     * Removes password reset token
-     */
-    public function removePasswordResetToken()
-    {
-        $this->password_reset_token = null;
-    }
     /** EXTENSION MOVIE **/
 
     public function getRole($int=null)
