@@ -235,6 +235,49 @@ class VentaController extends Controller
                         ->orderBy(['time' => SORT_DESC]);
                     return $this->render('orden', ['r' => 'deudas', 'deudas' => $deudas, 'search' => $searchModel]);
                     break;
+                case "factura":
+                    $searchModel = new OrdenCTPSearchCliente();
+                    $ordenes     = $searchModel->search(Yii::$app->request->getQueryParams());
+                    $ordenes->query
+                        ->andWhere(['`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
+                        ->andWhere('`estado`=0 or `estado`=2')
+                        ->andWhere(['is','factura',null])
+                        ->andWhere(['tipoOrden' => 0])
+                        ->andWhere(['cfSF' => 1])
+                        ->orderBy(['fechaCobro' => SORT_DESC]);
+
+                    if (Yii::$app->request->post('hasEditable')) {
+                        $idOrdenCTP       = Yii::$app->request->post('editableKey');
+                        $model            = OrdenCTP::findOne(['idOrdenCTP' => $idOrdenCTP]);
+                        if($model->cfSF) {
+                            $out              = Json::encode(['output' => '', 'message' => '']);
+                            $post             = [];
+                            $posted           = current($_POST['OrdenCTP']);
+                            $post['OrdenCTP'] = $posted;
+                            // load model like any single model validation
+                            if ($model->load($post)) {
+                                $model->save();
+                                $output = '';
+                                // specific use case where you need to validate a specific
+                                // editable column posted when you have more than one
+                                // EditableColumn in the grid view. We evaluate here a
+                                // check to see if buy_amount was posted for the Book model
+                                if (isset($posted['factura'])) {
+                                    $output = $model->factura;
+                                }
+                                // similarly you can check if the name attribute was posted as well
+                                // if (isset($posted['name'])) {
+                                //   $output =  ''; // process as you need
+                                // }
+                                $out = Json::encode(['output' => $output, 'message' => '']);
+                            }
+                            echo $out;
+                            return;
+                        }
+                    }
+
+                    return $this->render('orden', ['r' => 'buscar', 'orden' => $ordenes, 'search' => $searchModel]);
+                    break;
 
                 default:
                     break;

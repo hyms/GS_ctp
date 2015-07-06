@@ -26,5 +26,10 @@
                                      'label'=>'H. Pago de Deudas',
                                      'url'=>['venta/orden','op'=>'deudas']
                                  ],
+                                 [
+                                     'label'=>'Ingresar Factura',
+                                     'url'=>['venta/orden','op'=>'factura']
+                                 ],
+
                              ],
                          ]);

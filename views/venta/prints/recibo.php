@@ -17,7 +17,7 @@
 <div style="width:793px; height:529px;">
     <div class="col-xs-12">
         <div class="row">
-            <h2 class="col-xs-offset-3 col-xs-5 text-center"><strong><?= "Recibo de ".(($recibo->tipoRecibo)?"Egreso":"Ingreso");?></strong></h2>
+            <h2 class="col-xs-offset-3 col-xs-5 text-center"><strong><?= "Recibo de ".(($model->tipoRecibo)?"Ingreso":"Egreso");?></strong></h2>
             <div class="col-xs-3"><div class="well well-sm" style="border-color: #000000;"><strong>BS: </strong><?= $recibo->monto?></div></div>
         </div>
         <p>

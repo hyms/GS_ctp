@@ -26,6 +26,20 @@
         </div>
         <div class="col-xs-4">
             <div class="page-header">
+                <h2>Imprenta</h2>
+            </div>
+            <?=
+                Carousel::widget([
+                                     'items' => [
+                                         '<div class="text-center">'.Html::img(Yii::$app->request->baseUrl.'/images/Imprenta1.jpeg',['style'=>'with:360px; height: 260px']).'</div>',
+                                         '<div class="text-center">'.Html::img(Yii::$app->request->baseUrl.'/images/Imprenta2.jpeg',['style'=>'with:360px; height: 260px']).'</div>',
+                                         '<div class="text-center">'.Html::img(Yii::$app->request->baseUrl.'/images/Imprenta3.jpeg',['style'=>'with:360px; height: 260px']).'</div>',
+                                     ],
+                                 ]);
+            ?>
+        </div>
+        <div class="col-xs-4">
+            <div class="page-header">
                 <h2>Ubiquenos</h2>
             </div>
             <?php
@@ -38,20 +52,6 @@
                     echo '<dd class="text-capitalize">'.$item->descripcion.'</dd>';
                     echo '</dl>';
                 }
-            ?>
-        </div>
-        <div class="col-xs-4">
-            <div class="page-header">
-                <h2>Imprenta</h2>
-            </div>
-            <?=
-                Carousel::widget([
-                                     'items' => [
-                                         '<div class="text-center">'.Html::img(Yii::$app->request->baseUrl.'/images/Imprenta1.jpeg',['style'=>'with:360px; height: 260px']).'</div>',
-                                         '<div class="text-center">'.Html::img(Yii::$app->request->baseUrl.'/images/Imprenta2.jpeg',['style'=>'with:360px; height: 260px']).'</div>',
-                                         '<div class="text-center">'.Html::img(Yii::$app->request->baseUrl.'/images/Imprenta3.jpeg',['style'=>'with:360px; height: 260px']).'</div>',
-                                     ],
-                                 ]);
             ?>
         </div>
     </div>

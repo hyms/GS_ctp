@@ -4,7 +4,6 @@ namespace app\models;
 
 use Yii;
 use yii\db\ActiveRecord;
-use yii\helpers\Security;
 use yii\web\IdentityInterface;
 
 /**
@@ -26,11 +25,15 @@ use yii\web\IdentityInterface;
  * @property string $fechaAcceso
  * @property integer $fk_idUser
  * @property integer $fk_idSucursal
+ * @property string $access_token
  *
  * @property OrdenCTP[] $ordenCTPs
+ * @property OrdenCTP[] $ordenCTPs0
+ * @property OrdenCTP[] $ordenCTPs1
  * @property MovimientoCaja[] $movimientoCajas
  * @property MovimientoStock[] $movimientoStocks
  * @property Notas[] $notas
+ * @property Notas[] $notas0
  * @property Recibo[] $recibos
  * @property Sucursal $fkIdSucursal
  */
@@ -39,13 +42,6 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    //const ROLE_USER = 10;
-    //const ROLE_MODERATOR = 20;
-    //const ROLE_ADMIN = 1;
-    public $authKey;
-    public $accessToken;
-    //public $password_reset_token;
-
     public static function tableName()
     {
         return 'user';
@@ -66,7 +62,8 @@ class User extends ActiveRecord implements IdentityInterface
             [['apellido', 'nombre'], 'string', 'max' => 30],
             [['CI'], 'string', 'max' => 10],
             [['telefono'], 'string', 'max' => 15],
-            [['email'], 'string', 'max' => 50]
+            [['email'], 'string', 'max' => 50],
+            [['access_token'], 'string', 'max' => 500]
         ];
     }
 
@@ -92,6 +89,7 @@ class User extends ActiveRecord implements IdentityInterface
             'fechaAcceso' => 'Fecha Acceso',
             'fk_idUser' => 'Fk Id User',
             'fk_idSucursal' => 'Fk Id Sucursal',
+            'access_token' => 'Access Token',
         ];
     }
 
@@ -99,6 +97,22 @@ class User extends ActiveRecord implements IdentityInterface
      * @return \yii\db\ActiveQuery
      */
     public function getOrdenCTPs()
+    {
+        return $this->hasMany(OrdenCTP::className(), ['fk_idUserD' => 'idUser']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenCTPs0()
+    {
+        return $this->hasMany(OrdenCTP::className(), ['fk_idUserV' => 'idUser']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenCTPs1()
     {
         return $this->hasMany(OrdenCTP::className(), ['fk_idUserD2' => 'idUser']);
     }
@@ -124,6 +138,14 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public function getNotas()
     {
+        return $this->hasMany(Notas::className(), ['fk_idUserCreador' => 'idUser']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getNotas0()
+    {
         return $this->hasMany(Notas::className(), ['fk_idUserVisto' => 'idUser']);
     }
 
@@ -147,6 +169,9 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
+    public $accessToken;
+    public $auth_key;
+
     public static function findIdentity($id)
     {
         return static::findOne(['idUser'=>$id,'enable'=>true]);
@@ -187,8 +212,8 @@ class User extends ActiveRecord implements IdentityInterface
         }
 
         return static::findOne([
-            'password_reset_token' => $token
-        ]);
+                                   'password_reset_token' => $token
+                               ]);
     }
 
     /**
