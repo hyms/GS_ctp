@@ -17,11 +17,11 @@
 <div style="width:793px; height:529px;">
     <div class="col-xs-12">
         <div class="row">
-            <h2 class="col-xs-offset-3 col-xs-5 text-center"><strong><?= "Recibo de ".(($model->tipoRecibo)?"Ingreso":"Egreso");?></strong></h2>
+            <h2 class="col-xs-offset-3 col-xs-5 text-center"><strong><?= "Recibo de ".(($recibo->tipoRecibo)?"Ingreso":"Egreso");?></strong></h2>
             <div class="col-xs-3"><div class="well well-sm" style="border-color: #000000;"><strong>BS: </strong><?= $recibo->monto?></div></div>
         </div>
         <p>
-            <strong><?= (($recibo->tipoRecibo)?"Pagué a:   ":"Recibí de:   ")?></strong> <?= $recibo->nombre; ?>
+            <strong><?= (($recibo->tipoRecibo)?"Recibí de:   ":"Pagué a:   ")?></strong> <?= $recibo->nombre; ?>
         </p>
         <p>
             <strong>La Suma de:  </strong><?= $monto?> Bolivianos.
@@ -38,7 +38,7 @@
                     <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <br><br><br>
                         <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                        <div class="text-capitalize"><?= "Nombre: ".(($recibo->tipoRecibo)?($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido):$recibo->nombre)?></div>
+                        <div class="text-capitalize"><?= "Nombre: ".(($recibo->tipoRecibo)?$recibo->nombre:($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido))?></div>
                         <div class="text-center" style="font-size: 11px"><small><?= "Entregué Conforme";?></small></div>
                     </div>
                 </div>
@@ -48,7 +48,7 @@
                     <div class="col-xs-11 well well-sm" style="border-color: #000000; background-color: #FFFFFF">
                         <br><br><br>
                         <div class="text-center" style="font-size: 11px"><?= "firma";?></div>
-                        <div class="text-capitalize"><?= "Nombre: ".(($recibo->tipoRecibo)?$recibo->nombre:($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido))?></div>
+                        <div class="text-capitalize"><?= "Nombre: ".(($recibo->tipoRecibo)?($recibo->fkIdUser->nombre." ".$recibo->fkIdUser->apellido):$recibo->nombre)?></div>
                         <div class="text-center" style="font-size: 11px"><small><?= "Recibí Confirme";?></small></div>
                     </div>
                 </div>
