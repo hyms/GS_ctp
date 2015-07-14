@@ -16,6 +16,8 @@ use Yii;
  * @property string $gmap
  * @property integer $fk_idParent
  * @property integer $independiente
+ * @property string $telefono
+ * @property string $texto
  *
  * @property OrdenCTP[] $ordenCTPs
  * @property Caja[] $cajas
@@ -46,7 +48,9 @@ class Sucursal extends \yii\db\ActiveRecord
             [['codigoSucursal', 'nombre', 'descripcion', 'enable', 'central'], 'required'],
             [['enable', 'central', 'fk_idParent', 'independiente'], 'integer'],
             [['codigoSucursal', 'nombre'], 'string', 'max' => 50],
-            [['descripcion', 'gmap'], 'string', 'max' => 100]
+            [['descripcion', 'gmap'], 'string', 'max' => 100],
+            [['telefono'], 'string', 'max' => 200],
+            [['texto'], 'string', 'max' => 1000]
         ];
     }
 
@@ -65,6 +69,8 @@ class Sucursal extends \yii\db\ActiveRecord
             'gmap' => 'Gmap',
             'fk_idParent' => 'Fk Id Parent',
             'independiente' => 'Independiente',
+            'telefono' => 'Telefono',
+            'texto' => 'Texto',
         ];
     }
 

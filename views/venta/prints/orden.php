@@ -26,7 +26,7 @@
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Pinza"; ?></th>
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Resol."; ?></th>
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Costo"; ?></th>
-                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Adicional"; ?></th>
+                        <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Adic."; ?></th>
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Total"; ?></th>
                     </tr></thead>
 

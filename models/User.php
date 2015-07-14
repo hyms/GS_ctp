@@ -3,6 +3,7 @@
 namespace app\models;
 
 use Yii;
+use yii\base\Security;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
@@ -169,25 +170,17 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    public $accessToken;
-    public $auth_key;
+    //public $accessToken;
+    //public $auth_key;
 
     public static function findIdentity($id)
     {
-        return static::findOne(['idUser'=>$id,'enable'=>true]);
+        return static::findOne(['idUser' => $id, 'enable' => true]);
     }
 
     /**
-     * @inheritdoc
-     */
-    /* modified */
-    public static function findIdentityByAccessToken($token, $type = null)
-    {
-        return static::findOne(['access_token' => $token]);
-    }
-    //*/
-    /**
      * Finds user by username
+     *
      * @param  string $username
      * @return static|null
      */
@@ -197,23 +190,14 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Finds user by password reset token
-     * @param  string $token password reset token
-     * @return static|null
+     * Finds an identity by the given token.
+     *
+     * @param string $token the token to be looked for
+     * @return IdentityInterface|null the identity object that matches the given token.
      */
-    public static function findByPasswordResetToken($token)
+    public static function findIdentityByAccessToken($token, $type = null)
     {
-        $expire    = \Yii::$app->params['user.passwordResetTokenExpire'];
-        $parts     = explode('_', $token);
-        $timestamp = (int)end($parts);
-        if ($timestamp + $expire < time()) {
-            // token expired
-            return null;
-        }
-
-        return static::findOne([
-                                   'password_reset_token' => $token
-                               ]);
+        return static::findOne(['access_token' => $token]);
     }
 
     /**
@@ -225,7 +209,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * @return string current user auth key
      */
     public function getAuthKey()
     {
@@ -233,11 +217,20 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * @inheritdoc
+     * @param string $authKey
+     * @return boolean if auth key is valid for current user
      */
     public function validateAuthKey($authKey)
     {
         return $this->getAuthKey() === $authKey;
+    }
+
+    /**
+     * Generates "remember me" authentication key
+     */
+    public function generateAuthKey()
+    {
+        $this->auth_key = Security::generateRandomKey();
     }
 
     /**
@@ -252,7 +245,7 @@ class User extends ActiveRecord implements IdentityInterface
 
     /** EXTENSION MOVIE **/
 
-    public function getRole($int=null)
+    public function getRole($int = null)
     {
         $roles = array(
             '1' => 'sadmin',
@@ -262,7 +255,7 @@ class User extends ActiveRecord implements IdentityInterface
             '5' => 'diseño',
             '6' => 'auxVenta'
         );
-        if(is_null($int))
+        if (is_null($int))
             return $roles;
         else
             return $roles[$int];

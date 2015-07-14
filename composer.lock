@@ -636,16 +636,16 @@
         },
         {
             "name": "kartik-v/yii2-grid",
-            "version": "v3.0.4",
+            "version": "v3.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-grid.git",
-                "reference": "8d596b9e5458291786677618b7fe9d5b84de4aa5"
+                "reference": "9359dcc7f34451af035294bd4127c8ff5d1ffffc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/8d596b9e5458291786677618b7fe9d5b84de4aa5",
-                "reference": "8d596b9e5458291786677618b7fe9d5b84de4aa5",
+                "url": "https://api.github.com/repos/kartik-v/yii2-grid/zipball/9359dcc7f34451af035294bd4127c8ff5d1ffffc",
+                "reference": "9359dcc7f34451af035294bd4127c8ff5d1ffffc",
                 "shasum": ""
             },
             "require": {
@@ -676,7 +676,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-24 05:23:50"
+            "time": "2015-07-07 17:50:12"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -821,16 +821,16 @@
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
-            "version": "v1.4.3",
+            "version": "v1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-activeform.git",
-                "reference": "4fec52f8549c23d8cda3e771d2bb6b082bb42e6b"
+                "reference": "c62c8b92e8ee38892cc4e2b29851864a7a20ee01"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/4fec52f8549c23d8cda3e771d2bb6b082bb42e6b",
-                "reference": "4fec52f8549c23d8cda3e771d2bb6b082bb42e6b",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/c62c8b92e8ee38892cc4e2b29851864a7a20ee01",
+                "reference": "c62c8b92e8ee38892cc4e2b29851864a7a20ee01",
                 "shasum": ""
             },
             "require": {
@@ -864,7 +864,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-06-17 17:44:34"
+            "time": "2015-07-08 11:36:38"
         },
         {
             "name": "kartik-v/yii2-widget-affix",
@@ -1876,16 +1876,16 @@
         },
         {
             "name": "yiisoft/yii2",
-            "version": "2.0.4",
+            "version": "2.0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yiisoft/yii2-framework.git",
-                "reference": "726867caee3f23aa7a6975c801e64b6021e14f86"
+                "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/726867caee3f23aa7a6975c801e64b6021e14f86",
-                "reference": "726867caee3f23aa7a6975c801e64b6021e14f86",
+                "url": "https://api.github.com/repos/yiisoft/yii2-framework/zipball/ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
+                "reference": "ea8c13b9f5cd437bd7bf73cad8a3457a155f3727",
                 "shasum": ""
             },
             "require": {
@@ -1960,7 +1960,7 @@
                 "framework",
                 "yii2"
             ],
-            "time": "2015-05-10 20:09:47"
+            "time": "2015-07-11 02:37:59"
         },
         {
             "name": "yiisoft/yii2-bootstrap",
