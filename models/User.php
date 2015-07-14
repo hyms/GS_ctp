@@ -170,7 +170,8 @@ class User extends ActiveRecord implements IdentityInterface
     /**
      * @inheritdoc
      */
-    //public $accessToken;
+    public $accessToken;
+    public $access_token;
     //public $auth_key;
 
     public static function findIdentity($id)

@@ -1,39 +1,31 @@
 <?php
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
 
-    if(isset($size)) {
-        if ($size == "L")
-            $size = Modal::SIZE_LARGE;
-        if ($size == "S")
-            $size = Modal::SIZE_SMALL;
-    }
-    else
-        $size = Modal::SIZE_DEFAULT;
-    Modal::begin([
-                     'id'=>'viewModal',
-                     'size'=>$size,
-                     'footer'=>Html::a(
-                             'Guardar',
-                             "#",
-                             [
-                                 'onclick' => 'formSubmit();',
-                                 'class'=>'btn btn-success'
-                             ]
-                         )
-                         ." ".
-                         Html::a(
-                             'Cancelar',
-                             "#",
-                             [
-                                 'data-dismiss' => 'modal',
-                                 'class'=>'btn btn-danger'
-                             ]
-                         ),
-                 ]);
-    Modal::end();
+Modal::begin([
+    'id'=>'viewModal',
+    'footer'=>Html::a(
+            'Guardar',
+            "#",
+            [
+                'onclick' => 'formSubmit();',
+                'ondblclick' => 'return false',
+                'class'=>'btn btn-success'
+            ]
+        )
+        ." ".
+        Html::a(
+            'Cancelar',
+            "#",
+            [
+                'data-dismiss' => 'modal',
+                'class'=>'btn btn-danger'
+            ]
+        ),
+]);
+Modal::end();
 
-    $script = <<<JS
+$script = <<<JS
 var isProcessing = false;
 function formSubmit()
 {
@@ -50,11 +42,11 @@ function formSubmit()
             if(data=="done"){
                 isProcessing = false;
                 location.reload();
-                }
+            }
             else
                 $("#viewModal .modal-body ").html(data);
         }
     });
 }
 JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
+$this->registerJs($script, \yii\web\View::POS_HEAD);
