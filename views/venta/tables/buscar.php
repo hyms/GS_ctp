@@ -1,7 +1,8 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\editable\Editable;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -45,8 +46,9 @@
                 'attribute'=>'factura',
                 'editableOptions'=>[
                     'header'=>'Factura',
-                    'inputType'=>\kartik\editable\Editable::INPUT_TEXT,
-                    'format' => \kartik\editable\Editable::FORMAT_BUTTON,
+                    'inputType'=>Editable::INPUT_TEXT,
+                    'format' => Editable::FORMAT_BUTTON,
+                    'size'=>'md',
                 ],
             ]);
             array_push($columns, [
