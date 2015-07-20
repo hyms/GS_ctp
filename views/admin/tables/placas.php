@@ -1,8 +1,8 @@
 <?php
-    use app\models\ProductoStock;
-    use kartik\grid\GridView;
+use app\models\ProductoStock;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
         [
             'header'=>'Fecha',
             'attribute'=>'fecha',
@@ -56,6 +56,8 @@
                               'responsive' => true,
                               'hover' => true,
                               'showPageSummary' => true,
+                              'floatHeader'=>true,
+                              'floatHeaderOptions'=>['scrollingTop'=>'0'],
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
                                   'heading' => 'ordenes',

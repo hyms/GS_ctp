@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
@@ -247,6 +247,8 @@
                               'responsiveWrap'=> true,
                               'hover' => true,
                               'showPageSummary' => true,
+                              'floatHeader'=>true,
+                              'floatHeaderOptions'=>['scrollingTop'=>'0'],
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
                                   'heading' => 'ordenes',
@@ -264,7 +266,7 @@
                                       'filename' => 'Reporte Venta',
                                       'alertMsg' => 'El PDF se generara para la descarga.',
                                       'config' => [
-                                      'format' => 'A4-L',
+                                      'format' => 'Letter-L',
                                       'defaultFontSize'=>7,
                                       'marginTop' => 5,
                                       'marginBottom' => 5,

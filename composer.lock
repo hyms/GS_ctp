@@ -582,21 +582,21 @@
         },
         {
             "name": "kartik-v/yii2-export",
-            "version": "v1.2.2",
+            "version": "v1.2.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-export.git",
-                "reference": "6c8e3aa6e555f630063d3b8c1cf37198260c5351"
+                "reference": "6b35666681ab02d9f4fb06603cbc972bed37ba5f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-export/zipball/6c8e3aa6e555f630063d3b8c1cf37198260c5351",
-                "reference": "6c8e3aa6e555f630063d3b8c1cf37198260c5351",
+                "url": "https://api.github.com/repos/kartik-v/yii2-export/zipball/6b35666681ab02d9f4fb06603cbc972bed37ba5f",
+                "reference": "6b35666681ab02d9f4fb06603cbc972bed37ba5f",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-grid": "*",
-                "phpoffice/phpexcel": "1.8.0"
+                "kartik-v/yii2-grid": "~3.0",
+                "phpoffice/phpexcel": "~1.8.0"
             },
             "type": "yii2-extension",
             "autoload": {
@@ -606,7 +606,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD 3-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -632,7 +632,7 @@
                 "xlsx",
                 "yii2"
             ],
-            "time": "2015-02-14 09:03:31"
+            "time": "2015-07-19 08:17:17"
         },
         {
             "name": "kartik-v/yii2-grid",
@@ -1016,20 +1016,20 @@
         },
         {
             "name": "kartik-v/yii2-widget-datepicker",
-            "version": "v1.3.2",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-datepicker.git",
-                "reference": "3fb31048bb70ebddf94a827aec77779835305629"
+                "reference": "368b181ef658c05707fe41dd16eee4d9ffd9da38"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/3fb31048bb70ebddf94a827aec77779835305629",
-                "reference": "3fb31048bb70ebddf94a827aec77779835305629",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-datepicker/zipball/368b181ef658c05707fe41dd16eee4d9ffd9da38",
+                "reference": "368b181ef658c05707fe41dd16eee4d9ffd9da38",
                 "shasum": ""
             },
             "require": {
-                "kartik-v/yii2-krajee-base": "*"
+                "kartik-v/yii2-krajee-base": "~1.7"
             },
             "type": "yii2-extension",
             "autoload": {
@@ -1039,7 +1039,7 @@
             },
             "notification-url": "https://packagist.org/downloads/",
             "license": [
-                "BSD 3-Clause"
+                "BSD-3-Clause"
             ],
             "authors": [
                 {
@@ -1061,7 +1061,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-03-02 13:03:59"
+            "time": "2015-07-19 04:49:03"
         },
         {
             "name": "kartik-v/yii2-widget-datetimepicker",
@@ -1766,16 +1766,16 @@
         },
         {
             "name": "phpoffice/phpexcel",
-            "version": "1.8.0",
+            "version": "1.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/PHPOffice/PHPExcel.git",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b"
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
-                "reference": "e69a5e4d0ffa7fb6f171859e0a04346e580df30b",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
                 "shasum": ""
             },
             "require": {
@@ -1819,7 +1819,7 @@
                 "xls",
                 "xlsx"
             ],
-            "time": "2014-03-02 15:22:49"
+            "time": "2015-05-01 07:00:55"
         },
         {
             "name": "swiftmailer/swiftmailer",

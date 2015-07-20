@@ -15,6 +15,7 @@ use app\models\Producto;
 use app\models\ProductoSearch;
 use app\models\ProductoStock;
 use app\models\ProductoStockSearch;
+use app\models\ReciboSearch;
 use app\models\Sucursal;
 use app\models\SucursalSearch;
 use app\models\TipoCliente;
@@ -545,12 +546,12 @@ class AdminController extends Controller
         $get = Yii::$app->request->get();
         if (isset($get['op'])) {
             switch ($get['op']) {
-                /*case "chica":
-                    $search = new MovimientoCajaSearchUser();
+                case "chica":
+                    $search = new MovimientoCajaSearchUserCaja();
                     $cchica = $search->search(yii::$app->request->queryParams);
                     $cchica->query
-                        ->andWhere(['tipoMovimiento' => 2])
-                        ->andWhere(['fk_idCajaOrigen' => $this->idCaja]);
+                        ->andWhere(['tipoMovimiento' => 2]);
+                        //->andWhere(['fk_idCajaOrigen' => $this->idCaja]);
                     if (isset($get['CajaChica'])) {
                         $cchica->attributes = $get['CajaChica'];
                     }
@@ -559,10 +560,8 @@ class AdminController extends Controller
                 case "recibo":
                     $search = new ReciboSearch();
                     $recibos = $search->search(yii::$app->request->queryParams);
-                    $recibos->query
-                        ->andWhere(['fk_idSucursal' => $this->idSucursal]);
                     return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
-                    break;*/
+                    break;
                 case "arqueos":
                     $search  = new MovimientoCajaSearchUserCaja();
                     $arqueos = $search->search(Yii::$app->request->queryParams);

@@ -48,9 +48,9 @@ class Sucursal extends \yii\db\ActiveRecord
             [['codigoSucursal', 'nombre', 'descripcion', 'enable', 'central'], 'required'],
             [['enable', 'central', 'fk_idParent', 'independiente'], 'integer'],
             [['codigoSucursal', 'nombre'], 'string', 'max' => 50],
-            [['descripcion', 'gmap'], 'string', 'max' => 100],
+            [['gmap'], 'string', 'max' => 100],
             [['telefono'], 'string', 'max' => 200],
-            [['texto'], 'string', 'max' => 1000]
+            [['texto','descripcion'], 'string', 'max' => 1000]
         ];
     }
 

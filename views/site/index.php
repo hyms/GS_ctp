@@ -1,5 +1,6 @@
 <?php
 use yii\bootstrap\Carousel;
+use yii\bootstrap\Modal;
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
@@ -50,9 +51,37 @@ use yii\helpers\Html;
         {
             echo '<dl class="dl-horizontal">';
             echo '<dt class="text-capitalize">'.$item->nombre.'</dt>';
-            echo '<dd class="text-capitalize">'.$item->descripcion.'</dd>';
+            echo '<dd class="text-capitalize">'.$item->descripcion.' - '.Html::a('Ver Mapa', "#", [
+                    'onclick'  => "setModal('".$item->nombre."','".$item->gmap."'); return false;"
+                ]).'</dd>';
             echo '</dl>';
         }
         ?>
     </div>
 </div>
+
+<?php
+Modal::begin([
+'id'=>'viewModal',
+'footer'=>
+Html::a(
+'Cerrar',
+"#",
+[
+'data-dismiss' => 'modal',
+'class'=>'btn btn-default'
+]
+),
+]);
+Modal::end();
+
+$script = <<<JS
+    function setModal(nombre,gmap)
+    {
+    data="";
+    $('#viewModal .modal-header').html('<h3 class="text-center">'+nombre+'</h3>');
+    $('#viewModal .modal-body').html('<div class="row"><iframe class="col-xs-12" height="400px" src="'+gmap+'"></iframe></div>');
+    $('#viewModal').modal();
+    }
+JS;
+$this->registerJs($script, \yii\web\View::POS_HEAD);

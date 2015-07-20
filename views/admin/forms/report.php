@@ -1,7 +1,7 @@
 <?php
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
@@ -64,6 +64,7 @@
             <?= Html::a('Reporte de Ventas','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("v")')); ?>
             <?= Html::a('Reporte de Deudores','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("d")')); ?>
             <?= Html::a('Reporte de Pagos de Deudores','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("pd")')); ?>
+            <?= Html::a('Reporte Impuestos','#',array('class'=>'btn btn-default btn-block','onclick'=>'report("im")')); ?>
         </div>
     </div>
 

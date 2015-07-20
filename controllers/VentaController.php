@@ -718,7 +718,7 @@ class VentaController extends Controller
                     if (!empty($post['clienteResponsable'])) {
                         $venta->andWhere(['cliente.nombreResponsable' => $post['clienteResponsable']]);
                     }
-                    if ($post['factura']!="") {
+                    if ($post['factura'] != "") {
                         $venta->andWhere(['cfSF' => $post['factura']]);
                     }
                     if ($post['tipo'] == "v")
@@ -726,6 +726,9 @@ class VentaController extends Controller
 
                     if ($post['tipo'] == "d")
                         $venta->andWhere(['estado' => '2']);
+
+                    if ($post['tipo'] == "im")
+                        $venta->andWhere(['>=', 'estado', '0']);
 
                     $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
                     $venta->orderBy(['correlativo' => SORT_ASC]);
@@ -735,8 +738,12 @@ class VentaController extends Controller
                         'query' => $venta,
                         'pagination' => false,
                     ]);
+
                     $r = "table";
+                    if ($post['tipo'] == "im")
+                        $r = 'impuesto';
                 }
+
                 return $this->render('reporte', [
                     'r' => $r,
                     'clienteNegocio' => $post['clienteNegocio'],

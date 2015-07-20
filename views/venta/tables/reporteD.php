@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
+use kartik\grid\GridView;
 
-    $columns = [
+$columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
@@ -245,6 +245,8 @@
                               'responsive' => true,
                               'hover' => true,
                               'showPageSummary' => true,
+                              'floatHeader'=>true,
+                              'floatHeaderOptions'=>['scrollingTop'=>'0'],
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
                                   'heading' => 'ordenes',

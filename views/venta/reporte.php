@@ -25,6 +25,9 @@
                         case "deuda":
                             echo $this->render('tables/reporteD', ['data' => $data, 'fechaStart' => $fechaStart, 'fechaEnd' => $fechaEnd]);
                             break;
+                        case "impuesto":
+                            echo $this->render('tables/reporteImpuesto', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
+                            break;
                     }
                 }
             ?>

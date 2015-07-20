@@ -61,17 +61,18 @@ class MovimientoCajaSearchUserCaja extends MovimientoCaja
             'idMovimientoCaja' => $this->idMovimientoCaja,
             'fk_idCajaOrigen' => $this->fk_idCajaOrigen,
             'fk_idCajaDestino' => $this->fk_idCajaDestino,
-            'time' => $this->time,
             'fk_idUser' => $this->fk_idUser,
             'monto' => $this->monto,
             'tipoMovimiento' => $this->tipoMovimiento,
-            'fechaCierre' => $this->fechaCierre,
             'saldoCierre' => $this->saldoCierre,
             'correlativoCierre' => $this->correlativoCierre,
             'idParent' => $this->idParent,
         ]);
 
-        $query->andFilterWhere(['like', 'observaciones', $this->observaciones])
+        $query
+            ->andFilterWhere(['like', 'time', $this->time])
+            ->andFilterWhere(['like', 'fechaCierre', $this->fechaCierre])
+            ->andFilterWhere(['like', 'observaciones', $this->observaciones])
             ->andFilterWhere(['like', 'nroDoc', $this->nroDoc]);
 
         $query->joinWith('fkIdUser');
