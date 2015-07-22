@@ -1,0 +1,14 @@
+RewriteEngine on
+
+Options -Indexes
+
+RewriteCond %{HTTP_REFERER} !^http://graficasingular.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://graficasingular.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://v1.graficasingular.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://v1.graficasingular.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.graficasingular.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.graficasingular.com$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.v1.graficasingular.com/.*$      [NC]
+RewriteCond %{HTTP_REFERER} !^http://www.v1.graficasingular.com$      [NC]
+RewriteRule .*\.(jpg|jpeg|gif|png|bmp)$ - [F,NC]
+
