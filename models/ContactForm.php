@@ -15,6 +15,7 @@ class ContactForm extends Model
     public $subject;
     public $body;
     public $verifyCode;
+    public $to;
 
     /**
      * @return array the validation rules.
@@ -23,7 +24,7 @@ class ContactForm extends Model
     {
         return [
             // name, email, subject and body are required
-            [['name', 'email', 'subject', 'body'], 'required'],
+            [['name', 'email', 'subject', 'body','to'], 'required'],
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
@@ -37,7 +38,12 @@ class ContactForm extends Model
     public function attributeLabels()
     {
         return [
-            'verifyCode' => 'Verification Code',
+            'name' => 'Nombre',
+            'email' => 'Correo',
+            'subject' => 'Asunto',
+            'body' => 'Texto',
+            'to' => 'Enviar a',
+            'verifyCode' => 'Código de Verificación',
         ];
     }
 
@@ -60,5 +66,24 @@ class ContactForm extends Model
         } else {
             return false;
         }
+    }
+
+    static public function correos()
+    {
+        $correos = [];
+        $dominio = 'graficasingular.com';
+
+        array_push($correos,['correo'=>'ctplp'.'@'.$dominio,'nombre'=>'CTP La Paz']);
+        array_push($correos,['correo'=>'ctpea'.'@'.$dominio,'nombre'=>'CTP El Alto']);
+        array_push($correos,['correo'=>'ctpcbba'.'@'.$dominio,'nombre'=>'CTP Cochabamba']);
+        array_push($correos,['correo'=>'ctpscz'.'@'.$dominio,'nombre'=>'CTP Santa Cruz']);
+
+        array_push($correos,['correo'=>'imprenta'.'@'.$dominio,'nombre'=>'Imprenta']);
+        array_push($correos,['correo'=>'cotizacion'.'@'.$dominio,'nombre'=>'Cotizaciones']);
+        array_push($correos,['correo'=>'gerencia'.'@'.$dominio,'nombre'=>'Gerencia']);
+        //array_push($correos,['correo'=>'admingral'.'@'.$dominio,'nombre'=>'Administracion General']);
+        array_push($correos,['correo'=>'adminctp'.'@'.$dominio,'nombre'=>'Administracion CTP']);
+
+        return $correos;
     }
 }

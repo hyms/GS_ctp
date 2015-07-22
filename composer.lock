@@ -316,16 +316,16 @@
         },
         {
             "name": "kartik-v/bootstrap-fileinput",
-            "version": "v4.2.3",
+            "version": "v4.2.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/bootstrap-fileinput.git",
-                "reference": "1b30f372977efdb5aa1cc8b706d9e40be90ff904"
+                "reference": "e73e54e63be58646ba9b32564d365d555090fad4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/1b30f372977efdb5aa1cc8b706d9e40be90ff904",
-                "reference": "1b30f372977efdb5aa1cc8b706d9e40be90ff904",
+                "url": "https://api.github.com/repos/kartik-v/bootstrap-fileinput/zipball/e73e54e63be58646ba9b32564d365d555090fad4",
+                "reference": "e73e54e63be58646ba9b32564d365d555090fad4",
                 "shasum": ""
             },
             "type": "library",
@@ -360,7 +360,7 @@
                 "progress",
                 "upload"
             ],
-            "time": "2015-06-21 13:36:43"
+            "time": "2015-07-22 13:31:11"
         },
         {
             "name": "kartik-v/bootstrap-popover-x",

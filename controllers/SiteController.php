@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\ContactForm;
 use app\models\LoginForm;
 use Yii;
 use yii\web\Controller;
@@ -74,7 +75,19 @@ class SiteController extends Controller
 
     public function actionContacto()
     {
-        return $this->render('contacto');
+        $model = new ContactForm();
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+            if ($model->sendEmail(Yii::$app->params['adminEmail'])) {
+                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+            } else {
+                Yii::$app->session->setFlash('error', 'There was an error sending email.');
+            }
+            return $this->refresh();
+        } else {
+            return $this->render('contacto', [
+                'model' => $model,
+            ]);
+        }
     }
 
     public function actionNosotros()

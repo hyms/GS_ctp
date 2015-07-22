@@ -1,10 +1,10 @@
 <?php
-    use kartik\widgets\Affix;
+use kartik\widgets\Affix;
 
-    /* @var $this yii\web\View */
-    $this->title = 'Servicios';
+/* @var $this yii\web\View */
+$this->title = 'Servicios';
 
-    $ctp='
+$ctp='
 <div class="col-xs-6">
 <address>
 <strong>La Paz</strong><br>
@@ -43,7 +43,7 @@
 </div>
 ';
 
-    $imprenta='<div class="col-xs-12">
+$imprenta='<div class="col-xs-12">
 <address>
 <strong>La Paz</strong><br>
 <strong>Direccion:</strong> C. Juan de la Riva 1567<br>
@@ -53,45 +53,45 @@
 </address>
 </div>';
 
-    $contacto ="";
+$contacto = $this->render('contact',['model'=>$model]);
 
-    $icon = 'arrow-right';
-    $items = [
-        [
-            'url' => '#ctp',
-            'label' => 'Servicio Pre-Prensa CTP',
-            'icon' => 'circle-arrow-right',
-            'content' => $ctp,
-        ],
-        [
-            'url' => '#imp',
-            'label' => 'Imprenta',
-            'icon' => 'circle-arrow-right',
-            'content' => $imprenta,
-        ],
-        [
-            'url' => '#cont',
-            'label' => 'Contactanos',
-            'icon' => 'circle-arrow-right',
-            'content' => $contacto,
-        ],
-    ];
-    /* Display both menu and body aside each other */
+$icon = 'arrow-right';
+$items = [
+    [
+        'url' => '#ctp',
+        'label' => 'Servicio Pre-Prensa CTP',
+        'icon' => 'circle-arrow-right',
+        'content' => $ctp,
+    ],
+    [
+        'url' => '#imp',
+        'label' => 'Imprenta',
+        'icon' => 'circle-arrow-right',
+        'content' => $imprenta,
+    ],
+    [
+        'url' => '#cont',
+        'label' => 'Contactanos',
+        'icon' => 'circle-arrow-right',
+        'content' => $contacto,
+    ],
+];
+/* Display both menu and body aside each other */
 ?>
 <div class="row">
     <div class="col-sm-3">
         <?php
-            echo Affix::widget([
-                                   'type' => 'menu',
-                                   'items' => $items
-                               ]);?>
+        echo Affix::widget([
+            'type' => 'menu',
+            'items' => $items
+        ]);?>
     </div>
     <div class="col-sm-9">
         <?php
-            echo Affix::widget([
-                                   'type' => 'body',
-                                   'items' => $items
-                               ]);?>
+        echo Affix::widget([
+            'type' => 'body',
+            'items' => $items
+        ]);?>
     </div>
 </div>
 
