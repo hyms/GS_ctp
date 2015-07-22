@@ -1,14 +1,14 @@
 <?php
-use app\assets\AppAsset;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+    use app\assets\AppAsset;
+    use yii\bootstrap\Nav;
+    use yii\bootstrap\NavBar;
+    use yii\helpers\Html;
+    use yii\widgets\Breadcrumbs;
 
-/* @var $this \yii\web\View */
-/* @var $content string */
+    /* @var $this \yii\web\View */
+    /* @var $content string */
 
-AppAsset::register($this);
+    AppAsset::register($this);
 ?>
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
@@ -24,56 +24,60 @@ AppAsset::register($this);
 <body>
 
 <?php $this->beginBody() ?>
-    <div class="wrap">
-        <?php
-            NavBar::begin([
-                'brandLabel' => 'Grafica Singular',
-                'brandUrl' => Yii::$app->homeUrl,
-                'options' => [
-                    'class' => 'navbar-inverse',
-                ],
-            ]);
+<div class="wrap">
+    <?php
+        NavBar::begin([
+                          'brandLabel' => 'Grafica Singular',
+                          'brandUrl' => Yii::$app->homeUrl,
+                          'options' => [
+                              'class' => 'navbar-inverse',
+                          ],
+                      ]);
 
-            $items = [['label' => 'Home', 'url' => ['/site/index']]];
-            if(Yii::$app->user->isGuest) {
-                array_push($items, ['label' => 'Login', 'url' => ['/site/login']]);
+        $items = [['label' => 'Home', 'url' => ['/site/index']]];
+        if(Yii::$app->user->isGuest) {
+            array_push($items, ['label' => 'Nosotros', 'url' => ['/site/nosotros']]);
+            array_push($items, ['label' => 'Servicios', 'url' => ['/site/servicios']]);
+            array_push($items, ['label' => 'Cotizaciones', 'url' => ['/site/cotizacion']]);
+            array_push($items, ['label' => 'Contacto', 'url' => ['/site/contacto']]);
+            array_push($items, ['label' => 'Login', 'url' => ['/site/login']]);
+        }
+        else {
+            if (Yii::$app->user->identity->role <= 2) {
+                array_push($items, ['label' => 'Admin', 'url' => ['/admin/index']]);
             }
-            else {
-                if (Yii::$app->user->identity->role <= 2) {
-                    array_push($items, ['label' => 'Admin', 'url' => ['/admin/index']]);
-                }
-                if (Yii::$app->user->identity->role <= 2 || Yii::$app->user->identity->role == 5 || Yii::$app->user->identity->role == 4) {
-                    array_push($items, ['label' => 'Diseño', 'url' => ['/diseno/index']]);
-                }
-                if (Yii::$app->user->identity->role <= 3 || Yii::$app->user->identity->role == 6) {
-                    array_push($items, ['label' => 'Venta', 'url' => ['/venta/index']]);
-                }
-                array_push($items,
-                    ['label' => 'Logout (' . Yii::$app->user->identity->username . ')',
-                        'url' => ['/site/logout'],
+            if (Yii::$app->user->identity->role <= 2 || Yii::$app->user->identity->role == 5 || Yii::$app->user->identity->role == 4) {
+                array_push($items, ['label' => 'Diseño', 'url' => ['/diseno/index']]);
+            }
+            if (Yii::$app->user->identity->role <= 3 || Yii::$app->user->identity->role == 6) {
+                array_push($items, ['label' => 'Venta', 'url' => ['/venta/index']]);
+            }
+            array_push($items,
+                       ['label'       => 'Logout (' . Yii::$app->user->identity->username . ')',
+                        'url'         => ['/site/logout'],
                         'linkOptions' => ['data-method' => 'post']]
-                );
-            }
-            echo Nav::widget([
-                'options' => ['class' => 'navbar-nav navbar-right'],
-                'items' => $items,
-            ]);
-            NavBar::end();
-        ?>
+            );
+        }
+        echo Nav::widget([
+                             'options' => ['class' => 'navbar-nav navbar-right'],
+                             'items' => $items,
+                         ]);
+        NavBar::end();
+    ?>
 
-        <div class="container">
-            <?= Breadcrumbs::widget([
-                'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
-            ]) ?>
-            <?= $content ?>
-        </div>
+    <div class="container">
+        <?= Breadcrumbs::widget([
+                                    'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
+                                ]) ?>
+        <?= $content ?>
     </div>
+</div>
 
-    <footer class="footer">
-        <div class="container">
-            <p class="text-center">&copy; Grafica Singular <?= date('Y') ?></p>
-        </div>
-    </footer>
+<footer class="footer">
+    <div class="container">
+        <p class="text-center">&copy; Grafica Singular <?= date('Y') ?></p>
+    </div>
+</footer>
 
 <?php $this->endBody() ?>
 </body>

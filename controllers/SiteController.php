@@ -2,11 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\ContactForm;
 use app\models\LoginForm;
 use Yii;
-use yii\filters\AccessControl;
-use yii\filters\VerbFilter;
 use yii\web\Controller;
 
 class SiteController extends Controller
@@ -14,7 +11,7 @@ class SiteController extends Controller
     public function behaviors()
     {
         return [
-            'access' => [
+            /*'access' => [
                 'class' => AccessControl::className(),
                 'only'  => ['logout'],
                 'rules' => [
@@ -24,13 +21,13 @@ class SiteController extends Controller
                         'roles'   => ['@'],
                     ],
                 ],
-            ],
-            'verbs'  => [
+            ],*/
+            /*'verbs'  => [
                 'class'   => VerbFilter::className(),
                 'actions' => [
                     'logout' => ['post'],
                 ],
-            ],
+            ],*/
         ];
     }
 
@@ -75,22 +72,24 @@ class SiteController extends Controller
         return $this->goHome();
     }
 
-    public function actionContact()
+    public function actionContacto()
     {
-        $model = new ContactForm();
-        if ($model->load(Yii::$app->request->post()) && $model->contact(Yii::$app->params['adminEmail'])) {
-            Yii::$app->session->setFlash('contactFormSubmitted');
-
-            return $this->refresh();
-        } else {
-            return $this->render('contact', [
-                'model' => $model,
-            ]);
-        }
+        return $this->render('contacto');
     }
 
-    public function actionAbout()
+    public function actionNosotros()
     {
-        return $this->render('about');
+        return $this->render('nosotros');
     }
+
+    public function actionServicios()
+    {
+        return $this->render('servicios');
+    }
+
+    public function actionCotizacion()
+    {
+        return $this->render('cotizaciones');
+    }
+
 }
