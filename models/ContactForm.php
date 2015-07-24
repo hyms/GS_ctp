@@ -41,7 +41,7 @@ class ContactForm extends Model
             'name' => 'Nombre',
             'email' => 'Correo',
             'subject' => 'Asunto',
-            'body' => 'Texto',
+            'body' => 'Mensaje',
             'to' => 'Enviar a',
             //'verifyCode' => 'Código de Verificación',
         ];
@@ -61,12 +61,14 @@ class ContactForm extends Model
             $transport->setAuthMode('login');
             $mailer = \Swift_Mailer::newInstance($transport);
 
-            $message = \Swift_Message::newInstance()
-                ->setTo([($email == null) ? $this->to : $email])
-                ->setFrom([$this->email => $this->name])
-                //->setTo(array('receiver@domain.org', 'other@domain.org' => 'A name'))
-                ->setSubject($this->subject)
-                ->setBody($this->body);
+            $message = \Swift_Message::newInstance('Contacto:'.$this->subject)
+                ->setTo(($email == null) ? [$this->to=>'Contacto'] : [$email])
+                ->setFrom([$this->to])
+                //->setFrom([$this->to])
+                //->setFrom([($email == null) ? $this->to : $email])
+                //->setTo([$this->email => $this->name])
+                //->setSubject($this->subject)
+                ->setBody('De:'.$this->name.'<br>'.'Correo:'.$this->email.'<br>'.$this->body,'text/html');
             $mailer->send($message);
             return true;
         } else {
@@ -97,12 +99,25 @@ class ContactForm extends Model
     {
         $dominio = 'graficasingular.com';
         $standar = 's1ngul4r';
-        $emails=[
-            'ctplp'.'@'.$dominio=>'l'.$standar.'p',
-            'ctpea'.'@'.$dominio=>'e'.$standar.'a',
-            'ctpcbba'.'@'.$dominio=>'cb'.$standar.'ba',
-            'ctpscz'.'@'.$dominio=>'s'.$standar.'cz',
+        $emails  = [
+            'ctplp' . '@' . $dominio      => 'l' . $standar . 'p',
+            'ctpea' . '@' . $dominio      => 'e' . $standar . 'a',
+            'ctpcbba' . '@' . $dominio    => 'cb' . $standar . 'ba',
+            'ctpscz' . '@' . $dominio     => 's' . $standar . 'cz',
+            'imprenta' . '@' . $dominio   => 'i'.$standar,
+            'cotizacion' . '@' . $dominio => $standar.'cot',
+            'gerencia' . '@' . $dominio   => $standar.'get',
+            'adminctp' . '@' . $dominio   => $standar.'actp',
         ];
         return $emails[$mail];
+    }
+
+    private function mailHtml()
+    {
+        $body = '<strong>De: </strong>' . $this->name . '<br>'.
+            '<strong>Email: </strong>' . $this->email . '<br>'.
+            '<strong>Mensaje</strong><br>'.
+            $this->body;
+        return $body;
     }
 }

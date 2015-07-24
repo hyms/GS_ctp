@@ -23,7 +23,7 @@
                     },
                 ],
                 [
-                    'header'=>'Responsable',
+                    'header'=>'Cliente',
                     'attribute'=>'responsable',
                 ],
                 [
@@ -70,7 +70,14 @@
                                       'filterModel' => $search,
                                       'columns' => $columns,
                                       'responsive'=>true,
-                                      'hover'=>true
+                                      'hover'=>true,
+                                      'rowOptions' => function ($model, $index, $widget, $grid){
+                                          if($model->estado<0){
+                                              return ['class' => GridView::TYPE_DANGER];
+                                          }else{
+                                              return [];
+                                          }
+                                      },
                                   ]);
         ?>
     </div>

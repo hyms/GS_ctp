@@ -38,7 +38,7 @@
         if(Yii::$app->user->isGuest) {
             array_push($items, ['label' => 'Nosotros', 'url' => ['/site/nosotros']]);
             array_push($items, ['label' => 'Servicios', 'url' => ['/site/servicios']]);
-            array_push($items, ['label' => 'Cotizaciones', 'url' => ['/site/cotizacion']]);
+            //array_push($items, ['label' => 'Cotizaciones', 'url' => ['/site/cotizacion']]);
             array_push($items, ['label' => 'Contacto', 'url' => ['/site/contacto']]);
             array_push($items, ['label' => 'Login', 'url' => ['/site/login']]);
         }
