@@ -14,7 +14,7 @@ class ContactForm extends Model
     public $email;
     public $subject;
     public $body;
-    public $verifyCode;
+    //public $verifyCode;
     public $to;
 
     /**
@@ -28,7 +28,7 @@ class ContactForm extends Model
             // email has to be a valid email address
             ['email', 'email'],
             // verifyCode needs to be entered correctly
-            ['verifyCode', 'captcha'],
+            //['verifyCode', 'captcha'],
         ];
     }
 
@@ -43,7 +43,7 @@ class ContactForm extends Model
             'subject' => 'Asunto',
             'body' => 'Texto',
             'to' => 'Enviar a',
-            'verifyCode' => 'Código de Verificación',
+            //'verifyCode' => 'Código de Verificación',
         ];
     }
 
@@ -55,13 +55,19 @@ class ContactForm extends Model
     public function contact($email=null)
     {
         if ($this->validate()) {
-            Yii::$app->mailer->compose()
-                ->setTo(($email==null)?$this->to:$email)
-                ->setFrom([$this->email => $this->name])
-                ->setSubject($this->subject)
-                ->setTextBody($this->body)
-                ->send();
+            $transport = new \Swift_SmtpTransport('smtp.zoho.com', 587,'tls');
+            $transport->setUsername($this->to);
+            $transport->setPassword($this->passmail($this->to));
+            $transport->setAuthMode('login');
+            $mailer = \Swift_Mailer::newInstance($transport);
 
+            $message = \Swift_Message::newInstance()
+                ->setTo([($email == null) ? $this->to : $email])
+                ->setFrom([$this->email => $this->name])
+                //->setTo(array('receiver@domain.org', 'other@domain.org' => 'A name'))
+                ->setSubject($this->subject)
+                ->setBody($this->body);
+            $mailer->send($message);
             return true;
         } else {
             return false;
@@ -85,5 +91,18 @@ class ContactForm extends Model
         array_push($correos,['correo'=>'adminctp'.'@'.$dominio,'nombre'=>'Administracion CTP']);
 
         return $correos;
+    }
+
+    private function passmail($mail)
+    {
+        $dominio = 'graficasingular.com';
+        $standar = 's1ngul4r';
+        $emails=[
+            'ctplp'.'@'.$dominio=>'l'.$standar.'p',
+            'ctpea'.'@'.$dominio=>'e'.$standar.'a',
+            'ctpcbba'.'@'.$dominio=>'cb'.$standar.'ba',
+            'ctpscz'.'@'.$dominio=>'s'.$standar.'cz',
+        ];
+        return $emails[$mail];
     }
 }

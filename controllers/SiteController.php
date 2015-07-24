@@ -77,10 +77,13 @@ class SiteController extends Controller
     {
         $model = new ContactForm();
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Thank you for contacting us. We will respond to you as soon as possible.');
+            if ($model->contact()) {
+                Yii::$app->session->setFlash('success', 'Gracias por contactarnos. Tendremos una respuesta lo antes posible.');
             } else {
-                Yii::$app->session->setFlash('error', 'There was an error sending email.');
+                Yii::$app->session->setFlash('error', 'Hubo un error al enviar el correo.');
+                return $this->render('contacto', [
+                    'model' => $model,
+                ]);
             }
             return $this->refresh();
         } else {
