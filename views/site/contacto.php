@@ -5,6 +5,7 @@ use kartik\widgets\Affix;
 $this->title = 'Servicios';
 
 $ctp='
+<div class="row">
 <div class="col-xs-6">
 <address>
 <strong>La Paz</strong><br>
@@ -41,9 +42,12 @@ $ctp='
 <strong>email:</strong> ctpscz@graficasingular.com<br>
 </address>
 </div>
+</div>
 ';
 
-$imprenta='<div class="col-xs-12">
+$imprenta='
+<div class="row">
+<div class="col-xs-6">
 <address>
 <strong>La Paz</strong><br>
 <strong>Direccion:</strong> C. Juan de la Riva 1567<br>
@@ -51,6 +55,7 @@ $imprenta='<div class="col-xs-12">
 <strong>Celular:</strong> 70652860<br>
 <strong>email:</strong> imprenta@graficasingular.com<br>
 </address>
+</div>
 </div>';
 
 $contacto = $this->render('contact',['model'=>$model]);
