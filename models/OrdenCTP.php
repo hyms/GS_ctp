@@ -71,8 +71,7 @@ class OrdenCTP extends \yii\db\ActiveRecord
             [['cfSF', 'tipoPago', 'secuencia', 'serie', 'correlativo', 'estado', 'fk_idCliente', 'fk_idMovimientoCaja', 'fk_idSucursal', 'fk_idUserD', 'fk_idUserV', 'fk_idUserD2', 'fk_idParent', 'tipoOrden', 'anulado', 'tipoRepos'], 'integer'],
             [['montoVenta', 'montoDescuento'], 'number'],
             [['codigoServicio', 'autorizado'], 'string', 'max' => 100],
-            [['observaciones', 'observacionAdicional', 'factura'], 'string', 'max' => 200],
-            [['observacionesCaja'], 'string', 'max' => 45],
+            [['observaciones', 'observacionAdicional', 'factura','observacionesCaja'], 'string', 'max' => 200],
             [['responsable', 'codDependiente', 'attribuible'], 'string', 'max' => 50],
             [['telefono'], 'string', 'max' => 20]
         ];

@@ -1,11 +1,11 @@
 <?php
-use app\assets\AppAsset2;
-use yii\bootstrap\Nav;
-use yii\bootstrap\NavBar;
-use yii\helpers\Html;
-use yii\widgets\Breadcrumbs;
+    use app\assets\AppAsset2;
+    use yii\bootstrap\Nav;
+    use yii\bootstrap\NavBar;
+    use yii\helpers\Html;
+    use yii\widgets\Breadcrumbs;
 
-/* @var $this \yii\web\View */
+    /* @var $this \yii\web\View */
 /* @var $content string */
 
 AppAsset2::register($this,true);
@@ -14,8 +14,8 @@ AppAsset2::register($this,true);
 <?php $this->beginPage() ?>
 <!DOCTYPE html>
 <html lang="<?= Yii::$app->language ?>">
-<head>
-    <meta charset="<?= Yii::$app->charset ?>">
+<head><meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
+
     <link rel="shortcut icon" href="<?= Yii::$app->request->baseUrl."/favicon.png"?>" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
@@ -34,14 +34,14 @@ AppAsset2::register($this,true);
             'class' => 'navbar navbar-default',
         ],
     ]);
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => [
-            [
+    $items = [];
+    
+    array_push($items,[
                 'label'=>'Reportes de Placas',
                 'url'=>['admin/placas']
-            ],
-            [
+            ]);
+    if(Yii::$app->user->identity->role==1) {
+    array_push($items,[
                 'label'=>'Reportes de Caja',
                 'items'=>[
                     [
@@ -53,35 +53,38 @@ AppAsset2::register($this,true);
                         'url'=>['admin/arqueos']
                     ]
                 ]
-            ],
-            [
+            ]);
+            array_push($items,[
                 'label'=>'Producto',
                 'url'=>['admin/producto']
-            ],
-            [
+            ]);
+            array_push($items, [
                 'label'=>'Clientes',
                 'url'=>['admin/cliente']
-            ],
-            [
+            ]);
+            array_push($items,[
                 'label'=>'Configuracion',
                 'url'=>['admin/config']
-            ],
-            Yii::$app->user->isGuest ?
-                ['label' => 'Login', 'url' => ['/site/login']] :
-                ['label' => 'user('.Yii::$app->user->identity->username.')',
-                    'items'=>[
-                        [
-                            'label' => 'Logout',
-                            'url' => ['/site/logout'],
-                            'linkOptions' => ['data-method' => 'post'],
-                        ],
-                        [
-                            'label'=>'Cambiar Contraseña'
-                        ]
-                    ]
-                ],
-        ],
-    ]);
+            ]);
+            }
+            array_push($items, Yii::$app->user->isGuest ?
+        ['label' => 'Login', 'url' => ['/site/login']] :
+        ['label' => 'user('.Yii::$app->user->identity->username.')',
+            'items'=>[
+                [
+                'label' => 'Logout',
+                'url' => ['/site/logout'],
+                'linkOptions' => ['data-method' => 'post'],
+                    ],
+                [
+                    'label'=>'Cambiar Contraseña',
+                    'url'=>['diseno/user'],
+                ]
+            ]
+        ]);
+    echo Nav::widget([
+        'options' => ['class' => 'navbar-nav navbar-right'],
+        'items' => $items]);
     NavBar::end();
     ?>
 

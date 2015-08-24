@@ -1,7 +1,7 @@
 <div style="width:793px; height:529px;">
     <div class="col-xs-12">
         <div class="row">
-            <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?="Pago de Deuda";?></strong></h3>
+            <h3 class="col-xs-offset-2 col-xs-7 text-center"><strong><?="Pago de Deuda"." (".$orden->correlativo.")";?></strong></h3>
             <div class="text-right"><strong><?="FECHA:";?></strong> <?=date("d-m-Y",strtotime($deuda->time));?></div>
         </div>
 
@@ -14,7 +14,7 @@
             <div class="col-xs-5"><strong>Telefono: </strong><?=$orden->telefono; ?></div>
         </div>
 
-        <div class="row well well-sm" style="height:180px; border-color: #000000">
+        <div class="row well well-sm" style="height:180px; border-color: #000000; background-color: #fff; color: #000">
             <table class="table table-condensed">
                 <thead><tr>
                     <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?="Nº"; ?></th>
@@ -68,7 +68,7 @@
             </table>
         </div>
         <div class="row">
-            <strong>Total:  </strong><?= $num ?> Bs.
+            <strong>Total:  </strong><?= $orden->montoVenta; ?> Bs. <?= $num ?>
         </div>
         <div class="row">
             <div class="col-xs-5">

@@ -58,7 +58,7 @@
                                                             url  : '" . Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]) . "',
                                                             success  : function(data) {
                                                                 if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">".(($model->tipoRecibo)?'Egreso':'Ingreso')."</h3>');
+                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">".(($model->tipoRecibo)?"Ingreso":"Egreso")."</h3>');
                                                                     $('#viewModal .modal-body').html(data);
                                                                     $('#viewModal').modal();
                                                                 }

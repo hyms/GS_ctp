@@ -58,7 +58,7 @@
             <td style="border: 1px solid black;"><?= $arqueo->observaciones;?></td>
             <td style="border: 1px solid black;"></td>
             <td style="border: 1px solid black;"><?= $arqueo->monto;?></td>
-            <td style="border: 1px solid black;"><?php $total=$total-$arqueo->monto; 	echo $total;?></td>
+            <td style="border: 1px solid black;"><?php $total=$total-$arqueo->monto; 	echo round($total, 1);?></td>
         </tr>
         <tr>
             <td colspan="4" class="text-right"><strong>Total Saldo</strong></td>
