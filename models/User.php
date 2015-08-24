@@ -3,8 +3,8 @@
 namespace app\models;
 
 use Yii;
-use yii\base\Security;
 use yii\db\ActiveRecord;
+use yii\helpers\Security;
 use yii\web\IdentityInterface;
 
 /**
@@ -26,7 +26,8 @@ use yii\web\IdentityInterface;
  * @property string $fechaAcceso
  * @property integer $fk_idUser
  * @property integer $fk_idSucursal
- * @property string $access_token
+ * @property string $auth_key
+ * @property string $accessToken
  *
  * @property OrdenCTP[] $ordenCTPs
  * @property OrdenCTP[] $ordenCTPs0
@@ -64,7 +65,7 @@ class User extends ActiveRecord implements IdentityInterface
             [['CI'], 'string', 'max' => 10],
             [['telefono'], 'string', 'max' => 15],
             [['email'], 'string', 'max' => 50],
-            [['access_token'], 'string', 'max' => 500]
+            [['auth_key', 'accessToken'], 'string', 'max' => 500]
         ];
     }
 
@@ -90,7 +91,8 @@ class User extends ActiveRecord implements IdentityInterface
             'fechaAcceso' => 'Fecha Acceso',
             'fk_idUser' => 'Fk Id User',
             'fk_idSucursal' => 'Fk Id Sucursal',
-            'access_token' => 'Access Token',
+            'auth_key' => 'Auth Key',
+            'accessToken' => 'Access Token',
         ];
     }
 
@@ -165,14 +167,6 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->hasOne(Sucursal::className(), ['idSucursal' => 'fk_idSucursal']);
     }
-
-    /** INCLUDE USER LOGIN VALIDATION FUNCTIONS**/
-    /**
-     * @inheritdoc
-     */
-    public $accessToken;
-    public $access_token;
-    //public $auth_key;
 
     public static function findIdentity($id)
     {
