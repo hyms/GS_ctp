@@ -574,10 +574,12 @@ class VentaController extends Controller
                 $recibo->fechaRegistro = date("Y-m-d H:i:s");
                 $recibo->fk_idUser     = Yii::$app->user->id;
             }
-            if ($get['op'] == 'i') {
-                $recibo->tipoRecibo = 1;
-            } else {
-                $recibo->tipoRecibo = 0;
+            if($recibo->tipoRecibo == null) {
+                if ($get['op'] == 'i') {
+                    $recibo->tipoRecibo = 1;
+                } else {
+                    $recibo->tipoRecibo = 0;
+                }
             }
 
             $post = yii::$app->request->post();

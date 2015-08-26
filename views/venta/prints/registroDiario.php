@@ -41,7 +41,7 @@
         </tr>
         <tr>
             <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;">Recibos de Engreso</td>
+            <td style="border: 1px solid black;">Recibos de Egreso</td>
             <td style="border: 1px solid black;"></td>
             <td style="border: 1px solid black;"><?= $recibos[0];?></td>
             <td style="border: 1px solid black;"><?php $total=$total-$recibos[0];	echo $total;?></td>
