@@ -22,7 +22,8 @@
         "kartik-v/yii2-export": "*",
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-editable": "*",
-        "kartik-v/yii2-widgets": "*"
+        "kartik-v/yii2-widgets": "*",
+        "kartik-v/yii2-helpers": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",
