@@ -16,7 +16,7 @@
             </div>
 
             <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff; color: #000">
-                <table class="table table-hover table-condensed">
+                <table class="table table-condensed">
                     <thead><tr>
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Nº"; ?></th>
                         <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Formato"; ?></th>
@@ -39,7 +39,7 @@
                             <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
                             </td>
-                            <td class="col-xs-1" style="font-size:12px; padding-top: 4px;">
+                            <td style="font-size:12px; padding-top: 4px;">
                                 <?= $producto->cantidad; ?>
                             </td>
                             <td style="font-size:12px; padding-top: 4px;">
