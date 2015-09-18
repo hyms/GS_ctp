@@ -19,6 +19,7 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\User',
             'enableAutoLogin' => true,
+            'autoRenewCookie' => true,
             'enableSession' => true,
         ],
         'errorHandler' => [
@@ -48,11 +49,6 @@ $config = [
             //'showScriptName' => false,
         ],
     ],
-    /*'modules' => [
-        'diseno' => [
-            'class' => 'app\modules\diseno\diseno',
-        ],
-    ],*/
     'modules' => [
         'gridview' =>  [
             'class' => '\kartik\grid\Module',
