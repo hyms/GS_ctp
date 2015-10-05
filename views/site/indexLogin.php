@@ -1,6 +1,6 @@
 <?php
-use kartik\helpers\Html;
-use yii\helpers\Url;
+    use kartik\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 
@@ -8,6 +8,7 @@ use yii\helpers\Url;
     <div class="text-center">
         <?= Html::img(Yii::$app->request->baseUrl . "/images/logoSingular.png") ?>
     </div>
+
 
     <?= Html::pageHeader('Funciones del sistema'); ?>
 
@@ -20,9 +21,6 @@ use yii\helpers\Url;
         </div>
         <div class="col-xs-3">
             <?= Html::a('Ventas',['/venta/index'],['class'=>'btn btn-primary btn-lg btn-block','disabled'=>(Yii::$app->user->identity->role > 3 && Yii::$app->user->identity->role != 6)])?>
-        </div>
-        <div class="col-xs-3">
-            <?= Html::a('Imprenta',['/imprenta/index'],['class'=>'btn btn-primary btn-lg btn-block'])?>
         </div>
     </div>
 

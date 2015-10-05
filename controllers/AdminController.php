@@ -8,6 +8,7 @@ use app\components\SGProducto;
 use app\models\Caja;
 use app\models\Cliente;
 use app\models\ClienteSearch;
+use app\models\ImprentaTipoTrabajo;
 use app\models\MovimientoCaja;
 use app\models\MovimientoCajaSearchUserCaja;
 use app\models\OrdenCTP;
@@ -261,12 +262,12 @@ class AdminController extends Controller
                             $sucursal = Sucursal::findOne(['idSucursal' => $get['id']]);
                         if ($sucursal->load(Yii::$app->request->post())) {
                             if ($sucursal->save()) {
-                                return $this->redirect(['config', 'op' => 'sucursal']);
+                                return "done";
                             }
                         }
                         return $this->renderAjax('forms/sucursal', ['model' => $sucursal]);
                     }
-                    $search = new SucursalSearch();
+                    $search     = new SucursalSearch();
                     $sucursales = $search->search(Yii::$app->request->queryParams);
                     return $this->render('config', ['r' => 'sucursales', 'sucursales' => $sucursales]);
                     break;
@@ -283,15 +284,41 @@ class AdminController extends Controller
                             } else {
                                 $user->password = md5($user->password);
                             }
+                            $user->auth_key = md5($user->password);
                             if ($user->save()) {
-                                return $this->redirect(['config', 'op' => 'user']);
+                                return "done";
                             }
                         }
                         return $this->renderAjax('forms/user', ['model' => $user]);
                     }
-                    $search = new UserSearch();
+                    $search   = new UserSearch();
                     $usuarios = $search->search(Yii::$app->request->queryParams);
                     return $this->render('config', ['r' => 'usuarios', 'usuarios' => $usuarios]);
+                    break;
+                case "imprenta":
+                    if(isset($get['imp'])) {
+                        switch ($get['imp']) {
+                            case 'tdt':
+                                if (isset($get['id'])) {
+                                    $model = new ImprentaTipoTrabajo();
+                                    if (is_numeric($get['id'])) {
+                                        $model = ImprentaTipoTrabajo::findOne($get['id']);
+                                    }
+                                    if ($model->load(Yii::$app->request->post())) {
+                                        if ($model->save()) {
+                                            return "done";
+                                        }
+                                    }
+                                    return $this->renderAjax('forms/imprentaTipoTrabajo', ['model' => $model]);
+                                }
+                                $models = ImprentaTipoTrabajo::find();
+                                $search = new ActiveDataProvider(['query' => $models]);
+                                return $this->render('config', ['r' => 'imprenta', 'imp' => $get['imp'], 'search' => $search, 'models' => $models]);
+                                break;
+                        }
+                        return $this->render('config', ['r' => 'imprenta']);
+                    }
+                    return $this->render('config', ['r' => 'imprenta']);
                     break;
             }
         }

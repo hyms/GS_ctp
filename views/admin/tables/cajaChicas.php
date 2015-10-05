@@ -1,9 +1,9 @@
 <?php
-use app\models\Sucursal;
-use kartik\grid\GridView;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
-use yii\helpers\Url;
+    use app\models\Sucursal;
+    use kartik\grid\GridView;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
+    use yii\helpers\Url;
 
 ?>
 <?php
@@ -11,12 +11,12 @@ $columns = [
     [
         'header'=>'Sucursal',
         'attribute'=>'sucursal',
-        'filterType'=>GridView::FILTER_SELECT2,
+        //'filterType'=>GridView::FILTER_SELECT2,
         'filter'=>ArrayHelper::map(Sucursal::find()->all(),'idSucursal','nombre'),
-        'filterWidgetOptions'=>[
-            'pluginOptions'=>['allowClear'=>true],
-        ],
-        'filterInputOptions'=>['placeholder'=>'Seleccionar'],
+        //'filterWidgetOptions'=>[
+        //    'pluginOptions'=>['allowClear'=>true],
+        //],
+        //'filterInputOptions'=>['placeholder'=>'Seleccionar'],
         'format'=>'raw',
         'value'=>function($model){
             return $model->fkIdCajaOrigen->fkIdSucursal->nombre;

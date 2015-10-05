@@ -13,11 +13,27 @@
                     break;
                 case "sucursales":
                     echo $this->render('tables/sucursales', ['sucursales' => $sucursales]);
-                    echo $this->render('scripts/modal');
+                    echo $this->render('@app/views/share/scripts/modal',['nameTable'=>'sucursales']);
                     break;
                 case "usuarios":
                     echo $this->render('tables/users', ['usuarios' => $usuarios]);
-                    echo $this->render('scripts/modal');
+                    echo $this->render('@app/views/share/scripts/modal',['nameTable'=>'usuarios']);
+                    break;
+                case "imprenta":
+                    echo $this->render('menus/imprentaMenu');
+                    echo "<br>";
+                    if(isset($imp))
+                    {
+                        $nameTable = "";
+                        switch($imp)
+                        {
+                            case 'tdt':
+                                $nameTable = "tipoTrabajos";
+                                echo $this->render('tables/imprentaTiposTrabajos',['search'=>$search,'models'=>$models]);
+                                break;
+                        }
+                        echo $this->render('@app/views/share/scripts/modal',['nameTable'=>$nameTable]);
+                    }
                     break;
             }
         }

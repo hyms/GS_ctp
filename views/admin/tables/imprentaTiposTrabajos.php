@@ -6,27 +6,32 @@
 
     echo Html::beginTag('div',['class'=>'panel panel-default']);
 
-    echo Html::tag('div', Html::tag('strong','Sucursales',['class'=>'panel-title']), ['class'=>'panel-heading']);
+    echo Html::tag('div', Html::tag('strong','Lista de Tipos de Trabajo',['class'=>'panel-title']), ['class'=>'panel-heading']);
 
     echo Html::beginTag('div',['class'=>'panel-body']);
-    echo Html::button('Nueva Sucursal',
+    echo Html::button('Nuevo Tipo de Trabajo',
                       [
                           'class'=>'btn btn-default',
-                          'onclick' => 'clickmodal("' . Url::to(['admin/config','op'=>'sucursal','frm'=>true]) . '","Nueva Sucursal")',
+                          'onclick' => 'clickmodal("' . Url::to(['admin/config','op'=>'imprenta','imp'=>'tdt','id'=>'f']) . '","Nuevo Tipo de Trabajo")',
                           'data-toggle' => "modal",
                           'data-target' => "#modal"
                       ]);
     echo Html::endTag('div');
 
     $columns = [
-        ['class' => 'yii\grid\SerialColumn'],
         [
             'header'=>'Nombre',
-            'value'=>'nombre',
+            'value'=>'nameValue',
         ],
         [
-            'header'=>'Descripcion',
-            'value'=>'descripcion',
+            'header'=>'Observaciones',
+            'value'=>'observaciones',
+        ],
+        [
+            'header'=>'Habalitidato',
+            'value'=>function($model){
+                return ($model->enable)?"Si":"No";
+            },
         ],
         [
             'class' => 'yii\grid\ActionColumn',
@@ -40,7 +45,7 @@
                                    ) . ' Modificar',
                                    "#",
                                    [
-                                       'onclick'     => 'clickmodal("' . Url::to(['admin/config', 'op' => 'sucursal', 'id' => $model->idSucursal, 'frm' => true]) . '","Modificar Sucursal")',
+                                       'onclick'     => 'clickmodal("' . Url::to(['admin/config','op'=>'imprenta','imp'=>'tdt','id'=>$model->idImprentaTipoTrabajo]) . '","Modificar Tipo de Trabajo")',
                                        'data-toggle' => "modal",
                                        'data-target' => "#modal"
                                    ]);
@@ -48,10 +53,9 @@
             ]
         ],
     ];
-
-    Pjax::begin(['id' => 'sucursales']);
+    Pjax::begin(['id' => 'tipoTrabajos']);
     echo GridView::widget([
-                              'dataProvider'=> $sucursales,
+                              'dataProvider'=> $search,
                               //'filterModel' => $search,
                               'columns' => $columns,
                               'responsive'=>true,

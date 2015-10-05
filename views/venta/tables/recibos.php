@@ -8,13 +8,16 @@
     $columns = [
         [
             'header'=>'Tipo',
-            'filterType'=>GridView::FILTER_SELECT2,
+            //'filterOptions'=>['class'=>'col-xs-1'],
+            //'filterType'=>GridView::FILTER_SELECT2,
             'filter'=>["Egreso","Ingreso"],
-            'filterWidgetOptions'=>[
+            /*'filterWidgetOptions'=>[
+	        'size' => Select2::SMALL,
                 'pluginOptions'=>['allowClear'=>true],
-            ],
-            'filterInputOptions'=>['placeholder'=>'Seleccionar'],
-            'format'=>'raw',
+            ],*/
+            
+            //'filterInputOptions'=>['placeholder'=>'Seleccionar'],
+            //'format'=>'raw',
             'value'=>function($model) {
                 return (($model->tipoRecibo)?"Ingreso":"Egreso");
             },

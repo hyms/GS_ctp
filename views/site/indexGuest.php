@@ -1,7 +1,7 @@
 <?php
-use yii\bootstrap\Carousel;
-use yii\bootstrap\Modal;
-use yii\helpers\Html;
+    use yii\bootstrap\Carousel;
+    use yii\bootstrap\Modal;
+    use yii\helpers\Html;
 
 ?>
 

@@ -2,33 +2,22 @@
     use kartik\grid\GridView;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-?>
-<div class="panel panel-default">
-    <div class="panel-heading">
-        <strong class="panel-title">Lista de Usuarios</strong>
-    </div>
-    <div class="panel-body">
-        <?=
-            Html::a('Nuevo Usuario', "#", [
-                'class'=>'btn btn-default',
-                'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '".Url::to(['admin/config','op'=>'user','frm'=>true])."',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Nuevo Usuario</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-            ]);
-        ?>
-    </div>
-    <?php
+    echo Html::beginTag('div',['class'=>'panel panel-default']);
+
+    echo Html::tag('div', Html::tag('strong','Lista de Usuarios',['class'=>'panel-title']), ['class'=>'panel-heading']);
+
+    echo Html::beginTag('div',['class'=>'panel-body']);
+    echo Html::button('Nuevo Usuario',
+                      [
+                          'class'=>'btn btn-default',
+                          'onclick' => 'clickmodal("' . Url::to(['admin/config','op'=>'user','frm'=>true]) . '","Nuevo Usuario")',
+                          'data-toggle' => "modal",
+                          'data-target' => "#modal"
+                      ]);
+    echo Html::endTag('div');
+
         $columns = [
             [
                 'header'=>'Nombre',
@@ -57,30 +46,22 @@
                 'template'=>'{update}',
                 'buttons'=>[
                     'update'=>function($url,$model) {
-                        $options = array_merge([
-                                                   //'class'=>'btn btn-success',
-                                                   'data-original-title' => 'Añadir a Stock',
-                                                   'data-toggle'         => 'tooltip',
-                                                   'title'               => '',
-                                                   'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['admin/config','op'=>'user','id'=>$model->idUser,'frm'=>true]) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Usuario ".$model->nombre.' '.$model->apellido."</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                                               ]);
-                        return Html::a('<span class="glyphicon glyphicon-import"></span>', "#", $options);
+                        return Html::a(Html::tag('span', '',
+                                                 [
+                                                     'class' => 'glyphicon glyphicon-import',
+                                                 ]
+                                       ) . ' Modificar',
+                                       "#",
+                                       [
+                                           'onclick'     => 'clickmodal("' . Url::to(['admin/config','op'=>'user','id'=>$model->idUser,'frm'=>true]) . '","Usuario '.$model->nombre.' '.$model->apellido.'")',
+                                           'data-toggle' => "modal",
+                                           'data-target' => "#modal"
+                                       ]);
                     },
                 ]
             ],
         ];
+    Pjax::begin(['id' => 'usuarios']);
         echo GridView::widget([
                                   'dataProvider'=> $usuarios,
                                   //'filterModel' => $search,
@@ -90,5 +71,5 @@
                                   'hover'=>true,
                                   'bordered'=>false,
                               ]);
-    ?>
-</div>
+    Pjax::end();
+    echo Html::endTag('div');

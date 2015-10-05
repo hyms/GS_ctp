@@ -1,7 +1,7 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\bootstrap\Alert;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\bootstrap\Alert;
+    use yii\helpers\Html;
 
 ?>
 <div class="well">
