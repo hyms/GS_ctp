@@ -27,6 +27,7 @@
                 'attribute'=>'correo',
             ],
         ];
+        \yii\widgets\Pjax::begin();
         echo GridView::widget([
                                   'dataProvider'=> $clientes,
                                   'filterModel' => $search,
@@ -35,5 +36,6 @@
                                   'hover'=>true,
                                   'bordered'=>false,
                               ]);
+        \yii\widgets\Pjax::end();
     ?>
 </div>

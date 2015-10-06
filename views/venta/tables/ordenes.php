@@ -3,6 +3,7 @@
     use yii\data\ActiveDataProvider;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
 ?>
 <div class="panel panel-default">
@@ -66,6 +67,7 @@
                     ]
                 ],
             ];
+            Pjax::begin(['id'=>'pendientes']);
             echo GridView::widget([
                                       'dataProvider'=> $data,
                                       //'filterModel' => $searchModel,
@@ -73,6 +75,17 @@
                                       'responsive'=>true,
                                       'hover'=>true
                                   ]);
+            Pjax::end();
         ?>
     </div>
 </div>
+
+<?php
+    $script = <<< JS
+    $(document).ready(function() {
+    setInterval(function(){ $.pjax.reload({container:"#pendientes"}); }, 30000);
+});
+
+JS;
+    $this->registerJs($script);
+

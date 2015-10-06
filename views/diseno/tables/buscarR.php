@@ -9,7 +9,6 @@
     <div class="panel-heading">
         <strong class="panel-title">Ordenes de trabajo</strong>
     </div>
-    <div class="panel-body">
         <?php
             $columns = [
                 [
@@ -71,7 +70,7 @@
                     ]
                 ],
             ];
-
+            \yii\widgets\Pjax::begin();
             echo GridView::widget([
                                       'dataProvider'=> $orden,
                                       'filterModel' => $search,
@@ -86,6 +85,6 @@
                                           }
                                       },
                                   ]);
+            \yii\widgets\Pjax::end();
         ?>
-    </div>
 </div>

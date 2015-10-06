@@ -2,13 +2,13 @@
     use kartik\grid\GridView;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
 ?>
 <div class="panel panel-default">
     <div class="panel-heading">
         <strong class="panel-title">Ordenes Internas</strong>
     </div>
-    <div class="panel-body">
         <?php
             $columns = [
                 [
@@ -64,7 +64,7 @@
                     ]
                 ],
             ];
-
+            Pjax::begin();
             echo GridView::widget([
                                       'dataProvider'=> $orden,
                                       'filterModel' => $search,
@@ -79,6 +79,6 @@
                                           }
                                       },
                                   ]);
+            Pjax::end();
         ?>
-    </div>
 </div>

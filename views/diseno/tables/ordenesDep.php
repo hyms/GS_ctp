@@ -1,7 +1,6 @@
 <?php
     use kartik\grid\GridView;
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
     use yii\helpers\Url;
 
 ?>
@@ -68,30 +67,19 @@
                                 return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
                             },
                             'view'=>function($url,$model) {
-                                $options = array_merge([
-                                                           'data-original-title' => 'Ver Orden de Trabajo',
-                                                           'data-toggle'         => 'tooltip',
-                                                           'title'               => '',
-                                                           'onclick'             => "
-                                                        $.ajax({
-                                                            type    :'get',
-                                                            cache   : false,
-                                                            url     : '" . Url::to(['diseno/review','op'=>'cliente','id'=>$model->idOrdenCTP]) . "',
-                                                            success : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Orden de Trabajo ".$model->correlativo."</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                                                       ]);
-                                $url     = "#";
-                                return Html::a('<span class="glyphicon glyphicon-eye-open"></span>', $url, $options);
+                                return Html::a(Html::icon('eye-open'),
+                                               "#",
+                                               [
+                                                   'onclick'     => 'clickmodal("' . Url::to(['diseno/review','op'=>'cliente','id'=>$model->idOrdenCTP]) . '","Orden de Trabajo '.$model->correlativo.'")',
+                                                   'data-toggle' => "tooltip",
+                                                   'data-target' => "#modal",
+                                                   'data-original-title' => 'Ver Orden de Trabajo',
+                                               ]);
                             },
                         ]
                     ],
                 ];
+                \yii\widgets\Pjax::begin();
                 echo GridView::widget([
                                           'dataProvider'=> $orden,
                                           'filterModel' => $search,
@@ -108,34 +96,7 @@
                                               }
                                           },
                                       ]);
+                \yii\widgets\Pjax::end();
             ?>
         </div>
     </div>
-<?php
-    Modal::begin([
-                     'id'=>'viewModal',
-                     'size'=>Modal::SIZE_LARGE,
-                 ]);
-    Modal::end();
-?>
-<?php
-    $script = <<<js
-function validar(idOrden,url){
-var r = confirm("Desea Validar la Orden?");
-    if (r == true) {
-        $.ajax({
-        type    :'post',
-        cache   : false,
-        data    :{id:idOrden},
-        url     : url,
-        success : function(data) {
-            if(data=="done"){
-                location.reload();
-                }
-        }
-        });
-    }
-}
-js;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
-?>
