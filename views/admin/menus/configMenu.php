@@ -14,9 +14,9 @@
                                      'label' => 'Usuarios',
                                      'url' => ['admin/config','op'=>'user'],
                                  ],
-                                 [
+                                 /*[
                                      'label' => 'Imprenta',
                                      'url' => ['admin/config','op'=>'imprenta'],
-                                 ],
+                                 ],*/
                              ],
                          ]);

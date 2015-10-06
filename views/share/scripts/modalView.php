@@ -1,0 +1,39 @@
+<?php
+    use yii\bootstrap\Modal;
+
+    $s=Modal::SIZE_DEFAULT;
+    if(isset($size)) {
+        switch ($size) {
+            case "large":
+                $s = Modal::SIZE_LARGE;
+                break;
+            case "small":
+                $s = Modal::SIZE_SMALL;
+                break;
+        }
+    }
+
+    Modal::begin([
+                     'id'=>'modal',
+                     'size'=>$s,
+                 ]);
+    Modal::end();
+
+    $script = <<<JS
+function clickmodal(url,title){
+    $.ajax({
+        type    :'GET',
+        //cache   : false,
+        url     : url,
+        success : function(data) {
+            if(data.length>0){
+                $('#modal .modal-header').html('<h3 class="text-center">'+title+'</h3>');
+                $('#modal .modal-body').html(data);
+                $('#modal').modal();
+            }
+        }
+    });
+    return false;
+}
+JS;
+    $this->registerJs($script, \yii\web\View::POS_HEAD);

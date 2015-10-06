@@ -1,60 +1,88 @@
-<div class="row">
-    <div class="col-xs-12">
-        <div class="row">
-            <div class="row col-xs-12">
-                <div class="col-xs-3"><strong><?= $orden->fkIdSucursal->nombre;?></strong></div>
-                <div class="text-right"><strong><?= "FECHA RECEPCION:";?></strong> <?= $orden->fechaGenerada;?></div>
-            </div>
-        </div>
+<?php
+    use kartik\grid\GridView;
+    use yii\data\ArrayDataProvider;
+    use yii\helpers\Html;
 
-        <div class="row">
-            <div class="col-xs-7"><strong><?= "Responsable:";?></strong> <span class="text-capitalize"><?= $orden->responsable;?><span></div>
-            <div class="col-xs-3"><strong><?= "Telefono:";?></strong> <?= $orden->telefono;?></div>
-        </div>
+    echo Html::beginTag('div',['class'=>'row']);
 
-        <table class="table table-bordered table-hover table-condensed">
-            <thead><tr>
-                <th><?= "Nº"; ?></th>
-                <th><?= "Formato"; ?></th>
-                <th><?= "Cant."; ?></th>
-                <th><?= "Colores"; ?></th>
-                <th><?= "Trabajo"; ?></th>
-                <th><?= "Pinza"; ?></th>
-                <th><?= "Resol."; ?></th>
-            </tr></thead>
+    echo Html::beginTag('div',['class'=>'col-xs-12']);
 
-            <tbody>
-            <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
-                <tr>
-                    <td>
-                        <?= ($key+1);?>
-                    </td>
-                    <td>
-                        <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
-                    </td>
-                    <td class="col-xs-1">
-                        <?= $producto->cantidad; ?>
-                    </td>
-                    <td>
-                        <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
-                    </td>
-                    <td>
-                        <?= $producto->trabajo;?>
-                    </td>
-                    <td>
-                        <?= $producto->pinza;?>
-                    </td>
-                    <td>
-                        <?= $producto->resolucion;?>
-                    </td>
-                </tr>
-            <?php }?>
-            </tbody>
-        </table>
+    echo Html::tag('div',
+                   Html::tag('div',
+                             Html::tag('strong',$orden->fkIdSucursal->nombre),
+                             ['class'=>'col-xs-7']).
+                   Html::tag('div',
+                             Html::tag('strong','FECHA RECEPCION:').' '.$orden->fechaGenerada,
+                             ['class'=>'col-xs-5']),
+                   ['class'=>'row']);
+    echo Html::tag('div',
+                   Html::tag('div',
+                             Html::tag('strong','Responsable:').' '.
+                             Html::tag('span',$orden->responsable,['class'=>'text-capitalize']),
+                             ['class'=>'col-xs-7']).
+                   Html::tag('div',
+                             Html::tag('strong','Telefono:').' '.$orden->telefono,
+                             ['class'=>'col-xs-5']),
+                   ['class'=>'row']);
+    $data = new ArrayDataProvider();
+    $data->models = $orden->ordenDetalles;
+    $columns = [
+        [
+            'class'=>'kartik\grid\SerialColumn',
+            'header'=>'Nro.',
+        ],
+        [
+            'header'=>'Formato',
+            'value'=>function($model){
+                return $model->fkIdProductoStock->fkIdProducto->formato;
+            }
+        ],
+        [
+            'header'=>'Cant.',
+            'value'=>'cantidad'
+        ],
+        [
+            'header'=>'Colores',
+            'format'=>'raw',
+            'value'=>function($model)
+            {
+                return (($model->C)?Html::tag('strong','C'):'').
+                (($model->M)?Html::tag('strong','M'):'').
+                (($model->Y)?Html::tag('strong','Y'):'').
+                (($model->K)?Html::tag('strong','K'):'');
+            }
+        ],
+        [
+            'header'=>'Trabajo',
+            'value'=>'trabajo',
+        ],
+        [
+            'header'=>'Pinza',
+            'value'=>'pinza',
+        ],
+        [
+            'header'=>'Resol.',
+            'value'=>'resolucion',
+        ],
 
-        <div class="row">
-            <div><strong>Diseñador/a:</strong> <?= $orden->fkIdUserD->nombre." ".$orden->fkIdUserD->apellido;?></div>
-            <div><strong>Obs:</strong> <?= $orden->observaciones;?></div>
-        </div>
-    </div>
-</div>
+    ];
+    echo GridView::widget([
+                              'dataProvider'=> $data,
+                              'columns' => $columns,
+                              'responsive'=>true,
+                              'condensed'=>true,
+                              'hover'=>true,
+                              'layout'=>'{items}'
+                          ]);
+
+    echo Html::tag('div',
+                   Html::tag('div',
+                             Html::tag('strong','Diseñador/a:'). ' '.$orden->fkIdUserD->nombre.' '.$orden->fkIdUserD->apellido,
+                             ['class'=>'col-xs-6']).
+                   Html::tag('div',
+                             Html::tag('strong','Obs:').' '.$orden->observaciones,
+                             ['class'=>'col-xs-6']),
+                   ['class'=>'row']);
+
+    echo Html::endTag('div');
+    echo Html::endTag('div');
