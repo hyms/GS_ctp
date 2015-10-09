@@ -2,7 +2,6 @@
     use kartik\grid\GridView;
     use yii\helpers\Html;
     use yii\helpers\Url;
-    use yii\widgets\Pjax;
 
 ?>
 <div class="panel panel-default">
@@ -64,7 +63,6 @@
                     ]
                 ],
             ];
-            Pjax::begin();
             echo GridView::widget([
                                       'dataProvider'=> $orden,
                                       'filterModel' => $search,
@@ -79,6 +77,5 @@
                                           }
                                       },
                                   ]);
-            Pjax::end();
         ?>
 </div>

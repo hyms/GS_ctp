@@ -70,7 +70,6 @@
                     ]
                 ],
             ];
-            \yii\widgets\Pjax::begin();
             echo GridView::widget([
                                       'dataProvider'=> $orden,
                                       'filterModel' => $search,
@@ -85,6 +84,5 @@
                                           }
                                       },
                                   ]);
-            \yii\widgets\Pjax::end();
         ?>
 </div>

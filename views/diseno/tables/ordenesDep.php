@@ -2,6 +2,7 @@
     use kartik\grid\GridView;
     use kartik\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
 ?>
     <div class="panel panel-default">
@@ -40,31 +41,44 @@
                         }
                     ],
                     [
+                      'format'=>'raw',
+                      'value'=>function($model){
+                          return Html::a(Html::icon('print'),
+                                         Url::to(['diseno/print','op'=>'orden','id'=>$model->idOrdenCTP]),
+                                         [
+                                             //'class'=>'btn btn-success',
+                                             'data-toggle'=>'tooltip',
+                                             'target' => '_blank',
+                                             'title'=>(($model->estado<0)?'ANULADO':'Imprimir')
+                                         ]);
+                      }
+                    ],
+                    [
                         'class' => 'yii\grid\ActionColumn',
                         'template'=>'{print} {view} {validate}',
                         'buttons'=>[
                             'validate'=>function($url,$model){
                                 $options = array_merge([
                                                            //'class'=>'btn btn-success',
-                                                           'data-original-title'=>'Validar',
                                                            'data-toggle'=>'tooltip',
-                                                           'title'=>'',
+                                                           'class'=>'btn btn-success',
+                                                           'title'=>'Validar',
                                                            'onclick'             => "validar(".$model->idOrdenCTP.",'".Url::to(['diseno/dependientes'])."'); return false;"
                                                        ]);
                                 if(empty($model->fk_idUserD2))
-                                    return Html::a('<span class="glyphicon glyphicon-check btn btn-success btn-sm"></span>', '#', $options);
+                                    return Html::a(Html::icon('check'), '#', $options);
                                 else
                                     return "";
                             },
                             'print'=>function($url,$model){
                                 $options = array_merge([
                                                            //'class'=>'btn btn-success',
-                                                           'data-original-title'=>(($model->estado<0)?'ANULADO':'Imprimir'),
                                                            'data-toggle'=>'tooltip',
-                                                           'title'=>''
+                                                           'target' => '_blank',
+                                                           'title'=>(($model->estado<0)?'ANULADO':'Imprimir')
                                                        ]);
                                 $url = Url::to(['diseno/print','op'=>'orden','id'=>$model->idOrdenCTP]);
-                                return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                                return Html::a(Html::icon('print'), $url, $options);
                             },
                             'view'=>function($url,$model) {
                                 return Html::a(Html::icon('eye-open'),
@@ -79,7 +93,7 @@
                         ]
                     ],
                 ];
-                \yii\widgets\Pjax::begin();
+                Pjax::begin();
                 echo GridView::widget([
                                           'dataProvider'=> $orden,
                                           'filterModel' => $search,
@@ -96,7 +110,7 @@
                                               }
                                           },
                                       ]);
-                \yii\widgets\Pjax::end();
+                Pjax::end();
             ?>
         </div>
     </div>

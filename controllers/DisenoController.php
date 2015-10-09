@@ -438,10 +438,12 @@ class DisenoController extends Controller
                 'format' => Pdf::FORMAT_LETTER,
                 'orientation' => Pdf::ORIENT_PORTRAIT,
                 'destination' => Pdf::DEST_BROWSER,
+                //'destination' => Pdf::DEST_BROWSER,
                 'content' => $content,
                 // format content from your own css file if needed or use the
                 // enhanced bootstrap css built by Krajee for mPDF formatting
                 'cssFile'      => '@webroot/css/bootstrap.min.journal.css',
+                //'cssFile' => '@vendor/kartik-v/yii2-mpdf/assets/kv-mpdf-bootstrap.min.css',
                 // set mPDF properties on the fly
                 'marginLeft' => 5, // margin_left. Sets the page margins for the new document.
                 'marginRight' => 5, // margin_right
