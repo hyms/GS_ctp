@@ -3,7 +3,8 @@
     use yii\data\ActiveDataProvider;
     use yii\helpers\Html;
     use yii\helpers\Url;
-    use yii\widgets\Pjax;
+
+    // use yii\widgets\Pjax;
 
 ?>
 <div class="panel panel-default">
@@ -67,7 +68,7 @@
                     ]
                 ],
             ];
-            Pjax::begin(['id'=>'pendientes']);
+            //Pjax::begin(['id'=>'pendientes']);
             echo GridView::widget([
                                       'dataProvider'=> $data,
                                       //'filterModel' => $searchModel,
@@ -75,7 +76,7 @@
                                       'responsive'=>true,
                                       'hover'=>true
                                   ]);
-            Pjax::end();
+            //Pjax::end();
         ?>
     </div>
 </div>
