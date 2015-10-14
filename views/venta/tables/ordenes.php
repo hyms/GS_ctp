@@ -82,11 +82,11 @@
 </div>
 
 <?php
-    $script = <<< JS
+ /*   $script = <<< JS
     $(document).ready(function() {
     setInterval(function(){ $.pjax.reload({container:"#pendientes"}); }, 30000);
 });
 
 JS;
-    $this->registerJs($script);
+    $this->registerJs($script);*/
 

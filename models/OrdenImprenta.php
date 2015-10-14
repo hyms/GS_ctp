@@ -20,6 +20,7 @@ use Yii;
  * @property string $observaciones
  * @property string $fechaConclucion
  *
+ * @property OrdenImprentaAcabado[] $ordenImprentaAcabados
  * @property OrdenImprentaTrabajo[] $ordenImprentaTrabajos
  */
 class OrdenImprenta extends \yii\db\ActiveRecord
@@ -66,6 +67,14 @@ class OrdenImprenta extends \yii\db\ActiveRecord
             'observaciones' => 'Observaciones',
             'fechaConclucion' => 'Fecha Conclucion',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenImprentaAcabados()
+    {
+        return $this->hasMany(OrdenImprentaAcabado::className(), ['fk_idOrdenImprenta' => 'idOrdenImprenta']);
     }
 
     /**

@@ -13,7 +13,7 @@
         <td><?php echo Html::label('B','k')?></td>
         <td><?php echo Html::label('Trabajo','trabajo')?></td>
         <td><?php echo Html::label('Pinza','pinza')?></td>
-        <td><?php echo Html::label('Resolucion','resolucion')?></td>
+        <td><?php echo Html::label('Resol.','resolucion')?></td>
         <td><?php echo Html::label('Costo','costo')?></td>
         <td><?php echo Html::label('Adic.','adicional')?></td>
         <td><?php echo Html::label('Total','total')?></td>

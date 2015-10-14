@@ -13,6 +13,9 @@ use Yii;
  * @property integer $estado
  * @property string $observaciones
  * @property double $costo
+ *
+ * @property OrdenImprenta $fkIdOrdenImprenta
+ * @property ParametroAcabado $fkIdParametroAcabado
  */
 class OrdenImprentaAcabado extends \yii\db\ActiveRecord
 {
@@ -50,5 +53,21 @@ class OrdenImprentaAcabado extends \yii\db\ActiveRecord
             'observaciones' => 'Observaciones',
             'costo' => 'Costo',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdOrdenImprenta()
+    {
+        return $this->hasOne(OrdenImprenta::className(), ['idOrdenImprenta' => 'fk_idOrdenImprenta']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdParametroAcabado()
+    {
+        return $this->hasOne(ParametroAcabado::className(), ['idParametroAcabado' => 'fk_idParametroAcabado']);
     }
 }

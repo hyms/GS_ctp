@@ -13,8 +13,8 @@ use Yii;
  * @property integer $cantidad
  * @property double $costo
  *
- * @property OrdenImprentaTrabajo $fkIdOrdenImprentaTrabajo
  * @property Material $fkIdMaterial
+ * @property OrdenImprentaTrabajo $fkIdOrdenImprentaTrabajo
  */
 class OrdenImprentaMaterial extends \yii\db\ActiveRecord
 {
@@ -55,16 +55,16 @@ class OrdenImprentaMaterial extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdOrdenImprentaTrabajo()
+    public function getFkIdMaterial()
     {
-        return $this->hasOne(OrdenImprentaTrabajo::className(), ['idOrdenImprentaTrabajo' => 'fk_idOrdenImprentaTrabajo']);
+        return $this->hasOne(Material::className(), ['idMaterial' => 'fk_idMaterial']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdMaterial()
+    public function getFkIdOrdenImprentaTrabajo()
     {
-        return $this->hasOne(Material::className(), ['idMaterial' => 'fk_idMaterial']);
+        return $this->hasOne(OrdenImprentaTrabajo::className(), ['idOrdenImprentaTrabajo' => 'fk_idOrdenImprentaTrabajo']);
     }
 }

@@ -14,6 +14,7 @@ use Yii;
  * @property double $precioBase
  * @property double $precioAdicional
  *
+ * @property OrdenImprentaAcabado[] $ordenImprentaAcabados
  * @property Acabados $fkIdAcabado
  * @property ParametroValores $fkIdParametrosValores
  */
@@ -53,6 +54,14 @@ class ParametroAcabado extends \yii\db\ActiveRecord
             'precioBase' => 'Precio Base',
             'precioAdicional' => 'Precio Adicional',
         ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getOrdenImprentaAcabados()
+    {
+        return $this->hasMany(OrdenImprentaAcabado::className(), ['fk_idParametroAcabado' => 'idParametroAcabado']);
     }
 
     /**

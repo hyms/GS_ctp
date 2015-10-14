@@ -12,10 +12,6 @@
             'attribute'=>'nombreNegocio',
         ],
         [
-            'header' => 'Dueño',
-            'attribute'=>'nombreCompleto',
-        ],
-        [
             'header' => 'Responsable',
             'attribute'=>'nombreResponsable',
         ],
@@ -25,7 +21,7 @@
             'value'=> function ($model) {
                 return Html::a('<i class="glyphicon glyphicon-plus"></i>','#',
                                [
-                                   'onclick'=>'cliente("'.$model->nombreNegocio.'","'.$model->nitCi.'","'.$model->idCliente.'");return false;',
+                                   'onclick'=>'cliente("'.$model->nombreNegocio.'","'.$model->nitCi.'","'.$model->idCliente.'","'.$model->codigoCliente.'");return false;',
                                    'class'=>'btn btn-success',
                                    'data-original-title'=>'Aceptar',
                                    'data-toggle'=>'tooltip',
@@ -57,10 +53,11 @@
             factura(val,url,idOrden,$('#tipoCliente').val());
     }";*/
     $script = "
-    function cliente(nombre,nit,id)
+    function cliente(nombre,nit,id,categoria)
     {
         $('#cliente').val(nombre+\" - \"+nit);
         $('#idCliente').val(id);
+        $('#categoria').html(categoria);
     }
     ";
     $this->registerJs($script, \yii\web\View::POS_HEAD);

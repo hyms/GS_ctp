@@ -13,7 +13,7 @@ use Yii;
  * @property integer $enable
  *
  * @property Material[] $materials
- * @property ServicioMaterial[] $servicioMaterials
+ * @property TipoMaterialTrabajo[] $tipoMaterialTrabajos
  */
 class TipoMaterial extends \yii\db\ActiveRecord
 {
@@ -62,8 +62,8 @@ class TipoMaterial extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getServicioMaterials()
+    public function getTipoMaterialTrabajos()
     {
-        return $this->hasMany(ServicioMaterial::className(), ['fk_idTipoMaterial' => 'idTipoMaterial']);
+        return $this->hasMany(TipoMaterialTrabajo::className(), ['fk_idTipoMaterial' => 'idTipoMaterial']);
     }
 }

@@ -5,23 +5,24 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "servicioMaterial".
+ * This is the model class for table "tipoMaterialTrabajo".
  *
- * @property integer $idServicioMaterial
+ * @property integer $idMaterialTrabajo
+ * @property integer $fk_idTipoTrabajo
+ * @property integer $enable
  * @property integer $fk_idTipoMaterial
- * @property integer $fk_idServicio
  *
- * @property Servicio $fkIdServicio
+ * @property ImprentaTipoTrabajo $fkIdTipoTrabajo
  * @property TipoMaterial $fkIdTipoMaterial
  */
-class ServicioMaterial extends \yii\db\ActiveRecord
+class TipoMaterialTrabajo extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'servicioMaterial';
+        return 'tipoMaterialTrabajo';
     }
 
     /**
@@ -30,8 +31,8 @@ class ServicioMaterial extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['fk_idTipoMaterial', 'fk_idServicio'], 'required'],
-            [['fk_idTipoMaterial', 'fk_idServicio'], 'integer']
+            [['fk_idTipoTrabajo', 'fk_idTipoMaterial'], 'required'],
+            [['fk_idTipoTrabajo', 'enable', 'fk_idTipoMaterial'], 'integer']
         ];
     }
 
@@ -41,18 +42,19 @@ class ServicioMaterial extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'idServicioMaterial' => 'Id Servicio Material',
+            'idMaterialTrabajo' => 'Id Material Trabajo',
+            'fk_idTipoTrabajo' => 'Fk Id Tipo Trabajo',
+            'enable' => 'Enable',
             'fk_idTipoMaterial' => 'Fk Id Tipo Material',
-            'fk_idServicio' => 'Fk Id Servicio',
         ];
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getFkIdServicio()
+    public function getFkIdTipoTrabajo()
     {
-        return $this->hasOne(Servicio::className(), ['idServicio' => 'fk_idServicio']);
+        return $this->hasOne(ImprentaTipoTrabajo::className(), ['idImprentaTipoTrabajo' => 'fk_idTipoTrabajo']);
     }
 
     /**

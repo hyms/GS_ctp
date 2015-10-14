@@ -8,12 +8,12 @@ use Yii;
  * This is the model class for table "imprentaParametros".
  *
  * @property integer $idImprentaParametros
- * @property string $nombre
- * @property double $addValor
+ * @property integer $fk_idParametro
  * @property integer $fk_idImprentaTipoTrabajo
  * @property integer $enable
  *
  * @property ImprentaTipoTrabajo $fkIdImprentaTipoTrabajo
+ * @property Parametros $fkIdParametro
  * @property ParametroValores[] $parametroValores
  */
 class ImprentaParametros extends \yii\db\ActiveRecord
@@ -32,10 +32,8 @@ class ImprentaParametros extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['nombre'], 'required'],
-            [['addValor'], 'number'],
-            [['fk_idImprentaTipoTrabajo', 'enable'], 'integer'],
-            [['nombre'], 'string', 'max' => 100]
+            [['fk_idParametro', 'fk_idImprentaTipoTrabajo'], 'required'],
+            [['fk_idParametro', 'fk_idImprentaTipoTrabajo', 'enable'], 'integer']
         ];
     }
 
@@ -46,8 +44,7 @@ class ImprentaParametros extends \yii\db\ActiveRecord
     {
         return [
             'idImprentaParametros' => 'Id Imprenta Parametros',
-            'nombre' => 'Nombre',
-            'addValor' => 'Add Valor',
+            'fk_idParametro' => 'Fk Id Parametro',
             'fk_idImprentaTipoTrabajo' => 'Fk Id Imprenta Tipo Trabajo',
             'enable' => 'Enable',
         ];
@@ -59,6 +56,14 @@ class ImprentaParametros extends \yii\db\ActiveRecord
     public function getFkIdImprentaTipoTrabajo()
     {
         return $this->hasOne(ImprentaTipoTrabajo::className(), ['idImprentaTipoTrabajo' => 'fk_idImprentaTipoTrabajo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getFkIdParametro()
+    {
+        return $this->hasOne(Parametros::className(), ['idParametros' => 'fk_idParametro']);
     }
 
     /**

@@ -1,25 +1,27 @@
 <?php
+    use kartik\helpers\Html;
     use kartik\widgets\DatePicker;
     use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+
+    //use yii\helpers\Html;
 
     $this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
-        <div class="col-xs-4">
+        <div class="col-md-4">
             <div class="panel panel-default">
                 <div class="panel-heading"><strong class="panel-title">Clientes</strong></div>
                 <?= $this->render('../tables/cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]) ?>
             </div>
 
         </div>
-        <div class="col-xs-8">
+        <div class="col-md-8">
             <div class="well well-sm">
                 <div class = "row">
-                    <h4 class="col-xs-4"><strong>Orden de Trabajo</strong></h4>
-                    <h4 class="col-xs-4 text-center"><strong><?php echo $orden->correlativo;?></strong></h4>
-                    <h4 class="col-xs-4 text-right"><strong><?php echo date("d/m/Y",strtotime($orden->fechaCobro));?></strong></h4>
+                    <h4 class="col-md-4"><strong>Orden de Trabajo</strong></h4>
+                    <h4 class="col-md-4 text-center"><strong><?= $orden->correlativo;?></strong></h4>
+                    <h4 class="col-md-4 text-right"><strong><?= date("d/m/Y",strtotime($orden->fechaCobro));?></strong></h4>
                 </div>
 
 
@@ -27,7 +29,7 @@
                     $form = ActiveForm::begin(['id'=>'form']);
                 ?>
                 <div class="row">
-                    <div class="col-xs-8">
+                    <div class="col-md-8">
                         <?php
                             $datoCliente = "";
                             $tipoCliente = "";
@@ -38,20 +40,21 @@
                             }
                         ?>
                         <?= Html::label('Cliente','cliente')?>
-                        <?= Html::input('','cliente',$datoCliente,['class'=>'form-control','id'=>'cliente','onchange'=>'clienteName(this.value)']) ?>
+                        <?= Html::textarea('cliente',$datoCliente,['class'=>'form-control','id'=>'cliente','onchange'=>'clienteName(this.value)']) ?>
                     </div>
-                    <div class="col-xs-4">
-                        <?= $form->field($orden,'cfSF',['template'=>'{input}'])->checkbox()->label('Con Factura'); ?>
+                    <div class="col-md-4 text-center">
+                        <?= Html::label('Categoria');?>
+                        <h1 class="text-uppercase"><?= Html::bsLabel(((empty($orden->fk_idCliente))?"C":$orden->fkIdCliente->codigoCliente),'',['id'=>'categoria'])?></h1>
                     </div>
 
                 </div>
 
                 <div class="row">
                     <?= $form->field($orden,'fk_idCliente')->hiddenInput(['id'=>'idCliente'])->label(false); ?>
-                    <div class="col-xs-6">
+                    <div class="col-md-6">
                         <?= $form->field($orden, 'responsable')->textInput(['maxlength' => 50]) ?>
                     </div>
-                    <div class="col-xs-6">
+                    <div class="col-md-6">
                         <?= $form->field($orden, 'telefono')->textInput(['maxlength' => 50]) ?>
                     </div>
                 </div>
@@ -67,12 +70,13 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-xs-7">
+                    <div class="col-md-7">
+                        <?= Html::label('Diseñador:').' '.$orden->fkIdUserD->nombre.' '.$orden->fkIdUserD->apellido; ?>
                         <?= $form->field($orden, 'observaciones')->textarea(['readOnly'=>true]); ?>
                         <?= $form->field($orden, 'observacionesCaja')->textarea(); ?>
                     </div>
 
-                    <div class="col-xs-5">
+                    <div class="col-md-5">
                         <?= $form->field($orden,'montoVenta')->textInput(['readonly'=>true,'id'=>'total']); ?>
                         <div class="form-group">
                             <?= Html::label("Monto Pagado","monto")?>
@@ -86,7 +90,7 @@
                 </div>
                 <div class="row">
 
-                    <div class="col-xs-4"><?= '<label class="control-label">Fecha Plazo</label>'; ?>
+                    <div class="col-md-4"><?= '<label class="control-label">Fecha Plazo</label>'; ?>
                         <?= DatePicker::widget([
                                                    'model' => $orden,
                                                    'attribute' => 'fechaPlazo',
@@ -98,8 +102,11 @@
                                                    ]
                                                ]); ?>
                     </div>
-                    <div class="col-xs-4">
+                    <div class="col-md-4">
                         <?= $form->field($orden,'montoDescuento')->textInput(['id'=>'descuento'])?>
+                    </div>
+                    <div class="col-md-4">
+                        <?= $form->field($orden,'cfSF',['template'=>'{input}'])->checkbox()->label('Con Factura'); ?>
                     </div>
                 </div>
 
@@ -137,6 +144,7 @@
 			if(val=='')
 			{
 				$('#idCliente').val('');
+				$('#categoria').html('C');
 			}
         }";
     $this->registerJs($js, \yii\web\View::POS_HEAD);

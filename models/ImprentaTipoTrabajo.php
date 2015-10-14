@@ -14,6 +14,7 @@ use Yii;
  *
  * @property ImprentaParametros[] $imprentaParametros
  * @property OrdenImprentaTrabajo[] $ordenImprentaTrabajos
+ * @property TipoMaterialTrabajo[] $tipoMaterialTrabajos
  * @property TrabajoAcabado[] $trabajoAcabados
  */
 class ImprentaTipoTrabajo extends \yii\db\ActiveRecord
@@ -66,6 +67,14 @@ class ImprentaTipoTrabajo extends \yii\db\ActiveRecord
     public function getOrdenImprentaTrabajos()
     {
         return $this->hasMany(OrdenImprentaTrabajo::className(), ['idImprentaTipoTrabajo' => 'idImprentaTipoTrabajo']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getTipoMaterialTrabajos()
+    {
+        return $this->hasMany(TipoMaterialTrabajo::className(), ['fk_idTipoTrabajo' => 'idImprentaTipoTrabajo']);
     }
 
     /**
