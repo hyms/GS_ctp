@@ -1,11 +1,15 @@
 <?php
-use app\models\ProductoStock;
-use kartik\grid\GridView;
+    use app\models\ProductoStock;
+    use kartik\grid\GridView;
 
-$columns = [
+    $columns = [
         [
             'header'=>'Fecha',
             'attribute'=>'fecha',
+        ],
+        [
+            'header'=>'Cliente',
+            'attribute'=>'cliente',
         ],
         [
             'header'=>'Orden',
@@ -35,7 +39,7 @@ $columns = [
                               //'filterModel' => $search,
                               'columns' => $columns,
                               'rowOptions' => function ($model, $index, $widget, $grid){
-                                  if($model->estado<0){
+                                  if($model['estado']<0){
                                       return ['class' => GridView::TYPE_DANGER];
                                   }else{
                                       return [];

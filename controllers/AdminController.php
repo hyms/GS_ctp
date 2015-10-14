@@ -468,6 +468,7 @@ class AdminController extends Controller
                         }
                         $row = [
                             'fecha'  => $orden->fechaGenerada,
+                            'cliente' => ((empty($orden->fk_idCliente))?$orden->responsable:$orden->fkIdCliente->nombreNegocio),
                             'orden'  => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
                             'tipo'   => $tipo[$orden->tipoOrden],
                             'estado' => $orden->estado

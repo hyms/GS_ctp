@@ -2,7 +2,6 @@
     use kartik\grid\GridView;
     use kartik\helpers\Html;
     use yii\helpers\Url;
-    use yii\widgets\Pjax;
 
 ?>
     <div class="panel panel-default">
@@ -40,7 +39,7 @@
                             return date("Y-m-d H:i",strtotime($model->fechaGenerada));
                         }
                     ],
-                    [
+                    /*[
                       'format'=>'raw',
                       'value'=>function($model){
                           return Html::a(Html::icon('print'),
@@ -52,7 +51,7 @@
                                              'title'=>(($model->estado<0)?'ANULADO':'Imprimir')
                                          ]);
                       }
-                    ],
+                    ],*/
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'template'=>'{print} {view} {validate}',
@@ -63,7 +62,7 @@
                                                            'data-toggle'=>'tooltip',
                                                            'class'=>'btn btn-success',
                                                            'title'=>'Validar',
-                                                           'onclick'             => "validar(".$model->idOrdenCTP.",'".Url::to(['diseno/dependientes'])."'); return false;"
+                                                           'onclick'             => "validar('".Url::to(['diseno/dependientes'])."',".$model->idOrdenCTP."); return false;"
                                                        ]);
                                 if(empty($model->fk_idUserD2))
                                     return Html::a(Html::icon('check'), '#', $options);
@@ -93,7 +92,7 @@
                         ]
                     ],
                 ];
-                Pjax::begin();
+                //Pjax::begin();
                 echo GridView::widget([
                                           'dataProvider'=> $orden,
                                           'filterModel' => $search,
@@ -110,7 +109,7 @@
                                               }
                                           },
                                       ]);
-                Pjax::end();
+                //Pjax::end();
             ?>
         </div>
     </div>

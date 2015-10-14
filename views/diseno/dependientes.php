@@ -12,6 +12,7 @@
                     case 'list':
                         echo $this->render('tables/ordenesDep', ['orden' => $orden, 'search' => $search]);
                         echo $this->render('@app/views/share/scripts/modalView',['size'=>'large']);
+                        echo $this->render('scripts/validar',['size'=>'large']);
                         break;
                 }
             }
