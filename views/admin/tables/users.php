@@ -1,6 +1,6 @@
 <?php
     use kartik\grid\GridView;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
     use yii\helpers\Url;
     use yii\widgets\Pjax;
 
@@ -46,11 +46,7 @@
                 'template'=>'{update}',
                 'buttons'=>[
                     'update'=>function($url,$model) {
-                        return Html::a(Html::tag('span', '',
-                                                 [
-                                                     'class' => 'glyphicon glyphicon-import',
-                                                 ]
-                                       ) . ' Modificar',
+                        return Html::a(Html::icon('pencil') . ' Modificar',
                                        "#",
                                        [
                                            'onclick'     => 'clickmodal("' . Url::to(['admin/config','op'=>'user','id'=>$model->idUser,'frm'=>true]) . '","Usuario '.$model->nombre.' '.$model->apellido.'")',

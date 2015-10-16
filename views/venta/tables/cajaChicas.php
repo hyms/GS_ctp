@@ -1,10 +1,9 @@
 <?php
     use kartik\grid\GridView;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-?>
-<?php
     $columns = [
         [
             'header'=>'Usuario',
@@ -37,33 +36,21 @@
             'class' => 'yii\grid\ActionColumn',
             'template'=>'{update}',
             'buttons'=>[
-                'update'=>function($url,$model){
-                    $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Modificar',
-                                               'data-toggle'=>'tooltip',
-                                               'title'=>'',
-                                               'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['venta/chica','id'=>$model->idMovimientoCaja,'op'=>'mod']) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                                           ]);
-                        if(!empty($model->fechaCierre))
-                            return "";
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', "#", $options);
-                },
+                'update'=>function($url,$model) {
+                    if (!empty($model->fechaCierre))
+                        return "";
+                    return Html::a(Html::icon('pencil') . ' Modificar',
+                                   "#",
+                                   [
+                                       'onclick'     => 'clickmodal("' . Url::to(['venta/chica', 'id' => $model->idMovimientoCaja, 'op' => 'mod']) . '","Caja Chica")',
+                                       'data-toggle' => "modal",
+                                       'data-target' => "#modal"
+                                   ]);
+                }   ,
             ]
         ],
     ];
+    Pjax::begin(['id'=>'cajaChica']);
     echo GridView::widget([
                               'dataProvider'=> $cajasChicas,
                               'filterModel' => $search,
@@ -71,22 +58,13 @@
                               'toolbar' =>  [
                                   [
                                       'content'=>
-                                          Html::a('Nueva Transaccion', "#", [
-                                              'class'=>'btn btn-default',
-                                              'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '".Url::to(['venta/chica','op'=>'new'])."',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                                          ]),
+                                          Html::button('Nuevo Transaccion',
+                                                       [
+                                                           'class'=>'btn btn-default',
+                                                           'onclick' => 'clickmodal("' . Url::to(['venta/chica','op'=>'new']) . '","Caja Chica")',
+                                                           'data-toggle' => "modal",
+                                                           'data-target' => "#modal"
+                                                       ]),
                                       'options' => ['class' => 'btn-group']
                                   ],
                                   '{export}',
@@ -125,4 +103,4 @@
                                   ],
                               ],
                           ]);
-?>
+    Pjax::end();

@@ -1,11 +1,13 @@
 <?php
+    use yii\helpers\Html;
+
     $this->title = 'Diseño-Ordenes Internas';
 ?>
 <div class="row">
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <?= $this->render('menus/internaMenu'); ?>
     </div>
-    <div class="col-xs-10">
+    <div class="col-md-10">
         <?php
             if(isset($r)) {
                 switch ($r) {
@@ -27,9 +29,9 @@
                 }
             }
             else {
-                echo '<div class="col-xs-offset-6 col-xs-6">';
-                echo $this->render('tables/notasPendientes', ['notas' => $notas]);
-                echo '</div>';
+                echo Html::tag('div',
+                          $this->render('tables/notasPendientes', ['notas' => $notas]),
+                    ['class'=>'col-md-offset-6 col-md-6']);
             }
         ?>
     </div>

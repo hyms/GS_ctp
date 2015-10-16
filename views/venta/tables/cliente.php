@@ -1,6 +1,6 @@
 <?php
     use kartik\grid\GridView;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
 
     $columns = [
         /*[
@@ -19,7 +19,7 @@
             'header'=>'',
             'format' => 'raw',
             'value'=> function ($model) {
-                return Html::a('<i class="glyphicon glyphicon-plus"></i>','#',
+                return Html::a(Html::icon('plus'),'#',
                                [
                                    'onclick'=>'cliente("'.$model->nombreNegocio.'","'.$model->nitCi.'","'.$model->idCliente.'","'.$model->codigoCliente.'");return false;',
                                    'class'=>'btn btn-success',

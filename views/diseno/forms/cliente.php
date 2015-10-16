@@ -131,6 +131,4 @@
 <?php
     echo $this->render('@app/views/share/scripts/save');
     echo $this->render('@app/views/share/scripts/reset');
-    //echo $this->render('../scripts/reset');
-    //echo $this->render('../scripts/save');
 

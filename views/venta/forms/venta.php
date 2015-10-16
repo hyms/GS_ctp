@@ -3,25 +3,33 @@
     use kartik\widgets\DatePicker;
     use yii\bootstrap\ActiveForm;
 
-    //use yii\helpers\Html;
-
     $this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
         <div class="col-md-4">
-            <div class="panel panel-default">
-                <div class="panel-heading"><strong class="panel-title">Clientes</strong></div>
-                <?= $this->render('../tables/cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]) ?>
-            </div>
+            <?= Html::panel(
+                [
+                    'heading' => Html::tag('strong','Clientes',['class'=>'panel-title']),
+                    'postBody' => $this->render('../tables/cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]),
+                ],
+                Html::TYPE_DEFAULT
+            );?>
+
 
         </div>
         <div class="col-md-8">
             <div class="well well-sm">
                 <div class = "row">
-                    <h4 class="col-md-4"><strong>Orden de Trabajo</strong></h4>
-                    <h4 class="col-md-4 text-center"><strong><?= $orden->correlativo;?></strong></h4>
-                    <h4 class="col-md-4 text-right"><strong><?= date("d/m/Y",strtotime($orden->fechaCobro));?></strong></h4>
+                    <h4 class="col-md-4">
+                        <?= Html::tag('strong','Orden de Trabajo'); ?>
+                    </h4>
+                    <h4 class="col-md-4 text-center">
+                        <?= Html::tag('strong',$orden->correlativo); ?>
+                    </h4>
+                    <h4 class="col-md-4 text-right">
+                        <?= Html::tag('strong',date("d/m/Y",strtotime($orden->fechaCobro))); ?>
+                    </h4>
                 </div>
 
 
@@ -44,7 +52,7 @@
                     </div>
                     <div class="col-md-4 text-center">
                         <?= Html::label('Categoria');?>
-                        <h1 class="text-uppercase"><?= Html::bsLabel(((empty($orden->fk_idCliente))?"C":$orden->fkIdCliente->codigoCliente),'',['id'=>'categoria'])?></h1>
+                        <h1 class="text-uppercase"><?= Html::bsLabel(((empty($orden->fk_idCliente))?"-":$orden->fkIdCliente->codigoCliente),'',['id'=>'categoria'])?></h1>
                     </div>
 
                 </div>
@@ -59,15 +67,13 @@
                     </div>
                 </div>
 
-
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <strong class="panel-title">Datos de Orden</strong>
-                    </div>
-                    <div style="overflow: auto">
-                        <?= $this->render('detalleOrden',['detalle'=>$detalle]); ?>
-                    </div>
-                </div>
+                <?= Html::panel(
+                    [
+                        'heading' => Html::tag('strong','Datos de Orden',['class'=>'panel-title']),
+                        'postBody' => $this->render('detalleOrden',['detalle'=>$detalle]),
+                    ],
+                    Html::TYPE_DEFAULT
+                );?>
 
                 <div class="row">
                     <div class="col-md-7">
@@ -90,7 +96,8 @@
                 </div>
                 <div class="row">
 
-                    <div class="col-md-4"><?= '<label class="control-label">Fecha Plazo</label>'; ?>
+                    <div class="col-md-4">
+                        <?= Html::label('Fecha Plazo','fechaPlazo') ?>
                         <?= DatePicker::widget([
                                                    'model' => $orden,
                                                    'attribute' => 'fechaPlazo',
@@ -112,17 +119,17 @@
 
                 <div class="form-group">
                     <div class="text-center">
-                        <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
+                        <?= Html::a( Html::icon('floppy-remove').' Cancelar', "#", ['class' => 'btn btn-danger','onClick'=>'previous()']); ?>
                         <?php
                             $hora = strtotime($orden->fechaCobro)+1200; //20 mins para espera de los botones
                             if(strtotime(date("Y-m-d H:i:s"))<=$hora) {
-                                echo Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print', 'id' => 'save'));
-                                if($orden->montoVenta!="" || $orden->montoVenta>=0)
-                                echo Html::a('<span class="glyphicon glyphicon-refresh"></span> Retorno', "#", array('class' => 'btn btn-info hidden-print', 'id' => 'reenviar'));
+                                echo Html::a( Html::icon('floppy-disk').' Guardar', "#", ['class' => 'btn btn-success','onClick'=>'save()']);
+                                if($orden->montoVenta!="" || $orden->montoVenta!=1)
+                                echo Html::a( Html::icon('refresh').' Retorno', "#", ['class' => 'btn btn-info', 'onClick' => 'nullResend("1")']);
                             }
                             echo Html::hiddenInput('anular','0',['id'=>'anular']);
-                            if($orden->montoVenta!="" || $orden->montoVenta>=0)
-                            echo Html::a('<span class="glyphicon glyphicon-remove"></span> Anular', "#", array('class' => 'btn btn-danger hidden-print', 'id' => 'nuller'));
+                            if($orden->montoVenta!="" || $orden->montoVenta!=1)
+                            echo Html::a(Html::icon('remove').' Anular', "#", ['class' => 'btn btn-danger', 'onClick' => 'nullResend("2")']);
 						?>
                     </div>
                 </div>
@@ -134,18 +141,18 @@
 <?= $this->render('../scripts/totalVenta') ?>
 <?= $this->render('../scripts/detalleVenta') ?>
 <?= $this->render('../scripts/anular') ?>
-<?= $this->render('../scripts/save') ?>
-<?= $this->render('../scripts/reset') ?>
 <?= $this->render('../scripts/condicionesVenta') ?>
 <?php
-    $js  ="
-        function clienteName(val)
-        {
-			if(val=='')
-			{
-				$('#idCliente').val('');
-				$('#categoria').html('C');
-			}
-        }";
-    $this->registerJs($js, \yii\web\View::POS_HEAD);
-?>
+    $script  =<<<JS
+function clienteName(val)
+{
+	if(val=='')
+	{
+		$('#idCliente').val('');
+		$('#categoria').html('-');
+	}
+}
+JS;
+    $this->registerJs($script, \yii\web\View::POS_HEAD);
+    echo $this->render('@app/views/share/scripts/save');
+    echo $this->render('@app/views/share/scripts/reset');

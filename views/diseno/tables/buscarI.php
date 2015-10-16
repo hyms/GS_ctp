@@ -52,7 +52,7 @@
                                                //'class'=>'btn btn-success',
                                                'data-original-title'=>'Imprimir',
                                                'data-toggle'=>'tooltip',
-                                               'data-target' => "#modal",
+                                               'data-target' => "#modalPage",
                                                'title'=>'',
                                                'onClick'=>'printView("'.$url.'")'
                                            ]);

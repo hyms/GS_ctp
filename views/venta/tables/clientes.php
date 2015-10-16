@@ -1,10 +1,9 @@
 <?php
     use kartik\grid\GridView;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-?>
-<?php
     $columns=[
         [
             'header'=>'Categoria',
@@ -35,31 +34,19 @@
             'template'=>'{update}',
             'buttons'=>[
                 'update'=>function($url,$model) {
-                    $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title' => 'Modificar',
-                                               'data-toggle'         => 'tooltip',
-                                               'title'               => '',
-                                               'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['venta/cliente','id'=>$model->idCliente]) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Cliente: ".$model->nombreNegocio."</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                                           ]);
-                    $url     = "#";
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                    return Html::a(Html::icon('pencil') . ' Modificar',
+                                   "#",
+                                   [
+                                       'onclick'     => 'clickmodal("' . Url::to(['venta/cliente','id'=>$model->idCliente]) . '","Cliente: '.$model->nombreNegocio.'")',
+                                       'data-toggle' => "modal",
+                                       'data-target' => "#modal"
+                                   ]);
                 },
             ]
         ],
     ];
+
+    Pjax::begin(['id'=>'cliente']);
     echo GridView::widget([
                               'dataProvider'=> $clientes,
                               'filterModel' => $search,
@@ -67,22 +54,13 @@
                               'toolbar' =>  [
                                   [
                                       'content'=>
-                                          Html::a('Nuevo Cliente', "#", [
-                                              'class'=>'btn btn-default',
-                                              'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/cliente', 'op' => 'new']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Nuevo Cliente</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                                          ]),
+                                          Html::button('Nuevo Cliente',
+                                                       [
+                                                           'class'=>'btn btn-default',
+                                                           'onclick' => 'clickmodal("' . Url::to(['venta/cliente', 'op' => 'new']) . '","Nuevo Cliente")',
+                                                           'data-toggle' => "modal",
+                                                           'data-target' => "#modal"
+                                                       ]),
                                       'options' => ['class' => 'btn-group']
                                   ],
                                   '{export}',
@@ -121,4 +99,4 @@
                                   ],
                               ],
                           ]);
-?>
+    Pjax::end();

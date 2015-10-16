@@ -3,7 +3,7 @@
     use yii\helpers\Html;
 
     echo Html::beginTag('div',['class'=>'row']);
-    $form = ActiveForm::begin();
+    $form = ActiveForm::begin(['id'=>'form']);
 
     echo $form->field($model, 'nameValue');
     echo $form->field($model, 'observaciones')->textarea();

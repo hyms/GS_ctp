@@ -1,7 +1,7 @@
 <?php
+    use kartik\helpers\Html;
     use yii\bootstrap\ActiveForm;
     use yii\bootstrap\Alert;
-    use yii\helpers\Html;
 
 ?>
 <div class="well">
@@ -26,35 +26,36 @@
     ?>
     <?php $form = ActiveForm::begin(['id'=>'form']); ?>
     <div class="row">
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'username') ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'password')->passwordInput() ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'nombre') ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'apellido') ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'CI') ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'telefono') ?>
     </div>
-    <div class="col-xs-6">
+    <div class="col-md-6">
         <?= $form->field($model, 'email') ?>
     </div>
     </div>
     <div class="form-group">
         <div class="text-center">
-            <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-default hidden-print','id'=>'reset')); ?>
-            <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
+            <?= Html::a( Html::icon('floppy-remove').' Cancelar', "#", ['class' => 'btn btn-danger','onClick'=>'previous()']); ?>
+            <?= Html::a( Html::icon('floppy-disk').' Guardar', "#", ['class' => 'btn btn-success','onClick'=>'save()']); ?>
         </div>
     </div>
     <?php ActiveForm::end(); ?>
 </div>
-<?= $this->render('../scripts/save') ?>
-<?= $this->render('../scripts/reset') ?>
+<?php
+    echo $this->render('@app/views/share/scripts/save');
+    echo $this->render('@app/views/share/scripts/reset');

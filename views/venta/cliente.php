@@ -8,7 +8,7 @@
                 case "list":
                     echo $this->render('tables/clientes', ['clientes' => $clientes, 'search' => $search]);
                     echo $this->render('scripts/tooltip');
-                    echo $this->render('scripts/modal');
+                    echo $this->render('@app/views/share/scripts/modal',['nameTable'=>'cliente']);
                     break;
             }
         }

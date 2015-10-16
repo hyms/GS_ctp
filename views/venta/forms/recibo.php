@@ -1,18 +1,21 @@
 <?php
-    $form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
+
+    $form = ActiveForm::begin(['id'=>'form']);
 ?>
-    <div class="row" >
-        <div class="col-xs-6">
-            <?= $form->field($recibo,'nombre'); ?>
-        </div>
-        <div class="col-xs-6">
-            <?= $form->field($recibo,'ciNit'); ?>
-        </div>
+    <div class="row">
+        <?= Html::tag('div',
+                      $form->field($recibo,'nombre'),
+                      ['class'=>'col-md-6'])?>
+        <?= Html::tag('div',
+                      $form->field($recibo,'ciNit'),
+                      ['class'=>'col-md-6'])?>
+        <?= Html::tag('div',
+                      $form->field($recibo,'detalle')->textarea(),
+                      ['class'=>'col-md-12'])?>
+        <?= Html::tag('div',
+                      $form->field($recibo,'monto'),
+                      ['class'=>'col-md-4'])?>
     </div>
-<?= $form->field($recibo,'detalle')->textarea(); ?>
-    <div class="row" >
-        <div class="col-xs-4" >
-            <?= $form->field($recibo,'monto'); ?>
-        </div>
-    </div>
-<?php \yii\bootstrap\ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>

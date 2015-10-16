@@ -51,24 +51,20 @@
         ],
     ];
 
-
-    echo Html::beginTag('div',['class'=>'panel panel-default']);
-    echo Html::tag('div',
-                   Html::tag('strong',
-                             'Historial de ordenes de trabajo',
-                             ['class'=>'panel-title']),
-                   ['class'=>'panel-heading']);
-
     Pjax::begin();
-    echo GridView::widget([
-                              'dataProvider'=> $orden,
-                              'filterModel' => $search,
-                              'columns' => $columns,
-                              'responsive'=>true,
-                              'condensed'=>true,
-                              'hover'=>true,
-                              'bordered'=>false,
-                          ]);
+    echo Html::panel(
+        [
+            'heading' => Html::tag('strong','Historial de ordenes de trabajo',['class'=>'panel-title']),
+            'postBody' => GridView::widget([
+                                               'dataProvider'=> $orden,
+                                               'filterModel' => $search,
+                                               'columns' => $columns,
+                                               'responsive'=>true,
+                                               'condensed'=>true,
+                                               'hover'=>true,
+                                               'bordered'=>false,
+                                           ])
+        ],
+        Html::TYPE_DEFAULT
+    );
     Pjax::end();
-    echo Html::endTag('div');
-

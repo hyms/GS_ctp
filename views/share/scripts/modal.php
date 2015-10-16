@@ -27,12 +27,12 @@
     $script = <<<JS
 function formSubmit(nameTable)
 {
-    data=$("form").serialize();
+    data=$("#form").serialize();
     //alert ($("form").attr("action"));
     $.ajax({
         type: "POST",
         data: data,
-        url: $("form").attr("action"),
+        url: $("#form").attr("action"),
         success: function(data){
             if(data=="done"){
                 $('#modal').modal('hide');

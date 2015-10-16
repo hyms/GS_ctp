@@ -1,10 +1,12 @@
 <?php
-    $form = \yii\bootstrap\ActiveForm::begin(['id'=>'form']);
+    use yii\bootstrap\ActiveForm;
+
+    $form = ActiveForm::begin(['id'=>'form']);
 ?>
 <?= $form->field($cajaChica,'observaciones')->textarea()->label('Detalle');; ?>
     <div class="row" >
-        <div class="col-xs-4" >
+        <div class="col-md-4" >
             <?= $form->field($cajaChica,'monto'); ?>
         </div>
     </div>
-<?php \yii\bootstrap\ActiveForm::end(); ?>
+<?php ActiveForm::end(); ?>

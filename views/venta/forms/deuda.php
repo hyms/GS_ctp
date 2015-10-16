@@ -1,112 +1,144 @@
 <?php
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
     use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+    use yii\data\ArrayDataProvider;
 
 ?>
-    <div class="col-xs-7">
+    <div class="col-md-7">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <strong>Orden de Trabajo</strong>
                 </h4>
             </div>
-            <div class="panel-body" style="overflow: auto;">
-                <div class="col-xs-6"><strong>Cliente:</strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:""; ?></div>
-                <div class="col-xs-6"><strong>NitCi:</strong> <?= (!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:""; ?></div>
-                <div class="col-xs-6"><strong>Responsable:</strong> <?= $orden->responsable; ?></div>
-                <div class="col-xs-6"><strong>Telefono:</strong> <?= $orden->telefono; ?></div>
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <?= Html::tag('strong','Cliente:').' '. ((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:""); ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::tag('strong','NitCi:').' '. ((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:""); ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::tag('strong','Responsable:').' '. $orden->responsable; ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::tag('strong','Telefono:').' '. $orden->telefono; ?>
+                    </div>
+                </div>
+                <?php
+                    $data = new ArrayDataProvider();
+                    $data->models = $orden->ordenDetalles;
+                    $columns = [
+                        [
+                            'class'=>'kartik\grid\SerialColumn',
+                            'header'=>'Nro.',
+                        ],
+                        [
+                            'header'=>'Formato',
+                            'value'=>function($model){
+                                return $model->fkIdProductoStock->fkIdProducto->formato;
+                            }
+                        ],
+                        [
+                            'header'=>'Cant.',
+                            'value'=>'cantidad'
+                        ],
+                        [
+                            'header'=>'Colores',
+                            'format'=>'raw',
+                            'value'=>function($model)
+                            {
+                                return (($model->C)?Html::tag('strong','C'):'').
+                                (($model->M)?Html::tag('strong','M'):'').
+                                (($model->Y)?Html::tag('strong','Y'):'').
+                                (($model->K)?Html::tag('strong','K'):'');
+                            }
+                        ],
+                        [
+                            'header'=>'Trabajo',
+                            'value'=>'trabajo',
+                        ],
+                        [
+                            'header'=>'Pinza',
+                            'value'=>'pinza',
+                        ],
+                        [
+                            'header'=>'Resol.',
+                            'value'=>'resolucion',
+                        ],
+                        [
+                            'header'=>'Costo',
+                            'value'=>'costo',
+                        ],
+                        [
+                            'header'=>'Adic.',
+                            'value'=>'adicional',
+                        ],
+                        [
+                            'header'=>'Total',
+                            'value'=>'total',
+                        ],
 
-                <table class="table table-hover table-condensed" style="text-align: right;">
-                    <thead><tr>
-                        <th><?= "Nº"; ?></th>
-                        <th><?= "Formato"; ?></th>
-                        <th><?= "Cant."; ?></th>
-                        <th><?= "Colores"; ?></th>
-                        <th><?= "Trabajo"; ?></th>
-                        <th><?= "Pinza"; ?></th>
-                        <th><?= "Resol."; ?></th>
-                        <th><?= "Costo"; ?></th>
-                        <th><?= "Adicional"; ?></th>
-                        <th><?= "Total"; ?></th>
-                    </tr></thead>
-
-                    <tbody>
-                    <?php $i=0; foreach ($orden->ordenDetalles as $producto){ $i++;?>
-                        <tr>
-                            <td>
-                                <?= $i;?>
-                            </td>
-                            <td>
-                                <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
-                            </td>
-                            <td>
-                                <?= $producto->cantidad; ?>
-                            </td>
-                            <td>
-                                <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
-                            </td>
-                            <td>
-                                <?= $producto->trabajo;?>
-                            </td>
-                            <td>
-                                <?= $producto->pinza;?>
-                            </td>
-                            <td>
-                                <?= $producto->resolucion;?>
-                            </td>
-                            <td>
-                                <?= $producto->costo;?>
-                            </td>
-                            <td>
-                                <?= $producto->adicional;?>
-                            </td>
-                            <td>
-                                <?= $producto->total;?>
-                            </td>
-                        </tr>
-                    <?php }?>
-                    </tbody>
-                </table>
-                <div class="well well-sm col-xs-2 col-xs-offset-10"><strong>Total: </strong><?= $orden->montoVenta; ?></div>
+                    ];
+                    echo GridView::widget([
+                                              'dataProvider'=> $data,
+                                              'columns' => $columns,
+                                              'responsive'=>true,
+                                              'condensed'=>true,
+                                              'hover'=>true,
+                                              'bordered'=>false,
+                                              'layout'=>'{items}'
+                                          ]);
+                ?>
+                <div class="well well-sm col-md-2 col-md-offset-10">
+                    <?= Html::tag('strong','Total:').' '. $orden->montoVenta; ?>
+                </div>
             </div>
         </div>
     </div>
-    <div class="col-xs-5">
+
+    <div class="col-md-5">
+        <?= Html::panel(
+            [
+                'heading' => Html::tag('strong','Deuda Hasta el momento',['class'=>'panel-title']),
+                'body' => Html::tag('div',
+                                    Html::tag('strong','Cancelado:').' '.$deuda,
+                                    ['class'=>'col-md-6']).
+                    Html::tag('div',
+                              Html::tag('strong','Saldo:').' '.($orden->montoVenta-$deuda),
+                              ['class'=>'col-md-6']),
+            ],
+            Html::TYPE_DEFAULT
+        );?>
+
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
-                    <strong>Datos de Deuda</strong>
-                </h4>
+                <strong class="panel-title">A Cancelar</strong>
             </div>
+            <div class="panel-body">
 
-            <div class="panel-body" style="overflow: auto;">
-                <div class="well well-sm row">
-                    <h4>Deuda Hasta el momento</h4>
-                    <div class="col-xs-6"><strong>Cancelado: </strong><?= ($deuda); ?></div>
-                    <div class="col-xs-6"><strong>Saldo: </strong><?= ($orden->montoVenta-$deuda); ?></div>
+                <?php $form = ActiveForm::begin(['id'=>'form']);?>
+                <?= Html::hiddenInput('montoVenta',$orden->montoVenta,['id'=>'total']); ?>
+                <?= Html::hiddenInput('montoPagado',$deuda,['id'=>'pagado']); ?>
+                <div class="col-md-6">
+                    <?= $form->field($model,'monto')->textInput(['id'=>'acuenta']); ?>
                 </div>
-
-                <div class="well well-sm row">
-
-                    <?php $form = ActiveForm::begin(['id'=>'form']);?>
-                    <?= Html::hiddenInput('montoVenta',$orden->montoVenta,['id'=>'total']); ?>
-                    <?= Html::hiddenInput('montoPagado',$deuda,['id'=>'pagado']); ?>
-                    <h4>A Cancelar</h4>
-                    <div class="col-xs-6">
-                        <?= $form->field($model,'monto')->textInput(['id'=>'acuenta']); ?>
-                    </div>
-                    <div class="col-xs-6">
-                        <?= Html::label('Saldo','saldo'); ?>
-                        <?= Html::textInput('saldo',null,['class'=>'form-control','id'=>'saldo']); ?>
-                    </div>
-                    <div class="col-xs-12 text-center">
-                        <?= Html::a('<span class="glyphicon glyphicon-floppy-remove"></span> Cancelar', "#", array('class' => 'btn btn-danger hidden-print','id'=>'reset')); ?>
-                        <?= Html::a('<span class="glyphicon glyphicon-floppy-disk"></span> Guardar', "#", array('class' => 'btn btn-success hidden-print','id'=>'save')); ?>
-                    </div>
-                    <?php ActiveForm::end(); ?>
+                <div class="col-md-6">
+                    <?= Html::label('Saldo','saldo'); ?>
+                    <?= Html::textInput('saldo',null,['class'=>'form-control','id'=>'saldo']); ?>
                 </div>
+                <div class="form-group">
+                    <div class="text-center">
+                        <?= Html::a( Html::icon('floppy-remove').' Cancelar', "#", ['class' => 'btn btn-danger','onClick'=>'previous()']); ?>
+                        <?= Html::a( Html::icon('floppy-disk').' Guardar', "#", ['class' => 'btn btn-success','onClick'=>'save()']); ?>
+                    </div>
+                </div>
+                <?php ActiveForm::end(); ?>
             </div>
         </div>
+
     </div>
 <?php
     $script = <<<JS
@@ -122,5 +154,5 @@ JS;
 
     $this->registerJs($script, \yii\web\View::POS_READY);
     echo $this->render('../scripts/operaciones');
-    echo $this->render('../scripts/save');
-    echo $this->render('../scripts/reset');
+    echo $this->render('@app/views/share/scripts/save');
+    echo $this->render('@app/views/share/scripts/reset');

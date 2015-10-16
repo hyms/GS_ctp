@@ -1,7 +1,8 @@
 <?php
     use kartik\grid\GridView;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
     $columns = [
         [
@@ -28,29 +29,32 @@
             'template'=>'{print} {registro}',
             'buttons'=>[
                 'print'=>function($url,$model){
+                    $url = Url::to(['venta/print','op'=>'arqueo','id'=>$model->idMovimientoCaja]);
                     $options = array_merge([
                                                //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Comprobante',
                                                'data-toggle'=>'tooltip',
-                                               'title'=>''
+                                               'data-target' => "#modalPage",
+                                               'title'=>'Comprobante',
+                                               'onClick'=>'printView("'.$url.'")'
                                            ]);
-                    $url = Url::to(['venta/print','op'=>'arqueo','id'=>$model->idMovimientoCaja]);
-                    return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                    return Html::a(Html::icon('print'), '#', $options);
                 },
                 'registro'=>function($url,$model){
-                    $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Registro Diario',
-                                               'data-toggle'=>'tooltip',
-                                               'title'=>''
-                                           ]);
                     $url = Url::to(['venta/print','op'=>'registro','id'=>$model->idMovimientoCaja]);
-                    return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', $url, $options);
+                    $options = array_merge([
+                                                //'class'=>'btn btn-success',
+                                                'data-toggle'=>'tooltip',
+                                                'data-target' => "#modalPage",
+                                                'title'=>'R. Diario',
+                                                'onClick'=>'printView("'.$url.'")'
+                                            ]);
+                    return Html::a(Html::icon('list-alt'), '#', $options);
                 },
             ]
         ],
     ];
 
+    Pjax::begin();
     echo GridView::widget([
                               'dataProvider'=> $arqueos,
                               'filterModel' => $search,
@@ -92,4 +96,5 @@
                                   ],
                               ],
                           ]);
-?>
+    Pjax::end();
+    echo $this->render('@app/views/share/scripts/modalPage');

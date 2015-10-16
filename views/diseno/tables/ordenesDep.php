@@ -33,22 +33,9 @@
                 return date("Y-m-d H:i",strtotime($model->fechaGenerada));
             }
         ],
-        /*[
-          'format'=>'raw',
-          'value'=>function($model){
-              return Html::a(Html::icon('print'),
-                             Url::to(['diseno/print','op'=>'orden','id'=>$model->idOrdenCTP]),
-                             [
-                                 //'class'=>'btn btn-success',
-                                 'data-toggle'=>'tooltip',
-                                 'target' => '_blank',
-                                 'title'=>(($model->estado<0)?'ANULADO':'Imprimir')
-                             ]);
-          }
-        ],*/
         [
             'class' => 'yii\grid\ActionColumn',
-            'template'=>'{print} {view} {validate}',
+            'template'=>'{print} {validate}',
             'buttons'=>[
                 'validate'=>function($url,$model){
                     $options = array_merge([
@@ -69,13 +56,13 @@
                                                //'class'=>'btn btn-success',
                                                'data-original-title' => 'Imprimir',
                                                'data-toggle'         => 'tooltip',
-                                               'data-target'         => "#modal",
+                                               'data-target' => "#modalPage",
                                                'title'               => (($model->estado < 0) ? 'ANULADO' : 'Imprimir'),
                                                'onClick'             => 'printView("' . $url . '")'
                                            ]);
                     return Html::a(Html::icon('print'), '#', $options);
                 },
-                'view'=>function($url,$model) {
+                /*'view'=>function($url,$model) {
                     return Html::a(Html::icon('eye-open'),
                                    "#",
                                    [
@@ -84,7 +71,7 @@
                                        'data-target' => "#modal",
                                        'data-original-title' => 'Ver Orden de Trabajo',
                                    ]);
-                },
+                },*/
             ]
         ],
     ];

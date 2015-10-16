@@ -1,10 +1,9 @@
 <?php
     use kartik\grid\GridView;
-    use yii\helpers\Html;
+    use kartik\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-?>
-<?php
     $columns = [
         [
             'header'=>'Tipo',
@@ -15,7 +14,7 @@
 	        'size' => Select2::SMALL,
                 'pluginOptions'=>['allowClear'=>true],
             ],*/
-            
+
             //'filterInputOptions'=>['placeholder'=>'Seleccionar'],
             //'format'=>'raw',
             'value'=>function($model) {
@@ -49,45 +48,33 @@
             'template'=>'{update} {print}',
             'buttons'=>[
                 'update'=>function($url,$model) {
-                    $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title' => 'Modificar',
-                                               'data-toggle'         => 'tooltip',
-                                               'title'               => '',
-                                               'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">".(($model->tipoRecibo)?"Ingreso":"Egreso")."</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                                           ]);
-                    $url     = "#";
                     if(!empty($model->fkIdMovimientoCaja))
                         if(!empty($model->fkIdMovimientoCaja->fechaCierre))
                             return "";
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                    return Html::a(Html::icon('pencil') . ' Modificar',
+                                   "#",
+                                   [
+                                       'onclick'     => 'clickmodal("' .Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]) . '",".'.(($model->tipoRecibo)?"Ingreso":"Egreso").'")',
+                                       'data-toggle' => "modal",
+                                       'data-target' => "#modal"
+                                   ]);
                 },
                 'print'=>function($url,$model){
+                    $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idRecibo]);
                     $options = array_merge([
                                                //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Imprimir',
                                                'data-toggle'=>'tooltip',
-                                               'title'=>''
+                                               'data-target' => "#modalPage",
+                                               'title'=>'Imprimir',
+                                               'onClick'=>'printView("'.$url.'")'
                                            ]);
-                    $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idRecibo]);
-                    return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                    return Html::a(Html::icon('print'), '#', $options);
                 },
             ]
         ],
     ];
 
+    Pjax::begin(['id'=>'recibo']);
     echo GridView::widget([
                               'dataProvider'=> $recibos,
                               'filterModel' => $search,
@@ -95,39 +82,21 @@
                               'toolbar' =>  [
                                   [
                                       'content'=>
-                                          Html::a('Recibo Ingreso', "#", [
-                                              'class'=>'btn btn-default',
-                                              'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/recibos', 'op' => 'i']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Ingreso</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                                          ])
+                                          Html::button('Recibo Ingreso',
+                                                       [
+                                                           'class'=>'btn btn-default',
+                                                           'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'i']) . '","Caja Chica")',
+                                                           'data-toggle' => "modal",
+                                                           'data-target' => "#modal"
+                                                       ])
                                           ." ".
-                                          Html::a('Recibo Egreso', "#", [
-                                              'class'=>'btn btn-default',
-                                              'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/recibos', 'op' => 'e']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Egreso</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                                          ]),
+                                          Html::button('Recibo Egreso',
+                                                       [
+                                                           'class'=>'btn btn-default',
+                                                           'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'e']) . '","Caja Chica")',
+                                                           'data-toggle' => "modal",
+                                                           'data-target' => "#modal"
+                                                       ]),
                                       'options' => ['class' => 'btn-group']
                                   ],
                                   '{export}',
@@ -166,4 +135,5 @@
                                   ],
                               ],
                           ]);
-?>
+    Pjax::end();
+    echo $this->render('@app/views/share/scripts/modalPage');

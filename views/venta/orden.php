@@ -2,10 +2,10 @@
     $this->title = 'Venta-Ordenes';
 ?>
 <div class="row">
-    <div class="col-xs-2">
-        <?php echo $this->render('menus/ordenMenu'); ?>
+    <div class="col-md-2">
+        <?= $this->render('menus/ordenMenu'); ?>
     </div>
-    <div class="col-xs-10">
+    <div class="col-md-10">
         <?php
             if(isset($r)) {
                 switch ($r) {
