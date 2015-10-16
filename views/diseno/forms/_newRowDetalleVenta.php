@@ -4,12 +4,12 @@
 ?>
     <tr class="tabular-input">
         <td >
-            <p class="form-control-static"><?= Html::encode($index + 1) ?></p>
+            <?= Html::tag('p',Html::encode($index + 1),['class'=>'form-control-static'])?>
             <?= Html::activeHiddenInput($model,"[$index]fk_idProductoStock") ?>
         </td>
 
         <td>
-            <p class="form-control-static"><?= Html::encode($almacen->fkIdProducto->formato) ?></p>
+            <?= Html::tag('p',Html::encode($almacen->fkIdProducto->formato),['class'=>'form-control-static'])?>
         </td>
 
         <td>
@@ -33,7 +33,7 @@
             <?= Html::activeCheckBox($model,"[$index]K",['id'=>'k_'.$index,'label' => null]); ?>
         </td>
 
-        <td class="col-xs-2">
+        <td style="min-width: 100px">
             <div <?= ($model->hasErrors('trabajo'))?'class="has-error"':''; ?> >
                 <?= Html::activeTextInput($model,"[$index]trabajo",['class'=>'form-control input-sm','id'=>'trabajo_'.$index]); ?>
             </div>
@@ -71,7 +71,7 @@
                                  'data-toggle'=>'tooltip',
                                  'title'=>''
                              ]
-                    ).'<input type="hidden" class="tabular-input-index" value="'.$index.'" />';
+                    ).Html::hiddenInput('cancel',$index,['class'=>'tabular-input-index']);
             ?>
         </td>
     </tr>

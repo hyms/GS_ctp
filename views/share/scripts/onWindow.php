@@ -1,8 +1,8 @@
 <?php
 $script = <<<JS
-function newwindow(url)
+function onwindow(url)
 {
-    window.open(url);
+    location.assign(url);
     return false;
 }
 JS;
