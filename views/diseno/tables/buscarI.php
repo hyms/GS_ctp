@@ -1,7 +1,7 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-default">
@@ -42,7 +42,8 @@
                                                        //'class'=>'btn btn-success',
                                                        'data-original-title' => 'Modificar',
                                                        'data-toggle' => 'tooltip',
-                                                       'title' => ''
+                                                       'title' => '',
+                                'target'=>'_blank',
                                                    ]);
                             $url = Url::to(['diseno/interna','op' => 'nueva', 'id' => $model->idOrdenCTP]);
                             if (empty($model->fechaCierre))
@@ -51,13 +52,14 @@
                                 return "";
                         },
                         'print'=>function($url,$model){
+                            $url = Url::to(['diseno/print','op'=>'interna','id'=>$model->idOrdenCTP]);
                             $options = array_merge([
                                                        //'class'=>'btn btn-success',
                                                        'data-original-title'=>'Imprimir',
                                                        'data-toggle'=>'tooltip',
-                                                       'title'=>''
+                                                       'title'=>'',
                                                    ]);
-                            $url = Url::to(['diseno/print','op'=>'interna','id'=>$model->idOrdenCTP]);
+
                             return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
                         },
                     ]
