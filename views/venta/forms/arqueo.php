@@ -6,9 +6,9 @@
 ?>
     <div class="panel panel-default hidden-print">
         <div class="panel-heading">
-            <span class="panel-title"><strong>Arqueo</strong></span>
+            <?= Html::tag('strong','Arqueo',['class'=>'panel-title'])?>
         </div>
-        <div class="panel-body" style="overflow: auto;">
+        <div class="panel-body">
             <?php $form = ActiveForm::begin(['id' => 'form']); ?>
             <?= $form->field($arqueo, 'monto')->label('Monto a Entregar'); ?>
             <?= $form->field($arqueo, 'observaciones')->label('Concepto')->textarea(); ?>

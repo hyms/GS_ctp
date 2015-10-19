@@ -59,13 +59,13 @@ class MovimientoStockSearch extends MovimientoStock
             'fk_idProducto' => $this->fk_idProducto,
             'fk_idStockOrigen' => $this->fk_idStockOrigen,
             'fk_idStockDestino' => $this->fk_idStockDestino,
-            'time' => $this->time,
             'fk_idUser' => $this->fk_idUser,
             'cantidad' => $this->cantidad,
             'cierre' => $this->cierre,
         ]);
 
-        $query->andFilterWhere(['like', 'observaciones', $this->observaciones]);
+        $query->andFilterWhere(['like', 'time', $this->time])
+            ->andFilterWhere(['like', 'observaciones', $this->observaciones]);
 
         return $dataProvider;
     }

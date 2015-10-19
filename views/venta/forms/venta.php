@@ -125,23 +125,18 @@
                             if(strtotime(date("Y-m-d H:i:s"))<=$hora) {
                                 echo Html::a( Html::icon('floppy-disk').' Guardar', "#", ['class' => 'btn btn-success','onClick'=>'save()']);
                                 if($orden->montoVenta!="" || $orden->montoVenta!=1)
-                                echo Html::a( Html::icon('refresh').' Retorno', "#", ['class' => 'btn btn-info', 'onClick' => 'nullResend("1")']);
+                                    echo Html::a( Html::icon('refresh').' Retorno', "#", ['class' => 'btn btn-info', 'onClick' => 'nullResend("1")']);
                             }
                             echo Html::hiddenInput('anular','0',['id'=>'anular']);
                             if($orden->montoVenta!="" || $orden->montoVenta!=1)
-                            echo Html::a(Html::icon('remove').' Anular', "#", ['class' => 'btn btn-danger', 'onClick' => 'nullResend("2")']);
-						?>
+                                echo Html::a(Html::icon('remove').' Anular', "#", ['class' => 'btn btn-danger', 'onClick' => 'nullResend("2")']);
+                        ?>
                     </div>
                 </div>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
     </div>
-<?= $this->render('../scripts/operaciones') ?>
-<?= $this->render('../scripts/totalVenta') ?>
-<?= $this->render('../scripts/detalleVenta') ?>
-<?= $this->render('../scripts/anular') ?>
-<?= $this->render('../scripts/condicionesVenta') ?>
 <?php
     $script  =<<<JS
 function clienteName(val)
@@ -156,3 +151,8 @@ JS;
     $this->registerJs($script, \yii\web\View::POS_HEAD);
     echo $this->render('@app/views/share/scripts/save');
     echo $this->render('@app/views/share/scripts/reset');
+    echo $this->render('../scripts/operaciones');
+    echo $this->render('../scripts/totalVenta');
+    echo $this->render('../scripts/detalleVenta');
+    echo $this->render('../scripts/anular');
+    echo $this->render('../scripts/condicionesVenta');

@@ -61,7 +61,6 @@ class ReciboSearch extends Recibo
             'fk_idSucursal' => $this->fk_idSucursal,
             'monto' => $this->monto,
             'acuenta' => $this->acuenta,
-            'fechaRegistro' => $this->fechaRegistro,
             'fk_idUser' => $this->fk_idUser,
             'tipoRecibo' => $this->tipoRecibo,
             'fk_idMovimientoCaja' => $this->fk_idMovimientoCaja,
@@ -72,6 +71,7 @@ class ReciboSearch extends Recibo
             ->andFilterWhere(['like', 'nombre', $this->nombre])
             ->andFilterWhere(['like', 'ciNit', $this->ciNit])
             ->andFilterWhere(['like', 'codigoVenta', $this->codigoVenta])
+            ->andFilterWhere(['like', 'fechaRegistro', $this->fechaRegistro])
             ->andFilterWhere(['like', 'observaciones', $this->observaciones]);
 
         return $dataProvider;

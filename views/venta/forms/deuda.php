@@ -8,9 +8,7 @@
     <div class="col-md-7">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h4 class="panel-title">
-                    <strong>Orden de Trabajo</strong>
-                </h4>
+                <?= Html::tag('strong','Orden de Trabajo',['class'=>'panel-title']); ?>
             </div>
             <div class="panel-body">
                 <div class="row">
@@ -115,19 +113,21 @@
 
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong class="panel-title">A Cancelar</strong>
+                <?= Html::tag('strong','A Cancelar',['class'=>'panel-title']); ?>
             </div>
             <div class="panel-body">
 
                 <?php $form = ActiveForm::begin(['id'=>'form']);?>
-                <?= Html::hiddenInput('montoVenta',$orden->montoVenta,['id'=>'total']); ?>
-                <?= Html::hiddenInput('montoPagado',$deuda,['id'=>'pagado']); ?>
-                <div class="col-md-6">
-                    <?= $form->field($model,'monto')->textInput(['id'=>'acuenta']); ?>
-                </div>
-                <div class="col-md-6">
-                    <?= Html::label('Saldo','saldo'); ?>
-                    <?= Html::textInput('saldo',null,['class'=>'form-control','id'=>'saldo']); ?>
+                <div class="row">
+                    <?= Html::hiddenInput('montoVenta',$orden->montoVenta,['id'=>'total']); ?>
+                    <?= Html::hiddenInput('montoPagado',$deuda,['id'=>'pagado']); ?>
+                    <div class="col-md-6">
+                        <?= $form->field($model,'monto')->textInput(['id'=>'acuenta']); ?>
+                    </div>
+                    <div class="col-md-6">
+                        <?= Html::label('Saldo','saldo'); ?>
+                        <?= Html::textInput('saldo',null,['class'=>'form-control','id'=>'saldo']); ?>
+                    </div>
                 </div>
                 <div class="form-group">
                     <div class="text-center">

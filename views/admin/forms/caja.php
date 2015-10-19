@@ -1,7 +1,7 @@
 <?php
-use yii\bootstrap\ActiveForm;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Html;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Html;
 
 ?>
 <div class="row">
@@ -13,14 +13,14 @@ use yii\helpers\Html;
         $form->field($model, 'descripcion')->textarea(),
         ['class'=>'col-md-12']);?>
     <?= Html::tag('div',
-        $$form->field($model, 'fk_idSucursal')->dropDownList(ArrayHelper::map(($model->isNewRecord)?\app\models\Sucursal::find()->all():\app\models\Sucursal::find()->where(['!=','idSucursal',$model->idSucursal])->all(),'idSucursal','nombre'),['prompt'=>''])->label('Sucursal'),
+        $form->field($model, 'fk_idSucursal')->dropDownList(ArrayHelper::map(($model->isNewRecord)?\app\models\Sucursal::find()->all():\app\models\Sucursal::find()->where(['!=','idSucursal',$model->idCaja])->all(),'idSucursal','nombre'),['prompt'=>''])->label('Sucursal'),
         ['class'=>'col-md-6']);?>
     <?= Html::tag('div',
-        $form->field($model, 'fk_idCaja')->dropDownList(ArrayHelper::map(($model->isNewRecord)?\app\models\Sucursal::find()->all():\app\models\Sucursal::find()->where(['!=','idSucursal',$model->idSucursal])->all(),'idSucursal','nombre'),['prompt'=>''])->label('Depende de'),
+        $form->field($model, 'fk_idCaja')->dropDownList(ArrayHelper::map(($model->isNewRecord)?\app\models\Caja::find()->all():\app\models\Caja::find()->where(['!=','idCaja',$model->idCaja])->all(),'idCaja','nombre'),['prompt'=>''])->label('Depende de'),
         ['class'=>'col-md-6']);?>
     <?= Html::tag('div',
         $form->field($model, 'enable')->checkbox(),
         ['class'=>'col-md-4']);?>
 
     <?php ActiveForm::end(); ?>
-</div><!-- sucursal -->
+</div>

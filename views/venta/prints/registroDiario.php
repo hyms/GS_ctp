@@ -1,4 +1,6 @@
 <?php
+    use kartik\helpers\Html;
+
     $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
     $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
     $fecha = $dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de ".$meses[date('n',strtotime($fecha))-1]. " del ".date('Y',strtotime($fecha))." / ".date('H:i',strtotime($fecha));
@@ -10,74 +12,80 @@
     <table class="table table-hover table-condensed">
         <thead>
         <tr>
-            <th style="border: 1px solid black; text-align: center;">Comprobante</th>
-            <th style="border: 1px solid black; text-align: center;">Detalle</th>
-            <th style="border: 1px solid black; text-align: center;">Ingreso</th>
-            <th style="border: 1px solid black; text-align: center;">Egreso</th>
-            <th style="border: 1px solid black; text-align: center;">Saldo</th>
+            <?= Html::tag('th','Comprobante',['style'=>'border: 1px solid black; text-align: center;']);?>
+            <?= Html::tag('th','Detalle',['style'=>'border: 1px solid black; text-align: center;']);?>
+            <?= Html::tag('th','Ingreso',['style'=>'border: 1px solid black; text-align: center;']);?>
+            <?= Html::tag('th','Egreso',['style'=>'border: 1px solid black; text-align: center;']);?>
+            <?= Html::tag('th','Saldo',['style'=>'border: 1px solid black; text-align: center;']);?>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?= "SALDO";?></td>
-            <td style="border: 1px solid black;"><?= $saldo;?></td>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?php $total=$saldo;	echo $total;?></td>
+            <?php $total=$saldo;?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','Saldo',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$saldo,['style'=>'border: 1px solid black; text-align: right;']);?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$total,['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         <tr>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?= "TOTAL DE INGRESOS";?></td>
-            <td style="border: 1px solid black;"><?= ($ventas+$deudas);?></td>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?php $total=$total+$ventas+$deudas; 	echo $total;?></td>
+            <?php $total=$total+$ventas+$deudas;?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','Total de Ingresos',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',($ventas+$deudas),['style'=>'border: 1px solid black; text-align: right;']);?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$total,['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         <tr>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;">Recibos de Ingreso</td>
-            <td style="border: 1px solid black;"><?= $recibos[1];?></td>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?php $total=$total+$recibos[1];	echo $total;?></td>
+            <?php $total=$total+$recibos[1];?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','Recibos de Ingreso',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$recibos[1],['style'=>'border: 1px solid black; text-align: right;']);?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$total,['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         <tr>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;">Recibos de Engreso</td>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?= $recibos[0];?></td>
-            <td style="border: 1px solid black;"><?php $total=$total-$recibos[0];	echo $total;?></td>
+            <?php $total=$total-$recibos[0];?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','Recibos de Egreso',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$recibos[0],['style'=>'border: 1px solid black; text-align: right;']);?>
+            <?= Html::tag('td',$total,['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         <tr>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?= "CAJA CHICA GASTOS";?></td>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?= $cajas;?></td>
-            <td style="border: 1px solid black;"><?php $total=$total-$cajas;	echo $total;?></td>
+            <?php $total=$total-$cajas;?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','Caja Chica Gastos',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$cajas,['style'=>'border: 1px solid black; text-align: right;']);?>
+            <?= Html::tag('td',$total,['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         <tr>
-            <td style="border: 1px solid black;"><?= $arqueo->correlativoCierre;?></td>
-            <td style="border: 1px solid black;"><?= $arqueo->observaciones;?></td>
-            <td style="border: 1px solid black;"></td>
-            <td style="border: 1px solid black;"><?= $arqueo->monto;?></td>
-            <td style="border: 1px solid black;"><?php $total=$total-$arqueo->monto; 	echo round($total, 1);?></td>
+            <?php $total=$total-$arqueo->monto;?>
+            <?= Html::tag('td',$arqueo->correlativoCierre,['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$arqueo->observaciones,['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td','',['style'=>'border: 1px solid black;']);?>
+            <?= Html::tag('td',$arqueo->monto,['style'=>'border: 1px solid black; text-align: right;']);?>
+            <?= Html::tag('td',round($total, 1),['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         <tr>
-            <td colspan="4" class="text-right"><strong>Total Saldo</strong></td>
-            <td style="border: 1px solid black;"><?= round($total, 1);?></td>
+            <?= Html::tag('td',Html::tag('strong','Total Saldo'),['style'=>'text-align: right;','colspan'=>'4']);?>
+            <?= Html::tag('td',round($total, 1),['style'=>'border: 1px solid black; text-align: right;']);?>
         </tr>
         </tbody>
     </table>
     <div class="row">
         <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br>
-            <p class="text-center"><?= "firma";?></p>
-            <span><?= "Nombre:"?></span>
-            <p class="text-center"><?= "Entregue conforme";?></p>
+            <?= Html::tag('p','Firma',['class'=>'text-center']);?>
+            <?= Html::tag('span','Nombre:');?>
+            <?= Html::tag('p','Entregue Conforme',['class'=>'text-center']);?>
         </div>
         <div class="col-xs-offset-1 col-xs-4 well" style="border-color: #000000; background-color: #FFFFFF">
             <br><br>
-            <p class="text-center"><?= "firma";?></p>
-            <span><?= "Nombre:";?></span>
-            <p class="text-center"><?= "Recibi conforme";?></p>
+            <?= Html::tag('p','Firma',['class'=>'text-center']);?>
+            <?= Html::tag('span','Nombre:');?>
+            <?= Html::tag('p','Recibi Conforme',['class'=>'text-center']);?>
         </div>
     </div>
 </div>

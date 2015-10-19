@@ -14,6 +14,10 @@
                                      'label' => 'Usuarios',
                                      'url' => ['admin/config','op'=>'user'],
                                  ],
+                                 [
+                                     'label' => 'Cajas',
+                                     'url' => ['admin/config','op'=>'caja'],
+                                 ],
                                  /*[
                                      'label' => 'Imprenta',
                                      'url' => ['admin/config','op'=>'imprenta'],

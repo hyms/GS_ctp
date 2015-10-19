@@ -1,9 +1,9 @@
 <?php
-    $this->title = 'Caja';
+    $this->title = 'Transacciones';
 ?>
 <div class="row">
     <div class="col-md-2">
-        <?= $this->render('menus/cajaMenu'); ?>
+        <?= $this->render('menus/transMenu'); ?>
     </div>
     <div class="col-md-10">
         <?php

@@ -1,12 +1,12 @@
 <?php
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
-use yii\helpers\Html;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
+    use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">
         <div class="panel-heading">
-            <h3 class="panel-title"><strong>Reportes</strong></h3>
+            <?= Html::tag('strong','Reportes',['class'=>'panel-title']); ?>
         </div>
         <div class="panel-body">
             <?php $form = ActiveForm::begin(['id'=>'form','method' => 'get'])?>

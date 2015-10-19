@@ -4,6 +4,7 @@
     use yii\helpers\ArrayHelper;
     use yii\helpers\Html;
     use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
 ?>
 <?php
@@ -102,6 +103,7 @@ $columns = [
     ],
 ];
 
+    Pjax::begin(['id'=>'recibos']);
 echo GridView::widget([
     'dataProvider'=> $recibos,
     'filterModel' => $search,
@@ -109,7 +111,7 @@ echo GridView::widget([
     'showPageSummary' => true,
     'toolbar' =>  [
         [
-            'content'=>
+            'content'=>''/*
                 Html::a('Recibo Ingreso', "#", [
                     'class'=>'btn btn-default',
                     'onclick'  => "
@@ -143,7 +145,7 @@ echo GridView::widget([
                         }
                     });return false;"
                 ]),
-            'options' => ['class' => 'btn-group']
+            'options' => ['class' => 'btn-group']*/
         ],
         '{export}',
         '{toggleData}',
@@ -159,7 +161,7 @@ echo GridView::widget([
     'panel' => [
         'type' => GridView::TYPE_DEFAULT,
         'heading' => 'Recibos',
-        'footer'=>false,
+        //'footer'=>false,
     ],
     'exportConfig' => [
         GridView::EXCEL => [
@@ -182,4 +184,4 @@ echo GridView::widget([
         ],
     ],
 ]);
-?>
+    Pjax::end();
