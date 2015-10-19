@@ -1,7 +1,7 @@
 <?php
-    use yii\bootstrap\Modal;
+use yii\bootstrap\Modal;
 
-    $s=Modal::SIZE_DEFAULT;
+$s=Modal::SIZE_DEFAULT;
     if(isset($size)) {
         switch ($size) {
             case "large":
@@ -16,6 +16,7 @@
     Modal::begin([
                      'id'=>'modal',
                      'size'=>$s,
+        'header' => '<h4 class="modal-title text-center"></h4>',
                  ]);
     Modal::end();
 
@@ -27,7 +28,7 @@ function clickmodal(url,title){
         url     : url,
         success : function(data) {
             if(data.length>0){
-                $('#modal .modal-header').html('<h3 class="text-center">'+title+'</h3>');
+                $('#modal .modal-header .modal-title').html(title);
                 $('#modal .modal-body').html(data);
                 $('#modal').modal();
             }

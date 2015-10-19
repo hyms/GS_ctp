@@ -2,7 +2,7 @@
     $this->title = 'Administracion-Placas';
 ?>
 <div class="row">
-    <div class="col-xs-3">
+    <div class="col-md-3">
         <?= $this->render('forms/placas',[
             'fechaStart'=>$fechaStart,
             'fechaEnd'=>$fechaEnd,
@@ -10,7 +10,7 @@
             'tipoOrden'=>$tipoOrden,
         ]); ?>
     </div>
-    <div class="col-xs-9">
+    <div class="col-md-9">
         <div id="table">
             <?php
                 if(isset($r)) {

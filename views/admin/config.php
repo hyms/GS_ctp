@@ -1,10 +1,10 @@
 <?php
     $this->title = 'Administracion-Configuracion';
 ?>
-<div class="col-xs-2">
+<div class="col-md-2">
     <?php echo $this->render('menus/configMenu'); ?>
 </div>
-<div class="col-xs-10">
+<div class="col-md-10">
     <?php
         if(isset($r)) {
             switch ($r) {

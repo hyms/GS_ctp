@@ -1,30 +1,31 @@
 <?php
-    use yii\bootstrap\Modal;
-    use yii\helpers\Html;
+use yii\bootstrap\Modal;
+use yii\helpers\Html;
 
-    Modal::begin([
-                     'id'=>'modal',
-                     'footer'=>Html::a(
-                             'Guardar',
-                             "#",
-                             [
-                                 'onclick' => 'formSubmit("'.((isset($nameTable))?$nameTable:"").'");',
-                                 'class'=>'btn btn-success'
-                             ]
-                         )
-                         ." ".
-                         Html::a(
-                             'Cancelar',
-                             "#",
-                             [
-                                 'data-dismiss' => 'modal',
-                                 'class'=>'btn btn-danger'
-                             ]
-                         ),
-                 ]);
-    Modal::end();
+Modal::begin([
+    'id'=>'modal',
+    'header' => '<h4 class="modal-title text-center"></h4>',
+    'footer'=>Html::a(
+            'Guardar',
+            "#",
+            [
+                'onclick' => 'formSubmit("'.((isset($nameTable))?$nameTable:"").'");',
+                'class'=>'btn btn-success'
+            ]
+        )
+        ." ".
+        Html::a(
+            'Cancelar',
+            "#",
+            [
+                'data-dismiss' => 'modal',
+                'class'=>'btn btn-danger'
+            ]
+        ),
+]);
+Modal::end();
 
-    $script = <<<JS
+$script = <<<JS
 function formSubmit(nameTable)
 {
     data=$("#form").serialize();
@@ -45,9 +46,9 @@ function formSubmit(nameTable)
     });
 }
 JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
+$this->registerJs($script, \yii\web\View::POS_HEAD);
 
-    $script = <<<JS
+$script = <<<JS
 function clickmodal(url,title){
     $.ajax({
         type    :'GET',
@@ -55,7 +56,7 @@ function clickmodal(url,title){
         url     : url,
         success : function(data) {
             if(data.length>0){
-                $('#modal .modal-header').html('<h3 class="text-center">'+title+'</h3>');
+                $('#modal .modal-header .modal-title').html(title);
                 $('#modal .modal-body').html(data);
                 $('#modal').modal();
             }
@@ -64,4 +65,4 @@ function clickmodal(url,title){
     return false;
 }
 JS;
-    $this->registerJs($script, \yii\web\View::POS_HEAD);
+$this->registerJs($script, \yii\web\View::POS_HEAD);

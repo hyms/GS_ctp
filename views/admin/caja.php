@@ -2,10 +2,10 @@
     $this->title = 'Venta-Caja';
 ?>
 <div class="row">
-    <div class="col-xs-2">
+    <div class="col-md-2">
         <?= $this->render('menus/cajaMenu'); ?>
     </div>
-    <div class="col-xs-10">
+    <div class="col-md-10">
         <?php
             if(isset($r)) {
                 switch ($r) {
@@ -24,7 +24,7 @@
                         echo $this->render('menus/menuArqueo', ['sucursales' => $sucursales]);
                         if (isset($saldo)) {
                             echo "<br><div class='row'>";
-                            echo "<div class='col-xs-12'>";
+                            echo "<div class='col-md-12'>";
                             echo $this->render('tables/registroDiario',
                                                [
                                                    'fecha'   => $fecha,

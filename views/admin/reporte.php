@@ -3,7 +3,7 @@
     $this->title = 'Administracion-Reportes';
 ?>
 <div class="row">
-    <div class="col-xs-3">
+    <div class="col-md-3">
         <?= $this->render('forms/report',[
             'clienteNegocio'=>$clienteNegocio,
             'clienteResponsable'=>$clienteResponsable,
@@ -13,7 +13,7 @@
             'factura'=>$factura,
         ]); ?>
     </div>
-    <div class="col-xs-9">
+    <div class="col-md-9">
         <div id="table">
             <?php
                 if(isset($r)) {
