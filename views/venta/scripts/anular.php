@@ -3,7 +3,7 @@
 function nullResend(val)
 {
     $("#anular").val(val);
-    $("form").submit();
+    $("#form").submit();
 }
 JS;
     $this->registerJs($script, \yii\web\View::POS_END);

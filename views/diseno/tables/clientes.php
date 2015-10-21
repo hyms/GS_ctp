@@ -1,11 +1,9 @@
 <?php
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\widgets\Pjax;
 
-?>
-<?php
-    $columns=[
+$columns=[
         [
             'header' => 'Negocio',
             'attribute'=>'nombreNegocio',

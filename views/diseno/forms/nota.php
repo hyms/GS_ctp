@@ -1,5 +1,5 @@
 <?php
-    use yii\bootstrap\ActiveForm;
+use yii\bootstrap\ActiveForm;
 
 ?>
 <div class="row">

@@ -1,5 +1,5 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
 ?>
     <tr class="tabular-input">

@@ -1,10 +1,10 @@
 <?php
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\helpers\Url;
-    use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
-    $columns = [
+$columns = [
         [
             'header'=>'Usuario',
             'attribute'=>'nombreUsuario',
@@ -53,8 +53,9 @@
             ]
         ],
     ];
-
-    Pjax::begin();
+Pjax::begin();
+?>
+<?php
     echo GridView::widget([
                               'dataProvider'=> $arqueos,
                               'filterModel' => $search,

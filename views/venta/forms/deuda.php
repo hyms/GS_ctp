@@ -1,8 +1,8 @@
 <?php
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\bootstrap\ActiveForm;
-    use yii\data\ArrayDataProvider;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\bootstrap\ActiveForm;
+use yii\data\ArrayDataProvider;
 
 ?>
     <div class="col-md-7">
@@ -153,6 +153,7 @@
 JS;
 
     $this->registerJs($script, \yii\web\View::POS_READY);
+
     echo $this->render('../scripts/operaciones');
     echo $this->render('@app/views/share/scripts/save');
     echo $this->render('@app/views/share/scripts/reset');

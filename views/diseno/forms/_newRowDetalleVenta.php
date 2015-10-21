@@ -1,5 +1,5 @@
 <?php
-    use yii\helpers\Html;
+use kartik\helpers\Html;
 
 ?>
     <tr class="tabular-input">
@@ -64,12 +64,11 @@
             }
         ?>
         <td class="col-xs-1">
-            <?= Html::a('<i class="glyphicon glyphicon-remove"></i>','#',
+            <?= Html::a(Html::icon('remove'),'#',
                              [
                                  'class'=>'btn btn-danger tabular-input-remove',
-                                 'data-original-title'=>'Quitar',
                                  'data-toggle'=>'tooltip',
-                                 'title'=>''
+                                 'title'=>'Quitar'
                              ]
                     ).Html::hiddenInput('cancel',$index,['class'=>'tabular-input-index']);
             ?>

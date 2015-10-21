@@ -1,12 +1,12 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\Url;
 
 ?>
 <div class="panel panel-danger">
     <div class="panel-heading">
-        <strong class="panel-title">Notas</strong>
+        <?= Html::tag('strong','Notas',['class'=>'panel-title']);?>
     </div>
     <?php
         $columns = [
@@ -14,19 +14,14 @@
                 'header'=>'Contenido',
                 'format'=>'raw',
                 'value'=>function($model){
-                    return '<div class="alert alert-warning" role="alert"><p>'.
-                    $model->texto.
-                    '</p>'.
-                    '<p class="text-right">'.
-                    'Creado por <b>'.$model->fkIdUserCreador->nombre.' '.$model->fkIdUserCreador->apellido.'</b>'.
-                    '</p>'.
-                    '<p class="text-right">'.
-                    'En fecha <b>'.$model->fechaCreacion.'</b>'.
-                    '</p>'.
-                    '<p class="text-right">'.
-                    Html::a('Visto<span class="glyphicon glyphicon-ok"></span>', "#", [
-                        'class'=>'btn btn-success btn-sm',
-                        'onclick'  => "
+                    return '<div class="alert alert-warning" role="alert">'.
+                    Html::tag('p',$model->texto).
+                    Html::tag('p','Creado por <b>'.$model->fkIdUserCreador->nombre.' '.$model->fkIdUserCreador->apellido.'</b>',['class'=>'text-right']).
+                    Html::tag('p','En fecha <b>'.$model->fechaCreacion.'</b>',['class'=>'text-right']).
+                    Html::tag('p',
+                        Html::a('Visto'.Html::icon('ok'), "#", [
+                            'class'=>'btn btn-success btn-sm',
+                            'onclick'  => "
                     $.ajax({
                         type    :'POST',
                         cache   : false,
@@ -38,8 +33,8 @@
                             }
                         }
                     });return false;"
-                    ]).
-                    '</p></div>';
+                        ]),
+                        ['class'=>'text-right']);
                 },
             ],
         ];

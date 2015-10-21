@@ -1,9 +1,9 @@
 <?php
-    use kartik\helpers\Html;
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
+use kartik\helpers\Html;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
 
-    $this->title = 'Venta-Orden'
+$this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
@@ -124,12 +124,12 @@
                             $hora = strtotime($orden->fechaCobro)+1200; //20 mins para espera de los botones
                             if(strtotime(date("Y-m-d H:i:s"))<=$hora) {
                                 echo Html::a( Html::icon('floppy-disk').' Guardar', "#", ['class' => 'btn btn-success','onClick'=>'save()']);
-                                if($orden->montoVenta!="" || $orden->montoVenta!=1)
-                                    echo Html::a( Html::icon('refresh').' Retorno', "#", ['class' => 'btn btn-info', 'onClick' => 'nullResend("1")']);
+                                if($orden->estado!=1)
+                                    echo Html::a( Html::icon('refresh').' Retorno', "#", ['class' => 'btn btn-info', 'onClick' => 'nullResend("2")']);
                             }
                             echo Html::hiddenInput('anular','0',['id'=>'anular']);
-                            if($orden->montoVenta!="" || $orden->montoVenta!=1)
-                                echo Html::a(Html::icon('remove').' Anular', "#", ['class' => 'btn btn-danger', 'onClick' => 'nullResend("2")']);
+                            if($orden->estado!=1)
+                                echo Html::a(Html::icon('remove').' Anular', "#", ['class' => 'btn btn-danger', 'onClick' => 'nullResend("1")']);
                         ?>
                     </div>
                 </div>

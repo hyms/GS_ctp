@@ -1,10 +1,9 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
-    $this->title = 'Diseño-Ordenes';
+$this->title = 'Diseño-Ordenes';
 ?>
 <div class="row">
-
 
     <?= Html::tag('div',
                   $this->render('menus/ordenMenu'),
@@ -19,7 +18,6 @@
                             'detalle'  => $detalle,
                             'producto' => $producto,
                         ]);
-                        echo $this->render('scripts/save');
                         break;
                     case 'buscar':
                         echo $this->render('tables/buscar', ['orden' => $orden]);

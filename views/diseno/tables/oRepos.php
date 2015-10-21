@@ -1,6 +1,6 @@
 <?php
 use kartik\grid\GridView;
-use yii\helpers\Html;
+use kartik\helpers\Html;
 use yii\helpers\Url;
 
 $columns =  [];
@@ -37,7 +37,7 @@ array_push($columns,[
         'format' => 'raw',
         'value'=> function ($model) use ($tipo) {
             //return Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",["orden/modificar","id"=>$model->idOrdenCtp],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
-            return Html::a('<i class="glyphicon glyphicon-plus"></i>','#',
+            return Html::a(Html::icon('plus'),'#',
                 [
                     'onclick'=>'newOrden('.$model->idOrdenCTP.',"'. Url::toRoute('diseno/addreposicion').'",'.$tipo.');return false;',
                     'class'=>'btn btn-success',

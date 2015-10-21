@@ -1,3 +1,7 @@
+<?php
+use kartik\helpers\Html;
+
+?>
 <div style="width:593px; position: relative; float: left;">
     <div class="col-xs-12">
         <div class="row">
@@ -6,12 +10,12 @@
         </div>
 
         <div class="row">
-            <div class="col-xs-4">
-                <strong><?= "Cliente:";?></strong>
+            <div class="col-xs-6">
+                <?= Html::tag('strong','Cliente:'); ?>
                 <span class="text-capitalize"><?= $orden->responsable;?></span>
             </div>
-            <div class="col-xs-2">
-                <strong><?= "O. Imprenta:";?></strong>
+            <div class="col-xs-6">
+                <?= Html::tag('strong','Orden de Imprenta:'); ?>
                 <?= $orden->codDependiente;?></div>
             <div class="text-right">
                 <strong><?= "FECHA:";?></strong>
@@ -20,41 +24,27 @@
         </div>
 
         <div class="row well well-sm" style="height:200px; border-color: #000000; background-color: #ffffff">
-            <table class="table table-condensed" >
+            <table class="table table-condensed">
                 <thead><tr>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Nº"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Formato"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Cant."; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Colores"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Trabajo"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Pinza"; ?></th>
-                    <th style="border-bottom: solid; border-bottom-width: 1.5px;"><?= "Resol."; ?></th>
+                    <?= Html::tag('th','Nº',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
+                    <?= Html::tag('th','Formato',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
+                    <?= Html::tag('th','Cant.',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
+                    <?= Html::tag('th','Colores',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
+                    <?= Html::tag('th','Trabajo',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
+                    <?= Html::tag('th','Pinza',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
+                    <?= Html::tag('th','Resol.',['style'=>'border-bottom: solid; border-bottom-width: 1.5px;']);?>
                 </tr></thead>
 
                 <tbody>
-                <?php foreach ($orden->ordenDetalles as $key => $producto){ ;?>
+                <?php $i=0; foreach ($orden->ordenDetalles as $producto){ $i++;?>
                     <tr>
-                        <td style="font-size:12px; padding-top: 4px;">
-                            <?= ($key+1);?>
-                        </td>
-                        <td style="font-size:12px; padding-top: 4px;">
-                            <?= $producto->fkIdProductoStock->fkIdProducto->formato;?>
-                        </td>
-                        <td class="col-xs-1" style="font-size:12px; padding-top: 4px;">
-                            <?= $producto->cantidad; ?>
-                        </td>
-                        <td style="font-size:12px; padding-top: 4px;">
-                            <?= (($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":"");?>
-                        </td>
-                        <td style="font-size:12px; padding-top: 4px;">
-                            <?= $producto->trabajo;?>
-                        </td>
-                        <td style="font-size:12px; padding-top: 4px;">
-                            <?= $producto->pinza;?>
-                        </td>
-                        <td style="font-size:12px; padding-top: 4px;">
-                            <?= $producto->resolucion;?>
-                        </td>
+                        <?= Html::tag('td',$i,['style'=>'font-size:12px; padding-top: 4px;']);?>
+                        <?= Html::tag('td',$producto->fkIdProductoStock->fkIdProducto->formato,['style'=>'font-size:12px; padding-top: 4px;']);?>
+                        <?= Html::tag('td',$producto->cantidad,['style'=>'font-size:12px; padding-top: 4px;']);?>
+                        <?= Html::tag('td',(($producto->C)?"<strong>C </strong>":"").(($producto->M)?"<strong>M </strong>":"").(($producto->Y)?"<strong>Y </strong>":"").(($producto->K)?"<strong>K </strong>":""),['style'=>'font-size:12px; padding-top: 4px;']);?>
+                        <?= Html::tag('td',$producto->trabajo,['style'=>'font-size:12px; padding-top: 4px;']);?>
+                        <?= Html::tag('td',$producto->pinza,['style'=>'font-size:12px; padding-top: 4px;']);?>
+                        <?= Html::tag('td',$producto->resolucion,['style'=>'font-size:12px; padding-top: 4px;']);?>
                     </tr>
                 <?php }?>
                 </tbody>

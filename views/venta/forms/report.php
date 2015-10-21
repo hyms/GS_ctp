@@ -1,7 +1,7 @@
 <?php
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\Html;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\Html;
 
 ?>
     <div class="panel panel-default">

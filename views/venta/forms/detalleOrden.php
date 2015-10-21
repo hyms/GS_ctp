@@ -1,5 +1,5 @@
 <?php
-    use yii\helpers\Html;
+use yii\helpers\Html;
 
 ?>
 <div class="table-responsive">

@@ -1,5 +1,5 @@
 <?php
-    use kartik\helpers\Html;
+use kartik\helpers\Html;
 
 ?>
 <div style="width:793px; height:529px;">

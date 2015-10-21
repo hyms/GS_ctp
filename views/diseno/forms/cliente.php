@@ -1,23 +1,17 @@
 <?php
-    use kartik\helpers\Html;
-    use kartik\widgets\TypeaheadBasic;
-    use yii\bootstrap\ActiveForm;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Url;
+use kartik\helpers\Html;
+use kartik\widgets\TypeaheadBasic;
+use yii\bootstrap\ActiveForm;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
 ?>
     <div class="row">
         <div class="col-md-3">
-            <?= Html::panel(
-                [
-                    'heading' => Html::tag('strong','Productos',['class'=>'panel-title']),
-                    'postBody' => $this->render('../tables/producto',[
-                        'producto'=>$producto,
-                        'tipo'=>$orden->tipoOrden,
-                    ])
-                ],
-                Html::TYPE_DEFAULT
-            ); ?>
+            <?= $this->render('../tables/producto',[
+                'producto'=>$producto,
+                'tipo'=>$orden->tipoOrden,
+            ]); ?>
         </div>
         <div class="col-md-9">
             <div class="well well-sm">

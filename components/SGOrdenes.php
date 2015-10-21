@@ -38,6 +38,10 @@ class SGOrdenes extends Component
                 return $data;
             if ($anular) {
                 $data['orden']->estado = (-1);
+                if (is_numeric($anular)) {
+                    if ($anular == 2)
+                        $data['orden']->estado = 1;
+                }
             }
 
             if ($data['orden']->save(false)) {

@@ -1,10 +1,10 @@
 <?php
-    use kartik\grid\GridView;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
-    use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
-    echo Html::beginTag('div',['class'=>'panel panel-default']);
+echo Html::beginTag('div',['class'=>'panel panel-default']);
 
     echo Html::tag('div', Html::tag('strong','Lista de Tipos de Trabajo',['class'=>'panel-title']), ['class'=>'panel-heading']);
 

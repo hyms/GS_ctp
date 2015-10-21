@@ -1,6 +1,3 @@
-<?php
-
-?>
 <div class="col-xs-3">
     <div class="panel panel-default">
         <div class="panel-body">
@@ -18,4 +15,3 @@ function select(val,url)
 }
 JS;
     $this->registerJs($script, \yii\web\View::POS_HEAD);
-?>

@@ -1,63 +1,29 @@
 <?php
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use kartik\grid\GridView;
+use yii\helpers\Html;
+use yii\helpers\Url;
 
-    echo '<div class="list-group">';
-    foreach($producto->getModels() as $key => $model)
-    {
-		echo Html::a($model->fkIdProducto->formato." ".$model->fkIdProducto->dimension,'#',
-                     [
-                         'onclick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
-                         'class'=>'list-group-item'.((($key % 2)==0)?'':' active'),
-                         'data-original-title'=>'Añadir',
-                         'data-toggle'=>'tooltip',
-                         'title'=>''
-                     ]
-        );
-    }
-    echo '</div>';
-    /*$columns = [
-        [
-            'header'=>'Placas',
-            'format'=>'raw',
-            'value'=>function($model)use ($tipo){
-                return Html::a($model->fkIdProducto->formato." ".$model->fkIdProducto->dimension,'#',
-                               [
-                                   'onclick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
-                                   'class'=>'list-group-item',
-                                   'data-original-title'=>'Añadir',
-                                   'data-toggle'=>'tooltip',
-                                   'title'=>''
-                               ]
-                );
-                //return $model->fkIdProducto->formato."<br>".$model->fkIdProducto->dimension;
-            },
-        ],
-        /*[
-            'header'=>'',
-            'format' => 'raw',
-            'value'=> function ($model) use ($tipo) {
-                //return Html::a("<i class=\"glyphicon glyphicon-pencil\"></i>",["orden/modificar","id"=>$model->idOrdenCtp],['data-original-title'=>'Modificar','data-toggle'=>'tooltip']);
-                return Html::a('<i class="glyphicon glyphicon-plus"></i>','#',
-                               [
-                                   'onclick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
-                                   'class'=>'btn btn-success',
-                                   'data-original-title'=>'Añadir',
-                                   'data-toggle'=>'tooltip',
-                                   'title'=>''
-                               ]
-                );
-            },
-        ]
-    ];
+$columns = [
+    [
+        'header'=>Html::tag('span','PLACAS',['class'=>'panel-title']),
+        'value'=>function($model) {
+            return $model->fkIdProducto->formato . " " . $model->fkIdProducto->dimension;
+        }
+    ]
+];
 
-    echo GridView::widget([
-                              'dataProvider'=> $producto,
-                              //'filterModel' => $search,
-                              'columns' => $columns,
-                              'condensed' => true,
-                              'hover'=>true,
-                              'bordered'=>false,
-                          ]);*/
-?>
-<?= $this->render('../scripts/addList'); ?>
+echo GridView::widget([
+    'dataProvider'=> $producto,
+    'columns' => $columns,
+    'responsive'=>true,
+    'hover'=>true,
+    'layout'=>'{items}',
+    'rowOptions' => function ($model, $index, $widget, $grid) use ($tipo){
+        return [
+            'onClick'=>'newRow('.$model->idProductoStock.',"'. Url::toRoute('add_detalle').'",'.$tipo.');return false;',
+            'data-toggle'=>'tooltip',
+            'title'=>'Añadir'];
+    },
+]);
+echo $this->render('../scripts/addList');
+
