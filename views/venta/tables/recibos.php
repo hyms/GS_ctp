@@ -75,82 +75,80 @@ $columns = [
     ],
 ];
 
+$export = ExportMenu::widget([
+    'dataProvider' => $recibos,
+    'columns' => $columns,
+    'fontAwesome' => true,
+    'hiddenColumns'=>[5], // ActionColumn
+    'dropdownOptions' => [
+        'label' => 'Exportar',
+        'class' => 'btn btn-default'
+    ],
+    'stream' => false, // this will automatically save the file to a folder on web server
+    'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
+    'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
+    'target' => ExportMenu::TARGET_BLANK,
+    'clearBuffers'=>true,
+    'pjaxContainerId'=>'recibo',
+    'exportConfig' => [
+        ExportMenu::FORMAT_HTML =>false,
+        ExportMenu::FORMAT_CSV =>false,
+        ExportMenu::FORMAT_TEXT =>false,
+        ExportMenu::FORMAT_PDF => [
+            'label' => 'PDF',
+            'filename' => 'Reporte Clientes',
+            'alertMsg' => 'El PDF se generara para la descarga.',
+            'config' => [
+                'format' => 'Letter-L',
+                'marginTop' => 5,
+                'marginBottom' => 5,
+                'marginLeft' => 5,
+                'marginRight' => 5,
+            ]
+        ],
+    ],
+]);
+
 Pjax::begin(['id'=>'recibo']);
-?>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <?= Html::tag('strong','Recibos',['class'=>'panel-title']); ?>
-        </div>
-        <div class="panel-body">
+echo GridView::widget([
+    'dataProvider'=> $recibos,
+    'filterModel' => $search,
+    'columns' => $columns,
+    'responsive'=>true,
+    'hover'=>true,
+    'bordered'=>false,
+    'toolbar' =>  [
+        [
+            'content'=>
+                Html::button('Recibo Ingreso',
+                    [
+                        'class'=>'btn btn-default',
+                        'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'i']) . '","Caja Chica")',
+                        'data-toggle' => "modal",
+                        'data-target' => "#modal"
+                    ])
+                ." ".
+                Html::button('Recibo Egreso',
+                    [
+                        'class'=>'btn btn-default',
+                        'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'e']) . '","Caja Chica")',
+                        'data-toggle' => "modal",
+                        'data-target' => "#modal"
+                    ]),
+            'options' => ['class' => 'btn-group']
+        ],
+        ' '.
+        $export,
+    ],
+    'panel' => [
+        'type' => GridView::TYPE_DEFAULT,
+        'heading' =>Html::tag('strong','Recibos',['class'=>'panel-title']),
+    ],
+    'export' => [
+        'fontAwesome' => true,
+        'target'=>GridView::TARGET_BLANK,
+    ],
+]);
 
-            <?= Html::button('Recibo Ingreso',
-                [
-                    'class'=>'btn btn-default',
-                    'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'i']) . '","Caja Chica")',
-                    'data-toggle' => "modal",
-                    'data-target' => "#modal"
-                ])
-            ." ".
-            Html::button('Recibo Egreso',
-                [
-                    'class'=>'btn btn-default',
-                    'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'e']) . '","Caja Chica")',
-                    'data-toggle' => "modal",
-                    'data-target' => "#modal"
-                ]); ?>
-            <?= ExportMenu::widget([
-                'dataProvider' => $recibos,
-                'columns' => $columns,
-                'fontAwesome' => true,
-                'hiddenColumns'=>[5], // SerialColumn, Color, & ActionColumn
-                'noExportColumns'=>[5], // Status
-                'dropdownOptions' => [
-                    'label' => 'Exportar',
-                    'class' => 'btn btn-default'
-                ],
-                'stream' => false, // this will automatically save the file to a folder on web server
-                'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
-                'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
-                'target' => '_blank',
-                'exportConfig' => [
-                    ExportMenu::FORMAT_HTML =>false,
-                    ExportMenu::FORMAT_CSV =>false,
-                    ExportMenu::FORMAT_TEXT =>false,
-                    ExportMenu::FORMAT_EXCEL =>false,
-
-                    ExportMenu::FORMAT_EXCEL_X => [
-                        'label' => 'Excel',
-                        'filename' => 'Reporte Recibos',
-                        'alertMsg' => 'El EXCEL se generara para la descarga.',
-                        'showPageSummary' => true,
-                    ],
-                    ExportMenu::FORMAT_PDF => [
-                        'label' => 'PDF',
-                        'filename' => 'Reporte Recibos',
-                        'alertMsg' => 'El PDF se generara para la descarga.',
-                        'config' => [
-                            'format' => 'Letter-L',
-                            'marginTop' => 5,
-                            'marginBottom' => 5,
-                            'marginLeft' => 5,
-                            'marginRight' => 5,
-                        ]
-                    ],
-                ],
-            ]); ?>
-            <hr>
-        </div>
-        <?= GridView::widget([
-            'dataProvider'=> $recibos,
-            'filterModel' => $search,
-            'columns' => $columns,
-            'responsive'=>true,
-            'hover'=>true,
-            'bordered'=>false,
-        ]);
-        ?>
-    </div>
-
-<?php
 Pjax::end();
 echo $this->render('@app/views/share/scripts/modalPage');

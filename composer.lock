@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a293d52e25c185f271f8994166b07639",
-    "content-hash": "352fc44bea51ef727124cbacffdfa36f",
+    "hash": "438012ef948ffa763cecdb7c6d14c21a",
+    "content-hash": "d26c78ef5c4ac6b6ae22500dac056741",
     "packages": [
         {
             "name": "bower-asset/bootstrap",
@@ -681,16 +681,16 @@
         },
         {
             "name": "kartik-v/yii2-helpers",
-            "version": "v1.3.2",
+            "version": "v1.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-helpers.git",
-                "reference": "cfbb7d20c629cbae980669d8b8294ccd2fa796e6"
+                "reference": "84b9e77aad937d2662934e2664d0190a7c332dd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-helpers/zipball/cfbb7d20c629cbae980669d8b8294ccd2fa796e6",
-                "reference": "cfbb7d20c629cbae980669d8b8294ccd2fa796e6",
+                "url": "https://api.github.com/repos/kartik-v/yii2-helpers/zipball/84b9e77aad937d2662934e2664d0190a7c332dd3",
+                "reference": "84b9e77aad937d2662934e2664d0190a7c332dd3",
                 "shasum": ""
             },
             "require": {
@@ -723,7 +723,7 @@
                 "yii",
                 "yii2"
             ],
-            "time": "2015-09-11 16:35:09"
+            "time": "2015-10-22 14:01:06"
         },
         {
             "name": "kartik-v/yii2-krajee-base",
@@ -868,16 +868,16 @@
         },
         {
             "name": "kartik-v/yii2-widget-activeform",
-            "version": "v1.4.4",
+            "version": "v1.4.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kartik-v/yii2-widget-activeform.git",
-                "reference": "c62c8b92e8ee38892cc4e2b29851864a7a20ee01"
+                "reference": "076f49747309f30658085eb008276ecd3370b151"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/c62c8b92e8ee38892cc4e2b29851864a7a20ee01",
-                "reference": "c62c8b92e8ee38892cc4e2b29851864a7a20ee01",
+                "url": "https://api.github.com/repos/kartik-v/yii2-widget-activeform/zipball/076f49747309f30658085eb008276ecd3370b151",
+                "reference": "076f49747309f30658085eb008276ecd3370b151",
                 "shasum": ""
             },
             "require": {
@@ -911,7 +911,7 @@
                 "widget",
                 "yii2"
             ],
-            "time": "2015-07-08 11:36:38"
+            "time": "2015-10-22 14:36:24"
         },
         {
             "name": "kartik-v/yii2-widget-affix",

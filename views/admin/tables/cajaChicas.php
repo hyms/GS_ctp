@@ -1,12 +1,11 @@
 <?php
-    use app\models\Sucursal;
-    use kartik\grid\GridView;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use app\models\Sucursal;
+use kartik\export\ExportMenu;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\widgets\Pjax;
 
-?>
-<?php
 $columns = [
     [
         'header'=>'Sucursal',
@@ -50,89 +49,39 @@ $columns = [
         'header'=>'Fecha',
         'attribute'=>'time',
     ],
-    [
-        'class'=>'kartik\grid\ActionColumn',
-        'template'=>'{update}',
-        'buttons'=>[
-            'update'=>function($url,$model){
-                $options = array_merge([
-                    //'class'=>'btn btn-success',
-                    'data-original-title'=>'Modificar',
-                    'data-toggle'=>'tooltip',
-                    'title'=>'',
-                    'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['venta/chica','id'=>$model->idMovimientoCaja,'op'=>'mod']) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                ]);
-                if(!empty($model->fechaCierre))
-                    return "";
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', "#", $options);
-            },
-        ]
-    ],
 ];
-echo GridView::widget([
-    'dataProvider'=> $cajasChicas,
-    'filterModel' => $search,
+
+$export = ExportMenu::widget([
+    'dataProvider' => $cajasChicas,
     'columns' => $columns,
-    'showPageSummary' => true,
-    'toolbar' =>  [
-        [
-            'content'=>
-                Html::a('Nueva Transaccion', "#", [
-                    'class'=>'btn btn-default',
-                    'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '".Url::to(['venta/chica','op'=>'new'])."',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Caja Chica</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                ]),
-            'options' => ['class' => 'btn-group']
-        ],
-        '{export}',
-        '{toggleData}',
+    'fontAwesome' => true,
+    //'hiddenColumns'=>[5], // SerialColumn, Color, & ActionColumn
+    //'noExportColumns'=>[6], // Status
+    'dropdownOptions' => [
+        'label' => 'Exportar',
+        'class' => 'btn btn-default'
     ],
-    // set export properties
-    'export' => [
-        'fontAwesome' => true,
-        'target'=>GridView::TARGET_BLANK,
-    ],
-    'responsive'=>true,
-    'hover'=>true,
-    'bordered'=>false,
-    'panel' => [
-        'type' => GridView::TYPE_DEFAULT,
-        'heading' => 'Caja Chica',
-        'footer'=>false,
-    ],
+    'stream' => false, // this will automatically save the file to a folder on web server
+    'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
+    'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
+    'target' => ExportMenu::TARGET_BLANK,
+    'clearBuffers'=>true,
+    'pjaxContainerId'=>'cajaChica',
     'exportConfig' => [
-        GridView::EXCEL => [
+        ExportMenu::FORMAT_HTML =>false,
+        ExportMenu::FORMAT_CSV =>false,
+        ExportMenu::FORMAT_TEXT =>false,
+        //ExportMenu::FORMAT_EXCEL =>false,
+
+        /*ExportMenu::FORMAT_EXCEL_X => [
             'label' => 'Excel',
-            'filename' => 'Reporte Caja Chica',
+            'filename' => 'Reporte Clientes',
             'alertMsg' => 'El EXCEL se generara para la descarga.',
-            'showPageSummary' => true,
-        ],
-        GridView::PDF => [
+            //'showPageSummary' => true,
+        ],*/
+        ExportMenu::FORMAT_PDF => [
             'label' => 'PDF',
-            'filename' => 'Reporte Caja Chica',
+            'filename' => 'Reporte Clientes',
             'alertMsg' => 'El PDF se generara para la descarga.',
             'config' => [
                 'format' => 'Letter-L',
@@ -144,4 +93,25 @@ echo GridView::widget([
         ],
     ],
 ]);
-?>
+
+Pjax::begin(['id'=>'cajaChica']);
+echo GridView::widget([
+    'dataProvider'=> $cajasChicas,
+    'filterModel' => $search,
+    'columns' => $columns,
+    'responsive'=>true,
+    'hover'=>true,
+    'bordered'=>false,
+    'toolbar' => [
+        $export,
+    ],
+    'panel' => [
+        'heading'=>Html::tag('strong','Caja Chica',['class'=>'panel-title']),
+        'type'=>GridView::TYPE_DEFAULT,
+    ],
+    'export' => [
+        'fontAwesome' => true,
+        'target'=>GridView::TARGET_BLANK,
+    ],
+]);
+Pjax::end();

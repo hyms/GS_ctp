@@ -1,13 +1,12 @@
 <?php
-    use app\models\Sucursal;
-    use kartik\grid\GridView;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
-    use yii\widgets\Pjax;
+use app\models\Sucursal;
+use kartik\export\ExportMenu;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
-?>
-<?php
 $columns = [
     [
         'header'=>'Sucursal',
@@ -64,115 +63,54 @@ $columns = [
         'template'=>'{update} {print}',
         'buttons'=>[
             'update'=>function($url,$model) {
-                $options = array_merge([
-                    //'class'=>'btn btn-success',
-                    'data-original-title' => 'Modificar',
-                    'data-toggle'         => 'tooltip',
-                    'title'               => '',
-                    'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">".(($model->tipoRecibo)?'Egreso':'Ingreso')."</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                ]);
-                $url     = "#";
                 if(!empty($model->fkIdMovimientoCaja))
                     if(!empty($model->fkIdMovimientoCaja->fechaCierre))
                         return "";
-                return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                return Html::a(Html::icon('pencil') . ' Modificar',
+                    "#",
+                    [
+                        'onclick'     => 'clickmodal("' .Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]) . '",".'.(($model->tipoRecibo)?"Ingreso":"Egreso").'")',
+                        'data-toggle' => "modal",
+                        'data-target' => "#modal"
+                    ]);
             },
             'print'=>function($url,$model){
+                $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idRecibo]);
                 $options = array_merge([
                     //'class'=>'btn btn-success',
-                    'data-original-title'=>'Imprimir',
                     'data-toggle'=>'tooltip',
-                    'title'=>''
+                    'data-target' => "#modalPage",
+                    'title'=>'Imprimir',
+                    'onClick'=>'printView("'.$url.'")'
                 ]);
-                $url = Url::to(['venta/print','op'=>'recibo','id'=>$model->idRecibo]);
-                return Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                return Html::a(Html::icon('print'), '#', $options);
             },
         ]
     ],
 ];
 
-    Pjax::begin(['id'=>'recibos']);
-echo GridView::widget([
-    'dataProvider'=> $recibos,
-    'filterModel' => $search,
+$export = ExportMenu::widget([
+    'dataProvider' => $recibos,
     'columns' => $columns,
-    'showPageSummary' => true,
-    'toolbar' =>  [
-        [
-            'content'=>''/*
-                Html::a('Recibo Ingreso', "#", [
-                    'class'=>'btn btn-default',
-                    'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/recibos', 'op' => 'i']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Ingreso</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                ])
-                ." ".
-                Html::a('Recibo Egreso', "#", [
-                    'class'=>'btn btn-default',
-                    'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['venta/recibos', 'op' => 'e']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Egreso</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                ]),
-            'options' => ['class' => 'btn-group']*/
-        ],
-        '{export}',
-        '{toggleData}',
+    'fontAwesome' => true,
+    'hiddenColumns'=>[5], // ActionColumn
+    'dropdownOptions' => [
+        'label' => 'Exportar',
+        'class' => 'btn btn-default'
     ],
-    // set export properties
-    'export' => [
-        'fontAwesome' => true,
-        'target'=>GridView::TARGET_BLANK,
-    ],
-    'responsive'=>true,
-    'hover'=>true,
-    'bordered'=>false,
-    'panel' => [
-        'type' => GridView::TYPE_DEFAULT,
-        'heading' => 'Recibos',
-        //'footer'=>false,
-    ],
+    'stream' => false, // this will automatically save the file to a folder on web server
+    'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
+    'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
+    'target' => ExportMenu::TARGET_BLANK,
+    'clearBuffers'=>true,
+    'pjaxContainerId'=>'recibo',
     'exportConfig' => [
-        GridView::EXCEL => [
-            'label' => 'Excel',
-            'filename' => 'Reporte Recibos',
-            'alertMsg' => 'El EXCEL se generara para la descarga.',
-            'showPageSummary' => true,
-        ],
-        GridView::PDF => [
+        ExportMenu::FORMAT_HTML =>false,
+        ExportMenu::FORMAT_CSV =>false,
+        ExportMenu::FORMAT_TEXT =>false,
+        ExportMenu::FORMAT_PDF => [
             'label' => 'PDF',
-            'filename' => 'Reporte Recibos',
+            'filename' => 'Reporte Clientes',
             'alertMsg' => 'El PDF se generara para la descarga.',
             'config' => [
                 'format' => 'Letter-L',
@@ -184,4 +122,27 @@ echo GridView::widget([
         ],
     ],
 ]);
-    Pjax::end();
+
+Pjax::begin(['id'=>'recibo']);
+echo GridView::widget([
+    'dataProvider'=> $recibos,
+    'filterModel' => $search,
+    'columns' => $columns,
+    'responsive'=>true,
+    'hover'=>true,
+    'bordered'=>false,
+    'toolbar' =>  [
+        $export,
+    ],
+    'panel' => [
+        'type' => GridView::TYPE_DEFAULT,
+        'heading' =>Html::tag('strong','Recibos',['class'=>'panel-title']),
+    ],
+    'export' => [
+        'fontAwesome' => true,
+        'target'=>GridView::TARGET_BLANK,
+    ],
+]);
+
+Pjax::end();
+echo $this->render('@app/views/share/scripts/modalPage');

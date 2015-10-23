@@ -1,11 +1,13 @@
 <?php
-    use app\models\Sucursal;
-    use kartik\grid\GridView;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
-    use yii\helpers\Url;
+use app\models\Sucursal;
+use kartik\export\ExportMenu;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
-    $columns = [
+$columns = [
     [
         'header'=>'Sucursal',
         'attribute'=>'sucursal',
@@ -45,52 +47,47 @@
         'class'=>'kartik\grid\ActionColumn',
         'template'=>'{print} {registro}',
         'buttons'=>[
-            'registro'=>function($url,$model){
+            'print'=>function($url,$model){
+                $url = Url::to(['admin/print','op'=>'registro','id'=>$model->idMovimientoCaja]);
                 $options = array_merge([
                     //'class'=>'btn btn-success',
-                    'data-original-title'=>'Registro Diario',
                     'data-toggle'=>'tooltip',
-                    'title'=>''
+                    'data-target' => "#modalPage",
+                    'title'=>'Comprobante',
+                    'onClick'=>'printView("'.$url.'")'
                 ]);
-                $url = Url::to(['admin/print','op'=>'registro','id'=>$model->idMovimientoCaja]);
-                return Html::a('<span class="glyphicon glyphicon-list-alt"></span>', $url, $options);
+                return Html::a(Html::icon('print'), '#', $options);
             },
+
         ]
     ],
 ];
 
-echo GridView::widget([
-    'dataProvider'=> $arqueos,
-    'filterModel' => $search,
+$export = ExportMenu::widget([
+    'dataProvider' => $arqueos,
     'columns' => $columns,
-    'toolbar' =>  [
-        '{export}',
-        '{toggleData}',
+    'fontAwesome' => true,
+    'hiddenColumns'=>[5], // SerialColumn, Color, & ActionColumn
+    //'noExportColumns'=>[6], // Status
+    'dropdownOptions' => [
+        'label' => 'Exportar',
+        'class' => 'btn btn-default'
     ],
-    // set export properties
-    'export' => [
-        'fontAwesome' => true,
-        'target'=>GridView::TARGET_BLANK,
-    ],
-    'responsive'=>true,
-    'hover'=>true,
-    'showPageSummary' => true,
-    'bordered'=>false,
-    'panel' => [
-        'type' => GridView::TYPE_DEFAULT,
-        'heading' => 'Historial Arqueos',
-        'footer'=>false,
-    ],
+    'stream' => false, // this will automatically save the file to a folder on web server
+    'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
+    'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
+    'target' => ExportMenu::TARGET_BLANK,
+    'clearBuffers'=>true,
+    'pjaxContainerId'=>'arqueos',
     'exportConfig' => [
-        GridView::EXCEL => [
-            'label' => 'Excel',
-            'filename' => 'Reporte Arqueos',
-            'alertMsg' => 'El EXCEL se generara para la descarga.',
-            'showPageSummary' => true,
-        ],
-        GridView::PDF => [
+        ExportMenu::FORMAT_HTML =>false,
+        ExportMenu::FORMAT_CSV =>false,
+        ExportMenu::FORMAT_TEXT =>false,
+        //ExportMenu::FORMAT_EXCEL =>false,
+
+        ExportMenu::FORMAT_PDF => [
             'label' => 'PDF',
-            'filename' => 'Reporte Arqueos',
+            'filename' => 'Reporte Clientes',
             'alertMsg' => 'El PDF se generara para la descarga.',
             'config' => [
                 'format' => 'Letter-L',
@@ -102,3 +99,27 @@ echo GridView::widget([
         ],
     ],
 ]);
+
+Pjax::begin(['id'=>'arqueos']);
+echo GridView::widget([
+    'dataProvider'=> $arqueos,
+    'filterModel' => $search,
+    'columns' => $columns,
+    'toolbar' =>  [
+        $export,
+    ],
+    // set export properties
+    'export' => [
+        'fontAwesome' => true,
+        'target'=>GridView::TARGET_BLANK,
+    ],
+    'responsive'=>true,
+    'hover'=>true,
+    'bordered'=>false,
+    'panel' => [
+        'type' => GridView::TYPE_DEFAULT,
+        'heading' => 'Historial Arqueos',
+    ],
+]);
+Pjax::end();
+echo $this->render('@app/views/share/scripts/modalPage');

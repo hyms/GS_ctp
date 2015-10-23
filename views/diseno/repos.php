@@ -19,7 +19,8 @@ use yii\helpers\Html;
                 case "null":
                     echo $this->render('forms/reposNull', [
                         'detalle' => $detalle,
-                        'orden'   => $orden
+                        'orden'   => $orden,
+                        'idParent'   => $idParent
                     ]);
                     break;
 

@@ -705,7 +705,7 @@ class VentaController extends Controller
                     }
                     $data = new ArrayDataProvider([
                         'allModels' => $venta,
-                        'pagination' => false,
+                        //'pagination' => false,
                     ]);
                     $r = "deuda";
                 } else {
@@ -738,7 +738,7 @@ class VentaController extends Controller
                     //$data = $venta->all();
                     $data = new ActiveDataProvider([
                         'query' => $venta,
-                        'pagination' => false,
+                        //'pagination' => false,
                     ]);
 
                     $r = "table";

@@ -23,7 +23,8 @@
         "kartik-v/yii2-grid": "*",
         "kartik-v/yii2-editable": "*",
         "kartik-v/yii2-widgets": "*",
-        "kartik-v/yii2-helpers": "*"
+        "kartik-v/yii2-helpers": "*",
+        "kartik-v/yii2-krajee-base": "*"
     },
     "require-dev": {
         "yiisoft/yii2-codeception": "*",

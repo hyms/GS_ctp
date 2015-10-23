@@ -386,7 +386,6 @@
                         }
                         $data = new ArrayDataProvider([
                                                           'allModels' => $venta,
-                                                          'pagination' => false,
                                                       ]);
                         $r = "deuda";
                     } else {
@@ -416,7 +415,6 @@
                         //$data = $venta->all();
                         $data = new ActiveDataProvider([
                                                            'query' => $venta,
-                                                           'pagination' => false,
                                                        ]);
                         $r = "table";
                     }
@@ -461,23 +459,23 @@
                     $total = 0;
                     if ($post['tipo'] == "a") {
                         $ordenes = OrdenCTP::find()
-                            ->andWhere(['between', 'fechaGenerada', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
+                            ->andWhere(['between', 'fechaGenerada', $post['fechaStart'] . ' 00:00:00', $post['fechaStart'] . ' 23:59:59'])
                             ->andWhere(['fk_idSucursal' => $post['sucursal']])
                             ->orderBy(['fechaGenerada' => SORT_ASC]);
                         if (isset($post['tipoOrden']) && $post['tipoOrden'] != "")
                             $ordenes->andWhere(['tipoOrden' => $post['tipoOrden']]);
                         $ordenes = $ordenes->all();
-                        $placas  = ProductoStock::find()
+                        $placas = ProductoStock::find()
                             ->joinWith('fkIdProducto')
                             ->andWhere(['fk_idSucursal' => $post['sucursal']])
                             ->orderBy(['formato' => SORT_ASC, 'dimension' => SORT_ASC])
                             ->all();
-                        $tipo    = [
+                        $tipo = [
                             0 => "Orden de Trabajo",
                             1 => "Orden Interna",
                             2 => "Reposicion",
                         ];
-                        $data    = [];
+                        $data = [];
 
                         foreach ($ordenes as $orden) {
                             if ($orden->tipoOrden == 0) {
@@ -485,10 +483,10 @@
                                     continue;
                             }
                             $row = [
-                                'fecha'  => $orden->fechaGenerada,
-                                'cliente' => ((empty($orden->fk_idCliente))?$orden->responsable:$orden->fkIdCliente->nombreNegocio),
-                                'orden'  => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
-                                'tipo'   => $tipo[$orden->tipoOrden],
+                                'fecha' => $orden->fechaGenerada,
+                                'cliente' => ((empty($orden->fk_idCliente)) ? $orden->responsable : $orden->fkIdCliente->nombreNegocio),
+                                'orden' => ($orden->tipoOrden == 0) ? $orden->correlativo : $orden->codigoServicio,
+                                'tipo' => $tipo[$orden->tipoOrden],
                                 'estado' => $orden->estado
                             ];
                             foreach ($placas as $key => $placa) {
@@ -507,7 +505,7 @@
                                 if ($orden->tipoOrden == 2) {
                                     if (!empty($row['observaciones']))
                                         $row['observaciones'] = $row['observaciones'] . "-";
-                                    $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . SGOperation::tiposReposicion($orden->tipoRepos) . "</span>" . ((empty($orden->attribuible)) ? "" : "-" . $orden->attribuible);
+                                    $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . ((is_array(SGOperation::tiposReposicion($orden->tipoRepos))) ? '' : SGOperation::tiposReposicion($orden->tipoRepos)) . "</span>" . ((empty($orden->attribuible)) ? "" : "-" . $orden->attribuible);
                                 }
                                 if (!empty($row['observaciones']))
                                     $row['observaciones'] = $row['observaciones'] . "-";
@@ -516,18 +514,15 @@
                             array_push($data, $row);
                         }
                         $data = new ArrayDataProvider([
-                                                          'allModels'  => $data,
-                                                          'pagination' => false,
-                                                      ]);
-                        $r    = "all";
+                            'allModels' => $data,
+                            'pagination'=>false,
+                        ]);
+                        $r = "all";
                     }
                     if ($post['tipo'] == "f") {
                         $placa = [];
                         $data  = new ArrayDataProvider([
                                                            'allModels'  => $placa,
-                                                           'pagination' => [
-                                                               'pageSize' => 20,
-                                                           ],
                                                        ]);
                         $r     = "formato";
                     }

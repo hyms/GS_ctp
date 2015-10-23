@@ -1,8 +1,8 @@
 <?php
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
 
-    $columns = [
+$columns = [
         /*[
             'header'=>'Nit/Ci',
             'attribute'=>'nitCi',
@@ -40,24 +40,13 @@
                               'hover'=>true,
                               'pjax'=>true,
                           ]);
-    /*$script = "
-    function clienteCosto(url,idOrden,tipoCliente,nombre,nit,id)
+
+    $script = <<<JS
+function cliente(nombre,nit,id,categoria)
     {
-        //var tipo = $('input:radio[name=OrdenCTP[tipoPago]]:checked').val();
-        //factura(tipo,url,idventa,tipoCliente);
-        $('#cliente').val(nombre+\" - \"+nit);
-        $('#idCliente').val(id);
-        $('#tipoCliente').val(tipoCliente);
-        var val = $('form input[type=\"radio\"]:checked').val();
-        if(val!=undefined)
-            factura(val,url,idOrden,$('#tipoCliente').val());
-    }";*/
-    $script = "
-    function cliente(nombre,nit,id,categoria)
-    {
-        $('#cliente').val(nombre+\" - \"+nit);
+        $('#cliente').val(nombre+" - "+nit);
         $('#idCliente').val(id);
         $('#categoria').html(categoria);
     }
-    ";
+JS;
     $this->registerJs($script, \yii\web\View::POS_HEAD);

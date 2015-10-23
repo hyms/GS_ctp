@@ -38,6 +38,7 @@ use yii\bootstrap\ActiveForm;
                 <div class="text-center">
                     <?= Html::a( Html::icon('floppy-remove').' Cancelar', "#", ['class' => 'btn btn-default','onClick'=>'previous()']); ?>
                     <?= Html::a( Html::icon('floppy-disk').' Anular', "#", ['class' => 'btn btn-danger','onClick'=>'save()']); ?>
+                    <?= Html::hiddenInput('idParent',$idParent); ?>
                 </div>
             </div>
             <?php ActiveForm::end(); ?>

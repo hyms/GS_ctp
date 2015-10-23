@@ -1,4 +1,5 @@
 <?php
+use kartik\export\ExportMenu;
 use kartik\grid\GridView;
 use kartik\helpers\Html;
 use yii\helpers\Url;
@@ -53,16 +54,51 @@ $columns = [
             ]
         ],
     ];
-Pjax::begin();
-?>
-<?php
+
+$export = ExportMenu::widget([
+    'dataProvider' => $arqueos,
+    'columns' => $columns,
+    'fontAwesome' => true,
+    'hiddenColumns'=>[4], // SerialColumn, Color, & ActionColumn
+    //'noExportColumns'=>[6], // Status
+    'dropdownOptions' => [
+        'label' => 'Exportar',
+        'class' => 'btn btn-default'
+    ],
+    'stream' => false, // this will automatically save the file to a folder on web server
+    'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
+    'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
+    'target' => ExportMenu::TARGET_BLANK,
+    'clearBuffers'=>true,
+    'pjaxContainerId'=>'arqueos',
+    'exportConfig' => [
+        ExportMenu::FORMAT_HTML =>false,
+        ExportMenu::FORMAT_CSV =>false,
+        ExportMenu::FORMAT_TEXT =>false,
+        //ExportMenu::FORMAT_EXCEL =>false,
+
+        ExportMenu::FORMAT_PDF => [
+            'label' => 'PDF',
+            'filename' => 'Reporte Clientes',
+            'alertMsg' => 'El PDF se generara para la descarga.',
+            'config' => [
+                'format' => 'Letter-L',
+                'marginTop' => 5,
+                'marginBottom' => 5,
+                'marginLeft' => 5,
+                'marginRight' => 5,
+            ]
+        ],
+    ],
+]);
+
+Pjax::begin(['id'=>'arqueos']);
     echo GridView::widget([
                               'dataProvider'=> $arqueos,
                               'filterModel' => $search,
                               'columns' => $columns,
                               'toolbar' =>  [
-                                  '{export}',
-                                  '{toggleData}',
+                                  $export,
                               ],
                               // set export properties
                               'export' => [
@@ -75,26 +111,6 @@ Pjax::begin();
                               'panel' => [
                                   'type' => GridView::TYPE_DEFAULT,
                                   'heading' => 'Historial Arqueos',
-                              ],
-                              'exportConfig' => [
-                                  GridView::EXCEL => [
-                                      'label' => 'Excel',
-                                      'filename' => 'Reporte Arqueos',
-                                      'alertMsg' => 'El EXCEL se generara para la descarga.',
-                                      'showPageSummary' => true,
-                                  ],
-                                  GridView::PDF => [
-                                      'label' => 'PDF',
-                                      'filename' => 'Reporte Arqueos',
-                                      'alertMsg' => 'El PDF se generara para la descarga.',
-                                      'config' => [
-                                          'format' => 'Letter-L',
-                                          'marginTop' => 5,
-                                          'marginBottom' => 5,
-                                          'marginLeft' => 5,
-                                          'marginRight' => 5,
-                                      ]
-                                  ],
                               ],
                           ]);
     Pjax::end();

@@ -1,5 +1,9 @@
 <?php
+use kartik\export\ExportMenu;
 use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 $columns = [
         [
@@ -194,29 +198,59 @@ $columns = [
             'class'=>'kartik\grid\ActionColumn',
             'template'=>'{print}',
             'buttons'=>[
-                /*'update'=>function($url,$model){
-                    $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Modificar',
-                                               'data-toggle'=>'tooltip',
-                                               'title'=>''
-                                           ]);
-                    $url = Url::to(['venta/venta','id'=>$model->idOrdenCTP]);
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
-                },*/
                 'print'=>function($url,$model){
+                    $url = Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
                     $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title'=>'Imprimir',
-                                               'data-toggle'=>'tooltip',
-                                               'title'=>''
-                                           ]);
-                    $url = \yii\helpers\Url::to(['venta/print','op'=>'orden','id'=>$model->idOrdenCTP]);
-                    return \yii\helpers\Html::a('<span class="glyphicon glyphicon-print"></span>', $url, $options);
+                        //'class'=>'btn btn-success',
+                        'data-toggle'=>'tooltip',
+                        'data-target' => "#modalPage",
+                        'title'=>'Imprimir',
+                        'onClick'=>'printView("'.$url.'")'
+                    ]);
+                    return Html::a(Html::icon('print'), '#', $options);
                 },
             ]
         ],
     ];
+
+$export = ExportMenu::widget([
+    'dataProvider' => $data,
+    'columns' => $columns,
+    'fontAwesome' => true,
+    'hiddenColumns'=>[20], // SerialColumn, Color, & ActionColumn
+    'noExportColumns'=>[20], // Status
+    'dropdownOptions' => [
+        'label' => 'Exportar',
+        'class' => 'btn btn-default'
+    ],
+    'stream' => false, // this will automatically save the file to a folder on web server
+    'streamAfterSave' => true, // this will stream the file to browser after its saved on the web folder
+    'deleteAfterSave' => true, // this will delete the saved web file after it is streamed to browser,
+    'target' => ExportMenu::TARGET_BLANK,
+    'clearBuffers'=>true,
+    'pjaxContainerId'=>'reporte',
+    'exportConfig' => [
+        ExportMenu::FORMAT_HTML =>false,
+        ExportMenu::FORMAT_CSV =>false,
+        ExportMenu::FORMAT_TEXT =>false,
+        //ExportMenu::FORMAT_EXCEL =>false,
+
+        ExportMenu::FORMAT_PDF => [
+            'label' => 'PDF',
+            'filename' => 'Reporte Clientes',
+            'alertMsg' => 'El PDF se generara para la descarga.',
+            'config' => [
+                'format' => 'Letter-L',
+                'marginTop' => 5,
+                'marginBottom' => 5,
+                'marginLeft' => 5,
+                'marginRight' => 5,
+            ]
+        ],
+    ],
+]);
+
+Pjax::begin(['id'=>'reporte']);
     echo GridView::widget([
                               'dataProvider' => $data,
                               //'filterModel' => $search,
@@ -232,7 +266,7 @@ $columns = [
                               },
                               // set your toolbar
                               'toolbar' =>  [
-                                  '{export}',
+                                  $export,
                               ],
                               'containerOptions'=>['style'=>'overflow: auto'],
                               // set export properties
@@ -251,29 +285,9 @@ $columns = [
                               'floatHeaderOptions'=>['scrollingTop'=>'0'],
                               'panel' => [
                                   'type' => GridView::TYPE_PRIMARY,
-                                  'heading' => 'ordenes',
-                                  'footer'=>false,
-                              ],
-                              'exportConfig' => [
-                                  GridView::EXCEL => [
-                                      'label' => 'Excel',
-                                      'filename' => 'Reporte Venta',
-                                      'alertMsg' => 'El EXCEL se generara para la descarga.',
-                                      'showPageSummary' => true,
-                                  ],
-                                  GridView::PDF => [
-                                      'label' => 'PDF',
-                                      'filename' => 'Reporte Venta',
-                                      'alertMsg' => 'El PDF se generara para la descarga.',
-                                      'config' => [
-                                      'format' => 'Letter-L',
-                                      'defaultFontSize'=>7,
-                                      'marginTop' => 5,
-                                      'marginBottom' => 5,
-                                      'marginLeft' => 5,
-                                      'marginRight' => 5,
-                                      //'cssFile'      => '@webroot/css/bootstrap.min.readable.css',
-                                      ]
-                                  ],
+                                  'heading' => 'Reporte de Ordenes',
                               ],
                           ]);
+Pjax::end();
+
+echo $this->render('@app/views/share/scripts/modalPage');

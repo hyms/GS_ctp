@@ -1,3 +1,7 @@
+<?php
+use kartik\helpers\Html;
+
+?>
 <div style="width:593px; position: relative; float: left;">
     <!-- <div class="row"> -->
     <div class="col-xs-12">
