@@ -76,19 +76,17 @@
     ];
 
     Pjax::begin();
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Deudores',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $orden,
-                                               'filterModel' => $search,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'condensed'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false,
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+    echo GridView::widget([
+                              'dataProvider'=> $orden,
+                              'filterModel' => $search,
+                              'columns' => $columns,
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'toolbar' => [],
+                              'panel' => [
+                                  'heading'=>Html::tag('strong','Deudores'),
+                                  'type'=>GridView::TYPE_DEFAULT,
+                              ],
+                          ]);
     Pjax::end();

@@ -5,6 +5,7 @@
     use app\components\SGCaja;
     use app\components\SGOperation;
     use app\components\SGProducto;
+    use app\components\SGRecibo;
     use app\models\Caja;
     use app\models\CajaSearch;
     use app\models\Cliente;
@@ -17,6 +18,7 @@
     use app\models\ProductoSearch;
     use app\models\ProductoStock;
     use app\models\ProductoStockSearch;
+    use app\models\Recibo;
     use app\models\ReciboSearch;
     use app\models\Sucursal;
     use app\models\SucursalSearch;
@@ -454,8 +456,8 @@
         public function actionPlacas()
         {
             $post = Yii::$app->request->get();
-            if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd']) && isset($post['sucursal'])) {
-                if (!empty($post['fechaStart']) && !empty($post['fechaEnd']) && !empty($post['sucursal'])) {
+            if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['sucursal'])) {
+                if (!empty($post['fechaStart']) && !empty($post['sucursal'])) {
                     $total = 0;
                     if ($post['tipo'] == "a") {
                         $ordenes = OrdenCTP::find()
@@ -529,7 +531,6 @@
                     return $this->render('placas', [
                         'r'          => $r,
                         'fechaStart' => $post['fechaStart'],
-                        'fechaEnd'   => $post['fechaEnd'],
                         'sucursal'   => $post['sucursal'],
                         'tipoOrden'  => $post['tipoOrden'],
                         'data'       => $data,
@@ -538,14 +539,12 @@
                 }
                 return $this->render('placas', [
                     'fechaStart' => $post['fechaStart'],
-                    'fechaEnd'   => $post['fechaEnd'],
                     'sucursal'   => $post['sucursal'],
                     'tipoOrden'  => '',
                 ]);
             }
             return $this->render('placas', [
                 'fechaStart' => '',
-                'fechaEnd'   => '',
                 'sucursal'   => '',
                 'tipoOrden'  => '',
             ]);
@@ -601,6 +600,7 @@
                     case "recibo":
                         $search = new ReciboSearch();
                         $recibos = $search->search(yii::$app->request->queryParams);
+                        $recibos->query->addOrderBy(['fechaRegistro'=>SORT_DESC]);
                         return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                         break;
                     case "arqueos":
@@ -642,24 +642,39 @@
                     case "arqueos":
                         return $this->render('caja');
                         break;
-                }
-            }
-            return $this->render('caja');
-        }
+                    case "admin":
+                        if(isset($get["o"]))
+                        {
+                            $caja = Caja::find()->where(['is','fk_idSucursal',NULL])->one();
+                            if($get["o"]=="r")
+                            {
+                                $d      = date("d");
+                                $end    = date("Y-m-d H:i:s");
 
-        public function actionCaja()
-        {
-            $get = Yii::$app->request->get();
-            if (isset($get['op'])) {
-                switch ($get['op']) {
-                    case "recibo":
-                        $search  = new ReciboSearch();
-                        $recibos = $search->search(yii::$app->request->queryParams);
-                        return $this->render('transaccion', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
+                                $variables = SGCaja::getSaldo($caja->idCaja, $end, false, false);
+
+                                return $this->render('caja',
+                                                     [
+                                                         'r'          => 'admin',
+                                                         'saldo'      => $variables['saldo'],
+                                                         'arqueo'     => $variables['arqueos'],
+                                                         'caja'       => $caja,
+                                                         'fecha'      => date('Y-m-d H:i:s', strtotime($end)),
+                                                         'recibos'    => $variables['recibos'],
+                                                         'cajas'      => $variables['cajas'],
+                                                         'dia'        => $d,
+                                                     ]);
+                            }
+                            if($get["op"]=="d")
+                            {
+                                $variables = SGCaja::getSaldo($caja->idCaja, date("Y-m-d H:i:s"), true, false);
+                            }
+                        }
+                        return $this->render('caja',['r'=>'admin']);
                         break;
                 }
             }
-            return $this->render('transaccion');
+            return $this->render('caja');
         }
 
         public function actionPrint()
@@ -706,6 +721,57 @@
 
                 // return the pdf output as per the destination setting
                 return $pdf->render();
+            }
+        }
+
+        public function actionRecibos()
+        {
+            $get = yii::$app->request->get();
+            if (empty($get['op'])) {
+                $search                = new ReciboSearch();
+                $recibos               = $search->search(yii::$app->request->queryParams);
+                $recibos->query->andWhere(['fk_idSucursal'=>$this->idSucursal]);
+                return $this->render('recibo', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
+            } else {
+                $sucursal ='';
+                if (isset($get['id'])){
+                    $recibo = Recibo::findOne(['idRecibo' => $get['id']]);
+                    if(!empty($recibo->fk_idSucursal))
+                        $sucursal = $recibo->fkIdSucursal->nombre;
+                }
+                else {
+                    $recibo                = new Recibo();
+                    //$recibo->fk_idSucursal = $this->idSucursal;
+                    $recibo->fechaRegistro = date("Y-m-d H:i:s");
+                    $recibo->fk_idUser     = Yii::$app->user->id;
+                }
+                if($recibo->tipoRecibo == null) {
+                    if ($get['op'] == 'i') {
+                        $recibo->tipoRecibo = 1;
+                    } else {
+                        $recibo->tipoRecibo = 0;
+                    }
+                }
+
+                $post = yii::$app->request->post();
+                if ($recibo->load($post)) {
+                    $op   = new SGRecibo();
+                    if(isset($post['sucursal'])) {
+                        $sucursal = $post['sucursal'];
+                        $recibo->fk_idSucursal = $sucursal;
+                        if ($sucursal == '')
+                            $caja = Caja::find()->where(['is','fk_idSucursal',NULL])->one();
+                        else
+                            $caja = Caja::find()->where(['fk_idSucursal' => $sucursal])->one();
+                        if (!empty($caja)) {
+                            $data = $op->grabar(['recibo' => $recibo, 'caja' => $caja]);
+                            if ($op->success)
+                                return 'done';
+                        }
+                    }
+                }
+
+                return $this->renderAjax('forms/recibo', ['recibo' => $recibo,'sucursal'=>$sucursal]);
             }
         }
     }

@@ -1,20 +1,14 @@
 <?php
-use kartik\helpers\Html;
-use kartik\widgets\DatePicker;
-use yii\bootstrap\ActiveForm;
+    use kartik\helpers\Html;
+    use kartik\widgets\DatePicker;
+    use yii\bootstrap\ActiveForm;
 
-$this->title = 'Venta-Orden'
+    $this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
         <div class="col-md-4">
-            <?= Html::panel(
-                [
-                    'heading' => Html::tag('strong','Clientes',['class'=>'panel-title']),
-                    'postBody' => $this->render('../tables/cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]),
-                ],
-                Html::TYPE_DEFAULT
-            );?>
+            <?= $this->render('../tables/cliente',['cliente'=>$clientes,'search'=>$search,'idOrdenCTP'=>$orden->idOrdenCTP]);?>
 
 
         </div>

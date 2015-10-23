@@ -1,12 +1,12 @@
 <?php
-use app\models\Sucursal;
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\widgets\Pjax;
+    use app\models\Sucursal;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\ArrayHelper;
+    use yii\widgets\Pjax;
 
-$columns = [
+    $columns = [
     [
         'header'=>'Sucursal',
         'attribute'=>'sucursal',
@@ -34,7 +34,8 @@ $columns = [
         'value'=>function($model)
         {
             return $model->fkIdUser->nombre." ".$model->fkIdUser->apellido;
-        }
+        },
+        'pageSummary'=>'Total',
     ],
     [
         'header'=>'Monto',
@@ -102,6 +103,7 @@ echo GridView::widget([
     'responsive'=>true,
     'hover'=>true,
     'bordered'=>false,
+    'showPageSummary' => true,
     'toolbar' => [
         $export,
     ],

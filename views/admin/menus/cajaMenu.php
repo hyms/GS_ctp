@@ -1,7 +1,7 @@
 <?php
-use kartik\widgets\SideNav;
+    use kartik\widgets\SideNav;
 
-$items = [];
+    $items = [];
 
 array_push($items, [
     'label' => 'Recibos',
@@ -19,10 +19,10 @@ array_push($items, [
     'label' => 'Historial Arqueos',
     'url'   => ['admin/arqueos', 'op' => 'arqueos']
 ]);
-/*array_push($items, [
-    'label' => 'Calcular Montos',
-    'url'   => ['admin/arqueos', 'op' => 'calc']
-]);*/
+array_push($items, [
+    'label' => 'Caja Admin.',
+    'url'   => ['admin/arqueos', 'op' => 'admin']
+]);
 echo SideNav::widget([
     'type' => SideNav::TYPE_PRIMARY,
     'encodeLabels' => false,

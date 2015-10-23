@@ -1,11 +1,11 @@
 <?php
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns = [
+    $columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
@@ -284,8 +284,8 @@ Pjax::begin(['id'=>'reporte']);
                               'floatHeader'=>true,
                               'floatHeaderOptions'=>['scrollingTop'=>'0'],
                               'panel' => [
-                                  'type' => GridView::TYPE_PRIMARY,
-                                  'heading' => 'Reporte de Ordenes',
+                                  'type' => GridView::TYPE_DEFAULT,
+                                  'heading' => Html::tag('strong','Reporte de Ordenes'),
                               ],
                           ]);
 Pjax::end();

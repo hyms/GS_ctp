@@ -52,19 +52,18 @@
     ];
 
     Pjax::begin();
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Historial de ordenes de trabajo',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $orden,
-                                               'filterModel' => $search,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'condensed'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false,
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+    echo GridView::widget([
+                              'dataProvider'=> $orden,
+                              'filterModel' => $search,
+                              'columns' => $columns,
+                              'toolbar' =>  [],
+                              // set export properties
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'panel' => [
+                                  'type' => GridView::TYPE_DEFAULT,
+                                  'heading' =>Html::tag('strong','Historial de ordenes de trabajo'),
+                              ],
+                          ]);
     Pjax::end();

@@ -36,17 +36,19 @@
 
     ];
 
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Ordenes de trabajo en processo',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $orden,
-                                               //'filterModel' => $searchModel,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+
+    echo GridView::widget([
+                              'dataProvider'=> $orden,
+                              //'filterModel' => $search,
+                              'columns' => $columns,
+                              'toolbar' =>  [],
+                              // set export properties
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'panel' => [
+                                  'type' => GridView::TYPE_DEFAULT,
+                                  'heading' =>Html::tag('strong','Ordenes de trabajo en processo'),
+                                  'footer'=>false,
+                              ],
+                          ]);

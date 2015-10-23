@@ -1,7 +1,8 @@
 <?php
-use app\models\Sucursal;
-use yii\helpers\ArrayHelper;
-use yii\widgets\ActiveForm;
+    use app\models\Sucursal;
+    use kartik\helpers\Html;
+    use yii\helpers\ArrayHelper;
+    use yii\widgets\ActiveForm;
 
 ?>
 <div class="row">

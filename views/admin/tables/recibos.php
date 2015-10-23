@@ -1,13 +1,14 @@
 <?php
-use app\models\Sucursal;
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use app\models\Sucursal;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns = [
+
+    $columns = [
     [
         'header'=>'Sucursal',
         'attribute'=>'fk_idSucursal',
@@ -19,6 +20,8 @@ $columns = [
         //'filterInputOptions'=>['placeholder'=>'Seleccionar'],
         'format'=>'raw',
         'value'=>function($model){
+            if(empty($model->fk_idSucursal))
+                return "";
             return $model->fkIdSucursal->nombre;
         },
     ],
@@ -44,6 +47,7 @@ $columns = [
     [
         'header'=>'Nombre',
         'attribute'=>'nombre',
+        'pageSummary'=>'Total',
     ],
     [
         'header'=>'Monto',
@@ -69,7 +73,7 @@ $columns = [
                 return Html::a(Html::icon('pencil') . ' Modificar',
                     "#",
                     [
-                        'onclick'     => 'clickmodal("' .Url::to(['venta/recibos','op'=>'recibo','id'=>$model->idRecibo]) . '",".'.(($model->tipoRecibo)?"Ingreso":"Egreso").'")',
+                        'onclick'     => 'clickmodal("' .Url::to(['admin/recibos','op'=>'recibo','id'=>$model->idRecibo]) . '",".'.(($model->tipoRecibo)?"Ingreso":"Egreso").'")',
                         'data-toggle' => "modal",
                         'data-target' => "#modal"
                     ]);
@@ -131,7 +135,27 @@ echo GridView::widget([
     'responsive'=>true,
     'hover'=>true,
     'bordered'=>false,
+    'showPageSummary' => true,
     'toolbar' =>  [
+        [
+            'content'=>
+                Html::button('Recibo Ingreso',
+                             [
+                                 'class'=>'btn btn-default',
+                                 'onclick' => 'clickmodal("' . Url::to(['admin/recibos', 'op' => 'i']) . '","Recibo de Ingreso")',
+                                 'data-toggle' => "modal",
+                                 'data-target' => "#modal"
+                             ])
+                ." ".
+                Html::button('Recibo Egreso',
+                             [
+                                 'class'=>'btn btn-default',
+                                 'onclick' => 'clickmodal("' . Url::to(['admin/recibos', 'op' => 'e']) . '","Recibo de Egreso")',
+                                 'data-toggle' => "modal",
+                                 'data-target' => "#modal"
+                             ]),
+            'options' => ['class' => 'btn-group']
+        ],
         $export,
     ],
     'panel' => [
@@ -146,3 +170,4 @@ echo GridView::widget([
 
 Pjax::end();
 echo $this->render('@app/views/share/scripts/modalPage');
+    echo $this->render('@app/views/share/scripts/modal',['nameTable'=>'recibo']);

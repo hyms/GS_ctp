@@ -1,13 +1,13 @@
 <?php
-use app\models\Sucursal;
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\ArrayHelper;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use app\models\Sucursal;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\ArrayHelper;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns = [
+    $columns = [
     [
         'header'=>'Sucursal',
         'attribute'=>'sucursal',
@@ -116,6 +116,7 @@ echo GridView::widget([
     'responsive'=>true,
     'hover'=>true,
     'bordered'=>false,
+    'showPageSummary' => true,
     'panel' => [
         'type' => GridView::TYPE_DEFAULT,
         'heading' => 'Historial Arqueos',

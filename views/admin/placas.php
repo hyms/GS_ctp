@@ -5,7 +5,6 @@
     <div class="col-md-3">
         <?= $this->render('forms/placas',[
             'fechaStart'=>$fechaStart,
-            'fechaEnd'=>$fechaEnd,
             'sucursal'=>$sucursal,
             'tipoOrden'=>$tipoOrden,
         ]); ?>
@@ -17,10 +16,10 @@
                     switch ($r) {
                         case "all":
                             //echo $this->render('prints/report', ['data' => $data]);
-                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd,'sucursal'=>$sucursal,'total'=>$total]);
+                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'sucursal'=>$sucursal,'total'=>$total]);
                             break;
                         case "formato":
-                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
+                            echo $this->render('tables/placas', ['data' => $data,'fechaStart'=>$fechaStart]);
                             break;
                     }
                 }

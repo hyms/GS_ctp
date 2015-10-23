@@ -1,11 +1,11 @@
 <?php
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns = [
+    $columns = [
         [
             'header'=>'Usuario',
             'attribute'=>'nombreUsuario',
@@ -110,7 +110,7 @@ Pjax::begin(['id'=>'arqueos']);
                               'bordered'=>false,
                               'panel' => [
                                   'type' => GridView::TYPE_DEFAULT,
-                                  'heading' => 'Historial Arqueos',
+                                  'heading' => Html::tag('strong','Historial Arqueos'),
                               ],
                           ]);
     Pjax::end();

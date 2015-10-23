@@ -77,28 +77,28 @@
     ];
 
     Pjax::begin();
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Ordenes Internas',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $orden,
-                                               'filterModel' => $search,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'condensed'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false,
-                                               'rowOptions' => function ($model, $index, $widget, $grid){
-                                                   if($model->estado<0){
-                                                       return ['class' => GridView::TYPE_DANGER];
-                                                   }else{
-                                                       return [];
-                                                   }
-                                               },
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+
+    echo GridView::widget([
+                              'dataProvider'=> $orden,
+                              'filterModel' => $search,
+                              'columns' => $columns,
+                              'toolbar' =>  [],
+                              // set export properties
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'rowOptions' => function ($model, $index, $widget, $grid){
+                                  if($model->estado<0){
+                                      return ['class' => GridView::TYPE_DANGER];
+                                  }else{
+                                      return [];
+                                  }
+                              },
+                              'panel' => [
+                                  'type' => GridView::TYPE_DEFAULT,
+                                  'heading' =>Html::tag('strong','Ordenes Sucursales'),
+                              ],
+                          ]);
     Pjax::end();
 
     echo $this->render('@app/views/share/scripts/modalPage');

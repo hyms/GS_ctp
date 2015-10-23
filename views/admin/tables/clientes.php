@@ -1,12 +1,10 @@
 <?php
     use app\models\Sucursal;
     use kartik\grid\GridView;
+    use kartik\helpers\Html;
     use yii\helpers\ArrayHelper;
-    use yii\helpers\Html;
     use yii\helpers\Url;
 
-?>
-<?php
     $columns=[
         [
             'header'=>'Sucursal',
@@ -51,28 +49,14 @@
             'class' => 'yii\grid\ActionColumn',
             'template'=>'{update}',
             'buttons'=>[
-                'update'=>function($url,$model) {
-                    $options = array_merge([
-                                               //'class'=>'btn btn-success',
-                                               'data-original-title' => 'Modificar',
-                                               'data-toggle'         => 'tooltip',
-                                               'title'               => '',
-                                               'onclick'             => "
-                                                        $.ajax({
-                                                            type     :'POST',
-                                                            cache    : false,
-                                                            url  : '" . Url::to(['admin/cliente','id'=>$model->idCliente]) . "',
-                                                            success  : function(data) {
-                                                                if(data.length>0){
-                                                                    $('#viewModal .modal-header').html('<h3 class=\"text-center\">Cliente: ".$model->nombreNegocio."</h3>');
-                                                                    $('#viewModal .modal-body').html(data);
-                                                                    $('#viewModal').modal();
-                                                                }
-                                                            }
-                                                        });return false;"
-                                           ]);
-                    $url     = "#";
-                    return Html::a('<span class="glyphicon glyphicon-pencil"></span>', $url, $options);
+                    'update'=>function($url,$model) {
+                        return Html::a(Html::icon('pencil') . ' Modificar',
+                                       "#",
+                                       [
+                                           'onclick'     => 'clickmodal("' . Url::to(['admin/cliente','id'=>$model->idCliente]) . '","Cliente: '.$model->nombreNegocio.'")',
+                                           'data-toggle' => "modal",
+                                           'data-target' => "#modal"
+                                       ]);
                 },
             ]
         ],
@@ -84,22 +68,13 @@
                               'toolbar' =>  [
                                   [
                                       'content'=>
-                                          Html::a('Nuevo Cliente', "#", [
-                                              'class'=>'btn btn-default',
-                                              'onclick'  => "
-                    $.ajax({
-                        type    :'POST',
-                        cache   : false,
-                        url     : '" . Url::to(['admin/cliente', 'op' => 'new']) . "',
-                        success : function(data) {
-                            if(data.length>0){
-                                $('#viewModal .modal-header').html('<h3 class=\"text-center\">Nuevo Cliente</h3>');
-                                $('#viewModal .modal-body').html(data);
-                                $('#viewModal').modal();
-                            }
-                        }
-                    });return false;"
-                                          ]),
+                                          Html::button('Nuevo Cliente',
+                                                       [
+                                                           'class'=>'btn btn-default',
+                                                           'onclick' => 'clickmodal("' .  Url::to(['admin/cliente', 'op' => 'new'])  . '","Nuevo Cliente")',
+                                                           'data-toggle' => "modal",
+                                                           'data-target' => "#modal"
+                                                       ]),
                                       'options' => ['class' => 'btn-group']
                                   ],
                                   '{export}',
@@ -138,4 +113,4 @@
                                   ],
                               ],
                           ]);
-?>
+    echo $this->render('@app/views/share/scripts/modal',['nameTable'=>'Clientes']);

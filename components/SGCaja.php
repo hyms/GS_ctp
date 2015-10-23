@@ -18,9 +18,13 @@ class SGCaja extends Component
             $movimientoCaja->observaciones    = $Observaciones;
             if (!empty($idParent))
                 $movimientoCaja->idParent = $idParent;
-            return $movimientoCaja;
         }
-        return MovimientoCaja::findOne(['idMovimientoCaja' => $idmovimiento]);
+        else {
+            $movimientoCaja = MovimientoCaja::findOne(['idMovimientoCaja' => $idmovimiento]);
+            $movimientoCaja->fk_idCajaDestino = $idCaja;
+        }
+        return $movimientoCaja;
+
     }
 
     static public function movimientoCajaCompra($idmovimiento, $idCaja, $Observaciones = "", $idParent = null, $tipo = 1)
@@ -34,9 +38,12 @@ class SGCaja extends Component
             $movimientoCaja->observaciones   = $Observaciones;
             if (!empty($idParent))
                 $movimientoCaja->idParent = $idParent;
-            return $movimientoCaja;
         }
-        return MovimientoCaja::findOne(['idMovimientoCaja' => $idmovimiento]);
+        else {
+            $movimientoCaja = MovimientoCaja::findOne(['idMovimientoCaja' => $idmovimiento]);
+            $movimientoCaja->fk_idCajaOrigen = $idCaja;
+        }
+        return $movimientoCaja;
     }
 
     static public function movimientoCajaTraspaso($idmovimiento, $idCajaFrom, $idCajaTo, $Observaciones = "", $time = null, $tipo = 1)
@@ -173,7 +180,7 @@ class SGCaja extends Component
         else
             $saldo = 0;
 
-        $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo, 'movimientos' => $movimientosAll);
+        $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo, 'movimientos' => $movimientosAll,'arqueos'=>$arqueos);
         return $datos;
     }
 

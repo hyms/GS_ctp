@@ -1,11 +1,11 @@
 <?php
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns = [
+    $columns = [
     [
         'header'=>'Tipo',
         //'filterOptions'=>['class'=>'col-xs-1'],
@@ -123,7 +123,7 @@ echo GridView::widget([
                 Html::button('Recibo Ingreso',
                     [
                         'class'=>'btn btn-default',
-                        'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'i']) . '","Caja Chica")',
+                        'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'i']) . '","Recibo de Ingreso")',
                         'data-toggle' => "modal",
                         'data-target' => "#modal"
                     ])
@@ -131,7 +131,7 @@ echo GridView::widget([
                 Html::button('Recibo Egreso',
                     [
                         'class'=>'btn btn-default',
-                        'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'e']) . '","Caja Chica")',
+                        'onclick' => 'clickmodal("' . Url::to(['venta/recibos', 'op' => 'e']) . '","Recibo de Egreso")',
                         'data-toggle' => "modal",
                         'data-target' => "#modal"
                     ]),
@@ -142,7 +142,7 @@ echo GridView::widget([
     ],
     'panel' => [
         'type' => GridView::TYPE_DEFAULT,
-        'heading' =>Html::tag('strong','Recibos',['class'=>'panel-title']),
+        'heading' =>Html::tag('strong','Recibos'),
     ],
     'export' => [
         'fontAwesome' => true,

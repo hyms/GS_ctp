@@ -1,9 +1,9 @@
 <?php
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\widgets\Pjax;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\widgets\Pjax;
 
-$columns=[
+    $columns=[
         [
             'header' => 'Negocio',
             'attribute'=>'nombreNegocio',
@@ -26,19 +26,18 @@ $columns=[
         ],
     ];
     Pjax::begin();
-
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Clientes',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $clientes,
-                                               'filterModel' => $search,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false,
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+    echo GridView::widget([
+                              'dataProvider'=> $clientes,
+                              'filterModel' => $search,
+                              'columns' => $columns,
+                              'toolbar' =>  [],
+                              // set export properties
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'panel' => [
+                                  'type' => GridView::TYPE_DEFAULT,
+                                  'heading' =>Html::tag('strong','Clientes'),
+                              ],
+                          ]);
     Pjax::end();

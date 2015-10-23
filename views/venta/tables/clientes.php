@@ -1,11 +1,11 @@
 <?php
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns=[
+    $columns=[
     [
         'header'=>'Categoria',
         'attribute'=>'codigoCliente',
@@ -108,11 +108,7 @@ echo GridView::widget([
     'bordered'=>false,
     'panel' => [
         'type' => GridView::TYPE_DEFAULT,
-        'heading' =>Html::tag('strong','Clientes',['class'=>'panel-title']),
-    ],
-    'export' => [
-        'fontAwesome' => true,
-        'target'=>GridView::TARGET_BLANK,
+        'heading' =>Html::tag('strong','Clientes'),
     ],
 ]);
 Pjax::end();

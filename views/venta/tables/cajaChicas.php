@@ -1,11 +1,11 @@
 <?php
-use kartik\export\ExportMenu;
-use kartik\grid\GridView;
-use kartik\helpers\Html;
-use yii\helpers\Url;
-use yii\widgets\Pjax;
+    use kartik\export\ExportMenu;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
+    use yii\helpers\Url;
+    use yii\widgets\Pjax;
 
-$columns = [
+    $columns = [
     [
         'header'=>'Usuario',
         'attribute'=>function($model)
@@ -118,7 +118,7 @@ echo GridView::widget([
         $export,
     ],
     'panel' => [
-        'heading'=>Html::tag('strong','Caja Chica',['class'=>'panel-title']),
+        'heading'=>Html::tag('strong','Caja Chica'),
         'type'=>GridView::TYPE_DEFAULT,
     ],
     'export' => [

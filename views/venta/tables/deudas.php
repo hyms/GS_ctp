@@ -104,20 +104,19 @@
     ];
 
     Pjax::begin();
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Historial de Pagos de Deudas',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $deudas,
-                                               'filterModel' => $search,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'condensed'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false,
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+    echo GridView::widget([
+                              'dataProvider'=> $deudas,
+                              'filterModel' => $search,
+                              'columns' => $columns,
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'toolbar' => [],
+                              'panel' => [
+                                  'heading'=>Html::tag('strong','Historial de Pagos de Deudas'),
+                                  'type'=>GridView::TYPE_DEFAULT,
+                              ],
+                          ]);
+
     Pjax::end();
     echo $this->render('@app/views/share/scripts/modalPage');

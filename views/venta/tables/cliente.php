@@ -1,8 +1,8 @@
 <?php
-use kartik\grid\GridView;
-use kartik\helpers\Html;
+    use kartik\grid\GridView;
+    use kartik\helpers\Html;
 
-$columns = [
+    $columns = [
         /*[
             'header'=>'Nit/Ci',
             'attribute'=>'nitCi',
@@ -15,7 +15,7 @@ $columns = [
             'header' => 'Responsable',
             'attribute'=>'nombreResponsable',
         ],
-        [
+        /*[
             'header'=>'',
             'format' => 'raw',
             'value'=> function ($model) {
@@ -29,7 +29,7 @@ $columns = [
                                ]
                 );
             },
-        ]
+        ]*/
     ];
 
     echo GridView::widget([
@@ -39,6 +39,18 @@ $columns = [
                               'responsive'=>true,
                               'hover'=>true,
                               'pjax'=>true,
+                              'rowOptions' => function ($model, $index, $widget, $grid){
+                                      return [
+                                          'onclick'=>'cliente("'.$model->nombreNegocio.'","'.$model->nitCi.'","'.$model->idCliente.'","'.$model->codigoCliente.'");return false;',
+                                          'data-toggle'=>'tooltip',
+                                          'title'=>'seleccionar'
+                                      ];
+                              },
+                              'toolbar' => [],
+                              'panel' => [
+                                  'heading'=>Html::tag('strong','Clientes'),
+                                  'type'=>GridView::TYPE_DEFAULT,
+                              ],
                           ]);
 
     $script = <<<JS

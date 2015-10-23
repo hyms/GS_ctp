@@ -63,24 +63,26 @@
     ];
 
     Pjax::begin(['id'=>'pendientes']);
-    echo Html::panel(
-        [
-            'heading' => Html::tag('strong','Ordenes de trabajo Pendientes',['class'=>'panel-title']),
-            'postBody' => GridView::widget([
-                                               'dataProvider'=> $data,
-                                               'columns' => $columns,
-                                               'responsive'=>true,
-                                               'hover'=>true,
-                                               'bordered'=>false,
-                                           ])
-        ],
-        Html::TYPE_DEFAULT
-    );
+
+    echo GridView::widget([
+                              'dataProvider'=> $data,
+                              //'filterModel' => $search,
+                              'columns' => $columns,
+                              'responsive'=>true,
+                              'hover'=>true,
+                              'bordered'=>false,
+                              'toolbar' => [],
+                              'panel' => [
+                                  'heading'=>Html::tag('strong','Ordenes de trabajo Pendientes'),
+                                  'type'=>GridView::TYPE_DEFAULT,
+                                  'footer'=>false
+                              ],
+                          ]);
     Pjax::end();
 
     $script = <<< JS
     $(document).ready(function() {
-    setInterval(function(){ $.pjax.reload({container:"#pendientes"}); }, 30000);
+    setInterval(function(){ $.pjax.reload({container:"#pendientes"}); }, 15000);
 });
 
 JS;
