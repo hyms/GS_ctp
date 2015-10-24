@@ -1,10 +1,10 @@
 <?php
-    use app\assets\AppAsset2;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
+use app\assets\AppAsset2;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
 
-    /* @var $this \yii\web\View */
+/* @var $this \yii\web\View */
     /* @var $content string */
 
     AppAsset2::register($this,true);
@@ -51,10 +51,10 @@
                             'label'=>'Reporte de Arqueos',
                             'url'=>['admin/arqueos']
                         ],
-                        [
+                        /*[
                             'label'=>'Caja',
                             'url'=>['admin/caja']
-                        ]
+                        ]*/
                     ]
                 ]);
                 array_push($items,[

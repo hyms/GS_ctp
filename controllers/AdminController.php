@@ -600,11 +600,11 @@
                     case "recibo":
                         $search = new ReciboSearch();
                         $recibos = $search->search(yii::$app->request->queryParams);
-                        $recibos->query->addOrderBy(['fechaRegistro'=>SORT_DESC]);
+                        $recibos->query->addOrderBy(['fechaRegistro' => SORT_DESC]);
                         return $this->render('caja', ['r' => 'recibos', 'recibos' => $recibos, 'search' => $search]);
                         break;
                     case "arqueos":
-                        $search  = new MovimientoCajaSearchUserCaja();
+                        $search = new MovimientoCajaSearchUserCaja();
                         $arqueos = $search->search(Yii::$app->request->queryParams);
                         $arqueos->query
                             ->andWhere(['tipoMovimiento' => 3])
@@ -615,26 +615,26 @@
                         $sucursales = Sucursal::find()->all();
                         if (isset($get['ic'])) {
                             $arqueo = new MovimientoCaja();
-                            $caja   = Caja::findOne(['fk_idSucursal' => $get['ic']]);
-                            $d      = date("d");
-                            $end    = date("Y-m-d H:i:s");
+                            $caja = Caja::findOne(['fk_idSucursal' => $get['ic']]);
+                            $d = date("d");
+                            $end = date("Y-m-d H:i:s");
 
                             $variables = SGCaja::getSaldo($caja->idCaja, $end, false, false);
 
                             return $this->render('caja',
-                                                 [
-                                                     'r'          => 'arqueo',
-                                                     'sucursales' => $sucursales,
-                                                     'saldo'      => $variables['saldo'],
-                                                     'arqueo'     => $arqueo,
-                                                     'caja'       => $caja,
-                                                     'fecha'      => date('Y-m-d H:i:s', strtotime($end)),
-                                                     'ventas'     => $variables['ventas'],
-                                                     'deudas'     => $variables['deudas'],
-                                                     'recibos'    => $variables['recibos'],
-                                                     'cajas'      => $variables['cajas'],
-                                                     'dia'        => $d,
-                                                 ]);
+                                [
+                                    'r' => 'arqueo',
+                                    'sucursales' => $sucursales,
+                                    'saldo' => $variables['saldo'],
+                                    'arqueo' => $arqueo,
+                                    'caja' => $caja,
+                                    'fecha' => date('Y-m-d H:i:s', strtotime($end)),
+                                    'ventas' => $variables['ventas'],
+                                    'deudas' => $variables['deudas'],
+                                    'recibos' => $variables['recibos'],
+                                    'cajas' => $variables['cajas'],
+                                    'dia' => $d,
+                                ]);
                             break;
                         }
                         return $this->render('caja', ['r' => 'arqueo', 'sucursales' => $sucursales]);
@@ -643,35 +643,30 @@
                         return $this->render('caja');
                         break;
                     case "admin":
-                        if(isset($get["o"]))
-                        {
-                            $caja = Caja::find()->where(['is','fk_idSucursal',NULL])->one();
-                            if($get["o"]=="r")
-                            {
-                                $d      = date("d");
-                                $end    = date("Y-m-d H:i:s");
+                        $caja = Caja::find()->where(['is', 'fk_idSucursal', NULL])->one();
+                        $post = Yii::$app->request->post();
+                        if(isset($post['fecha'])) {
+                            if ($post['fecha'] != '') {
+                                $d = date("d");
+                                $end = $post['fecha'];
 
-                                $variables = SGCaja::getSaldo($caja->idCaja, $end, false, false);
+                                $variables = SGCaja::getSaldo($caja->idCaja, $end, false, false,true);
 
                                 return $this->render('caja',
-                                                     [
-                                                         'r'          => 'admin',
-                                                         'saldo'      => $variables['saldo'],
-                                                         'arqueo'     => $variables['arqueos'],
-                                                         'caja'       => $caja,
-                                                         'fecha'      => date('Y-m-d H:i:s', strtotime($end)),
-                                                         'recibos'    => $variables['recibos'],
-                                                         'cajas'      => $variables['cajas'],
-                                                         'dia'        => $d,
-                                                     ]);
-                            }
-                            if($get["op"]=="d")
-                            {
-                                $variables = SGCaja::getSaldo($caja->idCaja, date("Y-m-d H:i:s"), true, false);
+                                    [
+                                        'r' => 'admin',
+                                        'saldo' => $variables['saldo'],
+                                        'arqueo' => $variables['arqueos'],
+                                        'caja' => $caja,
+                                        'fecha' => date('Y-m-d H:i:s', strtotime($post['fecha'])),
+                                        'recibos' => $variables['recibos'],
+                                        'cajas' => $variables['cajas'],
+                                        'dia' => $d,
+                                    ]);
+                                break;
                             }
                         }
-                        return $this->render('caja',['r'=>'admin']);
-                        break;
+                    return $this->render('caja',['r' => 'admin','fecha' => '']);
                 }
             }
             return $this->render('caja');

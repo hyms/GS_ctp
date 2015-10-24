@@ -1,4 +1,6 @@
 <?php
+use kartik\helpers\Html;
+
 $dias = array("Domingo","Lunes","Martes","Miercoles","Jueves","Viernes","Sábado");
 $meses = array("Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 $fecha = $dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de ".$meses[date('n',strtotime($fecha))-1]. " del ".date('Y',strtotime($fecha));
@@ -6,58 +8,54 @@ $fecha = $dias[date('w',strtotime($fecha))]." ".date('d',strtotime($fecha))." de
 <div class="panel panel-default">
     <div class="panel-heading">
         <h3 class="panel-title">
-            <strong>REGISTRO DIARIO</strong>
+            <strong>REGISTRO DIARIO CAJA ADMINISTRACION</strong>
         </h3>
     </div>
     <div class="panel-body">
-        <div class="text-right"><?= ((!empty($caja->fk_idSucursal))?$caja->fkIdSucursal->nombre:"").", ".$fecha;?></div>
+        <div class="text-right"><?= $fecha;?></div>
     </div>
     <?php $total=0;?>
     <table class="table table-hover table-condensed">
         <thead>
         <tr>
-            <th>Comprobante</th>
-            <th>Detalle</th>
-            <th>Ingreso</th>
-            <th>Egreso</th>
-            <th>Saldo</th>
+            <?= Html::tag('th','Comprobante'); ?>
+            <?= Html::tag('th','Detalle'); ?>
+            <?= Html::tag('th','Ingreso'); ?>
+            <?= Html::tag('th','Egreso'); ?>
+            <?= Html::tag('th','Saldo'); ?>
         </tr>
         </thead>
         <tbody>
-        <tr>
-            <td></td>
-            <td><?= "SALDO";?></td>
-            <td><?= $saldo;?></td>
-            <td></td>
-            <td><?php $total=$saldo;	echo $total;?></td>
-        </tr>
-
-        <tr>
-            <td></td>
-            <td>Recibos de Ingreso</td>
-            <td><?= $recibos[1];?></td>
-            <td></td>
-            <td><?php $total=$total+$recibos[1];	echo $total;?></td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>Recibos de Engreso</td>
-            <td></td>
-            <td><?= $recibos[0];?></td>
-            <td><?php $total=$total-$recibos[0];	echo $total;?></td>
-        </tr>
         <?php foreach($arqueo as $item){?>
             <tr>
-                <td><?= $item->correlativo;?></td>
-                <td><?= $item->fkIdMovimientoCaja->obseraciones;?></td>
-                <td></td>
-                <td><?= $item->fkIdMovimientoCaja->monto;?></td>
-                <td><?php $total=$total-$item->fkIdMovimientoCaja->monto; echo $total;?></td>
+                <?php $total=$total+$item->monto;?>
+                <?= Html::tag('td',$item->fkIdCajaOrigen->fkIdSucursal->nombre); ?>
+                <?= Html::tag('td',$item->observaciones); ?>
+                <?= Html::tag('td',$item->monto); ?>
+                <?= Html::tag('td',''); ?>
+                <?= Html::tag('td',$total); ?>
             </tr>
         <?php }?>
         <tr>
+            <?php $total=$total+$recibos[1];?>
+            <?= Html::tag('td',''); ?>
+            <?= Html::tag('td','Recibos de Ingreso'); ?>
+            <?= Html::tag('td',$recibos[1]); ?>
+            <?= Html::tag('td',''); ?>
+            <?= Html::tag('td',$total); ?>
+        </tr>
+        <tr>
+            <?php $total=$total=$total-$recibos[0];?>
+            <?= Html::tag('td',''); ?>
+            <?= Html::tag('td','Recibos de Engreso'); ?>
+            <?= Html::tag('td',''); ?>
+            <?= Html::tag('td',$recibos[0]); ?>
+            <?= Html::tag('td',$total); ?>
+        </tr>
+
+        <tr>
             <td colspan="4" class="text-right"><strong>Total Saldo</strong></td>
-            <td><?= $total;?></td>
+            <?= Html::tag('td',$total); ?>
         </tr>
         </tbody>
     </table>

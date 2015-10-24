@@ -64,7 +64,7 @@ class SGCaja extends Component
         return MovimientoCaja::findOne(['idMovimientoCaja' => $idmovimiento]);
     }
 
-    static public function getSaldo($idCaja, $fechaMovimientos, $array = false, $get = null)
+    static public function getSaldo($idCaja, $fechaMovimientos, $array = false, $get = null,$admin=false)
     {
         if ($array || isset($get['deudas']))
             $deudas = array();
@@ -94,12 +94,17 @@ class SGCaja extends Component
         $arqueos     = array();
         $movimientos = MovimientoCaja::find()
             ->andWhere('`fk_idCajaOrigen`=' . $idCaja . ' or `fk_idCajaDestino`=' . $idCaja);
-        if (isset($get['arqueo']))
-            $movimientos->andFilterWhere(['like', 'fechaCierre', $get['arqueo']]);
-        else
-            $movimientos->andWhere(['is', 'fechaCierre', null]);
+        if(!$admin) {
+            if (isset($get['arqueo']))
+                $movimientos->andFilterWhere(['like', 'fechaCierre', $get['arqueo']]);
+            else
+                $movimientos->andWhere(['is', 'fechaCierre', null]);
+        }
 
         $movimientos->andWhere(['<=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 23:59:59"]);
+        if($admin) {
+            $movimientos->andWhere(['>=', 'time', date("Y-m-d", strtotime($fechaMovimientos)) . " 00:00:00"]);
+        }
         $movimientos = $movimientos->all();
         $total       = 0;
 
@@ -175,10 +180,10 @@ class SGCaja extends Component
             ->andWhere(['<', 'time', date("Y-m-d H:i", strtotime($fechaMovimientos))])
             ->orderBy(['time'=>SORT_DESC])
             ->one();
-        if (!empty($saldos))
+        $saldo=0;
+        if (!empty($saldos)) {
             $saldo = $saldos->saldoCierre;
-        else
-            $saldo = 0;
+        }
 
         $datos = array('ventas' => $ventas, 'deudas' => $deudas, 'recibos' => $recibos, 'cajas' => $cajas, 'saldo' => $saldo, 'movimientos' => $movimientosAll,'arqueos'=>$arqueos);
         return $datos;
