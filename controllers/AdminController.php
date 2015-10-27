@@ -286,6 +286,8 @@
                                         $user->password = md5($user->password);
                                 } else {
                                     $user->password = md5($user->password);
+                                    $user->fechaRegistro = date('Y-m-d H:i:s');
+                                    $user->fechaAcceso = date('Y-m-d H:i:s');
                                 }
                                 $user->auth_key = md5($user->password);
                                 if ($user->save()) {
