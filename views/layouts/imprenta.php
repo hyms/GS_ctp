@@ -34,7 +34,11 @@ AppAsset2::register($this,true);
                 'class' => 'navbar navbar-default',
             ],
         ]);
-        $items = [];
+        $items = [
+            ['label' => 'Cotizar', 'url' => ['/imprenta/cotizar']],
+            ['label' => 'Reporte', 'url' => ['/imprenta/report']],
+            ['label' => 'Configuracion', 'url' => ['/imprenta/config']],
+        ];
 
         array_push($items, Yii::$app->user->isGuest ?
             ['label' => 'Login', 'url' => ['/site/login']] :

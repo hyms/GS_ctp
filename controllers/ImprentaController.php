@@ -63,6 +63,16 @@ class ImprentaController extends Controller
 
     public function actionConfig()
     {
-        return $this->render('index');
+        return $this->render('config');
+    }
+
+    public function actionCotizar()
+    {
+        return $this->render('cotizar');
+    }
+
+    public function actionReport()
+    {
+        return $this->render('report');
     }
 }

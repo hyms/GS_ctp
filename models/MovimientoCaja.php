@@ -49,7 +49,7 @@ class MovimientoCaja extends \yii\db\ActiveRecord
             [['time', 'fk_idUser', 'monto', 'tipoMovimiento'], 'required'],
             [['time', 'fechaCierre'], 'safe'],
             [['monto', 'saldoCierre'], 'number'],
-            [['observaciones'], 'string', 'max' => 100],
+            [['observaciones'], 'string', 'max' => 500],
             [['nroDoc'], 'string', 'max' => 40]
         ];
     }
