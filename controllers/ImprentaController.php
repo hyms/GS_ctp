@@ -63,6 +63,19 @@ class ImprentaController extends Controller
 
     public function actionConfig()
     {
+        $get = Yii::$app->request->get();
+        if(isset($get['op']))
+        {
+            switch($get['op'])
+            {
+                case 'newi':
+                    break;
+                case 'link':
+                    break;
+                case 'list':
+                    break;
+            }
+        }
         return $this->render('config');
     }
 

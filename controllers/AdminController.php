@@ -510,6 +510,7 @@
                                     if (!empty($row['observaciones']))
                                         $row['observaciones'] = $row['observaciones'] . "-";
                                     $row['observaciones'] = $row['observaciones'] . "<span class=\"text-warning\">" . ((is_array(SGOperation::tiposReposicion($orden->tipoRepos))) ? '' : SGOperation::tiposReposicion($orden->tipoRepos)) . "</span>" . ((empty($orden->attribuible)) ? "" : "-" . $orden->attribuible);
+                                    $row['observaciones'] = $row['observaciones'] . "- <span class=\"text-info\">Orden ".((empty($orden->fk_idParent))?$orden->codDependiente:$orden->fkIdParent->correlativo). "</span>";
                                 }
                                 if (!empty($row['observaciones']))
                                     $row['observaciones'] = $row['observaciones'] . "-";

@@ -8,15 +8,15 @@ echo SideNav::widget([
     'items' => [
         [
             'label'=>'Crear Items',
-            'url'=>['imprenta/config','op'=>'']
+            'url'=>['imprenta/config','op'=>'newi']
         ],
         [
             'label'=>'Armar',
-            'url'=>['imprenta/config','op'=>'']
+            'url'=>['imprenta/config','op'=>'link']
         ],
         [
             'label'=>'Lista Secuencias',
-            'url'=>['imprenta/config','op'=>'']
+            'url'=>['imprenta/config','op'=>'list']
         ],
     ],
 ]);
