@@ -230,6 +230,7 @@ class DisenoController extends Controller
                 case 1:
                     $search = new OrdenCTPSearch();
                     $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $ordenes->pagination = ['pageSize' => 10];
                     $ordenes->query
                         ->andWhere(['tipoOrden' => 0, '`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal])
                         ->andWhere('`estado`=0 or `estado`=2');
@@ -255,6 +256,7 @@ class DisenoController extends Controller
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
                     $search = new OrdenCTPSearch();
                     $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $ordenes->pagination = ['pageSize' => 10];
                     $ordenes->query->andWhere(['tipoOrden' => 1, '`OrdenCTP`.`fk_idSucursal`' => $this->idSucursal]);
                     $idParent = '';
                     if ($post = Yii::$app->request->post())
@@ -278,6 +280,7 @@ class DisenoController extends Controller
                     }
                     $search = new \app\models\OrdenCTPSearchSucursal();
                     $ordenes = $search->search(Yii::$app->request->queryParams);
+                    $ordenes->pagination = ['pageSize' => 10];
                     $ordenes->query
                         ->andWhere(['tipoOrden' => 0])
                         ->andWhere('`estado`=0 or `estado`=2')

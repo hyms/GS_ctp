@@ -32,7 +32,7 @@ array_push($columns,[
         return date("Y-m-d H:i",strtotime($model->fechaGenerada));
     }
 ]);
-array_push($columns,[
+/*array_push($columns,[
         'header'=>'',
         'format' => 'raw',
         'value'=> function ($model) use ($tipo) {
@@ -48,7 +48,8 @@ array_push($columns,[
             );
         },
     ]
-);
+);*/
+
 echo GridView::widget([
     'dataProvider'=> $ordenes,
     'filterModel' => $search,
@@ -56,6 +57,19 @@ echo GridView::widget([
     'condensed' => true,
     'hover'=>true,
     'bordered'=>false,
+    'pjax'=>true,
+    'rowOptions' => function ($model, $index, $widget, $grid)use ($tipo){
+        return [
+            'onclick'=>'newOrden('.$model->idOrdenCTP.',"'. Url::toRoute('diseno/addreposicion').'",'.$tipo.');return false;',
+            'data-toggle'=>'tooltip',
+            'title'=>'seleccionar'
+        ];
+    },
+    'toolbar' => [],
+    'panel' => [
+        'heading'=>Html::tag('strong','Ordenes'),
+        'type'=>GridView::TYPE_DEFAULT,
+    ],
 ]);
 
 $script= <<< JS
