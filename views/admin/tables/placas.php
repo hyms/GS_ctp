@@ -13,7 +13,10 @@ $columns = [
     ],
     [
         'header'=>'Cliente',
-        'attribute'=>'cliente',
+        'format'=>'raw',
+        'attribute'=>function($model){
+            return \yii\bootstrap\Html::tag('span',$model['cliente'],['class'=>'text-uppercase']);
+},
     ],
     [
         'header'=>'Orden',

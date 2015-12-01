@@ -23,7 +23,7 @@ use yii\helpers\Url;
             <?= Html::a('Ventas',['/venta/index'],['class'=>'btn btn-primary btn-lg btn-block','disabled'=>(Yii::$app->user->identity->role > 3 && Yii::$app->user->identity->role != 6)])?>
         </div>
         <div class="col-md-3">
-            <?= Html::a('Imprenta',['#'],['class'=>'btn btn-primary btn-lg btn-block'])?>
+            <?= Html::a('Imprenta',['#'],['class'=>'btn btn-primary btn-lg btn-block','disabled'=>true])?>
         </div>
     </div>
 

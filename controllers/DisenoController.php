@@ -117,8 +117,12 @@ class DisenoController extends Controller
                 case "cliente":
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
                     $datos = $this->ordenes($get, 0);
-                    if (!is_array($datos))
-                        return $this->redirect(['orden', 'op' => 'buscar']);
+                    if (!is_array($datos)) {
+                        if ($datos)
+                            return $this->redirect(['orden', 'op' => 'buscar']);
+                        else
+                            return "error";
+                     }
                     $ordenes = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('orden', [
@@ -173,8 +177,12 @@ class DisenoController extends Controller
                         if (isset($post['anular']))
                             $nulled = $post['anular'];
                     $datos = $this->ordenes($get, 1, null, $nulled);
-                    if (!is_array($datos))
-                        return $this->redirect(['interna', 'op' => 'list']);
+                    if (!is_array($datos)) {
+                        if ($datos)
+                            return $this->redirect(['interna', 'op' => 'list']);
+                        else
+                            return "error";
+                    }
                     $ordenes = $datos['orden'];
                     $detalle = $datos['detalle'];
                     return $this->render('interna', [
@@ -377,6 +385,11 @@ class DisenoController extends Controller
         $ordenes->fk_idUserD = Yii::$app->user->id;
         $post = Yii::$app->request->post();
         if (!empty($post)) {
+            if(isset($post['cantidad'])) {
+                if ($post['cantidad'] != count($post['OrdenDetalle'])) {
+                    return false;
+                }
+            }
             if (isset($post['OrdenCTP']) && isset($post['OrdenDetalle'])) {
                 $operacion = new SGOrdenes();
                 if (isset($get['id'])) {

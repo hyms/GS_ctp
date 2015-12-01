@@ -16,6 +16,7 @@ function newRow(almacen,url,type,form) {
         success: function (html) {
             input.append(html);
             input.siblings('.tabular-header').show();
+            $('#cantidad').val( parseInt($('#cantidad').val())+1);
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             alert('Error!');

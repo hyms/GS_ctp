@@ -26,11 +26,13 @@ use yii\helpers\Url;
                     <h4 class="col-sm-4 text-right">
                         <?= Html::tag('strong',date("d/m/Y",strtotime($orden->fechaGenerada))); ?>
                     </h4>
+
                 </div>
                 <?php
                     $form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']);
 
                     echo Html::beginTag('div',['class'=>'row']);
+                    echo Html::hiddenInput('cantidad',0,['id'=>'cantidad']);
                     if($orden->tipoOrden==0) {
                         echo Html::beginTag('div', ['class' => 'col-sm-6']);
                         $data = ArrayHelper::map(\app\models\Cliente::findAll(['fk_idSucursal' => $orden->fk_idSucursal]), 'idCliente', 'nombreNegocio');
@@ -123,6 +125,7 @@ use yii\helpers\Url;
         </div>
     </div>
 <?php
-    echo $this->render('@app/views/share/scripts/save');
+    echo $this->render('../scripts/save');
+    //echo $this->render('@app/views/share/scripts/save');
     echo $this->render('@app/views/share/scripts/reset');
 

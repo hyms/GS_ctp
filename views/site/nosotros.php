@@ -55,14 +55,14 @@ recursos
     /* Display both menu and body aside each other */
 ?>
 <div class="row">
-    <div class="col-sm-3">
+    <div class="col-xs-3">
         <?php
             echo Affix::widget([
                                    'type' => 'menu',
                                    'items' => $items
                                ]);?>
     </div>
-    <div class="col-sm-9">
+    <div class="col-xs-9">
         <?php
             echo Affix::widget([
                                    'type' => 'body',

@@ -1,14 +1,14 @@
 <?php
-    use app\models\Sucursal;
-    use kartik\export\ExportMenu;
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Url;
-    use yii\widgets\Pjax;
+use app\models\Sucursal;
+use kartik\export\ExportMenu;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
 
-    $columns = [
+$columns = [
     [
         'header'=>'Sucursal',
         'attribute'=>'fk_idSucursal',
@@ -44,6 +44,15 @@
         'header'=>'Codigo',
         'attribute'=>'codigo',
     ],*/
+    [
+        'header'=>'Realiado por',
+        'value'=>function($model)
+        {
+            if(!empty($model->fk_idUser))
+            return $model->fkIdUser->nombre.' '.$model->fkIdUser->apellido;
+                return '';
+        },
+    ],
     [
         'header'=>'Nombre',
         'attribute'=>'nombre',

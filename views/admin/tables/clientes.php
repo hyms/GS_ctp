@@ -1,11 +1,11 @@
 <?php
-    use app\models\Sucursal;
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\helpers\ArrayHelper;
-    use yii\helpers\Url;
+use app\models\Sucursal;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
-    $columns=[
+$columns=[
         [
             'header'=>'Sucursal',
             'filterType'=>GridView::FILTER_SELECT2,
@@ -46,7 +46,7 @@
             'attribute'=>'telefono',
         ],
         [
-            'class' => 'yii\grid\ActionColumn',
+            'class' => 'kartik\grid\ActionColumn',
             'template'=>'{update}',
             'buttons'=>[
                     'update'=>function($url,$model) {

@@ -6,6 +6,7 @@ $(document).on('click','#ywventa .tabular-input-remove', function(event) {
     $('.tabular-input-container').filter(function () {
         return $.trim($(this).text()) === '' && $(this).children().length == 0
     }).siblings('.tabular-header').hide();
+    $('#cantidad').val( parseInt($('#cantidad').val())-1);
 });
 JS;
     $this->registerJs($script, \yii\web\View::POS_HEAD);
