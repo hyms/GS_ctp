@@ -15,7 +15,7 @@ use yii\helpers\Html;
     <html lang="<?= Yii::$app->language ?>">
     <head><meta http-equiv="Content-Type" content="text/html; charset=euc-jp">
 
-        <link rel="shortcut icon" href="<?= Yii::$app->request->baseUrl."/favicon.png"?>" type="image/x-icon" />
+        <link rel="shortcut icon" href="<?= Yii::$app->request->baseUrl."/faviconN.png"?>" type="image/x-icon" />
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <?= Html::csrfMetaTags() ?>
         <title><?= Html::encode($this->title) ?></title>

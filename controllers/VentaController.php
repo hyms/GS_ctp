@@ -662,7 +662,7 @@ class VentaController extends Controller
         return $this->render('cliente', ['r' => 'list', 'clientes' => $clientes, 'search' => $search]);
     }
 
-    public function actionReport()
+    public function  actionReport()
     {
         $post = Yii::$app->request->get();
         if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd'])) {
@@ -736,14 +736,21 @@ class VentaController extends Controller
                     $venta->orderBy(['correlativo' => SORT_ASC]);
 
                     //$data = $venta->all();
+                    $r = "table";
+                    if ($post['tipo'] == "im") {
+                        $venta->andWhere(['IS NOT', 'factura', NULL]);
+                        $venta->orderBy(['factura' => SORT_ASC]);
+                        $r = 'impuesto';
+                    }
+
                     $data = new ActiveDataProvider([
                         'query' => $venta,
                         //'pagination' => false,
                     ]);
 
-                    $r = "table";
+                    /*$r = "table";
                     if ($post['tipo'] == "im")
-                        $r = 'impuesto';
+                        $r = 'impuesto';*/
                 }
 
                 return $this->render('reporte', [

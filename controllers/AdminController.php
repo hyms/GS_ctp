@@ -417,10 +417,16 @@
                         $venta->orderBy(['correlativo' => SORT_ASC]);
 
                         //$data = $venta->all();
+                        $r = "table";
+                        if ($post['tipo'] == "im") {
+                            $venta->andWhere(['IS NOT', 'factura', NULL]);
+                            $venta->orderBy(['factura' => SORT_ASC]);
+                            $r = 'impuesto';
+                        }
+
                         $data = new ActiveDataProvider([
                                                            'query' => $venta,
                                                        ]);
-                        $r = "table";
                     }
                     return $this->render('reporte', [
                         'r' => $r,

@@ -2,6 +2,7 @@
 use kartik\helpers\Html;
 use kartik\widgets\TypeaheadBasic;
 use yii\bootstrap\ActiveForm;
+use yii\bootstrap\Alert;
 use yii\helpers\ArrayHelper;
 use yii\helpers\Url;
 
@@ -16,6 +17,15 @@ use yii\helpers\Url;
         <div class="col-md-9">
             <div class="well well-sm">
 
+                <?php if(Yii::$app->session->hasFlash('error')) {
+                    echo Alert::widget([
+                        'options' => [
+                            'class' => 'alert-danger',
+                        ],
+                        'body'    => Yii::$app->session->getFlash('error'),
+                    ]);
+                }
+                ?>
                 <div class="row">
                     <h4 class="col-sm-4">
                         <?= Html::tag('strong','Orden '.(($orden->tipoOrden==0)?'de Trabajo':'Interna')); ?>
@@ -32,7 +42,7 @@ use yii\helpers\Url;
                     $form = ActiveForm::begin(['layout' => 'horizontal','id'=>'form']);
 
                     echo Html::beginTag('div',['class'=>'row']);
-                    echo Html::hiddenInput('cantidad',0,['id'=>'cantidad']);
+                    echo Html::hiddenInput('cantidad',count($detalle),['id'=>'cantidad']);
                     if($orden->tipoOrden==0) {
                         echo Html::beginTag('div', ['class' => 'col-sm-6']);
                         $data = ArrayHelper::map(\app\models\Cliente::findAll(['fk_idSucursal' => $orden->fk_idSucursal]), 'idCliente', 'nombreNegocio');
@@ -125,7 +135,7 @@ use yii\helpers\Url;
         </div>
     </div>
 <?php
-    echo $this->render('../scripts/save');
-    //echo $this->render('@app/views/share/scripts/save');
+    //echo $this->render('../scripts/save');
+    echo $this->render('@app/views/share/scripts/save');
     echo $this->render('@app/views/share/scripts/reset');
 

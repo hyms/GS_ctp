@@ -1,26 +1,24 @@
 <?php
-    use kartik\export\ExportMenu;
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\widgets\Pjax;
+use kartik\export\ExportMenu;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\widgets\Pjax;
 
-    $columns = [
+$columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
-        ],
-        [
-            'header'=>'Codigo',
-            'value'=>function($model){
-                if(empty($model->codigoServicio))
-                    return "";
-                return $model->codigoServicio;
-            },
         ],
         [
             'header'=>'Fecha',
             'value'=>function($model){
                 return date("Y-m-d H:i",strtotime($model->fechaCobro));
             },
+        ],
+        [
+            'header'=>'Factura',
+            'value'=>function($model){
+    return (empty($model->factura))?"":$model->factura;
+},
         ],
         [
             'header'=>'Responsable',
@@ -30,16 +28,20 @@
             }
         ],
         [
+            'header'=>'NIT',
+            'format'=>'raw',
+            'value'=>function($model) {
+                if(empty($model->fkIdCliente))
+                    return "";
+                return $model->fkIdCliente->nitCi;
+            }
+        ],
+        [
             'header'=>'Cobrar',
             'value'=>'montoVenta',
             'pageSummary'=>true,
         ],
-        [
-            'header'=>'Factura',
-            'value'=>function($model){
-                return (empty($model->factura))?"":$model->factura;
-            },
-        ],
+
     ];
 
     $export = ExportMenu::widget([

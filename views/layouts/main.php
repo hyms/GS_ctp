@@ -1,11 +1,11 @@
 <?php
-    use app\assets\AppAsset;
-    use yii\bootstrap\Nav;
-    use yii\bootstrap\NavBar;
-    use yii\helpers\Html;
-    use yii\widgets\Breadcrumbs;
+use app\assets\AppAsset;
+use yii\bootstrap\Nav;
+use yii\bootstrap\NavBar;
+use yii\helpers\Html;
+use yii\widgets\Breadcrumbs;
 
-    /* @var $this \yii\web\View */
+/* @var $this \yii\web\View */
     /* @var $content string */
 
     AppAsset::register($this);
@@ -15,7 +15,7 @@
 <html lang="<?= Yii::$app->language ?>">
 <head>
     <meta charset="<?= Yii::$app->charset ?>">
-    <link rel="shortcut icon" href="<?= Yii::$app->request->baseUrl."/favicon.png"?>" type="image/x-icon" />
+    <link rel="shortcut icon" href="<?= Yii::$app->request->baseUrl."/faviconN.png"?>" type="image/x-icon" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <?= Html::csrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>

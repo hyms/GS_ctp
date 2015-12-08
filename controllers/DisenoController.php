@@ -118,13 +118,14 @@ class DisenoController extends Controller
                     $producto = SGProducto::getProductos(true, 10, $this->idSucursal);
                     $datos = $this->ordenes($get, 0);
                     if (!is_array($datos)) {
-                        if ($datos)
                             return $this->redirect(['orden', 'op' => 'buscar']);
-                        else
-                            return "error";
+
                      }
                     $ordenes = $datos['orden'];
                     $detalle = $datos['detalle'];
+                    if(isset($datos['flash'])) {
+                        Yii::$app->session->setFlash('error', $datos['flash']);
+                    }
                     return $this->render('orden', [
                         'r' => 'nuevo',
                         'orden' => $ordenes,
@@ -178,13 +179,13 @@ class DisenoController extends Controller
                             $nulled = $post['anular'];
                     $datos = $this->ordenes($get, 1, null, $nulled);
                     if (!is_array($datos)) {
-                        if ($datos)
-                            return $this->redirect(['interna', 'op' => 'list']);
-                        else
-                            return "error";
+                        return $this->redirect(['interna', 'op' => 'list']);
                     }
                     $ordenes = $datos['orden'];
                     $detalle = $datos['detalle'];
+                    if(isset($datos['flash'])) {
+                        Yii::$app->session->setFlash('error', $datos['flash']);
+                    }
                     return $this->render('interna', [
                         'r' => 'nuevo',
                         'orden' => $ordenes,
@@ -385,11 +386,7 @@ class DisenoController extends Controller
         $ordenes->fk_idUserD = Yii::$app->user->id;
         $post = Yii::$app->request->post();
         if (!empty($post)) {
-            if(isset($post['cantidad'])) {
-                if ($post['cantidad'] != count($post['OrdenDetalle'])) {
-                    return false;
-                }
-            }
+
             if (isset($post['OrdenCTP']) && isset($post['OrdenDetalle'])) {
                 $operacion = new SGOrdenes();
                 if (isset($get['id'])) {
@@ -407,6 +404,12 @@ class DisenoController extends Controller
                 }
                 $ordenes->load($post);
                 Model::loadMultiple($detalle, $post);
+                if(isset($post['cantidad'])) {
+                    if ($post['cantidad'] != count($post['OrdenDetalle'])) {
+                        $datos=['orden'=>$ordenes,'detalle'=>$detalle,'flash'=>'Hubo un error al guardar los datos <strong>INTENTELO DE NUEVO</strong>'];
+                        return $datos;
+                    }
+                }
                 //$datos = ;
                 if ($null)
                     $datos = $operacion->grabar(['orden' => $ordenes, 'detalle' => $detalle], false, true);
