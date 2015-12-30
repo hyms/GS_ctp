@@ -1,5 +1,5 @@
 <?php
-    use kartik\helpers\Html;
+use kartik\helpers\Html;
 
 ?>
 <div class="row" style="color: #000000">
@@ -7,7 +7,6 @@
         <div class="col-xs-12">
             <div class="row">
                 <h3 class="col-xs-offset-2 col-xs-7 text-center"><?= Html::tag('strong','Orden de Trabajo');?></h3>
-                <h4 class="text-right"><?= Html::tag('strong',(($orden->cfSF==0)?$orden->codigoServicio:" "))?></h4>
                 <div class="row col-xs-12">
                     <div class="col-xs-offset-4 col-xs-3 text-center"><?= Html::tag('small',$orden->fkIdSucursal->nombre);?></div>
                     <div class="text-right"><?= Html::tag('strong','Fecha:').' '. (((empty($orden->fechaCobro))?date("d-m-Y / H:i"):date("d-m-Y / H:i",strtotime($orden->fechaCobro))));?></div>
@@ -15,8 +14,10 @@
             </div>
 
             <div class="row">
-                <div class="col-xs-5"><?= Html::tag('strong','Cliente:').' '.Html::tag('span',((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:$orden->responsable)." - ".$orden->telefono,['class'=>'text-capitalize']);?></div>
-                <div class="col-xs-5"><?= Html::tag('strong','NitCi:').' '.((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nitCi:""); ?></div>
+            <div class="row">
+                <div class="col-xs-5"><?= Html::tag('strong','Cliente:').' '.Html::tag('span',((!empty($orden->fk_idCliente))?$orden->fkIdCliente->nombreNegocio:$orden->responsable).' - '.$orden->telefono,['class'=>'text-capitalize']);?></div>
+                <div class="col-xs-5"><?= (($orden->cfSF==1)?(Html::tag('strong','Facturar a:').' '.((!empty($orden->fk_idCliente))?($orden->fkIdCliente->nombreCompleto.' - '.$orden->fkIdCliente->nitCi):'')):''); ?></div>
+            </div>
             </div>
 
             <div class="row well well-sm" style="height:170px; border-color: #000; background-color: #fff; color: #000">

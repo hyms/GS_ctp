@@ -57,7 +57,7 @@ class Cliente extends \yii\db\ActiveRecord
     {
         return [
             'idCliente' => 'Id Cliente',
-            'nombreCompleto' => 'Nombre Completo',
+            'nombreCompleto' => 'Nombre Factura',
             'nombreNegocio' => 'Nombre Negocio',
             'nombreResponsable' => 'Nombre Responsable',
             'correo' => 'Correo',

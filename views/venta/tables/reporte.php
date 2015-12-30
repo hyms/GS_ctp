@@ -1,11 +1,10 @@
 <?php
-    use kartik\export\ExportMenu;
-    use kartik\grid\GridView;
-    use kartik\helpers\Html;
-    use yii\helpers\Url;
-    use yii\widgets\Pjax;
+use kartik\grid\GridView;
+use kartik\helpers\Html;
+use yii\helpers\Url;
+use yii\widgets\Pjax;
 
-    $columns = [
+$columns = [
         [
             'class' => '\kartik\grid\SerialColumn'
         ],
@@ -213,7 +212,7 @@
         ],
     ];
 
-$export = ExportMenu::widget([
+/*$export = ExportMenu::widget([
     'dataProvider' => $data,
     'columns' => $columns,
     'fontAwesome' => true,
@@ -248,7 +247,7 @@ $export = ExportMenu::widget([
             ]
         ],
     ],
-]);
+]);*/
 
 Pjax::begin(['id'=>'reporte']);
     echo GridView::widget([
@@ -266,7 +265,8 @@ Pjax::begin(['id'=>'reporte']);
                               },
                               // set your toolbar
                               'toolbar' =>  [
-                                  $export,
+                                  '{export}',
+                                  //$export,
                               ],
                               'containerOptions'=>['style'=>'overflow: auto'],
                               // set export properties
@@ -287,6 +287,26 @@ Pjax::begin(['id'=>'reporte']);
                                   'type' => GridView::TYPE_DEFAULT,
                                   'heading' => Html::tag('strong','Reporte de Ordenes'),
                               ],
+        'exportConfig' => [
+            GridView::EXCEL => [
+                'label' => 'Excel',
+                'filename' => 'Reporte Venta',
+                'alertMsg' => 'El EXCEL se generara para la descarga.',
+                'showPageSummary' => true,
+            ],
+            GridView::PDF => [
+                'label' => 'PDF',
+                'filename' => 'Reporte Venta',
+                'alertMsg' => 'El PDF se generara para la descarga.',
+                'config' => [
+                    'format' => 'Letter',
+                    'marginTop' => 5,
+                    'marginBottom' => 5,
+                    'marginLeft' => 5,
+                    'marginRight' => 5,
+                ]
+            ],
+        ],
                           ]);
 Pjax::end();
 

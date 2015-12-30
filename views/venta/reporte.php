@@ -9,7 +9,7 @@
                 'clienteNegocio'=>$clienteNegocio,
                 'clienteResponsable'=>$clienteResponsable,
                 'fechaStart'=>$fechaStart,
-                'fechaEnd'=>$fechaEnd,
+                //'fechaEnd'=>$fechaEnd,
                 'factura'=>$factura
             ]); ?>
     </div>
@@ -20,13 +20,13 @@
                     switch ($r) {
                         case "table":
                             //echo $this->render('prints/report', ['data' => $data]);
-                            echo $this->render('tables/reporte', ['data' => $data, 'fechaStart' => $fechaStart, 'fechaEnd' => $fechaEnd]);
+                            echo $this->render('tables/reporte', ['data' => $data, 'fechaStart' => $fechaStart]);
                             break;
                         case "deuda":
-                            echo $this->render('tables/reporteD', ['data' => $data, 'fechaStart' => $fechaStart, 'fechaEnd' => $fechaEnd]);
+                            echo $this->render('tables/reporteD', ['data' => $data, 'fechaStart' => $fechaStart]);
                             break;
                         case "impuesto":
-                            echo $this->render('tables/reporteImpuesto', ['data' => $data,'fechaStart'=>$fechaStart,'fechaEnd'=>$fechaEnd]);
+                            echo $this->render('tables/reporteImpuesto', ['data' => $data,'fechaStart'=>$fechaStart]);
                             break;
                     }
                 }

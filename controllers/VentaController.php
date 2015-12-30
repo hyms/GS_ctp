@@ -665,13 +665,13 @@ class VentaController extends Controller
     public function  actionReport()
     {
         $post = Yii::$app->request->get();
-        if (isset($post['tipo']) && isset($post['fechaStart']) && isset($post['fechaEnd'])) {
-            if (!empty($post['fechaStart']) && !empty($post['fechaEnd'])) {
+        if (isset($post['tipo']) && isset($post['fechaStart'])) {
+            if (!empty($post['fechaStart'])) {
                 if ($post['tipo'] == "pd") {
                     $deudas = MovimientoCaja::find()
                         ->andWhere(['tipoMovimiento' => 0])
                         ->andWhere(['fk_idCajaDestino' => $this->idCaja])
-                        ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59'])
+                        ->andWhere(['between', 'time', $post['fechaStart'] . ' 00:00:00', $post['fechaStart'] . ' 23:59:59'])
                         ->select(['idParent'])
                         ->groupBy('idParent')
                         ->all();
@@ -705,12 +705,12 @@ class VentaController extends Controller
                     }
                     $data = new ArrayDataProvider([
                         'allModels' => $venta,
-                        //'pagination' => false,
+                        'pagination' => false,
                     ]);
                     $r = "deuda";
                 } else {
                     $post['fechaStart'] = date('Y-m-d', strtotime($post['fechaStart']));
-                    $post['fechaEnd'] = date('Y-m-d', strtotime($post['fechaEnd']));
+                    //$post['fechaEnd'] = date('Y-m-d', strtotime($post['fechaEnd']));
                     $venta = OrdenCTP::find();
                     $venta->andWhere(['OrdenCTP.fk_idSucursal' => $this->idSucursal]);
                     $venta->joinWith('fkIdCliente');
@@ -732,7 +732,7 @@ class VentaController extends Controller
                     if ($post['tipo'] == "im")
                         $venta->andWhere(['>=', 'estado', '0']);
 
-                    $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaEnd'] . ' 23:59:59']);
+                    $venta->andWhere(['between', 'fechaCobro', $post['fechaStart'] . ' 00:00:00', $post['fechaStart'] . ' 23:59:59']);
                     $venta->orderBy(['correlativo' => SORT_ASC]);
 
                     //$data = $venta->all();
@@ -745,7 +745,7 @@ class VentaController extends Controller
 
                     $data = new ActiveDataProvider([
                         'query' => $venta,
-                        //'pagination' => false,
+                        'pagination' => false,
                     ]);
 
                     /*$r = "table";
@@ -758,7 +758,7 @@ class VentaController extends Controller
                     'clienteNegocio' => $post['clienteNegocio'],
                     'clienteResponsable' => $post['clienteResponsable'],
                     'fechaStart' => $post['fechaStart'],
-                    'fechaEnd' => $post['fechaEnd'],
+                    //'fechaEnd' => $post['fechaEnd'],
                     'factura' => $post['factura'],
                     'data' => $data,
                 ]);
@@ -771,7 +771,7 @@ class VentaController extends Controller
                         'clienteNegocio' => '',
                         'clienteResponsable' => '',
                         'fechaStart' => $post['fechaStart'],
-                        'fechaEnd' => $post['fechaEnd'],
+                        //'fechaEnd' => $post['fechaEnd'],
                         'factura' => ''
                     ]);
         } else
@@ -780,7 +780,7 @@ class VentaController extends Controller
                     'clienteNegocio' => '',
                     'clienteResponsable' => '',
                     'fechaStart' => '',
-                    'fechaEnd' => '',
+                    //'fechaEnd' => '',
                     'factura' => ''
                 ]);
     }

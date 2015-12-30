@@ -29,7 +29,7 @@ use yii\helpers\Url;
                 <div class="row">
                     <h4 class="col-sm-4">
                         <?= Html::tag('strong','Orden '.(($orden->tipoOrden==0)?'de Trabajo':'Interna')); ?>
-                    </h4>
+       <             </h4>
                     <h4 class="col-sm-4 text-center">
                         <?= Html::tag('strong',$orden->correlativo); ?>
                     </h4>

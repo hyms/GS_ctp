@@ -24,7 +24,7 @@ use yii\helpers\Html;
                                            ]
                                        ]); ?>
             </div>
-            <div class="form-group">
+            <?php /*<div class="form-group">
                 <?= Html::label('A:','fechaEnd',array('class'=>'control-label')); ?>
                 <?= DatePicker::widget([
                                            'name' => 'fechaEnd',
@@ -36,7 +36,7 @@ use yii\helpers\Html;
                                                'format' => 'yyyy-mm-dd'
                                            ]
                                        ]); ?>
-            </div>
+            </div>*/ ?>
             <div class="form-group">
                 <?= Html::label('Cliente:','clienteNegocio',array('class'=>'control-label')); ?>
                 <?= Html::textInput('clienteNegocio',$clienteNegocio,array('class'=>'form-control')); ?>

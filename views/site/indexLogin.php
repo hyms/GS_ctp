@@ -6,7 +6,7 @@ use yii\helpers\Url;
 
 <div class="row">
     <div class="text-center">
-        <?= Html::img(Yii::$app->request->baseUrl . "/images/logoSingular.png") ?>
+        <?= Html::img(Yii::$app->request->baseUrl . "/images/logoSingularN.png") ?>
     </div>
 
 

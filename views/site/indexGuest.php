@@ -8,7 +8,7 @@ use yii\helpers\Html;
     <div class="row">
         <div class="row">
             <div class="text-center">
-                <?= Html::img(Yii::$app->request->baseUrl . "/images/logoSingular.png") ?>
+                <?= Html::img(Yii::$app->request->baseUrl . "/images/logoSingularN.png") ?>
             </div>
         </div>
         <div class="row">

@@ -1,9 +1,9 @@
 <?php
-    use kartik\helpers\Html;
-    use kartik\widgets\DatePicker;
-    use yii\bootstrap\ActiveForm;
+use kartik\helpers\Html;
+use kartik\widgets\DatePicker;
+use yii\bootstrap\ActiveForm;
 
-    $this->title = 'Venta-Orden'
+$this->title = 'Venta-Orden'
 ?>
 
     <div class="row">
@@ -115,7 +115,7 @@
                     <div class="text-center">
                         <?= Html::a( Html::icon('floppy-remove').' Cancelar', "#", ['class' => 'btn btn-danger','onClick'=>'previous()']); ?>
                         <?php
-                            $hora = strtotime($orden->fechaCobro)+1200; //20 mins para espera de los botones
+                            $hora = strtotime($orden->fechaCobro)+(60*60*12); //20 mins para espera de los botones
                             if(strtotime(date("Y-m-d H:i:s"))<=$hora) {
                                 echo Html::a( Html::icon('floppy-disk').' Guardar', "#", ['class' => 'btn btn-success','onClick'=>'save()']);
                                 if($orden->estado!=1)
